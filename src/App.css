@@ -1,0 +1,36 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.barracks {
+  text-align: center;
+  margin: 20px;
+}
+
+.character-list {
+  margin: 20px 0;
+}
+
+.character-button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.new-character-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.new-character-button:hover {
+  background-color: #0056b3;
+}
