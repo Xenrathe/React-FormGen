@@ -1,0 +1,59 @@
+{
+  "Talents": {
+    "Bardic Songs": {
+      "Type": "Default",
+      "Base": "Bardic songs last for one or more rounds and end with a final verse that carries a big payoff. Although magical, bardic songs don’t count as spells; they don’t force the bard to suffer opportunity attacks from engaged enemies, and they can’t be canceled by effects that can cancel spells. In fact, bards can cast spells while in the middle of singing a bardic song.\n\n Each song specifies what type of action starts it. To sustain it during the next round, it requires an action and a d20 check against its sustain target. If successful, the song can continue with its sustained effect for that round. (The next round will require another sustain check.) If your attempt to sustain a song fails, the song’s final verse effect resolves immediately, and then the song’s power ends. You can start another song on your next round.\n\n You don’t have to try to sustain the song at the start of your turn. If you choose not to sustain a song, its effects end immediately and you choose whether to use the song’s final verse effect in the current round or to start a new song. You can’t do both.\n\n Some songs have an immediate effect that happens each time you start or sustain the song. Others have effects that continue throughout the entire round.\n\n Most songs stop when a bard is knocked unconscious, silenced, or stunned. Having your song stopped this way prevents you from getting the final verse effect.\n\n You can only sing one bardic song at a time. If you are singing a song (or spend an action to try to sustain a song), you can’t start another song that round.\n\n Bardic songs are loud, and cancel any of stealth effects you may have.",
+      "Adventurer": "Your bardic songs don’t stop immediately when you are knocked unconscious, stunned, or silenced. Instead, they continue for one round, giving you the chance to sustain the song on your next turn."
+    },
+    "Battle Cries": {
+      "Type": "Default",
+      "Base": "Bards use battle cries to encourage, inspire, warn, and magically aid their allies. Battle cries are triggered by flexible melee attacks. The bard makes a melee attack and is able to use a battle cry that corresponds to the attack’s natural result, sometimes whether or not the attack hits.\n\n Bonuses provided by battle cries can help a bard’s allies but not the bard.",
+      "Adventurer": "You can generate the effect of any 1st or 3rd level battle cry you know as a standard action (instead of making a flexible melee attack to see which battle cry you are able to trigger). This allows you to choose the particular battle cry you want, at the expense of taking your standard action."
+    },
+    "Balladeer": {
+      "Type": "Optional",
+      "Base": "At each level, including 1st level, you may learn a great ballad of your choice. Each day you can sing one of these songs to give you a positive relationship with an icon that you would not ordinarily have as well as increasing a negative relationship with another icon.\n\n Song choices for the great ballad are up to the role-player.\n\n It takes at least a few rounds to sing a great ballad, so ideally it happens outside of combat. As you sing the ballad, it’s an opportunity to tell the GM what’s special about the story you are telling.\n\n Make a Charisma skill check using your best singing or musical background. If you succeed, you gain 2 points of positive relationship with the chosen icon for the rest of the day (until the next full heal-up). The DC depends on the environment: 15/20/25.\n\n You can use these points to roll relationship dice the way you roll your normal icon relationships (see Icon Relationships). If you already have positive or conflicted dice with the icon you’ve sung about, add them to your new bonus dice. If you have negative dice with the icon you’ve sung a ballad to, they can be temporarily overruled by the ballad, but the GM should feel free to interpret any 5s rolled with a heavy hand.\n\nWhen your great ballad magically compliments an icon, another icon should take a hit. As you explain the story of your ballad to the GM, you should account for at least one icon who is being mocked, vilified, or referred to in unflattering terms. You get an equal number of cursed dice for that icon. Cursed dice aren’t like negative relationship dice—they never help you. At the GM’s option, you’ll have to roll these cursed dice at least once and interpret them as possible problems for you: rolls of 1 are a definite problem; rolls of 2 mean there are story complications connected to the temporary enemy icon.",
+      "Adventurer": "The first time you use your ballad-created relationship, any 5s you roll become 6s. You also gain a +2 bonus to your Balladeer checks.",
+      "Champion": "You can sing two great songs a day. You can’t sing positively about an icon that you’ve already sung about as an enemy earlier in the day.",
+      "Epic": "If you are willing to gain an equal number of cursed relationship dice with all of the listed enemies for a song, increase the positive bonus dice you gain from a successful ballad to 3 or 4."
+    },
+    "Battle Skald": {
+      "Type": "Optional",
+      "Exclusive": "Spellsinger",
+      "Base": "Increase the number of battle cries you know by one. The bonus battle cry can be from your highest possible level.",
+      "Adventurer": "One battle per day, you can use your battle cries to help yourself.",
+      "Champion": "When you use a battle cry on yourself, it also helps an ally.",
+      "Epic": "Once per battle, reroll an attack that was meant to trigger a battle cry but didn’t."
+    },
+    "Jack of Spells": {
+      "Type": "Optional",
+      "Base": "Choose another spell-casting character class. You can choose one spell from the spell list (but not the talent list) of that class, of your own level or lower, as an extra spell you know how to cast.",
+      "Adventurer": "You can use your Charisma as the ability score that provides the spell’s attack bonus and damage bonus (if any). Other ability score references remain unchanged.\n\nIf the spell is a wizard spell, you also gain three cantrips of your choice from the wizard. You can cast them like a wizard who lacks the Cantrip Mastery talent.\n\nIf you choose a spell from the sorcerer class, you also gain the sorcerer’s dancing lights class feature.",
+      "Champion": "Choose a second spell-casting class. Choose another spell from that class as well.",
+      "Epic": "Choose a third spell-casting class. Gain a spell from that class also."
+    },
+    "Loremaster": {
+      "Type": "Optional",
+      "Exclusive": "Mythkenner",
+      "Base": "Choose two of the following three bonuses:\n 1) Your bardic skills and magic are now based on your Intelligence rather than Charisma.\n 2) Take two additional points of backgrounds. You can use these additional points to raise a background that has something to do with history, bardic lore, or magical knowledge up to the usually impossible rating of +6.\n 3) Take a single point of relationship with an icon. Add the point to a relationship you already have up to your normal maximum, or start a new one—positive, conflicted, or negative."
+    },
+    "Mythkenner": {
+      "Type": "Optional",
+      "Exclusive": "Loremaster",
+      "Base": "Choose two of the following three bonuses:\n 1) Your bardic skills and magic are now based on your Wisdom rather than Charisma.\n 2) Take two additional points of backgrounds; you can use these additional points to raise a background that has something to do with religion, mythology, or history up to the usually impossible rating of +6.\n 3) Take a single point of relationship with an icon. Add the point to a relationship you already have up to your normal maximum, or start a new one—positive, conflicted, or negative."
+    },
+    "Songmaster": {
+      "Type": "Optional",
+      "Base": "When you attempt to maintain a bardic song, if you describe it in a fashion that entertains the GM, or at least a couple of the players, you get a bonus of +1 to +3 to maintain the song.\n\nThis talent is for those that enjoy improvisation."
+    },
+    "Spellsinger": {
+      "Type": "Optional",
+      "Exclusive": "Battle Skald",
+      "Base": "You can choose an extra bardic song or bard spell at the highest level you know."
+    },
+    "Storyteller": {
+      "Type": "Optional",
+      "Base": "Once per scene when one of your allies rolls relationship dice for an icon, you can roleplay a one or two sentence story (usually related to the icon, but perhaps otherwise pivotal) that allows them to reroll the relationship check if they don’t like the first result."
+    }
+  }
+}

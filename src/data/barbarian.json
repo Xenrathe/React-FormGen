@@ -36,16 +36,16 @@
     },
     "Unstoppable": {
       "Type": "Adventurer",
-      "Base": "Once per battle, declare you’re using Unstoppable before making a barbarian melee attack. If your attack hits at least one target, you can heal using a recovery.",
+      "Base": "Once per battle, declare you're using Unstoppable before making a barbarian melee attack. If your attack hits at least one target, you can heal using a recovery.",
       "Adventurer": "The Unstoppable recovery is free.",
       "Champion": "Add double your Constitution modifier to the healing the recovery provides.",
       "Epic": "You can use Unstoppable twice per battle."
     },
     "Whirlwind": {
       "Type": "Adventurer",
-      "Base": "You can make a Whirlwind attack as the first action of your turn when you are engaged by two or more enemies. You take a –4 penalty to your AC and PD until the start of your next turn. Then roll a separate melee attack against each enemy you are engaged with. You deal no miss damage with these attacks.",
+      "Base": "You can make a Whirlwind attack as the first action of your turn when you are engaged by two or more enemies. You take a -4 penalty to your AC and PD until the start of your next turn. Then roll a separate melee attack against each enemy you are engaged with. You deal no miss damage with these attacks.",
       "Adventurer": "You now deal normal miss damage with missed Whirlwind attacks.",
-      "Champion": "The penalty to your AC and PD is reduced to –2. In addition, disengage checks you make the same turn as using Whirlwind automatically succeed.",
+      "Champion": "The penalty to your AC and PD is reduced to -2. In addition, disengage checks you make the same turn as using Whirlwind automatically succeed.",
       "Epic": "You can use Whirlwind anytime during your turn, not just as the first action."
     },
     "Natural Will": {
@@ -63,7 +63,7 @@
     },
     "Ancestral Warband": {
       "Type": "Epic",
-      "Base": "One battle per day as a quick action, you can call the spirits of your ancestors to fight alongside you. Your ancestors can’t be hurt or affected by the creatures of this world. At the end of each of your turns, if you are conscious, roll a d6. If you roll less than or equal to the escalation die, a member of your spirit warband strikes from the spirit realm into the world. Make a melee attack against a nearby enemy as if you were making the attack yourself, using any talents, feats, or magic items as you see fit. This attack doesn’t take any of your actions.",
+      "Base": "One battle per day as a quick action, you can call the spirits of your ancestors to fight alongside you. Your ancestors can't be hurt or affected by the creatures of this world. At the end of each of your turns, if you are conscious, roll a d6. If you roll less than or equal to the escalation die, a member of your spirit warband strikes from the spirit realm into the world. Make a melee attack against a nearby enemy as if you were making the attack yourself, using any talents, feats, or magic items as you see fit. This attack doesn't take any of your actions.",
       "Epic": "Your Ancestral Warband spirits are always raging, even if you are not, and continue to fight for a single round while you are unconscious."
     },
     "Relentless": {
