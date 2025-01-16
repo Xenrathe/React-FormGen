@@ -4,9 +4,9 @@ export class Character {
         this.name = name; //a string
         this.level = level; //a number 1-10
         this.race = race; //an enum or string
-        this.raceStat = raceStat; //an enum or string
-        this.job = job; //an enum or string
-        this.jobStat = jobStat; //an enum or string
+        this.raceStat = raceStat; //a string
+        this.job = job; //a string
+        this.jobStat = jobStat; //a string
         this.jobTalents = jobTalents; //an array of #s representing enums,
         this.feats = feats; //an array of #s representing feat enums
         this.lightArmor = lightArmor; //true = light armor, false = heavy armor

@@ -148,6 +148,211 @@
         "5th level": "Sustain the song on a 9+.",
         "7th level": "Recharge check is now 6+.",
         "9th level": "The effect also provides a +1 bonus to Mental Defense."
+      },
+      "Song of Spilt Blood": {
+        "Type": "Bardic Song",
+        "Frequency": "Daily",
+        "Sustain": "Quick 6+",
+        "Opening & Sustained Effect": "Any attack against you takes a penalty equal to the number of your allies in the battle who have more hit points than you.",
+        "Final Verse": "The effect ends immediately, and you or one ally of your choice can heal using a recovery.",
+        "3rd level": "Sustain the song on a 4+.",
+        "5th level": "Add +5 hp to the recovery.",
+        "7th level": "Add +10 hp to the recovery.",
+        "9th level": "Add +15 hp to the recovery."
+      },
+      "Battle Chant": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "At-Will",
+        "Special": "When you use battle chant, you can choose any battle cry effect you know as if you were making a basic melee attack, with the battle chant attack roll taking the place of the basic melee attack roll.",
+        "Target": "One nearby enemy",
+        "Attack": "Charisma + Level vs. MD",
+        "Hit": "1d4 + Charisma thunder damage.",
+        "3rd level": "2d4 damage.",
+        "5th level": "4d4 damage.",
+        "7th level": "6d4 damage.",
+        "9th level": "10d4 damage.",
+        "Adventurer": "Your battle chant damage dice are now d6s instead of d4s.",
+        "Champion": "Once per day, you can expend one of your recoveries to reroll a battle chant attack roll.",
+        "Epic": "One battle per day, your battle chant damage dice become d10s."
+      },
+      "Befuddle": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "Recharge 11+ after battle",
+        "Target": "One nearby creature with 40 hp or fewer",
+        "Attack": "Charisma + Level vs. MD",
+        "Hit": "The target is confused until the end of your next turn.",
+        "Natural Even Miss": "The target is dazed until the end of your next turn.",
+        "3rd level": "Target with 64 hp or fewer.",
+        "5th level": "Target with 96 hp or fewer.",
+        "7th level": "Target with 160 hp or fewer.",
+        "9th level": "Target with 266 hp or fewer.",
+        "Adventurer": "Recharge check is now 6+.",
+        "Champion": "The target of the spell doesn’t have to be nearby, just in line of sight.",
+        "Epic": "On a hit, the confusion effect is now save ends."
+      },
+      "Charm Person": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Target": "One nearby creature with 40 hp or fewer",
+        "Special": "This spell cannot be cast during combat or on a target that has rolled initiative to fight.",
+        "Attack": "Charisma + Level vs. MD",
+        "Hit": "The target believes you are their friend until you or your allies take hostile action against them. (Attacking their normal allies is okay.) If you or your allies attack the target or order the target to attack its normal allies, the target can roll a normal save to break the charm effect during its turn each round.",
+        "Special (Miss)": "On a miss, the spell is not detectable by most others unless you miss by 4+ or roll a natural 1, in which case the target and its allies know what you tried to do and will usually be angry about it.",
+        "3rd level": "Target with 64 hp or fewer.",
+        "5th level": "Target with 96 hp or fewer.",
+        "7th level": "Target with 160 hp or fewer.",
+        "9th level": "Target with 266 hp or fewer."
+      },
+      "Soundburst": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Target": "1d4 nearby enemies in a group",
+        "Attack": "Charisma + Level vs. PD",
+        "Hit": "5d6 + Charisma thunder damage, and the target is dazed until the end of your next turn.",
+        "Miss": "Half damage, and deal thunder damage equal to your level to each of your allies engaged with the target.",
+        "3rd level": "6d8 damage.",
+        "5th level": "8d10 damage.",
+        "7th level": "2d6 x 10 damage.",
+        "9th level": "3d6 x 10 damage.",
+        "Adventurer": "On a natural even hit, the dazed effect is now save ends.",
+        "Champion": "The spell is now recharge 16+ after battle instead of daily.",
+        "Epic": "You can now target 1d4 + 1 enemies in a group with the spell."
+      }
+    },
+    "Level 3": {
+      "Song of Aid": {
+        "Type": "Bardic Song",
+        "Frequency": "Daily",
+        "Sustain": "Quick 11+",
+        "Opening & Sustained Effect": "You or a nearby ally gains 3d6 temporary hit points.",
+        "Final Verse": "One target that gained temporary hit points can also heal using a recovery.",
+        "5th level": "5d6 temporary hit points; sustain the song on a 9+.",
+        "7th level": "7d6 temporary hit points, and the recovery from the final verse is free.",
+        "9th level": "9d8 temporary hit points; sustain the song on a 7+."
+      },
+      "Song of Thunder": {
+        "Type": "Bardic Song",
+        "Frequency": "Daily",
+        "Sustain": "Standard 11+",
+        "Opening & Sustained Effect": "Make the following attack against 1d4 + 1 nearby enemies.",
+        "Attack": "Charisma + Level vs. PD",
+        "Hit": "5d6 + Charisma thunder damage.",
+        "Final Verse": "Make the attack again, but this time it deals half damage on a miss.",
+        "5th level": "7d6 damage.",
+        "7th level": "9d8 damage.",
+        "9th level": "10d12 damage.",
+        "Champion": "The number of targets increases to 2d4.",
+        "Epic": "Two of the targets can now be far away instead of nearby."
+      },
+      "Vicious Mockery": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "Recharge 11+ after battle",
+        "Target": "One nearby enemy",
+        "Attack": "Charisma + Level vs. MD",
+        "Hit": "6d6 + Charisma psychic damage, and until the end of your next turn, when the target misses with one of its attacks, it takes half the damage its attack would have dealt.",
+        "Miss": "Damage equal to your level.",
+        "5th level": "9d6 damage.",
+        "7th level": "10d8 damage.",
+        "9th level": "2d8 x 10 damage.",
+        "Adventurer": "On a hit, the effect that damages the target when it misses is now save ends.",
+        "Champion": "Recharge check is now 6+.",
+        "Epic": "A natural even miss does not expend the spell."
+      },
+      "Wild Heal": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Targets": "Two random nearby allies. Choose the targets randomly from all nearby allies (including you) who are damaged.",
+        "Effect": "Each target can heal using a recovery.",
+        "5th level": "Add +5 hp to the recovery.",
+        "7th level": "Add +15 hp to the recovery.",
+        "9th level": "Add +25 hp to the recovery.",
+        "Adventurer": "The spell is now recharge 16+ after battle instead of daily.",
+        "Champion": "Add a third random target.",
+        "Epic": "The recoveries the targets use are now free."
+      }
+    },
+    "Level 5": {
+      "Song of Magic": {
+        "Type": "Bardic Song",
+        "Frequency": "Daily",
+        "Sustain": "Quick 16+",
+        "Opening & Sustained Effect": "Until the start of your next turn, you and your nearby allies who cast spells that are normally expended by being cast can roll a d20 after casting the spell. On a 16+, the spell is not expended.",
+        "Final Verse": "All spells you and your allies cast before the start of your next turn gain a +2 attack bonus.",
+        "7th level": "Gain a bonus to song of magic’s sustain check equal to the escalation die.",
+        "9th level": "Rolls to retain expended spells gain a bonus equal to the escalation die."
+      },
+      "Arrow of Verse": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "Recharge 16+ after battle",
+        "Target": "One nearby enemy",
+        "Attack": "Charisma + Level vs. MD",
+        "Hit": "8d8 + Charisma psychic damage + Xd6 bonus damage, where X = escalation die.",
+        "Miss": "Xd6 psychic damage, where X = escalation die.",
+        "7th level": "10d10 damage.",
+        "9th level": "2d10 x 10 damage.",
+        "Champion": "Recharge check is now 11+.",
+        "Epic": "Bonus dice and miss dice are now d12s."
+      },
+      "Discombobulate": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Target": "One nearby creature with 100 hp or fewer",
+        "Attack": "Charisma + Level vs. MD",
+        "Hit": "The target is confused until it rolls two successful saves.",
+        "Miss": "The target is dazed until the end of your next turn.",
+        "7th level": "Target with 140 hp or fewer.",
+        "9th level": "Target with 240 hp or fewer."
+      }
+    },
+    "Level 7": {
+      "Song of Blood & Legends": {
+        "Type": "Bardic Song",
+        "Frequency": "Daily",
+        "Sustain": "Standard 16+",
+        "Opening & Sustained Effect": "Each nearby ally who hits at least one enemy with an attack during their turn can heal using a recovery.",
+        "Final Verse": "One nearby ally can make a basic attack as a free action and heal using a recovery if the attack hits at least one target.",
+        "9th level": "The recovery granted by the final verse attack is free."
+      },
+      "Song of Victory": {
+        "Type": "Bardic Song",
+        "Frequency": "Daily",
+        "Sustain": "Quick 16+",
+        "Opening & Sustained Effect": "Each nearby enemy that has fewer hit points than you is dazed until the end of your next turn.",
+        "Final Verse": "Each nearby enemy takes 5d6 + Charisma psychic damage.",
+        "9th level": "7d6 damage."
+      },
+      "The Overworld Two-Step": {
+        "Type": "Close-quarters Spell",
+        "Action": "Quick",
+        "Frequency": "Recharge 16+ after battle",
+        "Effect": "You can swap your position and the positions of all your nearby allies, even if you can’t see them when you cast the spell. Each position presently occupied by you or an ally must end up occupied after the swap, but otherwise you can swap freely.",
+        "Champion": "Recharge check is now 11+.",
+        "Epic": "You can now also swap the positions of far-away allies you can see, up to a maximum of 9 creatures."
+      }
+    },
+    "Level 9": {
+      "Song of Destinies": {
+        "Type": "Bardic Song",
+        "Frequency": "Daily",
+        "Sustain": "Quick 11+",
+        "Opening & Sustained Effect": "Later this turn, you can add 1 to the natural result of one ally’s d20 roll. Then, afterwards, you can subtract 1 from the natural result of an enemy’s d20 roll.",
+        "Final Verse": "The GM chooses an icon relevant to the situation; you choose the PC who will make an icon relationship check. That player makes the check and joins the GM in a duet of improvisation as to how the icon relationship roll has some impact on the current battle."
+      },
+      "Inspire Legends": {
+        "Type": "Close-quarters Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Special": "Escalation die must be 4+.",
+        "Targets": "You and all nearby allies",
+        "Effect": "Each target can roll a d20 for each of its expended daily, recharge, and per battle powers and spells other than inspire legends. If the roll is 11+, the character regains the use of that power or spell."
       }
     }
   }

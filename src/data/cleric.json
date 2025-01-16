@@ -1,0 +1,343 @@
+{
+  "Talents": {
+    "Cast for Power and Cast for Broad Effect": {
+      "Type": "Default",
+      "Base": "The spell can be used one of two ways—either as a more powerful effect on one target (power) or as a weaker effect on multiple targets (broad). Spells cast for power cannot target the caster. Spells cast for broad effect can."
+    },
+    "Free Recovery": {
+      "Type": "Default",
+      "Base": "The cleric can recover hit points as if they were using a recovery (without actually spending the recovery)."
+    },
+    "Heal Using a Recovery": {
+      "Type": "Default",
+      "Base": "The character targeted with a healing effect uses one of their recoveries and rolls their own recovery dice."
+    },
+    "Invocation": {
+      "Type": "Default",
+      "Base": "A quick action that offers advantages in battle. It can be made once a day. More than one cleric in a party cannot use the same invocation during a battle."
+    },
+    "Ritual Magic": {
+      "Type": "Default",
+      "Base": "Clerics can cast their spells as rituals. (See Rituals.)"
+    },
+    "Healing": {
+      "Type": "Optional",
+      "Base": "When you cast a spell that lets you or an ally heal using a recovery, the target also adds hit points equal to double your level to the recovery.",
+      "Invocation": "This battle, you gain an additional use of the heal spell. The first heal spell you cast after using this invocation allows the target to heal using a free recovery instead of spending a recovery.",
+      "Adventurer": "When you cast a spell that allows an ally to heal using a recovery, you can let them use one of your recoveries instead.",
+      "Champion": "The invocation of healing gives you two additional uses of heal this battle instead of only one.",
+      "Epic": "Increase the additional hit points the target heals to triple your level."
+    },
+    "Justice/Vengeance": {
+      "Type": "Optional",
+      "Base": "Once per turn when an enemy scores a critical hit against you or a nearby ally, or drops you or a nearby ally to 0 hp or below, you gain an attack-reroll blessing. An ally with this blessing can use it to reroll an attack as a free action this battle.",
+      "Invocation": "This battle, add double your level to the miss damage of your attacks and the attacks of your nearby allies.",
+      "Adventurer": "You can take the attack-reroll blessing yourself.",
+      "Champion": "When you gain an attack-reroll blessing to distribute, you gain two blessings to distribute instead.",
+      "Epic": "Attack rolls from your reroll blessings gain a +4 bonus."
+    },
+    "Knowledge/Lore": {
+      "Type": "Optional",
+      "Base": "You gain 4 additional background points that must be used somehow in relation to knowledge or lore.",
+      "Invocation": "You must use this invocation during your first round of a battle. Roll a d6; as a free action after the escalation die equals the number you rolled, allow one ally to reroll an attack roll with a +2 bonus.",
+      "Adventurer": "Once per day, you can change one of your skill checks involving knowledge to a natural 20 instead.",
+      "Champion": "You now roll a d4 for the invocation, not a d6.",
+      "Epic": "You gain a different positive relationship point each day with a random icon."
+    },
+    "Life/Death": {
+      "Type": "Optional",
+      "Base": "You and your nearby allies gain a +1 bonus to death saves.",
+      "Invocation": "This battle, you and your allies can add the escalation die to a single save. You and your allies do not die from hit point damage when your negative hit points equal half your normal hit points.",
+      "Adventurer": "The death save bonus increases to +2.",
+      "Champion": "Each battle, the first time an ally near you becomes staggered, that ally immediately heals hit points equal to twice your level.",
+      "Epic": "Your first use of the resurrection spell is free, and doesn’t count against your total."
+    },
+    "Love/Beauty": {
+      "Type": "Optional",
+      "Base": "Once per level, you can generate a one-point conflicted relationship with a heroic or ambiguous icon you do not already have a relationship with.",
+      "Invocation": "As a free action, at a dramatic moment, you or an ally can roll for one icon relationship that might affect the battle.",
+      "Champion": "You gain two points in the relationship instead."
+    },
+    "Protection/Community": {
+      "Type": "Optional",
+      "Base": "Once per battle, you can affect two additional allies when you cast a spell for broad effect.",
+      "Invocation": "This battle, critical hits against you and your nearby allies deal normal damage instead of critical damage.",
+      "Adventurer": "Whenever you target one or more allies with a spell, one ally can roll a save against a save ends effect."
+    },
+    "Strength": {
+      "Type": "Optional",
+      "Base": "You can wield heavy/martial weapons without an attack penalty.",
+      "Invocation": "This battle, you and your nearby allies deal triple damage instead of double damage on critical hits with melee attacks.",
+      "Adventurer": "Once per battle, you can deal extra damage to one target you hit with a melee attack. The damage bonus is d4 equal to your Strength modifier or level.",
+      "Champion": "You can use d8s instead of d4s for the bonus damage dice.",
+      "Epic": "Once per day, you can use d20s instead of d8s for the bonus damage dice."
+    },
+    "Sun/Anti-Undead": {
+      "Type": "Optional",
+      "Base": "Every attack you make deals holy damage instead of other types unless you choose otherwise.",
+      "Invocation": "When you cast a daily cleric spell this battle, roll a d6. If you roll less than or equal to the escalation die, regain the daily spell after the battle.",
+      "Adventurer": "If your attack already deals holy damage, it gains +1 damage (adventurer), +2 damage (champion), or +3 damage (epic).",
+      "Champion": "You gain a +2 bonus to all defenses against undead.",
+      "Epic": "The invocation also affects your allies’ daily spells."
+    },
+    "Trickery/Illusion": {
+      "Type": "Optional",
+      "Base": "Once per battle, as a quick action when engaged, roll a d20. The result becomes the natural result of a nearby ally or enemy's d20 roll.",
+      "Invocation": "This battle, attacks against you by enemies that moved to engage you miss on natural odd rolls.",
+      "Champion": "Your trick die can be used for any d20 roll, not just an attack.",
+      "Epic": "You get another trick die roll to use each battle the first time the escalation die reaches 3+."
+    },
+    "War/Leadership": {
+      "Type": "Optional",
+      "Base": "Once per turn when you make a melee attack against an enemy, hit or miss, your allies gain a +1 attack bonus against that enemy until your next turn.",
+      "Invocation": "Increase the escalation die by 1.",
+      "Adventurer": "Close and ranged attacks also work for granting the attack bonus.",
+      "Champion": "The bonus applies against all enemies you attack.",
+      "Epic": "Allies also get a damage bonus against such enemies equal to double your Charisma modifier."
+    }
+  },
+  "Spells": {
+    "Level 0": {
+      "Heal": {
+        "Type": "Close-quarters Spell",
+        "Action": "Quick",
+        "Frequency": "You can use this spell twice per battle.",
+        "Target": "You or one ally you are next to",
+        "Effect": "The target can heal using a recovery.",
+        "Adventurer": "The target can now be a nearby ally instead of an ally you are next to.",
+        "Champion": "If the target of your heal spell is an ally with 0 hp or below, that ally also adds hit points equal to 1d10 x your Charisma modifier to the recovery.",
+        "Epic": "When you cast heal on an ally you are next to, that ally adds +30 hp to the recovery."
+      }
+    },
+    "Level 1": {
+      "Bless": {
+        "Type": "Ranged Spell",
+        "Action": "Quick",
+        "Frequency": "Daily",
+        "Special": "You can cast this spell for power or for broad effect.",
+        "Effect (Power)": "One nearby ally gains a +2 attack bonus until the end of the battle.",
+        "Effect (Broad)": "Choose up to three nearby creatures (including you); each target gains a +1 attack bonus until the end of the battle.",
+        "3rd Level": "Each target also gains 1d10 temporary hit points per point of the attack bonus.",
+        "5th Level": "Each target also gains 2d10 temporary hit points instead of 1d10 per point of the attack bonus.",
+        "7th Level": "All attack bonuses granted by the spell increase by +1.",
+        "9th Level": "Each target also gains 3d10 temporary hit points instead of 2d10 per point of the attack bonus."
+      },
+      "Cure Wounds": {
+        "Type": "Ranged Spell",
+        "Action": "Quick",
+        "Frequency": "Daily",
+        "Effect": "You or a nearby ally can heal using a free recovery.",
+        "3rd Level": "The target can also roll a save against each save ends effect.",
+        "5th Level": "This spell is now recharge 16+ after battle instead of daily.",
+        "7th Level": "The target can heal using two free recoveries instead of one.",
+        "9th Level": "This spell is now recharge 11+ instead."
+      },
+      "Hammer of Faith": {
+        "Type": "Close-Quarters Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Effect": "Until the end of the battle, your basic melee attacks use d12s as their base weapon damage dice.",
+        "3rd Level": "The spell now requires only a quick action to cast.",
+        "5th Level": "You deal half damage on misses with basic melee attacks this battle.",
+        "7th Level": "Once during the battle, you can reroll a basic melee attack.",
+        "9th Level": "For the rest of the battle, change any of your basic melee attack damage dice rolls that are less than the escalation die to the escalation die value."
+      },
+      "Javelin of Faith": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "At-Will",
+        "Target": "One nearby enemy",
+        "Attack": "Wisdom + Level vs. PD",
+        "Hit": "1d6 + Wisdom holy damage.",
+        "Miss": "Damage equal to your level.",
+        "3rd Level": "3d6 damage.",
+        "5th Level": "6d6 damage.",
+        "7th Level": "6d10 damage.",
+        "9th Level": "8d10 damage.",
+        "Adventurer": "The spell also deals +1d6 damage against an undamaged target. At 5th level that increases to +2d6 damage; at 8th level it increases to +4d6 damage.",
+        "Champion": "You can now target a far away enemy with the spell at a –2 attack penalty.",
+        "Epic": "If your natural attack roll is an 18+, make the attack a second time against a different target as a free action."
+      },
+      "Shield of Faith": {
+        "Type": "Ranged Spell",
+        "Action": "Quick",
+        "Frequency": "Daily",
+        "Special": "You can cast this spell for power or for broad effect.",
+        "Effect (Power)": "One nearby ally gains a +2 bonus to AC this battle.",
+        "Effect (Broad)": "Choose up to three nearby creatures (including you); each target gains a +1 bonus to AC this battle.",
+        "3rd Level": "The bonus also applies to PD.",
+        "5th Level": "The bonus increases by +1 while the target is staggered.",
+        "7th Level": "The bonus also applies to MD.",
+        "9th Level": "The bonus when cast for power increases to +4. The bonus when cast for broad effect increases to +2."
+      },
+      "Spirits of the Righteous": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "Once per battle",
+        "Target": "One nearby enemy",
+        "Attack": "Wisdom + Level vs. MD",
+        "Hit": "4d6 + Wisdom holy damage, and your nearby ally with the fewest hit points gains a +4 bonus to AC until the end of your next turn.",
+        "Miss": "Your nearby ally with the fewest hit points gains a +2 bonus to AC until the end of your next turn.",
+        "3rd Level": "7d6 damage.",
+        "5th Level": "7d10 damage.",
+        "7th Level": "10d12 damage.",
+        "9th Level": "2d8 x 10 damage.",
+        "Champion": "You also gain the bonus to AC until the end of your next turn on a hit."
+      },
+      "Turn Undead": {
+        "Type": "Close-Quarters Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Target": "1d4 nearby undead creatures, each with 55 hp or fewer.",
+        "Attack": "Wisdom + Charisma + Level vs. MD",
+        "Hit": "The target is dazed until the end of your next turn.",
+        "Hit by 4+": "1d10 x your level holy damage, and the target is dazed until the end of your next turn.",
+        "Hit by 8+": "Against non-mooks, holy damage equal to half the target’s maximum hit points, and the target is dazed (save ends). Against mooks, the +8 result now deals 4d10 x your level holy damage.",
+        "Hit by 12+ or Natural 20": "Against non-mooks, the target is destroyed. Against mooks, the +12 result now deals 4d20 x your level holy damage.",
+        "3rd Level": "Target with 90 hp or fewer.",
+        "5th Level": "Target with 150 hp or fewer.",
+        "7th Level": "Target with 240 hp or fewer.",
+        "9th Level": "Target with 400 hp or fewer.",
+        "Adventurer": "You can expend your daily use of turn undead to gain an additional use of heal in one battle.",
+        "Champion": "You can choose to target either demons or undead with the spell (but not both with the same casting).",
+        "Epic": "Increase the targeting limit by 100 hp."
+      }
+    },
+    "Level 3": {
+      "Cause Fear": {
+        "Type": "Ranged Spell",
+        "Action": "Quick",
+        "Frequency": "Daily",
+        "Target": "One nearby enemy with 75 hp or fewer",
+        "Attack": "Wisdom + Level vs. MD",
+        "Hit": "The target is weakened until the end of its next turn. On its next turn, if it’s unengaged, it does not attack and moves away from you. If it’s engaged, the target attempts to disengage as its first action, and moves away if it succeeds. If it fails, it moves away as its second action (drawing opportunity attacks). In either case, it will not attack unless it has no options for escape.",
+        "Miss": "The target hates you for having tried to scare it, and it wants to hurt you most of all, but it won’t be any stupider than usual in pursuing that goal.",
+        "5th Level": "Target with 120 hp or fewer.",
+        "7th Level": "Target with 190 hp or fewer.",
+        "9th Level": "Target with 300 hp or fewer."
+      },
+      "Combat Boon": {
+        "Type": "Close-quarters Spell",
+        "Action": "Standard",
+        "Frequency": "At-Will",
+        "Effect": "Make a basic melee attack. If the attack hits, you or one conscious nearby ally can roll a save against a save ends effect.",
+        "5th Level": "The save gains a +1 bonus.",
+        "7th Level": "If the attack hits, you and your nearby conscious allies can roll a total of two saves (one per character).",
+        "9th Level": "The save bonus increases to +2.",
+        "Adventurer": "If you score a critical hit with the combat boon attack, the subsequent save automatically succeeds.",
+        "Champion": "One nearby conscious ally can roll a save even if your attack misses."
+      },
+      "Divine Endurance": {
+        "Type": "Ranged Spell",
+        "Action": "Quick",
+        "Frequency": "Daily",
+        "Effect (Power)": "One nearby ally gains 40 temporary hit points.",
+        "Effect (Broad)": "Choose up to three nearby creatures (including you); each target gains 20 temporary hit points.",
+        "5th Level": "Temporary hp = 60/30.",
+        "7th Level": "Temporary hp = 80/40.",
+        "9th Level": "Temporary hp = 100/50."
+      },
+      "Judgment": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Target": "All nearby staggered enemies",
+        "Attack": "Wisdom + Level vs. MD",
+        "Hit": "5d10 + Wisdom holy damage.",
+        "Miss": "Holy damage equal to your level.",
+        "5th Level": "8d10 damage.",
+        "7th Level": "2d6 x 10 damage.",
+        "9th Level": "2d10 x 10 damage.",
+        "Champion": "The spell now deals half damage on a miss.",
+        "Epic": "The spell is now recharge 16+ after battle instead of daily."
+      },
+      "Mighty Healing": {
+        "Type": "Ranged Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Effect (Power)": "One nearby ally can heal using a single recovery and regain double the usual number of hit points.",
+        "Effect (Broad)": "Choose up to three nearby creatures (including you); each target can heal using a recovery.",
+        "5th Level": "The spell can now target far away allies.",
+        "7th Level": "Power equals triple the usual hp for one recovery; broad equals 150% the usual hp per recovery.",
+        "9th Level": "Recoveries provided by the spell are now free.",
+        "Champion": "This spell is now a close-quarters spell."
+      },
+      "Strength of the Gods": {
+        "Type": "Ranged Spell",
+        "Action": "Quick",
+        "Frequency": "Daily",
+        "Effect (Power)": "One nearby ally deals +2d8 damage with melee attacks this battle.",
+        "Effect (Broad)": "Choose up to three nearby creatures (including you); each target deals +1d8 damage with melee attacks this battle.",
+        "5th Level": "Power +4d6, Broad +2d6.",
+        "7th Level": "Power +4d10, Broad +2d10.",
+        "9th Level": "Power +6d10, Broad +3d10."
+      }
+    },
+    "Level 5": {
+      "Crisis of Faith": {
+        "Type": "Close-quarters Spell",
+        "Action": "Quick",
+        "Frequency": "Daily",
+        "Effect": "For the rest of this battle, all enemies near you with 100 hp or fewer take a penalty to their Mental Defense equal to your Charisma modifier. Whenever one of those enemies misses with an attack roll, it takes holy damage equal to double your level.",
+        "5th Level": "160 hp or fewer.",
+        "7th Level": "250 hp or fewer."
+      },
+      "Sanctuary": {
+        "Type": "Close-quarters Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Effect": "Choose yourself or a nearby ally. Enemies with 100 hp or fewer cannot attack the chosen target until that creature attacks or the escalation die reaches 6+.",
+        "5th Level": "160 hp or fewer.",
+        "7th Level": "250 hp or fewer."
+      },
+      "Sphere of Radiance": {
+        "Type": "Close-quarters Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Effect": "You or one nearby ally can heal using a free recovery. Then make the following attack.",
+        "Target": "Up to two nearby enemies",
+        "Attack": "Wisdom + Level vs. MD",
+        "Hit": "7d8 + Charisma holy damage.",
+        "Miss": "Half damage.",
+        "5th Level": "8d12 damage.",
+        "7th Level": "2d8 x 10 damage."
+      }
+    },
+    "Level 7": {
+      "Circle of Protection": {
+        "Type": "Close-quarters Spell",
+        "Action": "Quick",
+        "Frequency": "Daily",
+        "Effect": "Choose a defense: AC, PD, or MD. For the rest of the battle while you are conscious, you and each ally near you gains a +1 bonus to that defense. Each enemy that misses you or one of your nearby allies with an attack against the defense you chose is hampered until the end of its next turn.",
+        "9th Level": "Attacks against the chosen defense cannot score critical hits.",
+        "Epic": "The spell is now recharge 16+ after battle instead of daily."
+      },
+      "Resurrection": {
+        "Type": "Ranged Spell",
+        "Special": "You can cast this spell only once per level, and a limited number of times in your life. You must have most of the corpse available to cast the spell. There’s no time limit on resurrecting a dead PC, so long as you have the corpse.",
+        "Frequency": "Special",
+        "Effect": "You can bring a creature back to life in more or less normal condition, with varying levels of recovery. The first time you cast this spell, it’s with a single standard action, but you lose one spell slot. The person resurrected comes back at roughly half strength.",
+        "Limited Casting": "The first time in your life that you use the spell, you can cast it with a single standard action. Using the spell removes one of your spell slots until you gain a level. (You get one less spell per full heal-up.) The person you are resurrecting comes back at roughly half strength, e.g. expending half their recoveries, being dazed (save ends), and, for each ability, having a 50% chance that it is expended.\n\nThe second time in your life you cast the spell, it takes at least three or four rounds and costs you roughly half your hit points and daily powers/spells. The person you are resurrecting comes back at something like one-quarter strength.\n\nThe third time you cast the spell it has to be as a ritual. The spell chews you up and leaves you with only a few hit points, then gnaws at the person you have resurrected, who takes days to recover well enough to qualify as an adventurer or combatant.\n\nThe fourth time you cast the spell it nearly kills you. The resurrection succeeds but the person you’ve resurrected is going to be a mess for a month or more, regardless of any other magic you use.\n\nThe fifth time you resurrect someone, that’s the end of your story and you die. There’s only a 50% chance that the resurrection spell works on the target. You’ve used up your quota of resurrection magic. You’re not coming back via this spell, either.",
+        "Limited Resurrection": "If the target of your resurrection spell has been resurrected more times than you have cast the spell, there is a 50% chance that the experience will play out using their higher number of resurrections instead of the number of times you have cast the spell.",
+        "9th Level": "You no longer need to have most of the corpse to perform this spell."
+      }
+    },
+    "Level 9": {
+      "Overworld Travel": {
+        "Type": "Close-quarters Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Special": "You must cast this spell outdoors. It enables you and a group of nearby allies to travel to most any location in the world that you can name. Travel takes between an hour and a day, depending on distance and the amount of effort exerted.",
+        "Effect": "The destination can be in the overworld or in the land. It can’t be in the underworld."
+      },
+      "Prayer for Readiness": {
+        "Type": "Close-quarters Spell",
+        "Action": "Standard",
+        "Frequency": "Daily",
+        "Target": "Up to 5 allies",
+        "Effect": "You utter a powerful prayer upon your comrades, giving each a special blessing. At any point later this battle, each blessed ally can acknowledge the blessing by saying ‘thank you’ to your god, gods, or pantheon as a free action to reroll a d20 roll. That ally must take the reroll result. You don’t receive the blessing yourself.",
+        "Epic": "This spell is now a quick action to cast."
+      }
+    }
+  }
+}
