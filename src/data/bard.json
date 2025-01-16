@@ -55,5 +55,100 @@
       "Type": "Optional",
       "Base": "Once per scene when one of your allies rolls relationship dice for an icon, you can roleplay a one or two sentence story (usually related to the icon, but perhaps otherwise pivotal) that allows them to reroll the relationship check if they don’t like the first result."
     }
+  },
+  "Bonus": {
+    "Name": "Battle Cries",
+    "Level 1": {
+      "Move It!": {
+        "Triggering Roll": "Natural even roll",
+        "Effect": "Choose either\n 1) One of your unengaged allies can move as a free action\nOne of your engaged allies can make a disengage check as a free action.",
+        "Adventurer": "The disengage check gains a +2 bonus.",
+        "Champion": "The bonus increases to +5.",
+        "Epic": "An engaged ally you target with this battle cry can pop free from one enemy as a free action before making the disengage check."
+      },
+      "Pull It Together!": {
+        "Triggering Roll": "Natural 11+; use only twice per battle",
+        "Effect": "One nearby ally can heal using a recovery.",
+        "Adventurer": "The target adds +1d4 healing per point on the escalation die.",
+        "Champion": "The attack can now also trigger on any natural even roll; the extra healing is now +1d6 per point.",
+        "Epic": "You can use pull it together three times per battle; the extra healing is now +1d10 per point."
+      },
+      "Stay Strong!": {
+        "Triggering Roll": "Natural 16+",
+        "Effect": "Give a nearby ally a +2 bonus to AC until the start of your next turn.",
+        "Adventurer": "Bonus also applies to PD.",
+        "Champion": "Bonus also applies to MD.",
+        "Epic": "Bonus increases to +4."
+      },
+      "We Need You!": {
+        "Triggering Roll": "Natural even hit",
+        "Effect": "A nearby conscious ally can roll a save against a save ends effect.",
+        "Adventurer": "The save gains a +1 bonus.",
+        "Champion": "The bonus increases to +2.",
+        "Epic": "If the escalation die is 3+, two nearby conscious allies (instead of one) can each roll a save (with bonuses)."
+      }
+    },
+    "Level 3": {
+      "Hang Tough!": {
+        "Triggering Roll": "Natural odd roll",
+        "Effect": "Give a nearby ally temporary hit points equal to your Charisma modifier.",
+        "Adventurer": "If the ally is staggered, double the temporary hit points.",
+        "Champion": "Add your level to the temporary hit points given (add before any doubling).",
+        "Epic": "You can choose yourself instead of an ally as the target of the battle cry."
+      },
+      "It’s All Yours!": {
+        "Triggering Roll": "Natural even miss",
+        "Effect": "This battle, your next ally to attack the target you missed gains a +2 attack bonus with that attack.",
+        "Adventurer": "That ally’s attack also deals +1d6 damage.",
+        "Champion": "The damage bonus increases to +3d6.",
+        "Epic": "The damage bonus increases to +3d12."
+      },
+      "Take Heart!": {
+        "Triggering Roll": "Any hit",
+        "Effect": "Choose a nearby ally. That ally can either roll a save against a save ends effect or roll a normal save against a condition that has a duration that lasts until the end or beginning of a turn."
+      }
+    },
+    "Level 5": {
+      "Stay True!": {
+        "Triggering Roll": "Natural 16+ if the escalation die is 3+; otherwise natural 20",
+        "Effect": "A nearby ally regains the use of a once-per-battle racial ability that was expended this battle."
+      },
+      "Victory Is Ours!": {
+        "Triggering Roll": "Natural 16+ if the escalation die is 5+; otherwise natural 20",
+        "Effect": "A nearby ally can heal using a recovery, and three nearby allies gain a +3d6 damage bonus to their next damage roll this battle.",
+        "Champion": "The battle cry can now trigger when the escalation die is 3+ instead of 5+.",
+        "Epic": "The damage bonus is now +3d12."
+      }
+    },
+    "Level 7": {
+      "They Fall Before Us!": {
+        "Special": "You can use this battle cry only on your turn.",
+        "Triggering Roll": "Natural 20",
+        "Effect": "A nearby ally can make a basic attack as a free action.",
+        "Epic": "The battle cry can now trigger on a natural 19+."
+      }
+    },
+    "Level 9": {
+      "The Time Is Now!": {
+        "Triggering Roll": "Natural 19+",
+        "Effect": "Choose one nearby ally. That ally can expend a recovery to regain a daily power or spell.",
+        "Epic": "The battle cry can now trigger on natural 18+."
+      }
+    }
+  },
+  "Spells": {
+    "Level 1": {
+      "Song of Heroes": {
+        "Type": "Bardic Song",
+        "Frequency": "Recharge 11+ after battle",
+        "Sustain": "Quick 11+",
+        "Opening & Sustained Effect": "You and your nearby allies gain a +1 attack bonus until the start of your next turn.",
+        "Final Verse": "The effect ends immediately, but one ally of your choice gains a +2 bonus to their next attack roll this battle.",
+        "3rd level": "The effect also provides a +1 bonus to saves.",
+        "5th level": "Sustain the song on a 9+.",
+        "7th level": "Recharge check is now 6+.",
+        "9th level": "The effect also provides a +1 bonus to Mental Defense."
+      }
+    }
   }
 }
