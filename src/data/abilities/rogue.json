@@ -1,0 +1,243 @@
+{
+  "Talents": {
+    "Momentum": {
+      "Type": "Default",
+      "Base": "Many of the rogue’s powers function only when the rogue has momentum. You gain momentum by hitting an enemy with an attack. You lose momentum when you are hit by an attack. The default is that you can use momentum powers without losing momentum, but a few powers specify that you must spend your momentum to use them. You don’t have to use attacks that require momentum against the foe you hit to gain that momentum. Momentum powers that do not require you to spend your momentum are generally classified as interrupt actions. You can only use one interrupt action a round, which keeps your momentum powers from dominating the battle."
+    },
+    "Sneak Attack": {
+      "Type": "Default",
+      "Base": "Once per round when you make a rogue melee weapon attack against an enemy engaged with one or more of your allies, you can deal extra damage if your attack hits. Rogue Level Extra Damage: 1 +1d4, 2 +1d6, 4 +2d6, 6 +3d6, 8 +5d6, 10 +7d6.",
+      "Adventurer": "Your Sneak Attack feature also works the first round of combat against enemies with a lower initiative than you.",
+      "Champion": "Your Sneak Attack feature also works against enemies who are confused, dazed, stunned, vulnerable to your attack, or weakened.",
+      "Epic": "Once per battle when you miss with an attack that would have allowed you to deal Sneak Attack damage, replace the normal miss damage with your full Sneak Attack damage."
+    },
+    "Trap Sense": {
+      "Type": "Default",
+      "Base": "Even rogues whose backgrounds don’t have anything to do with noticing, avoiding, or disarming traps have a unique knack for dealing with traps. If a rogue’s skill check involving a trap is a natural even failure, the rogue can reroll the skill check once. If a trap’s attack roll against a rogue is a natural odd roll, the rogue can force the trap to reroll the attack once.",
+      "Adventurer": "The trap attack reroll can also apply to a nearby ally of the rogue as the rogue shouts a warning or acts to prevent the trap from hitting.",
+      "Champion": "You gain a +3 bonus to skill check rerolls you make against traps.",
+      "Epic": "You only take half damage from trap attacks."
+    },
+    "Cunning": {
+      "Type": "Optional",
+      "Base": "You can use your Intelligence in place of your Charisma for any rogue attacks, talents, or powers that use Charisma (e.g. shadow walk and slick feint). You also gain two extra points of backgrounds to spend on knowledge-related backgrounds and gain a +2 bonus to skill checks involving traps.",
+      "Adventurer": "You gain a +1 bonus to Mental Defense.",
+      "Champion": "Once per battle, reroll a save against an effect from an attack that originally hit your Mental Defense.",
+      "Epic": "Your once-per-battle save reroll is now once per save."
+    },
+    "Improved Sneak Attack": {
+      "Type": "Optional",
+      "Base": "Your Sneak Attack damage is better than other rogues. Use the following Sneak Attack bonus damage progression instead. Rogue Level Extra Damage: 1 +1d6, 2 +1d8, 4 +2d8, 6 +3d8, 8 +5d8, 10 +7d8.",
+      "Adventurer": "Once per day as a free action, you can add your Sneak Attack damage to any hit against one target that would not otherwise have qualified for the damage.",
+      "Champion": "Once per day, roll d20s for your Sneak Attack damage instead of d8s.",
+      "Epic": "One battle per day, ignore the limitation that you can use Sneak Attack damage only once per round."
+    },
+    "Murderous": {
+      "Type": "Optional",
+      "Base": "Against staggered enemies, your crit range with rogue attacks expands by 2.",
+      "Adventurer": "You gain a +2 attack bonus against staggered enemies.",
+      "Champion": "Your crit range against staggered enemies expands by 2 (now +4).",
+      "Epic": "Whenever a staggered enemy misses you with a melee attack, it’s vulnerable to your attacks for the rest of the battle."
+    },
+    "Shadow Walk": {
+      "Type": "Optional",
+      "Base": "You gain the shadow walk at-will power: As a move action before you have used your standard action this turn, if you are not engaged, you can make the following ‘attack’ against all nearby enemies, targeting the enemy among them with the highest Mental Defense. Attack: Charisma + Level vs. MD. Hit: Remove yourself from play. At the start of your next turn, return anywhere nearby that you could have moved to normally during your turn, and deal double damage with your first rogue attack that turn. Miss: No effect. You can’t attempt to shadow walk again until your next turn, but you still have your standard action this turn.",
+      "Adventurer": "On a miss, you can still use your move action normally (but still can’t shadow walk this turn).",
+      "Champion": "Twice per day, you can reroll the rogue attack that follows your successful use of shadow walk.",
+      "Epic": "Twice per day, you can reappear from your shadow walk in a nearby location you wouldn’t have been able to reach unimpeded physically, for instance, on the other side of a portcullis or door, or high up a wall."
+    },
+    "Smooth Talk": {
+      "Type": "Optional",
+      "Base": "Once per day, convince your GM with an amazing line of patter while you are using social skills to speak or interact with NPCs associated with a particular icon. If the GM is convinced by your patter, roll a normal save (11+). If you succeed, for the rest of the day you can function as if you have a 2-point positive relationship with the icon who seems to be in play. Thanks to your amazing gift of gab, for a short time, it’s more or less true. (Note that these points replace any points you normally have with the icon rather than adding to them.) Failure on the Smooth Talk save generally arouses suspicions.",
+      "Adventurer": "Add your Charisma modifier to your Smooth Talk save rolls.",
+      "Champion": "Success with your Smooth Talk talent gives you a 3-point positive relationship instead.",
+      "Epic": "Even if you fail your Smooth Talk save, you get a 2-point conflicted relationship with the icon because the people you’re speaking with can’t be sure."
+    },
+    "Swashbuckle": {
+      "Type": "Optional",
+      "Base": "Once per battle as a quick action, you can spend your momentum to pull off a daring stunt the likes of which others could scarcely conceive. You may make an attack as part of the stunt, but you’ll need to roll normally for the attack. This is an improvisational talent. As a swashbuckler, you do not need a difficult skill check to pull the stunt off."
+    },
+    "Thievery": {
+      "Type": "Optional",
+      "Base": "You have the Thief background at its full possible bonus of +5, without having to spend your normal background points on it.",
+      "Adventurer": "Regardless of your level, you gain the bonus power thief’s strike in addition to your normal number of powers.",
+      "Champion": "Once per day, you can deal full damage with thief’s strike instead of half damage.",
+      "Epic": "Twice per level, you can steal something with a successful thief’s strike that you would not be able to steal ordinarily, but that would require a bit of magic, e.g. a dream, a spell, someone’s hope, a memory. The theft won’t be permanent. Every day, roll a hard save to determine whether you can keep what you stole for that day. Also, you can never steal the same thing twice."
+    },
+    "Tumble": {
+      "Type": "Optional",
+      "Base": "You gain a +5 bonus to disengage checks. In addition, while you are moving, if an enemy moves to intercept you, you can make one disengage roll per intercepting enemy as a free action to avoid that enemy, but you must stop the first time you fail any of those disengage checks.",
+      "Adventurer": "You ignore the penalty for disengaging from more than one enemy at a time.",
+      "Champion": "One battle per day as a free action, you can declare that you’re a tumbling fool and automatically succeed on your first disengage check each turn.",
+      "Epic": "Whenever you take critical hit damage, roll a hard save (16+). If you succeed, you somehow tumbled out of the way of whatever was about to hit you, and instead only take damage equal to the attacker’s level."
+    }
+  },
+  "Bonus": {
+    "Name": "Powers",
+    "Level 1": {
+      "Evasive Strike": {
+        "Type": "Melee attack",
+        "Frequency": "At-Will",
+        "Target": "One enemy",
+        "Attack": "Dexterity + Level vs. AC",
+        "Hit": "WEAPON + Dexterity damage, and you can pop free from the target.",
+        "Miss": "Damage equal to your level.",
+        "Adventurer": "If you drop the target with your evasive strike attack, you can pop free from all enemies instead.",
+        "Champion": "If you hit with evasive strike and the natural attack roll was even, you gain a +2 bonus to AC and PD against the next attack that targets you this battle (no joy if it’s an attack vs. MD).",
+        "Epic": "Thanks to your slippery mind, the champion feat benefit also provides a +2 bonus to MD."
+      },
+      "Deadly Thrust": {
+        "Type": "Melee attack",
+        "Frequency": "At-Will",
+        "Target": "One staggered non-mook enemy",
+        "Attack": "Dexterity + Strength + Level vs. AC",
+        "Hit": "WEAPON + Dexterity damage.",
+        "Miss": "Damage equal to your level.",
+        "Adventurer": "Add your Strength modifier to the miss damage.",
+        "Champion": "You can now target mooks with deadly thrust.",
+        "Epic": "If you don’t add your Sneak Attack damage to the attack, you also deal damage equal to five times your Strength modifier to your deadly thrust target when you hit."
+      },
+      "Flying Blade": {
+        "Type": "Ranged attack",
+        "Frequency": "At-Will",
+        "Special": "You must use a small bladed weapon with this attack.",
+        "Target": "One nearby creature",
+        "Attack": "Dexterity + Level vs. AC",
+        "Hit": "WEAPON + Dexterity damage, and if your natural attack roll is even and one of your allies is engaged with the target, you can use your Sneak Attack damage for the round.",
+        "Miss": "Damage equal to your level.",
+        "Adventurer": "If you score a critical hit with flying blade, the target is also dazed (–4 attack) until the end of your next turn.",
+        "Champion": "As long as one of your allies is engaged with the target, your flying blade attack rolls no longer need to be even to add your Sneak Attack damage.",
+        "Epic": "You can use flying blade with any ranged weapon."
+      },
+      "Roll With It": {
+        "Type": "Momentum power",
+        "Frequency": "At-Will (once per round)",
+        "Interrupt action": "Requires momentum",
+        "Trigger": "A melee attack that targets AC hits you.",
+        "Effect": "You take half damage from that attack.",
+        "Adventurer": "The power also triggers on an attack against PD.",
+        "Champion": "The power also triggers on a ranged attack.",
+        "Epic": "Once per day, you can use roll with it to take damage equal to the attacker’s level instead of half damage."
+      },
+      "Sure Cut": {
+        "Type": "Melee attack",
+        "Frequency": "At-Will",
+        "Special": "You must have momentum and be able to deal your Sneak Attack damage to the target if you hit.",
+        "Target": "One enemy",
+        "Attack": "Dexterity + Level vs. AC",
+        "Hit": "WEAPON + Dexterity damage.",
+        "Miss": "Deal your Sneak Attack damage + damage equal to your level.",
+        "Champion": "Missing with sure cut no longer counts as a use of Sneak Attack for the round."
+      },
+      "Tumbling Strike": {
+        "Type": "Melee attack",
+        "Frequency": "At-Will",
+        "Always": "You gain a +5 bonus to all disengage checks you attempt this turn. You can also move to engage an enemy, make this attack against it, and then use a quick action to attempt to disengage from it (the quick action disengage lets you move again if you succeed).",
+        "Attack": "Dexterity + Level vs. AC",
+        "Hit": "WEAPON + Dexterity damage.",
+        "Miss": "Damage equal to your level."
+      }
+    },
+    "Level 3": {
+      "Bleeding Strike": {
+        "Type": "Melee attack",
+        "Frequency": "At-Will",
+        "Target": "One enemy who is not taking ongoing damage",
+        "Attack": "Dexterity + Level vs. AC",
+        "Hit": "WEAPON + Dexterity damage, and if your natural attack roll was even, the target takes ongoing damage equal to 1d4 times your level.",
+        "Miss": "Damage equal to your level.",
+        "Adventurer": "The ongoing damage against large or huge targets increases to 1d6 times your level.",
+        "Champion": "A natural even miss also deals ongoing damage equal to your level.",
+        "Epic": "You can now use bleeding strike against enemies taking ongoing damage."
+      },
+      "Deflection": {
+        "Type": "Momentum power",
+        "Frequency": "At-Will (once per round)",
+        "Trigger": "A melee attack misses you.",
+        "Effect": "The attack hits a different enemy you are engaged with instead, but deals only half damage.",
+        "Adventurer": "The power also triggers on a ranged attack against AC.",
+        "Champion": "The deflected attack now deals full damage instead of half damage.",
+        "Epic": "Using deflection no longer spends your momentum."
+      },
+      "Slick Feint": {
+        "Type": "Melee attack",
+        "Frequency": "At-Will",
+        "First Target": "One enemy engaged with you",
+        "Attack": "Charisma + Level vs. MD",
+        "Hit": "The target is dazed until the end of your next turn, and you can make an improved attack against a second target.",
+        "Miss (First Target)": "Your attack action is over; the feint was a screw-up.",
+        "Second Target": "A different enemy from the first target that is engaged with you",
+        "Attack (Second Target)": "Dexterity + Level +2 vs. AC",
+        "Hit (Second Target)": "WEAPON + Dexterity damage.",
+        "Miss (Second Target)": "Damage equal to your level."
+      },
+      "Thief’s Strike": {
+        "Special": "This is a bonus 3rd-level power for rogues with the Thievery talent. Other rogues can choose it if they like.",
+        "Type": "Melee attack",
+        "Frequency": "At-Will",
+        "Target": "One enemy",
+        "Attack": "Dexterity + Level vs. PD",
+        "Hit": "Half of WEAPON + Dexterity damage (including Sneak Attack damage if any), and roll a normal save. If you succeed, you can pickpocket an item from the target that they are not holding. (If you roll 16+, the target doesn’t realize you pickpocketed them.)",
+        "Miss": "—"
+      }
+    },
+    "Level 5": {
+      "Harmless Misdirection": {
+        "Type": "Momentum power",
+        "Frequency": "At-Will (once per round)",
+        "Trigger": "You miss with a melee attack while an ally is engaged with the target.",
+        "Effect": "You can pop free from the target, and the target can’t attack you during its next turn as long as your ally remains engaged with it."
+      },
+      "Spiky Bastard": {
+        "Type": "Quick action",
+        "Frequency": "Daily",
+        "Effect": "You go all-out to hurt anyone who tries to get a piece of you. For the rest of the battle, while you’re conscious, using at least one bladed weapon, and are not staggered or stunned, you deal 10 damage to each enemy that makes a melee attack against you and rolls a natural odd attack roll. The damage hits the enemy before their attack damages you.",
+        "Champion": "Spiky bastard damage now applies when you are staggered, though obviously not while you are unconscious.",
+        "Epic": "If the escalation die is 3+, the damage increases to 15 instead of 10."
+      },
+      "Swift Dodge": {
+        "Type": "Momentum power",
+        "Frequency": "At-Will (once per round)",
+        "Trigger": "You are hit by an attack against AC.",
+        "Effect": "The attacker must reroll the attack.",
+        "Champion": "The power also triggers on an attack against PD.",
+        "Epic": "The attack reroll takes a –2 penalty."
+      }
+    },
+    "Level 7": {
+      "Assassin’s Gambit": {
+        "Type": "Melee attack",
+        "Frequency": "At-Will",
+        "Target": "One enemy",
+        "Attack": "Dexterity + Level vs. AC",
+        "Hit": "Half of WEAPON + Dexterity damage (including Sneak Attack damage if any), and if you drop a non-mook target to 0 hp, you can take another standard action this turn.",
+        "Miss": "Damage equal to your level.",
+        "Epic": "Once a turn, you can get the extra standard action when this attack drops a mook target."
+      },
+      "Swift Riposte": {
+        "Type": "Momentum power",
+        "Frequency": "At-Will (once per round)",
+        "Trigger": "An enemy targets you with a melee attack.",
+        "Effect": "You can make a basic attack against your attacker. If your natural attack roll equals or beats your attacker’s roll, resolve your basic attack against that enemy first. If your attack roll is lower, your attack has no effect, regardless of whether it hits or misses.",
+        "Special": "You can’t gain momentum from hitting with swift riposte.",
+        "Champion": "If your swift riposte attack is a critical hit, the enemy’s attack misses.",
+        "Epic": "You gain a +2 attack bonus with swift riposte attacks."
+      }
+    },
+    "Level 9": {
+      "Death’s Twin": {
+        "Type": "Momentum power",
+        "Frequency": "At-Will",
+        "Effect": "As a standard action, you can make two basic attacks at any point during your turn, each against a different target. You only regain momentum if your second attack hits.",
+        "Epic": "If your attack against your first death’s twin target is a natural 18+, you can make your second basic attack against that same target."
+      },
+      "True Targeting": {
+        "Type": "Momentum power",
+        "Frequency": "At-Will",
+        "Trigger": "An invisible or otherwise hidden enemy attacks you, or you use this as a free action when attacking an invisible or hidden enemy.",
+        "Effect": "The attacker’s invisibility isn’t going to work on you. It might work against your allies, but you see through it and can tell where the creature is well enough to target it normally or be aware of its imminent attack.",
+        "Epic": "If the enemy’s attack misses, you regain momentum."
+      }
+    }
+  }
+}

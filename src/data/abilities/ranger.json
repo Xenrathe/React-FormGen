@@ -145,5 +145,22 @@
         "Animal Companion - Snake (also Giant Spider, Poison Toad)"
       ]
     }
+  },
+  "AC Feats": {
+    "Adventurer": {
+      "Companion: Double Attack": "Once per day, your animal companion can attack twice in a round with a standard action.",
+      "Companion: Tenacious": "Once per battle, your animal companion can turn a disengage success by an enemy it is engaged with into a failure.",
+      "Companion: Accurate": "Once per day, reroll one of your animal companion’s missed attack rolls.",
+      "Companion: Raging": "Your animal companion adds the escalation die to its attacks."
+    },
+    "Champion": {
+      "Companion: Evasive": "Once per day, your animal companion can force an enemy to reroll an attack that hit it.",
+      "Companion: Lethal Hunter": "Your Lethal Hunter talent also applies to your animal companion.",
+      "Companion: Steadfast": "Increase your animal companion’s Physical Defense and Mental Defense by +1."
+    },
+    "Epic": {
+      "Companion: Powerful": "Increase your animal companion’s damage die by one size (for example, from d6s to d8s, or d8s to d10s).",
+      "Companion: Armored": "Increase your animal companion’s AC by +1."
+    }
   }
 }

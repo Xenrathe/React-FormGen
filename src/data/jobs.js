@@ -1,12 +1,12 @@
-import { barbarianAbilities } from "./barbarian.json";
-import { bardAbilities } from "./bard.json";
-import { clericAbilities } from "./cleric.json";
-import { fighterAbilities } from "./fighter.json"
-import { paladinAbilities } from "./paladin.json"
-import { rangerAbilities } from "./ranger.json"
-import { rogueAbilities } from "./rogue.json"
-import { sorcererAbilities } from "./sorcerer.json"
-import { wizardAbilities } from "./wizard.json"
+import { barbarianAbilities } from "./abilities/barbarian.json";
+import { bardAbilities } from "./abilities/bard.json";
+import { clericAbilities } from "./abilities/cleric.json";
+import { fighterAbilities } from "./abilities/fighter.json"
+import { paladinAbilities } from "./abilities/paladin.json"
+import { rangerAbilities } from "./abilities/ranger.json"
+import { rogueAbilities } from "./abilities/rogue.json"
+import { sorcererAbilities } from "./abilities/sorcerer.json"
+import { wizardAbilities } from "./abilities/wizard.json"
 
 export const jobs = {
   Barbarian: {
@@ -324,6 +324,7 @@ export const jobs = {
       5, // Level 10
     ],
     talentChoices: rangerAbilities["Talents"],
+    ACFeats: rangerAbilities["AC Feats"]
   },
   Rogue: {
     abilityBonus: ["dex", "cha"],
@@ -476,5 +477,6 @@ export const jobs = {
       [0, 0, 0, 3, 9], // Level 10
     ],
     spellList: wizardAbilities["Spells"],
+    familiarAbilities: wizardAbilities["Familiar Abilities"]
   },
 };
