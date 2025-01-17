@@ -1,0 +1,149 @@
+{
+  "Talents": {
+    "Archery": {
+      "Type": "Optional",
+      "Base": "Once per battle, reroll one of your missed ranged attacks.",
+      "Adventurer": "Your Archery rerolls gain a +2 attack bonus and the attack’s crit range expands by 1.",
+      "Champion": "Once per day, you can use Archery twice in the same battle.",
+      "Epic": "Once per day, you can turn a normal hit with a ranger ranged attack into a critical hit."
+    },
+    "Double Melee Attack": {
+      "Type": "Optional",
+      "Base": "When fighting with two one-handed melee weapons, your default option is to make a double melee attack. Your weapon damage die drops one notch. If your first attack is a natural even roll (hit or miss), you can make a second attack as a free action.",
+      "Adventurer": "Your second attack gains a +2 attack bonus if it is against a different target.",
+      "Champion": "Once per battle, use Double Melee Attack after an odd attack roll.",
+      "Epic": "Each turn, you can pop free of one enemy before one attack roll that is part of a Double Melee Attack. You can also use your move action in between your two attacks if you wish."
+    },
+    "Double Ranged Attack": {
+      "Type": "Optional",
+      "Base": "When you attack with a ranged weapon that does not need to be reloaded, your default option is to make a double ranged attack. Your weapon damage die drops one notch. If your first attack is a natural even roll (hit or miss), you can make a second attack as a free action.",
+      "Adventurer": "Your second attack gains a +2 attack bonus if it is against a different target.",
+      "Champion": "Once per battle, you can use Double Ranged Attack after an odd attack roll.",
+      "Epic": "Each turn, you can pop free of one enemy before one attack roll that is part of a Double Ranged Attack. You can also use your move action in between your two attacks if you wish."
+    },
+    "Favored Enemy": {
+      "Type": "Optional",
+      "Base": "Choose a specific monster type (e.g. aberration, beast, construct, etc.). The crit range of your ranger attacks against that type of enemy expands by 2.",
+      "Adventurer": "You can change your favored enemy by meditating when you take a full heal-up.",
+      "Champion": "Your crit range for attacks against favored enemies expands by 1 (to +3).",
+      "Epic": "Choose a second non-humanoid monster type as a favored enemy."
+    },
+    "Fey Queen’s Enchantments": {
+      "Type": "Optional",
+      "Base": "Choose one daily or recharge spell of your level or lower from the sorcerer class. You can cast this spell as if you were a sorcerer (though you can’t gather power).",
+      "Adventurer": "You can choose which ability score you want to use as the attack ability for sorcerer spells you can cast.",
+      "Champion": "You can now choose from sorcerer at-will spells.",
+      "Epic": "You gain an additional sorcerer spell of your choice that is your level or lower; a total of two from this talent."
+    },
+    "First Strike": {
+      "Type": "Optional",
+      "Base": "The first time you attack an enemy during a battle, your crit range for that attack expands by 2 (usually to 18+).",
+      "Adventurer": "The crit range of your First Strike attacks expands by 1 (to +3).",
+      "Champion": "Once per day, deal triple damage with a First Strike crit instead of double damage.",
+      "Epic": "Whenever you hit with a First Strike attack, you can reroll your damage once and use the higher roll."
+    },
+    "Lethal Hunter": {
+      "Type": "Optional",
+      "Base": "Once per battle as a free action, choose an enemy. The crit range of your attacks against that enemy expands by 2 for the rest of the battle.",
+      "Adventurer": "The crit range of your Lethal Hunter attacks expands by 1 (to +3).",
+      "Champion": "One battle per day, you can use Lethal Hunter against two different enemies.",
+      "Epic": "Your Lethal Hunter crits deal triple damage instead of double damage while the escalation die is 3+."
+    },
+    "Ranger ex Cathedral": {
+      "Type": "Optional",
+      "Base": "Choose one daily or recharge spell of your level or lower from the cleric class. You can cast this spell as if you were a cleric. You can change your chosen spell each time you take a full heal-up.",
+      "Adventurer": "You can cast the cleric class feature heal spell once per battle.",
+      "Champion": "You can now choose from cleric at-will spells.",
+      "Epic": "You gain an additional cleric spell of your choice that is your level or lower; a total of two from this talent."
+    },
+    "Tracker": {
+      "Type": "Optional",
+      "Base": "You have the Tracker background at its full possible bonus of +5. You are an expert wilderness tracker. You also have the terrain stunt power.",
+      "Adventurer": "You can now use terrain stunt in urban environments.",
+      "Champion": "You can track as well in urban areas as you do in the wilderness.",
+      "Epic": "You can track flying creatures and creatures that normally wouldn’t be trackable, and even teleports give you a sense of direction."
+    },
+    "Two-Weapon Mastery": {
+      "Type": "Optional",
+      "Base": "You gain a +1 attack bonus when fighting with a one-handed melee weapon in each hand.",
+      "Adventurer": "When you fight with two one-handed melee weapons, increase the damage you deal with missed attacks by adding your level to it.",
+      "Champion": "If you fight with two one-handed melee weapons, whenever an enemy makes a melee attack against you and rolls a natural 1, you can make an opportunity attack against that foe as a free action.",
+      "Epic": "One battle per day, increase the damage you deal with missed attacks to triple your level instead of double your level."
+    },
+    "Animal Companion - Bear (also Giant Badger, Wolverine)": {
+      "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
+      "Acts": "After ranger",
+      "Advantage": "The bear gains temporary hit points equal to its level each time it hits with an attack.",
+      "Champion": "The temporary hit points increase to double its level.",
+      "Exclusive": [
+        "Animal Companion - Boar (also Spiky Lizard)",
+        "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)",
+        "Animal Companion - Panther (also Lion, Tiger)",
+        "Animal Companion - Snake (also Giant Spider, Poison Toad)",
+        "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)"
+      ]
+    },
+    "Animal Companion - Boar (also Spiky Lizard)": {
+      "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
+      "Acts": "Before ranger",
+      "Advantage": "The boar gains a +1 attack bonus when it moves before its attack during the same turn.",
+      "Exclusive": [
+        "Animal Companion - Bear (also Giant Badger, Wolverine)",
+        "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)",
+        "Animal Companion - Panther (also Lion, Tiger)",
+        "Animal Companion - Snake (also Giant Spider, Poison Toad)",
+        "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)"
+      ]
+    },
+    "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)": {
+      "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
+      "Acts": "Before ranger",
+      "Advantage": "It flies! Its melee damage die is dropped by one size (d6 at level 0).",
+      "Exclusive": [
+        "Animal Companion - Bear (also Giant Badger, Wolverine)",
+        "Animal Companion - Boar (also Spiky Lizard)",
+        "Animal Companion - Panther (also Lion, Tiger)",
+        "Animal Companion - Snake (also Giant Spider, Poison Toad)",
+        "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)"
+      ]
+    },
+    "Animal Companion - Panther (also Lion, Tiger)": {
+      "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
+      "Acts": "Before ranger",
+      "Advantage": "The panther’s crit range expands by 2 against enemies with lower initiative.",
+      "Exclusive": [
+        "Animal Companion - Bear (also Giant Badger, Wolverine)",
+        "Animal Companion - Boar (also Spiky Lizard)",
+        "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)",
+        "Animal Companion - Snake (also Giant Spider, Poison Toad)",
+        "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)"
+      ]
+    },
+    "Animal Companion - Snake (also Giant Spider, Poison Toad)": {
+      "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
+      "Acts": "After ranger",
+      "Advantage": "The snake also deals ongoing poison damage equal to twice your level on a natural attack roll of 18+.",
+      "Champion": "The ongoing damage is three times your level instead.",
+      "Epic": "The ongoing damage is four times your level instead.",
+      "Exclusive": [
+        "Animal Companion - Bear (also Giant Badger, Wolverine)",
+        "Animal Companion - Boar (also Spiky Lizard)",
+        "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)",
+        "Animal Companion - Panther (also Lion, Tiger)",
+        "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)"
+      ]
+    },
+    "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)": {
+      "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
+      "Acts": "After ranger",
+      "Advantage": "The wolf gains a +1 attack bonus against enemies its master attacked the same turn, or against enemies engaged with its master.",
+      "Exclusive": [
+        "Animal Companion - Bear (also Giant Badger, Wolverine)",
+        "Animal Companion - Boar (also Spiky Lizard)",
+        "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)",
+        "Animal Companion - Panther (also Lion, Tiger)",
+        "Animal Companion - Snake (also Giant Spider, Poison Toad)"
+      ]
+    }
+  }
+}
