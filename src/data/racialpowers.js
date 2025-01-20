@@ -79,6 +79,6 @@ const racialPowersAndFeats = {
   },
 };
 
-export function getRacialPowersAndFeats(race) {
+export default function getRacialPowersAndFeats(race) {
   return racialPowersAndFeats[race];
 }

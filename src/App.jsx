@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import CharSheet from "./CharSheet.jsx";
 
 function App() {
+  /*
   const [characters, setCharacters] = useState([]);
 
   // Load characters from LocalStorage on component mount
@@ -40,7 +42,11 @@ function App() {
         New Character
       </button>
     </div>
-  );
+  );*/
+
+  return (
+    <CharSheet />
+  )
 }
 
 export default App;

@@ -1,14 +1,14 @@
-import { barbarianAbilities } from "./abilities/barbarian.json";
-import { bardAbilities } from "./abilities/bard.json";
-import { clericAbilities } from "./abilities/cleric.json";
-import { fighterAbilities } from "./abilities/fighter.json"
-import { paladinAbilities } from "./abilities/paladin.json"
-import { rangerAbilities } from "./abilities/ranger.json"
-import { rogueAbilities } from "./abilities/rogue.json"
-import { sorcererAbilities } from "./abilities/sorcerer.json"
-import { wizardAbilities } from "./abilities/wizard.json"
+import barbarianAbilities from "./abilities/barbarian.json";
+import bardAbilities from "./abilities/bard.json";
+import clericAbilities from "./abilities/cleric.json";
+import fighterAbilities from "./abilities/fighter.json"
+import paladinAbilities from "./abilities/paladin.json"
+import rangerAbilities from "./abilities/ranger.json"
+import rogueAbilities from "./abilities/rogue.json"
+import sorcererAbilities from "./abilities/sorcerer.json"
+import wizardAbilities from "./abilities/wizard.json"
 
-export const jobs = {
+const jobs = {
   Barbarian: {
     abilityBonus: ["str", "con"],
     armor: {
@@ -480,3 +480,5 @@ export const jobs = {
     familiarAbilities: wizardAbilities["Familiar Abilities"]
   },
 };
+
+export default jobs;

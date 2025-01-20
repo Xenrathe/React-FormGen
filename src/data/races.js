@@ -1,6 +1,6 @@
 import getRacialPowersAndFeats from './racialpowers';
 
-export const races = {
+const races = {
   "Dark Elf": {
     abilityBonus: ["dex", "cha"],
     racialPowersAndFeats: getRacialPowersAndFeats("Dark Elf")
@@ -38,3 +38,5 @@ export const races = {
     racialPowersAndFeats: getRacialPowersAndFeats("High Elf")
   },
 };
+
+export default races;
