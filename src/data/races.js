@@ -1,41 +1,41 @@
-import getRacialPowersAndFeats from './racialpowers';
+import getRacialPowersAndFeats from "./racialpowers";
 
 const races = {
   "Dark Elf": {
-    abilityBonus: ["dex", "cha"],
-    racialPowersAndFeats: getRacialPowersAndFeats("Dark Elf")
+    abilityBonus: ["Dex", "Cha"],
+    racialPowersAndFeats: getRacialPowersAndFeats("Dark Elf"),
   },
-  "Dwarf": {
-    abilityBonus: ["con", "wis"],
-    racialPowersAndFeats: getRacialPowersAndFeats("Dwarf")
+  Dwarf: {
+    abilityBonus: ["Con", "Wis"],
+    racialPowersAndFeats: getRacialPowersAndFeats("Dwarf"),
   },
-  "Gnome": {
-    abilityBonus: ["dex", "int"],
-    racialPowersAndFeats: getRacialPowersAndFeats("Gnome")
+  Gnome: {
+    abilityBonus: ["Dex", "Int"],
+    racialPowersAndFeats: getRacialPowersAndFeats("Gnome"),
   },
   "Half-elf": {
-    abilityBonus: ["con", "cha"],
-    racialPowersAndFeats: getRacialPowersAndFeats("Half-elf")
+    abilityBonus: ["Con", "Cha"],
+    racialPowersAndFeats: getRacialPowersAndFeats("Half-elf"),
   },
-  "Halfling": {
-    abilityBonus: ["con", "dex"],
-    racialPowersAndFeats: getRacialPowersAndFeats("Halfling")
+  Halfling: {
+    abilityBonus: ["Con", "Dex"],
+    racialPowersAndFeats: getRacialPowersAndFeats("Halfling"),
   },
   "Half-orc": {
-    abilityBonus: ["str", "dex"],
-    racialPowersAndFeats: getRacialPowersAndFeats("Half-orc")
+    abilityBonus: ["Str", "Dex"],
+    racialPowersAndFeats: getRacialPowersAndFeats("Half-orc"),
   },
   "High Elf": {
-    abilityBonus: ["int", "cha"],
-    racialPowersAndFeats: getRacialPowersAndFeats("High Elf")
+    abilityBonus: ["Int", "Cha"],
+    racialPowersAndFeats: getRacialPowersAndFeats("High Elf"),
   },
-  "Human": {
-    abilityBonus: ["str", "con", "dex", "int", "wis", "cha"],
-    racialPowersAndFeats: getRacialPowersAndFeats("Human")
+  Human: {
+    abilityBonus: ["Str", "Con", "Dex", "Int", "Wis", "Cha"],
+    racialPowersAndFeats: getRacialPowersAndFeats("Human"),
   },
   "Wood Elf": {
-    abilityBonus: ["dex", "wis"],
-    racialPowersAndFeats: getRacialPowersAndFeats("High Elf")
+    abilityBonus: ["Dex", "Wis"],
+    racialPowersAndFeats: getRacialPowersAndFeats("High Elf"),
   },
 };
 

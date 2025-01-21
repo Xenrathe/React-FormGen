@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import CharSheet from "./CharSheet.jsx";
+import CharSheet from "./CharSheetComponents/CharSheet.jsx";
 
 function App() {
   /*
@@ -44,9 +44,7 @@ function App() {
     </div>
   );*/
 
-  return (
-    <CharSheet />
-  )
+  return <CharSheet />;
 }
 
 export default App;

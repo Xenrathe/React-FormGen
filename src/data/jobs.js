@@ -1,16 +1,16 @@
 import barbarianAbilities from "./abilities/barbarian.json";
 import bardAbilities from "./abilities/bard.json";
 import clericAbilities from "./abilities/cleric.json";
-import fighterAbilities from "./abilities/fighter.json"
-import paladinAbilities from "./abilities/paladin.json"
-import rangerAbilities from "./abilities/ranger.json"
-import rogueAbilities from "./abilities/rogue.json"
-import sorcererAbilities from "./abilities/sorcerer.json"
-import wizardAbilities from "./abilities/wizard.json"
+import fighterAbilities from "./abilities/fighter.json";
+import paladinAbilities from "./abilities/paladin.json";
+import rangerAbilities from "./abilities/ranger.json";
+import rogueAbilities from "./abilities/rogue.json";
+import sorcererAbilities from "./abilities/sorcerer.json";
+import wizardAbilities from "./abilities/wizard.json";
 
 const jobs = {
   Barbarian: {
-    abilityBonus: ["str", "con"],
+    abilityBonus: ["Str", "Con"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 12, ATK: 0 },
@@ -56,7 +56,7 @@ const jobs = {
     talentChoices: barbarianAbilities["Talents"],
   },
   Bard: {
-    abilityBonus: ["dex", "cha"],
+    abilityBonus: ["Dex", "Cha"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 12, ATK: 0 },
@@ -113,7 +113,7 @@ const jobs = {
     bonusAbilitySet: bardAbilities["Bonus"],
   },
   Cleric: {
-    abilityBonus: ["str", "wis"],
+    abilityBonus: ["Str", "Wis"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 12, ATK: 0 },
@@ -167,7 +167,7 @@ const jobs = {
     spellList: clericAbilities["Spells"],
   },
   Fighter: {
-    abilityBonus: ["str", "con"],
+    abilityBonus: ["Str", "Con"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 13, ATK: 0 },
@@ -222,7 +222,7 @@ const jobs = {
     bonusAbilitySet: fighterAbilities["Bonus"],
   },
   Paladin: {
-    abilityBonus: ["str", "cha"],
+    abilityBonus: ["Str", "Cha"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 12, ATK: 0 },
@@ -274,7 +274,7 @@ const jobs = {
     talentChoices: paladinAbilities["Talents"],
   },
   Ranger: {
-    abilityBonus: ["str", "dex", "wis"],
+    abilityBonus: ["Str", "Dex", "Wis"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 14, ATK: 0 },
@@ -310,7 +310,7 @@ const jobs = {
     PD: 11,
     MD: 10,
     baseHP: 7,
-    recoveries: [8, 8],//8 uses, 1d8
+    recoveries: [8, 8], //8 uses, 1d8
     talentProgression: [
       3, // Level 1
       3, // Level 2
@@ -324,10 +324,10 @@ const jobs = {
       5, // Level 10
     ],
     talentChoices: rangerAbilities["Talents"],
-    ACFeats: rangerAbilities["AC Feats"]
+    ACFeats: rangerAbilities["AC Feats"],
   },
   Rogue: {
-    abilityBonus: ["dex", "cha"],
+    abilityBonus: ["Dex", "Cha"],
     armor: {
       None: { AC: 11, ATK: 0 },
       Light: { AC: 12, ATK: 0 },
@@ -363,7 +363,7 @@ const jobs = {
     PD: 12,
     MD: 10,
     baseHP: 6,
-    recoveries: [8, 8],//8 uses, 1d8
+    recoveries: [8, 8], //8 uses, 1d8
     talentProgression: 3,
     talentChoices: rogueAbilities["Talents"],
     bonusAbilitySetTotal: [4, 5, 5, 6, 6, 7, 7, 8, 8, 9],
@@ -371,7 +371,7 @@ const jobs = {
     bonusAbilitySet: rogueAbilities["Bonus"],
   },
   Sorcerer: {
-    abilityBonus: ["cha", "con"],
+    abilityBonus: ["Cha", "Con"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 10, ATK: 0 },
@@ -425,7 +425,7 @@ const jobs = {
     spellList: sorcererAbilities["Spells"],
   },
   Wizard: {
-    abilityBonus: ["int", "wis"],
+    abilityBonus: ["Int", "Wis"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 10, ATK: 0 },
@@ -477,7 +477,7 @@ const jobs = {
       [0, 0, 0, 3, 9], // Level 10
     ],
     spellList: wizardAbilities["Spells"],
-    familiarAbilities: wizardAbilities["Familiar Abilities"]
+    familiarAbilities: wizardAbilities["Familiar Abilities"],
   },
 };
 
