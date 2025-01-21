@@ -1,7 +1,18 @@
+@font-face {
+  font-family: 'Mason Regular';
+  src: url(./assets/Avalon-Quest.ttf)
+}
+
+@font-face {
+  font-family: 'Dragon Fire';
+  src: url(./assets/Dragon-Fire.ttf)
+}
+
 body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'Dragon Fire', 'Roboto';
 }
 
 .barracks {

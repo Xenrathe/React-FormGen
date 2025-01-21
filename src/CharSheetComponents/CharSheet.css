@@ -14,6 +14,7 @@
 .input-set label {
   width: 85px;
   font-weight: bold;
+  font-size: 20px;
 }
 
 .input-group input,
@@ -53,4 +54,25 @@
 #weapons-div {
   grid-column: 5 / 7;
   grid-row: 2 / 3;
+}
+
+#abilityscores {
+  display: grid;
+  grid-template-columns: 250px;
+  grid-template-rows: repeat(3, 25px);
+}
+
+#abilityscores .abrow {
+  display: grid;
+  grid-template-columns: 60px repeat(6, 30px);
+}
+
+#abilityscores .abrow span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#scores span, #modifiers span {
+  border: 1px black solid;
 }
