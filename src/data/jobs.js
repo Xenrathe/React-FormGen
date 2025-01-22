@@ -46,7 +46,7 @@ const jobs = {
     },
     PD: 11,
     MD: 10,
-    baseHP: 6,
+    baseHP: 7,
     recoveries: [8, 10], //8 uses, 1d10
     talentProgression: {
       Adventurer: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],

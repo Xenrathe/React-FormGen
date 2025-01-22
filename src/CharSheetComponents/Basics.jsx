@@ -2,6 +2,8 @@ import races from "../data/races";
 import jobs from "../data/jobs";
 
 function Basics({ basicsData, setBasicsData }) {
+
+  //used for Race & Class/Job drop downs
   function PopulateDropDown(props) {
     return Object.keys(props.data).map((option) => (
       <option key={option} value={option}>
@@ -10,6 +12,7 @@ function Basics({ basicsData, setBasicsData }) {
     ));
   }
 
+  //used for race/class bonus abilities
   function PopulateBonusAbilities(props) {
     const collection = props.collectionKey in races ? races : jobs;
 
@@ -20,6 +23,7 @@ function Basics({ basicsData, setBasicsData }) {
     ));
   }
 
+  //removes shield if swapping to 2Her
   const handleMeleeChange = (event) => {
     if (event.target.value.startsWith("2H")) {
       setBasicsData({
@@ -32,6 +36,7 @@ function Basics({ basicsData, setBasicsData }) {
     }
   };
 
+  //used for both race & class bonus
   const handleBonusAbilityChange = (event) => {
     if (event.target.id == "raceBonus") {
       if (event.target.value != basicsData.jobBonus) {
@@ -41,6 +46,36 @@ function Basics({ basicsData, setBasicsData }) {
       if (event.target.value != basicsData.raceBonus) {
         setBasicsData({ ...basicsData, jobBonus: event.target.value });
       }
+    }
+  };
+
+  //necessary because changing class/job can alter bonus abilities,
+  //which won't otherwise be automatically updated
+  const handleJobChange = (event) => {
+    const newJob = jobs[event.target.value];
+    if (!newJob.abilityBonus.includes(basicsData.jobBonus)) {
+      if (newJob.abilityBonus[0] == basicsData.raceBonus) {
+        setBasicsData({...basicsData, jobBonus: newJob.abilityBonus[1], job: event.target.value});
+      } else {
+        setBasicsData({...basicsData, jobBonus: newJob.abilityBonus[0], job: event.target.value});
+      }
+    } else {
+      setBasicsData({...basicsData, job: event.target.value});
+    }
+  };
+
+  //necessary because changing race can alter bonus abilities,
+  //which won't otherwise be automatically updated
+  const handleRaceChange = (event) => {
+    const newRace = races[event.target.value];
+    if (!newRace.abilityBonus.includes(basicsData.raceBonus)) {
+      if (newRace.abilityBonus[0] == basicsData.jobBonus) {
+        setBasicsData({...basicsData, raceBonus: newRace.abilityBonus[1], race: event.target.value});
+      } else {
+        setBasicsData({...basicsData, raceBonus: newRace.abilityBonus[0], race: event.target.value});
+      }
+    } else {
+      setBasicsData({...basicsData, race: event.target.value});
     }
   };
 
@@ -79,9 +114,7 @@ function Basics({ basicsData, setBasicsData }) {
           name="race"
           id="race"
           value={basicsData.race}
-          onChange={(e) => {
-            setBasicsData({ ...basicsData, race: e.target.value });
-          }}
+          onChange={handleRaceChange}
         >
           <PopulateDropDown data={races} />
         </select>
@@ -101,9 +134,7 @@ function Basics({ basicsData, setBasicsData }) {
           name="job"
           id="job"
           value={basicsData.job}
-          onChange={(e) => {
-            setBasicsData({ ...basicsData, job: e.target.value });
-          }}
+          onChange={handleJobChange}
         >
           <PopulateDropDown data={jobs} />
         </select>
