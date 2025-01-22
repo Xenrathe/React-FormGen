@@ -96,7 +96,7 @@ function StatBlock({ character, statBlock, setStatBlock }) {
       <p>AC: {character.AC}</p>
       <p>PD: {character.PD}</p>
       <p>MD: {character.MD}</p>
-      <p>Recovery Dice: {character.recoveryDice}</p>
+      <p>Recovery Dice: {character.recoveries[0]} uses - {character.recoveries[1]}</p>
     </div>
   );
 }

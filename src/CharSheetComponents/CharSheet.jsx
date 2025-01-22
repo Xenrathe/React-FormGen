@@ -41,8 +41,8 @@ function CharSheet() {
       basicsData.jobBonus,
       [], // jobTalents
       [], // feats
-      basicsData.armor === "Light",
-      basicsData.shield === "Shield",
+      basicsData.armor,
+      basicsData.shield,
       basicsData.melee,
       "", // oneUniqueThing
       [], // iconRelationships
@@ -61,7 +61,7 @@ function CharSheet() {
       basicsData.jobBonus,
       [], // jobTalents
       [], // feats
-      basicsData.armor === "Light",
+      basicsData.armor,
       basicsData.shield,
       basicsData.melee,
       "", // oneUniqueThing

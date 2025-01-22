@@ -12,7 +12,7 @@ export class Character {
     jobBonus,
     jobTalents,
     feats,
-    lightArmor,
+    armorType,
     hasShield,
     weaponType,
     oneUniqueThing,
@@ -28,21 +28,26 @@ export class Character {
     this.jobBonus = jobBonus; //a string
     this.jobTalents = jobTalents; //an array of strings
     this.feats = feats; //an array of strings
-    this.lightArmor = lightArmor; //true = light armor, false = heavy armor
-    this.hasShield = hasShield; //boolean
+    this.armorType = armorType; //a string, "None", "Light", or "Heavy"
+    this.hasShield = hasShield == "Shield"; //boolean
     this.weaponType = weaponType; //a string
     this.oneUniqueThing = oneUniqueThing; //a longer string
     this.iconRelationships = iconRelationships; //an array of objects, like [{'archmage', 1}, {'lich', -2}]
     this.backgrounds = backgrounds; //an array of objects, like [{'street thief', 4}, {'magician', 2}]
 
-    this.abilityScores = this.calculateAbilityScores();
-    this.abilityModifiers = this.calculateAbilityModifiers();
+    this.abilityScores = this.calculateAbilityScores(); //MUST BE FIRST
+    this.abilityModifiers = this.calculateAbilityModifiers(); //MUST BE SECOND
     this.maxHP = this.calculateMaxHP();
     this.AC = this.calculateAC();
     this.PD = this.calculatePD();
     this.MD = this.calculateMD();
-    this.recoveryDice = this.calculateRecoveryDice();
+    this.recoveries = this.calculateRecoveryDice(); //[# daily uses, "XdY + Z"]
     this.racialPowers = this.calculateRacialPowers();
+  }
+
+  getMiddleMod(arrayOfThree) {
+    arrayOfThree.sort((a,b) => a - b); //ascending order
+    return arrayOfThree[1];
   }
 
   calculateMaxHP() {
@@ -67,15 +72,28 @@ export class Character {
   }
 
   calculateAC() {
-    //
+    //base armor from class/job + 1 if shield + middle mod of con/dex/wis + level
+    const baseAC = jobs[this.job].armor[this.armorType].AC;
+    const shieldBonus = this.hasShield ? 1 : 0;
+    const bonusMod = this.getMiddleMod([this.abilityModifiers.con, this.abilityModifiers.dex, this.abilityModifiers.wis]);
+
+    return baseAC + shieldBonus + bonusMod + this.level
   }
 
   calculatePD() {
-    //base PD + middle value of str, con, dex modifier + level
+    //base PD from class/job + middle value of str, con, dex modifier + level
+    const basePD = jobs[this.job].PD;
+    const bonusMod = this.getMiddleMod([this.abilityModifiers.str, this.abilityModifiers.con, this.abilityModifiers.dex]);
+
+    return basePD + bonusMod + this.level
   }
 
   calculateMD() {
     //base MD + middle value of int, wis, cha modifier + level
+    const baseMD = jobs[this.job].MD; 
+    const bonusMod = this.getMiddleMod([this.abilityModifiers.int, this.abilityModifiers.wis, this.abilityModifiers.cha]);
+
+    return baseMD + bonusMod + this.level
   }
 
   calculateAbilityModifiers() {
@@ -100,7 +118,12 @@ export class Character {
     );
   }
 
-  calculateRecoveryDice() {}
+  calculateRecoveryDice() {
+    const uses = jobs[this.job].recoveries[0];
+    const diceSize = jobs[this.job].recoveries[1];
+
+    return [uses, `${this.level}d${diceSize} + ${this.abilityModifiers.con}`]
+  }
 
   calculateRacialPowers() {}
 }

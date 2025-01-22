@@ -216,6 +216,9 @@ function Basics({ basicsData, setBasicsData }) {
             setBasicsData({ ...basicsData, armor: e.target.value });
           }}
         >
+          <option key="None" value="None">
+            None
+          </option>
           <option key="Light" value="Light">
             Light
           </option>
