@@ -44,10 +44,15 @@ function Basics({ basicsData, setBasicsData }) {
     }
   };
 
+  const handleLevelChange = (event) => {
+    const newVal = Math.max(0, Math.min(event.target.value, 10)); //0-10
+    setBasicsData({ ...basicsData, level: newVal });
+  };
+
   return (
     <div id="basics" className="input-group">
       <div id="name-div" className="input-set">
-        <label htmlFor="text">NAME</label>
+        <label>NAME</label>
         <input
           type="text"
           id="name"
@@ -58,20 +63,18 @@ function Basics({ basicsData, setBasicsData }) {
         />
       </div>
       <div id="level-div" className="input-set">
-        <label htmlFor="level">LEVEL</label>
+        <label>LEVEL</label>
         <input
           type="number"
           id="level"
           min="1"
           max="10"
           value={basicsData.level}
-          onChange={(e) => {
-            setBasicsData({ ...basicsData, level: e.target.value });
-          }}
+          onChange={handleLevelChange}
         />
       </div>
       <div id="race-div" className="input-set">
-        <label htmlFor="race">RACE</label>
+        <label>RACE</label>
         <select
           name="race"
           id="race"
@@ -93,7 +96,7 @@ function Basics({ basicsData, setBasicsData }) {
         </select>
       </div>
       <div id="job-div" className="input-set">
-        <label htmlFor="job">CLASS</label>
+        <label>CLASS</label>
         <select
           name="job"
           id="job"
@@ -115,7 +118,7 @@ function Basics({ basicsData, setBasicsData }) {
         </select>
       </div>
       <div id="weapons-div" className="input-set">
-        <label htmlFor="weapons">WEAPONS</label>
+        <label>WEAPONS</label>
         <select
           name="melee"
           id="melee"
@@ -173,7 +176,7 @@ function Basics({ basicsData, setBasicsData }) {
         </select>
       </div>
       <div id="armor-div" className="input-set">
-        <label htmlFor="armor">ARMOR</label>
+        <label>ARMOR</label>
         <select
           name="armor"
           id="armor"

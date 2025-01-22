@@ -1,34 +1,95 @@
-function StatBlock({ character }) {
+function StatBlock({ character, statBlock, setStatBlock }) {
+  const handleAbilityScoreChange = (event) => {
+    let rawValue = event.target.value;
+    rawValue = rawValue.replace(/^0+/, ""); //remove leading zeroes
+    rawValue = rawValue === "" ? "0" : rawValue; //default to 0 if nothing there
+    const sanitizedValue = Math.max(0, Math.min(Number(rawValue), 99)); //clamp
+    event.target.value = sanitizedValue; //update input text
+
+    setStatBlock({ ...statBlock, [event.target.id]: sanitizedValue });
+  };
+
   return (
     <div id="statblock">
       <h2>Stats</h2>
       <div id="abilityscores">
         <div id="titles" className="abrow">
           <strong>Abilities</strong>
-          <span>STR</span>
-          <span>CON</span>
-          <span>DEX</span>
-          <span>INT</span>
-          <span>WIS</span>
-          <span>CHA</span>
+          <label htmlFor="str">STR</label>
+          <label htmlFor="con">CON</label>
+          <label htmlFor="dex">DEX</label>
+          <label htmlFor="int">INT</label>
+          <label htmlFor="wis">WIS</label>
+          <label htmlFor="cha">CHA</label>
         </div>
-        <div id="scores" className="abrow">
-          <strong>Score</strong>
-          <span>{character.abilityScores[0]}</span>
-          <span>{character.abilityScores[1]}</span>
-          <span>{character.abilityScores[2]}</span>
-          <span>{character.abilityScores[3]}</span>
-          <span>{character.abilityScores[4]}</span>
-          <span>{character.abilityScores[5]}</span>
+        <div id="scores-base" className="abrow">
+          <strong>Base</strong>
+          <input
+            type="number"
+            min="1"
+            max="99"
+            id="str"
+            value={statBlock.str}
+            onChange={handleAbilityScoreChange}
+          />
+          <input
+            type="number"
+            min="1"
+            max="99"
+            id="con"
+            value={statBlock.con}
+            onChange={handleAbilityScoreChange}
+          />
+          <input
+            type="number"
+            min="1"
+            max="99"
+            id="dex"
+            value={statBlock.dex}
+            onChange={handleAbilityScoreChange}
+          />
+          <input
+            type="number"
+            min="1"
+            max="99"
+            id="int"
+            value={statBlock.int}
+            onChange={handleAbilityScoreChange}
+          />
+          <input
+            type="number"
+            min="1"
+            max="99"
+            id="wis"
+            value={statBlock.wis}
+            onChange={handleAbilityScoreChange}
+          />
+          <input
+            type="number"
+            min="1"
+            max="99"
+            id="cha"
+            value={statBlock.cha}
+            onChange={handleAbilityScoreChange}
+          />
+        </div>
+        <div id="scores-adj" className="abrow">
+          <strong>Adjusted</strong>
+          <span>{character.abilityScores.str}</span>
+          <span>{character.abilityScores.con}</span>
+          <span>{character.abilityScores.dex}</span>
+          <span>{character.abilityScores.int}</span>
+          <span>{character.abilityScores.wis}</span>
+          <span>{character.abilityScores.cha}</span>
         </div>
         <div id="modifiers" className="abrow">
           <strong>Modifier</strong>
-          <span>{character.abilityModifiers[0]}</span>
-          <span>{character.abilityModifiers[1]}</span>
-          <span>{character.abilityModifiers[2]}</span>
-          <span>{character.abilityModifiers[3]}</span>
-          <span>{character.abilityModifiers[4]}</span>
-          <span>{character.abilityModifiers[5]}</span>
+          <span>{character.abilityModifiers.str}</span>
+          <span>{character.abilityModifiers.con}</span>
+          <span>{character.abilityModifiers.dex}</span>
+          <span>{character.abilityModifiers.int}</span>
+          <span>{character.abilityModifiers.wis}</span>
+          <span>{character.abilityModifiers.cha}</span>
         </div>
       </div>
       <p>Max HP: {character.maxHP}</p>

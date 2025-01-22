@@ -12,9 +12,9 @@
 }
 
 .input-set label {
-  width: 85px;
+  width: 95px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .input-group input,
@@ -62,17 +62,28 @@
   grid-template-rows: repeat(3, 25px);
 }
 
-#abilityscores .abrow {
-  display: grid;
-  grid-template-columns: 60px repeat(6, 30px);
-}
-
-#abilityscores .abrow span {
+#abilityscores #titles label {
+  font-size: 14px;
+  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#scores span, #modifiers span {
-  border: 1px black solid;
+#abilityscores .abrow {
+  display: grid;
+  grid-template-columns: 65px repeat(6, 35px);
+}
+
+#abilityscores .abrow input,
+#abilityscores .abrow span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#scores span,
+#modifiers span {
+  border: 1px rgb(92, 92, 92) dotted;
 }

@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { Character } from "../Character.js";
 
 function CharSheet() {
-
   // INDIVIDUAL COMPONENT DATA SETS //
   const [basicsData, setBasicsData] = useState({
     name: "",
@@ -21,11 +20,11 @@ function CharSheet() {
   });
 
   const [statBlock, setStatBlock] = useState({
-    str: 8, 
-    con: 8, 
-    dex: 8, 
-    int: 8, 
-    wis: 8, 
+    str: 8,
+    con: 8,
+    dex: 8,
+    int: 8,
+    wis: 8,
     cha: 8,
   });
   // END INDIVIDUAL COMPONENT DATA SETS //
@@ -33,7 +32,7 @@ function CharSheet() {
   // SYNTHESIS INTO CHARACTER OBJECT //
   const [character, setCharacter] = useState(
     new Character(
-      [statBlock.str, statBlock.con, statBlock.dex, statBlock.int, statBlock.wis, statBlock.cha], 
+      statBlock,
       basicsData.name,
       basicsData.level,
       basicsData.race,
@@ -53,7 +52,7 @@ function CharSheet() {
 
   useEffect(() => {
     const updatedCharacter = new Character(
-      [statBlock.str, statBlock.con, statBlock.dex, statBlock.int, statBlock.wis, statBlock.cha], 
+      statBlock,
       basicsData.name,
       basicsData.level,
       basicsData.race,
@@ -77,7 +76,11 @@ function CharSheet() {
   return (
     <div className="charsheet">
       <Basics basicsData={basicsData} setBasicsData={setBasicsData} />
-      <StatBlock character={character} />
+      <StatBlock
+        character={character}
+        statBlock={statBlock}
+        setStatBlock={setStatBlock}
+      />
     </div>
   );
 }

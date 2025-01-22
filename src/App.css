@@ -1,18 +1,18 @@
 @font-face {
-  font-family: 'Mason Regular';
-  src: url(./assets/Avalon-Quest.ttf)
+  font-family: "Mason Regular";
+  src: url(./assets/mason-regular.ttf);
 }
 
 @font-face {
-  font-family: 'Dragon Fire';
-  src: url(./assets/Dragon-Fire.ttf)
+  font-family: "Dragon Fire";
+  src: url(./assets/Dragon-Fire.ttf);
 }
 
 body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Dragon Fire', 'Roboto';
+  font-family: "Roboto";
 }
 
 .barracks {
@@ -44,4 +44,20 @@ body {
 
 .new-character-button:hover {
   background-color: #0056b3;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover,
+select:hover {
+  background-color: rgb(240, 240, 240);
 }
