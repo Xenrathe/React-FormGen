@@ -2,7 +2,6 @@ import races from "../data/races";
 import jobs from "../data/jobs";
 
 function Basics({ basicsData, setBasicsData }) {
-
   //used for Race & Class/Job drop downs
   function PopulateDropDown(props) {
     return Object.keys(props.data).map((option) => (
@@ -55,12 +54,20 @@ function Basics({ basicsData, setBasicsData }) {
     const newJob = jobs[event.target.value];
     if (!newJob.abilityBonus.includes(basicsData.jobBonus)) {
       if (newJob.abilityBonus[0] == basicsData.raceBonus) {
-        setBasicsData({...basicsData, jobBonus: newJob.abilityBonus[1], job: event.target.value});
+        setBasicsData({
+          ...basicsData,
+          jobBonus: newJob.abilityBonus[1],
+          job: event.target.value,
+        });
       } else {
-        setBasicsData({...basicsData, jobBonus: newJob.abilityBonus[0], job: event.target.value});
+        setBasicsData({
+          ...basicsData,
+          jobBonus: newJob.abilityBonus[0],
+          job: event.target.value,
+        });
       }
     } else {
-      setBasicsData({...basicsData, job: event.target.value});
+      setBasicsData({ ...basicsData, job: event.target.value });
     }
   };
 
@@ -70,12 +77,20 @@ function Basics({ basicsData, setBasicsData }) {
     const newRace = races[event.target.value];
     if (!newRace.abilityBonus.includes(basicsData.raceBonus)) {
       if (newRace.abilityBonus[0] == basicsData.jobBonus) {
-        setBasicsData({...basicsData, raceBonus: newRace.abilityBonus[1], race: event.target.value});
+        setBasicsData({
+          ...basicsData,
+          raceBonus: newRace.abilityBonus[1],
+          race: event.target.value,
+        });
       } else {
-        setBasicsData({...basicsData, raceBonus: newRace.abilityBonus[0], race: event.target.value});
+        setBasicsData({
+          ...basicsData,
+          raceBonus: newRace.abilityBonus[0],
+          race: event.target.value,
+        });
       }
     } else {
-      setBasicsData({...basicsData, race: event.target.value});
+      setBasicsData({ ...basicsData, race: event.target.value });
     }
   };
 

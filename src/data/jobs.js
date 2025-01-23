@@ -18,6 +18,8 @@ const jobs = {
       Shield: { AC: 1, ATK: 0 },
     },
     melee: {
+      Ability: ["Str"],
+      Miss: "Level",
       OneHanded: {
         Small: 0,
         Light: 0,
@@ -30,6 +32,8 @@ const jobs = {
       },
     },
     ranged: {
+      Ability: ["Dex"],
+      Miss: "",
       Thrown: {
         Small: 0,
         Light: 0,
@@ -64,6 +68,8 @@ const jobs = {
       Shield: { AC: 1, ATK: -1 },
     },
     melee: {
+      Ability: ["Str", "Dex"],
+      Miss: "Level",
       OneHanded: {
         Small: 0,
         Light: 0,
@@ -76,6 +82,8 @@ const jobs = {
       },
     },
     ranged: {
+      Ability: ["Dex"],
+      Miss: "",
       Thrown: {
         Small: 0,
         Light: 0,
@@ -121,6 +129,8 @@ const jobs = {
       Shield: { AC: 1, ATK: 0 },
     },
     melee: {
+      Ability: ["Str"],
+      Miss: "Level",
       OneHanded: {
         Small: 0,
         Light: 0,
@@ -133,6 +143,8 @@ const jobs = {
       },
     },
     ranged: {
+      Ability: ["Dex"],
+      Miss: "",
       Thrown: {
         Small: 0,
         Light: 0,
@@ -175,6 +187,8 @@ const jobs = {
       Shield: { AC: 1, ATK: 0 },
     },
     melee: {
+      Ability: ["Str"],
+      Miss: "Level",
       OneHanded: {
         Small: 0,
         Light: 0,
@@ -187,6 +201,8 @@ const jobs = {
       },
     },
     ranged: {
+      Ability: ["Dex"],
+      Miss: "",
       Thrown: {
         Small: 0,
         Light: 0,
@@ -230,6 +246,8 @@ const jobs = {
       Shield: { AC: 1, ATK: 0 },
     },
     melee: {
+      Ability: ["Str"],
+      Miss: "Level",
       OneHanded: {
         Small: 0,
         Light: 0,
@@ -242,6 +260,8 @@ const jobs = {
       },
     },
     ranged: {
+      Ability: ["Dex"],
+      Miss: "",
       Thrown: {
         Small: 0,
         Light: 0,
@@ -282,6 +302,8 @@ const jobs = {
       Shield: { AC: 1, ATK: -2 },
     },
     melee: {
+      Ability: ["Str", "Dex"],
+      Miss: "Level",
       OneHanded: {
         Small: 0,
         Light: 0,
@@ -294,6 +316,8 @@ const jobs = {
       },
     },
     ranged: {
+      Ability: ["Dex"],
+      Miss: "Level",
       Thrown: {
         Small: 0,
         Light: 0,
@@ -335,6 +359,8 @@ const jobs = {
       Shield: { AC: 1, ATK: -2 },
     },
     melee: {
+      Ability: ["Dex"],
+      Miss: "Level",
       OneHanded: {
         Small: 0,
         Light: 0,
@@ -347,6 +373,8 @@ const jobs = {
       },
     },
     ranged: {
+      Ability: ["Dex"],
+      Miss: "Level",
       Thrown: {
         Small: 0,
         Light: 0,
@@ -379,6 +407,8 @@ const jobs = {
       Shield: { AC: 1, ATK: -2 },
     },
     melee: {
+      Ability: ["Str"],
+      Miss: "Level",
       OneHanded: {
         Small: 0,
         Light: 0,
@@ -391,6 +421,8 @@ const jobs = {
       },
     },
     ranged: {
+      Ability: ["Dex"],
+      Miss: "",
       Thrown: {
         Small: 0,
         Light: 0,
@@ -433,6 +465,8 @@ const jobs = {
       Shield: { AC: 1, ATK: -2 },
     },
     melee: {
+      Ability: ["Str"],
+      Miss: "",
       OneHanded: {
         Small: 0,
         Light: -2,
@@ -445,6 +479,8 @@ const jobs = {
       },
     },
     ranged: {
+      Ability: ["Dex"],
+      Miss: "",
       Thrown: {
         Small: 0,
         Light: -2,

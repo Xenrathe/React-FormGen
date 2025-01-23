@@ -56,8 +56,13 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+input,
+select {
+  background-color: rgb(245, 245, 245);
+}
+
 input[type="text"]:hover,
 input[type="number"]:hover,
 select:hover {
-  background-color: rgb(240, 240, 240);
+  background-color: rgb(235, 235, 235);
 }

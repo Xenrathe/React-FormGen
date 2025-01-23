@@ -10,8 +10,8 @@ function StatBlock({ character, statBlock, setStatBlock }) {
   };
 
   return (
-    <div id="statblock">
-      <h2>Stats</h2>
+    <div id="statblock" className="input-group">
+      <div className="title-label">Stats</div>
       <div id="abilityscores">
         <div id="titles" className="abrow">
           <strong>Abilities</strong>
@@ -92,11 +92,27 @@ function StatBlock({ character, statBlock, setStatBlock }) {
           <span>{character.abilityModifiers.cha}</span>
         </div>
       </div>
+      <div id="defenses">
+        <strong>Defenses</strong>
+        <div id="AC">
+          <label htmlFor="AC">AC</label>
+          <span>{character.AC}</span>
+        </div>
+        <div id="PD">
+          <label htmlFor="PD">PD</label>
+          <span>{character.PD}</span>
+        </div>
+        <div id="MD">
+          <label htmlFor="MD">MD</label>
+          <span>{character.MD}</span>
+        </div>
+      </div>
       <p>Max HP: {character.maxHP}</p>
-      <p>AC: {character.AC}</p>
-      <p>PD: {character.PD}</p>
-      <p>MD: {character.MD}</p>
-      <p>Recovery Dice: {character.recoveries[0]} uses - {character.recoveries[1]}</p>
+
+      <p>
+        Recovery Dice: {character.recoveries[0]} uses -{" "}
+        {character.recoveries[1]}
+      </p>
     </div>
   );
 }
