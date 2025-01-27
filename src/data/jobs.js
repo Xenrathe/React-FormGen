@@ -10,7 +10,7 @@ import wizardAbilities from "./abilities/wizard.json";
 
 const jobs = {
   Barbarian: {
-    abilityBonus: ["Str", "Con"],
+    abilityBonus: ["str", "con"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 12, ATK: 0 },
@@ -18,34 +18,34 @@ const jobs = {
       Shield: { AC: 1, ATK: 0 },
     },
     melee: {
-      Ability: ["Str"],
+      Ability: ["str"],
       Miss: "Level",
-      OneHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: 0,
+      "1H": {
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
-      TwoHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: 0,
+      "2H": {
+        Small: { ATK: 0, DMG: 6},
+        Light: { ATK: 0, DMG: 8},
+        Heavy: { ATK: 0, DMG: 10},
       },
     },
     ranged: {
-      Ability: ["Dex"],
+      Ability: ["dex"],
       Miss: "",
       Thrown: {
-        Small: 0,
-        Light: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
       },
       Crossbow: {
-        Small: -5,
-        Light: -5,
-        Heavy: -5,
+        Small: { ATK: -5, DMG: 4},
+        Light: { ATK: -5, DMG: 6},
+        Heavy: { ATK: -5, DMG: 8},
       },
       Bow: {
-        Light: 0,
-        Heavy: 0,
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
     },
     PD: 11,
@@ -60,7 +60,7 @@ const jobs = {
     talentChoices: barbarianAbilities["Talents"],
   },
   Bard: {
-    abilityBonus: ["Dex", "Cha"],
+    abilityBonus: ["dex", "cha"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 12, ATK: 0 },
@@ -68,33 +68,34 @@ const jobs = {
       Shield: { AC: 1, ATK: -1 },
     },
     melee: {
-      Ability: ["Str", "Dex"],
+      Ability: ["str", "dex"],
       Miss: "Level",
-      OneHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: -2,
+      "1H": {
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
-      TwoHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: -2,
+      "2H": {
+        Small: { ATK: 0, DMG: 6},
+        Light: { ATK: 0, DMG: 8},
+        Heavy: { ATK: -2, DMG: 10},
       },
     },
     ranged: {
-      Ability: ["Dex"],
+      Ability: ["dex"],
       Miss: "",
       Thrown: {
-        Small: 0,
-        Light: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
       },
       Crossbow: {
-        Light: 0,
-        Heavy: -1,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: -1, DMG: 8},
       },
       Bow: {
-        Light: 0,
-        Heavy: -2,
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: -2, DMG: 8},
       },
     },
     PD: 10,
@@ -121,7 +122,7 @@ const jobs = {
     bonusAbilitySet: bardAbilities["Bonus"],
   },
   Cleric: {
-    abilityBonus: ["Str", "Wis"],
+    abilityBonus: ["str", "wis"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 12, ATK: 0 },
@@ -129,33 +130,34 @@ const jobs = {
       Shield: { AC: 1, ATK: 0 },
     },
     melee: {
-      Ability: ["Str"],
+      Ability: ["str"],
       Miss: "Level",
-      OneHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: -2,
+      "1H": {
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: -2, DMG: 8},
       },
-      TwoHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: -2,
+      "2H": {
+        Small: { ATK: 0, DMG: 6},
+        Light: { ATK: 0, DMG: 8},
+        Heavy: { ATK: -2, DMG: 10},
       },
     },
     ranged: {
-      Ability: ["Dex"],
+      Ability: ["dex"],
       Miss: "",
       Thrown: {
-        Small: 0,
-        Light: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
       },
       Crossbow: {
-        Light: 0,
-        Heavy: -1,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: -1, DMG: 8},
       },
       Bow: {
-        Light: -2,
-        Heavy: -5,
+        Light: { ATK: -2, DMG: 6},
+        Heavy: { ATK: -5, DMG: 8},
       },
     },
     PD: 11,
@@ -179,7 +181,7 @@ const jobs = {
     spellList: clericAbilities["Spells"],
   },
   Fighter: {
-    abilityBonus: ["Str", "Con"],
+    abilityBonus: ["str", "con"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 13, ATK: 0 },
@@ -187,33 +189,34 @@ const jobs = {
       Shield: { AC: 1, ATK: 0 },
     },
     melee: {
-      Ability: ["Str"],
+      Ability: ["str"],
       Miss: "Level",
-      OneHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: 0,
+      "1H": {
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
-      TwoHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: 0,
+      "2H": {
+        Small: { ATK: 0, DMG: 6},
+        Light: { ATK: 0, DMG: 8},
+        Heavy: { ATK: 0, DMG: 10},
       },
     },
     ranged: {
-      Ability: ["Dex"],
+      Ability: ["dex"],
       Miss: "",
       Thrown: {
-        Small: 0,
-        Light: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
       },
       Crossbow: {
-        Light: 0,
-        Heavy: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
       Bow: {
-        Light: 0,
-        Heavy: 0,
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
     },
     PD: 10,
@@ -238,7 +241,7 @@ const jobs = {
     bonusAbilitySet: fighterAbilities["Bonus"],
   },
   Paladin: {
-    abilityBonus: ["Str", "Cha"],
+    abilityBonus: ["str", "cha"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 12, ATK: 0 },
@@ -246,33 +249,34 @@ const jobs = {
       Shield: { AC: 1, ATK: 0 },
     },
     melee: {
-      Ability: ["Str"],
+      Ability: ["str"],
       Miss: "Level",
-      OneHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: 0,
+      "1H": {
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
-      TwoHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: 0,
+      "2H": {
+        Small: { ATK: 0, DMG: 6},
+        Light: { ATK: 0, DMG: 8},
+        Heavy: { ATK: 0, DMG: 10},
       },
     },
     ranged: {
-      Ability: ["Dex"],
+      Ability: ["dex"],
       Miss: "",
       Thrown: {
-        Small: 0,
-        Light: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
       },
       Crossbow: {
-        Light: 0,
-        Heavy: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
       Bow: {
-        Light: 0,
-        Heavy: 0,
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
     },
     PD: 10,
@@ -294,7 +298,7 @@ const jobs = {
     talentChoices: paladinAbilities["Talents"],
   },
   Ranger: {
-    abilityBonus: ["Str", "Dex", "Wis"],
+    abilityBonus: ["str", "dex", "wis"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 14, ATK: 0 },
@@ -302,33 +306,34 @@ const jobs = {
       Shield: { AC: 1, ATK: -2 },
     },
     melee: {
-      Ability: ["Str", "Dex"],
+      Ability: ["str", "dex"],
       Miss: "Level",
-      OneHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: 0,
+      "1H": {
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
-      TwoHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: 0,
+      "2H": {
+        Small: { ATK: 0, DMG: 6},
+        Light: { ATK: 0, DMG: 8},
+        Heavy: { ATK: 0, DMG: 10},
       },
     },
     ranged: {
-      Ability: ["Dex"],
+      Ability: ["dex"],
       Miss: "Level",
       Thrown: {
-        Small: 0,
-        Light: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
       },
       Crossbow: {
-        Light: 0,
-        Heavy: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
       Bow: {
-        Light: 0,
-        Heavy: 0,
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: 0, DMG: 8},
       },
     },
     PD: 11,
@@ -351,7 +356,7 @@ const jobs = {
     ACFeats: rangerAbilities["AC Feats"],
   },
   Rogue: {
-    abilityBonus: ["Dex", "Cha"],
+    abilityBonus: ["dex", "cha"],
     armor: {
       None: { AC: 11, ATK: 0 },
       Light: { AC: 12, ATK: 0 },
@@ -359,33 +364,34 @@ const jobs = {
       Shield: { AC: 1, ATK: -2 },
     },
     melee: {
-      Ability: ["Dex"],
+      Ability: ["dex"],
       Miss: "Level",
-      OneHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: -2,
+      "1H": {
+        Small: { ATK: 0, DMG: 8},
+        Light: { ATK: 0, DMG: 8},
+        Heavy: { ATK: -2, DMG: 8},
       },
-      TwoHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: -2,
+      "2H": {
+        Small: { ATK: 0, DMG: 6},
+        Light: { ATK: 0, DMG: 8},
+        Heavy: { ATK: -2, DMG: 10},
       },
     },
     ranged: {
-      Ability: ["Dex"],
+      Ability: ["dex"],
       Miss: "Level",
       Thrown: {
-        Small: 0,
-        Light: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
       },
       Crossbow: {
-        Light: 0,
-        Heavy: -1,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: -1, DMG: 8},
       },
       Bow: {
-        Light: 0,
-        Heavy: -2,
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: -2, DMG: 8},
       },
     },
     PD: 12,
@@ -399,7 +405,7 @@ const jobs = {
     bonusAbilitySet: rogueAbilities["Bonus"],
   },
   Sorcerer: {
-    abilityBonus: ["Cha", "Con"],
+    abilityBonus: ["cha", "con"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 10, ATK: 0 },
@@ -407,33 +413,34 @@ const jobs = {
       Shield: { AC: 1, ATK: -2 },
     },
     melee: {
-      Ability: ["Str"],
+      Ability: ["str"],
       Miss: "Level",
-      OneHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: -2,
+      "1H": {
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
+        Heavy: { ATK: -2, DMG: 8},
       },
-      TwoHanded: {
-        Small: 0,
-        Light: 0,
-        Heavy: -2,
+      "2H": {
+        Small: { ATK: 0, DMG: 6},
+        Light: { ATK: 0, DMG: 8},
+        Heavy: { ATK: -2, DMG: 10},
       },
     },
     ranged: {
-      Ability: ["Dex"],
+      Ability: ["dex"],
       Miss: "",
       Thrown: {
-        Small: 0,
-        Light: 0,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: 0, DMG: 6},
       },
       Crossbow: {
-        Light: -1,
-        Heavy: -3,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: -1, DMG: 6},
+        Heavy: { ATK: -3, DMG: 8},
       },
       Bow: {
-        Light: -2,
-        Heavy: -4,
+        Light: { ATK: -2, DMG: 6},
+        Heavy: { ATK: -4, DMG: 8},
       },
     },
     PD: 11,
@@ -457,7 +464,7 @@ const jobs = {
     spellList: sorcererAbilities["Spells"],
   },
   Wizard: {
-    abilityBonus: ["Int", "Wis"],
+    abilityBonus: ["int", "wis"],
     armor: {
       None: { AC: 10, ATK: 0 },
       Light: { AC: 10, ATK: 0 },
@@ -465,33 +472,34 @@ const jobs = {
       Shield: { AC: 1, ATK: -2 },
     },
     melee: {
-      Ability: ["Str"],
+      Ability: ["str"],
       Miss: "",
-      OneHanded: {
-        Small: 0,
-        Light: -2,
-        Heavy: -5,
+      "1H": {
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: -2, DMG: 6},
+        Heavy: { ATK: -5, DMG: 8},
       },
-      TwoHanded: {
-        Small: 0,
-        Light: -2,
-        Heavy: -5,
+      "2H": {
+        Small: { ATK: 0, DMG: 6},
+        Light: { ATK: -2, DMG: 8},
+        Heavy: { ATK: -5, DMG: 10},
       },
     },
     ranged: {
-      Ability: ["Dex"],
+      Ability: ["dex"],
       Miss: "",
       Thrown: {
-        Small: 0,
-        Light: -2,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: -2, DMG: 6},
       },
       Crossbow: {
-        Light: -1,
-        Heavy: -4,
+        Small: { ATK: 0, DMG: 4},
+        Light: { ATK: -1, DMG: 6},
+        Heavy: { ATK: -4, DMG: 8},
       },
       Bow: {
-        Light: -2,
-        Heavy: -5,
+        Light: { ATK: -2, DMG: 6},
+        Heavy: { ATK: -5, DMG: 8},
       },
     },
     PD: 10,

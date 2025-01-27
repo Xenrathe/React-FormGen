@@ -2,39 +2,39 @@ import getRacialPowersAndFeats from "./racialpowers";
 
 const races = {
   "Dark Elf": {
-    abilityBonus: ["Dex", "Cha"],
+    abilityBonus: ["dex", "cha"],
     racialPowersAndFeats: getRacialPowersAndFeats("Dark Elf"),
   },
   Dwarf: {
-    abilityBonus: ["Con", "Wis"],
+    abilityBonus: ["con", "wis"],
     racialPowersAndFeats: getRacialPowersAndFeats("Dwarf"),
   },
   Gnome: {
-    abilityBonus: ["Dex", "Int"],
+    abilityBonus: ["dex", "int"],
     racialPowersAndFeats: getRacialPowersAndFeats("Gnome"),
   },
   "Half-elf": {
-    abilityBonus: ["Con", "Cha"],
+    abilityBonus: ["con", "cha"],
     racialPowersAndFeats: getRacialPowersAndFeats("Half-elf"),
   },
   Halfling: {
-    abilityBonus: ["Con", "Dex"],
+    abilityBonus: ["con", "dex"],
     racialPowersAndFeats: getRacialPowersAndFeats("Halfling"),
   },
   "Half-orc": {
-    abilityBonus: ["Str", "Dex"],
+    abilityBonus: ["str", "dex"],
     racialPowersAndFeats: getRacialPowersAndFeats("Half-orc"),
   },
   "High Elf": {
-    abilityBonus: ["Int", "Cha"],
+    abilityBonus: ["int", "cha"],
     racialPowersAndFeats: getRacialPowersAndFeats("High Elf"),
   },
   Human: {
-    abilityBonus: ["Str", "Con", "Dex", "Int", "Wis", "Cha"],
+    abilityBonus: ["str", "con", "dex", "int", "wis", "cha"],
     racialPowersAndFeats: getRacialPowersAndFeats("Human"),
   },
   "Wood Elf": {
-    abilityBonus: ["Dex", "Wis"],
+    abilityBonus: ["dex", "wis"],
     racialPowersAndFeats: getRacialPowersAndFeats("High Elf"),
   },
 };

@@ -83,7 +83,7 @@
 }
 
 #abilityscores,
-#defenses {
+#defenses, #attacks {
   grid-template-rows: repeat(4, 25px);
 }
 
@@ -91,7 +91,7 @@
   text-align: center;
 }
 
-#abilityscores #titles label {
+#abilityscores .titles label {
   font-size: 14px;
   font-weight: bold;
   display: flex;
@@ -102,6 +102,12 @@
 #abilityscores .abrow {
   display: grid;
   grid-template-columns: 65px repeat(6, 35px);
+  gap: 2px;
+}
+
+#attacks .atkrow {
+  display: grid;
+  grid-template-columns: 35px repeat(2, 45px);
   gap: 2px;
 }
 

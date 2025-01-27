@@ -13,7 +13,7 @@ function StatBlock({ character, statBlock, setStatBlock }) {
     <div id="statblock" className="input-group">
       <div className="title-label">Stats</div>
       <div id="abilityscores">
-        <div id="titles" className="abrow">
+        <div className="titles abrow">
           <strong>Abilities</strong>
           <label htmlFor="str">STR</label>
           <label htmlFor="con">CON</label>
@@ -105,6 +105,25 @@ function StatBlock({ character, statBlock, setStatBlock }) {
         <div id="MD">
           <label htmlFor="MD">MD</label>
           <span>{character.MD}</span>
+        </div>
+      </div>
+      <div id="attacks">
+        <div className="titles atkrow">
+          <strong>ATK</strong>
+          <label htmlFor="atk-melee">Melee</label>
+          <label htmlFor="atk-ranged">Ranged</label>
+        </div>
+        <div id="atk-roll" className="atkrow">
+          <strong>Roll</strong>
+          <span>{character.meleeAtk[0]}</span>
+        </div>
+        <div id="atk-dmg" className="atkrow">
+          <strong>dmg</strong>
+          <span>{character.meleeAtk[1]}</span>
+        </div>
+        <div id="atk-miss" className="atkrow">
+          <strong>miss</strong>
+          <span>{character.meleeAtk[2]}</span>
         </div>
       </div>
       <p>Max HP: {character.maxHP}</p>
