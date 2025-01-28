@@ -1,8 +1,9 @@
-import Basics from "./Basics.jsx";
+import BasicsBlock from "./BasicsBlock.jsx";
 import StatBlock from "./StatBlock.jsx";
 import "./CharSheet.css";
 import { useState, useEffect } from "react";
 import { Character } from "../Character.js";
+import NarrativeBlock from "./NarrativeBlock.jsx";
 
 function CharSheet() {
   // INDIVIDUAL COMPONENT DATA SETS //
@@ -27,6 +28,12 @@ function CharSheet() {
     wis: 8,
     cha: 8,
   });
+
+  const [narrativeBlock, setNarrativeBlock] = useState({
+    oneUniqueThing: "",
+    iconRelationships: {},
+    backgrounds: {}
+  })
   // END INDIVIDUAL COMPONENT DATA SETS //
 
   // SYNTHESIS INTO CHARACTER OBJECT //
@@ -44,9 +51,9 @@ function CharSheet() {
       basicsData.armor,
       basicsData.shield,
       { melee: basicsData.melee, ranged: basicsData.ranged },
-      "", // oneUniqueThing
-      [], // iconRelationships
-      [] // backgrounds
+      narrativeBlock.oneUniqueThing,
+      narrativeBlock.iconRelationships,
+      narrativeBlock.backgrounds
     )
   );
 
@@ -64,22 +71,27 @@ function CharSheet() {
       basicsData.armor,
       basicsData.shield,
       { melee: basicsData.melee, ranged: basicsData.ranged },
-      "", // oneUniqueThing
-      [], // iconRelationships
-      [] // backgrounds
+      narrativeBlock.oneUniqueThing,
+      narrativeBlock.iconRelationships,
+      narrativeBlock.backgrounds
     );
     setCharacter(updatedCharacter);
-  }, [basicsData, statBlock]);
+  }, [basicsData, statBlock, narrativeBlock]);
   // END SYNTHESIS INTO CHARACTER OBJECT //
 
   // ACTUAL DOM STUFF
   return (
     <div className="charsheet">
-      <Basics basicsData={basicsData} setBasicsData={setBasicsData} />
+      <BasicsBlock basicsData={basicsData} setBasicsData={setBasicsData} />
       <StatBlock
         character={character}
         statBlock={statBlock}
         setStatBlock={setStatBlock}
+      />
+      <NarrativeBlock
+        character={character}
+        narrativeBlock={narrativeBlock}
+        setNarrativeBlock={setNarrativeBlock}
       />
     </div>
   );

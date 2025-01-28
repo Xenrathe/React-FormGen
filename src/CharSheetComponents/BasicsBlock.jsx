@@ -1,7 +1,7 @@
 import races from "../data/races";
 import jobs from "../data/jobs";
 
-function Basics({ basicsData, setBasicsData }) {
+function BasicsBlock({ basicsData, setBasicsData }) {
   //used for Race & Class/Job drop downs
   function PopulateDropDown(props) {
     return Object.keys(props.data).map((option) => (
@@ -271,4 +271,4 @@ function Basics({ basicsData, setBasicsData }) {
   );
 }
 
-export default Basics;
+export default BasicsBlock;

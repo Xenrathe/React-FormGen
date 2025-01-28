@@ -10,7 +10,16 @@
   font-size: 20px;
   font-weight: bold;
   position: absolute;
-  top: -15px;
+  top: -17px;
+  left: 20px;
+  background-color: white;
+}
+
+.input-group .subtitle-label {
+  font-size: 13px;
+  font-weight: bold;
+  position: absolute;
+  top: 5px;
   left: 20px;
   background-color: white;
 }
@@ -138,4 +147,19 @@
 
 #recovery-roll span {
   grid-column: 2 / 4;
+}
+
+#narrativeblock {
+  padding-top: 15px;
+}
+
+#narrativeblock #unique-input {
+  height: 200px;
+  width: 200px;
+  padding: 8px;
+  margin: 0; 
+  font-size: 15px;
+  line-height: 1.5;
+  overflow: hidden; 
+  resize: none;
 }
