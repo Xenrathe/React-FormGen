@@ -148,8 +148,9 @@ export class Character {
   calculateRecoveryDice() {
     const uses = jobs[this.job].recoveries[0];
     const diceSize = jobs[this.job].recoveries[1];
+    const plusSign = this.abilityModifiers.con >= 0 ? '+' : '';
 
-    return [uses, `${this.level}d${diceSize} + ${this.abilityModifiers.con}`];
+    return [uses, `${this.level}d${diceSize}${plusSign}${this.abilityModifiers.con}`];
   }
 
   calculateAtk(isMelee) {
