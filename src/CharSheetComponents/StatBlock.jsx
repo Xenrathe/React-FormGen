@@ -110,28 +110,46 @@ function StatBlock({ character, statBlock, setStatBlock }) {
       <div id="attacks">
         <div className="titles atkrow">
           <strong>ATK</strong>
-          <label htmlFor="atk-melee">Melee</label>
-          <label htmlFor="atk-ranged">Ranged</label>
+          <strong>Melee</strong>
+          <strong>Ranged</strong>
         </div>
         <div id="atk-roll" className="atkrow">
           <strong>Roll</strong>
           <span>{character.meleeAtk[0]}</span>
+          <span>{character.rangedAtk[0]}</span>
         </div>
         <div id="atk-dmg" className="atkrow">
-          <strong>dmg</strong>
+          <strong>Dmg</strong>
           <span>{character.meleeAtk[1]}</span>
+          <span>{character.rangedAtk[1]}</span>
         </div>
         <div id="atk-miss" className="atkrow">
-          <strong>miss</strong>
+          <strong>Miss</strong>
           <span>{character.meleeAtk[2]}</span>
+          <span>{character.rangedAtk[2]}</span>
         </div>
       </div>
-      <p>Max HP: {character.maxHP}</p>
-
-      <p>
-        Recovery Dice: {character.recoveries[0]} uses -{" "}
-        {character.recoveries[1]}
-      </p>
+      <div id="hitpoints">
+        <div className="titles hprow">
+          <strong></strong>
+          <strong>Now</strong>
+          <strong>Max</strong>
+        </div>
+        <div id="hp" className="hprow">
+          <strong>HP</strong>
+          <span></span>
+          <span>{character.maxHP}</span>
+        </div>
+        <div id="recovery" className="hprow">
+          <strong>Recs</strong>
+          <span></span>
+          <span>{character.recoveries[0]}</span>
+        </div>
+        <div id="recovery-roll" className="hprow">
+          <strong>Roll</strong>
+          <span>{character.recoveries[1]}</span>
+        </div>
+      </div>
     </div>
   );
 }

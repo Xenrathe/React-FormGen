@@ -30,36 +30,39 @@ export class Character {
     this.feats = feats; //an array of strings
     this.armorType = armorType; //a string, "None", "Light", or "Heavy"
     this.hasShield = hasShield == "Shield"; //boolean
-    this.weaponType = weaponType; //a string
+    this.weaponType = weaponType; //an object {"melee": meleeString, "ranged": rangedString}
     this.oneUniqueThing = oneUniqueThing; //a longer string
     this.iconRelationships = iconRelationships; //an array of objects, like [{'archmage', 1}, {'lich', -2}]
     this.backgrounds = backgrounds; //an array of objects, like [{'street thief', 4}, {'magician', 2}]
 
     this.abilityScores = this.calculateAbilityScores(); //object with key-value, like ["Str"] = 12
     this.abilityModifiers = this.calculateAbilityModifiers(); //must be after calculateAbilityScores(), object same as above
-    
+
     //all these must be called after calculateAbilityModifiers()
     this.AC = this.calculateAC(); //a number
     this.PD = this.calculatePD(); //a number
     this.MD = this.calculateMD(); //a number
-    this.meleeAtk = this.calculateMeleeAtk(); //[roll string, hit-dmg string, miss-dmg string], e.g. ["+4 vs AC", "4d8 + 5", "5"]
-    this.rangedAtk = this.calculateRangedAtk(); //same as above
+    this.meleeAtk = this.calculateAtk(true); //[roll string, hit-dmg string, miss-dmg string], e.g. ["+4 vs AC", "4d8 + 5", "5"]
+    this.rangedAtk = this.calculateAtk(false); //same as above
     this.maxHP = this.calculateMaxHP();
-    this.recoveries = this.calculateRecoveryDice(); //[# daily uses, "XdY + Z"]
+    this.recoveries = this.calculateRecoveryDice(); //[# daily, "XdY + Z"]
     this.racialPowers = this.calculateRacialPowers();
   }
 
   //utility function returns middleMod from a set of 3
   #getMiddleMod(arrayOfThree) {
-    arrayOfThree.sort((a,b) => a - b); //ascending order
+    arrayOfThree.sort((a, b) => a - b); //ascending order
     return arrayOfThree[1];
   }
 
   //utility function returns highest mod from an array (of any length) of mods
   #getHighestMod(arrayOfMods) {
     let highestMod = -100;
-    arrayOfMods.forEach ((abMod) => {
-      highestMod = this.abilityModifiers[abMod] > highestMod ? this.abilityModifiers[abMod] : highestMod;
+    arrayOfMods.forEach((abMod) => {
+      highestMod =
+        this.abilityModifiers[abMod] > highestMod
+          ? this.abilityModifiers[abMod]
+          : highestMod;
     });
 
     return highestMod;
@@ -90,25 +93,37 @@ export class Character {
     //base armor from class/job + 1 if shield + middle mod of con/dex/wis + level
     const baseAC = jobs[this.job].armor[this.armorType].AC;
     const shieldBonus = this.hasShield ? 1 : 0;
-    const bonusMod = this.#getMiddleMod([this.abilityModifiers.con, this.abilityModifiers.dex, this.abilityModifiers.wis]);
+    const bonusMod = this.#getMiddleMod([
+      this.abilityModifiers.con,
+      this.abilityModifiers.dex,
+      this.abilityModifiers.wis,
+    ]);
 
-    return baseAC + shieldBonus + bonusMod + this.level
+    return baseAC + shieldBonus + bonusMod + this.level;
   }
 
   calculatePD() {
     //base PD from class/job + middle value of str, con, dex modifier + level
     const basePD = jobs[this.job].PD;
-    const bonusMod = this.#getMiddleMod([this.abilityModifiers.str, this.abilityModifiers.con, this.abilityModifiers.dex]);
+    const bonusMod = this.#getMiddleMod([
+      this.abilityModifiers.str,
+      this.abilityModifiers.con,
+      this.abilityModifiers.dex,
+    ]);
 
-    return basePD + bonusMod + this.level
+    return basePD + bonusMod + this.level;
   }
 
   calculateMD() {
     //base MD + middle value of int, wis, cha modifier + level
-    const baseMD = jobs[this.job].MD; 
-    const bonusMod = this.#getMiddleMod([this.abilityModifiers.int, this.abilityModifiers.wis, this.abilityModifiers.cha]);
+    const baseMD = jobs[this.job].MD;
+    const bonusMod = this.#getMiddleMod([
+      this.abilityModifiers.int,
+      this.abilityModifiers.wis,
+      this.abilityModifiers.cha,
+    ]);
 
-    return baseMD + bonusMod + this.level
+    return baseMD + bonusMod + this.level;
   }
 
   calculateAbilityModifiers() {
@@ -124,10 +139,7 @@ export class Character {
     return Object.fromEntries(
       Object.entries(this.abilityScoresBase).map(([key, score]) => {
         const adjScore =
-          key == this.raceBonus ||
-          key == this.jobBonus
-            ? score + 2
-            : score;
+          key == this.raceBonus || key == this.jobBonus ? score + 2 : score;
         return [key, adjScore];
       })
     );
@@ -137,18 +149,21 @@ export class Character {
     const uses = jobs[this.job].recoveries[0];
     const diceSize = jobs[this.job].recoveries[1];
 
-    return [uses, `${this.level}d${diceSize} + ${this.abilityModifiers.con}`]
+    return [uses, `${this.level}d${diceSize} + ${this.abilityModifiers.con}`];
   }
 
-  calculateMeleeAtk() {
+  calculateAtk(isMelee) {
+    const attackType = isMelee ? "melee" : "ranged";
     let atkArray = [];
 
     //get weapon from jobs data
-    const weaponStringSplit = this.weaponType.split(" "); //e.g. ["1H", "Small"]
-    const weaponData = jobs[this.job]["melee"][weaponStringSplit[0]][weaponStringSplit[1]]; //{ATK: #, DMG: #}
+    const weaponStringSplit = this.weaponType[attackType].split(" "); //e.g. ["1H", "Small"]
+    console.log(weaponStringSplit);
+    const weaponData =
+      jobs[this.job][attackType][weaponStringSplit[0]][weaponStringSplit[1]]; //{ATK: #, DMG: #}
 
     //get highest mod in case of multiple abilities
-    let highestMod = this.#getHighestMod(jobs[this.job].melee.Ability)
+    let highestMod = this.#getHighestMod(jobs[this.job][attackType].Ability);
 
     //roll-string
     const rollMod = highestMod + this.level + weaponData.ATK;
@@ -164,18 +179,19 @@ export class Character {
     }
 
     const dmgAbModPlusOrMinus = highestMod >= 0 ? "+" : "";
-    atkArray.push(`${this.level}d${weaponData.DMG}${dmgAbModPlusOrMinus + highestMod}`);
+    atkArray.push(
+      `${this.level}d${weaponData.DMG}${dmgAbModPlusOrMinus + highestMod}`
+    );
 
     //miss-string
-    const missDmg = jobs[this.job]["melee"]["Miss"] == "Level" ? this.level : 0;
+    const missDmg =
+      jobs[this.job][attackType]["Miss"] == "Level" ? this.level : 0;
     atkArray.push(missDmg);
 
     return atkArray;
   }
 
-  calculateRangedAtk(){
-
-  }
+  calculateRangedAtk() {}
 
   calculateRacialPowers() {}
 }

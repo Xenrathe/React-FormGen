@@ -43,7 +43,7 @@ function CharSheet() {
       [], // feats
       basicsData.armor,
       basicsData.shield,
-      basicsData.melee,
+      { melee: basicsData.melee, ranged: basicsData.ranged },
       "", // oneUniqueThing
       [], // iconRelationships
       [] // backgrounds
@@ -63,7 +63,7 @@ function CharSheet() {
       [], // feats
       basicsData.armor,
       basicsData.shield,
-      basicsData.melee,
+      { melee: basicsData.melee, ranged: basicsData.ranged },
       "", // oneUniqueThing
       [], // iconRelationships
       [] // backgrounds

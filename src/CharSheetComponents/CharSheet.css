@@ -83,7 +83,8 @@
 }
 
 #abilityscores,
-#defenses, #attacks {
+#defenses,
+#attacks {
   grid-template-rows: repeat(4, 25px);
 }
 
@@ -105,12 +106,6 @@
   gap: 2px;
 }
 
-#attacks .atkrow {
-  display: grid;
-  grid-template-columns: 35px repeat(2, 45px);
-  gap: 2px;
-}
-
 #abilityscores .abrow input,
 #abilityscores .abrow span {
   display: flex;
@@ -121,7 +116,9 @@
 
 #scores span,
 #modifiers span,
-#defenses span {
+#defenses span,
+#attacks span,
+#hitpoints span {
   border: 1px rgb(92, 92, 92) dotted;
 }
 
@@ -147,4 +144,25 @@
 
 #defenses label {
   font-weight: bold;
+}
+
+#attacks .atkrow {
+  display: grid;
+  grid-template-columns: 35px repeat(2, 75px);
+  gap: 2px;
+}
+
+#attacks,
+#hitpoints {
+  text-align: center;
+}
+
+#hitpoints .hprow {
+  display: grid;
+  grid-template-columns: repeat(3, 40px);
+  gap: 0px;
+}
+
+#recovery-roll span {
+  grid-column: 2 / 4;
 }
