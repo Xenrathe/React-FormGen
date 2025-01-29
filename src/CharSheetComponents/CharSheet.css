@@ -19,7 +19,7 @@
   font-size: 13px;
   font-weight: bold;
   position: absolute;
-  top: 5px;
+  top: -9px;
   left: 20px;
   background-color: white;
 }
@@ -29,7 +29,9 @@
   justify-content: space-around;
 }
 
-#name-level, #race-class, #weapons-armor {
+#name-level,
+#race-class,
+#weapons-armor {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25px 25px;
@@ -54,7 +56,8 @@
   width: 50px;
 }
 
-#statblock {
+#statblock,
+#narrativeblock {
   display: flex;
   justify-content: space-between;
 }
@@ -153,13 +156,24 @@
   padding-top: 15px;
 }
 
+#narrativeblock #one-unique-thing {
+  position: relative;
+}
+
 #narrativeblock #unique-input {
   height: 200px;
   width: 200px;
   padding: 8px;
-  margin: 0; 
+  margin: 0;
   font-size: 15px;
   line-height: 1.5;
-  overflow: hidden; 
+  overflow: hidden;
   resize: none;
+}
+
+#icon-relationships {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-top: 10px;
 }

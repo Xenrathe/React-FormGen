@@ -57,12 +57,14 @@ input[type="number"] {
 }
 
 input,
-select {
+select,
+textarea {
   background-color: rgb(245, 245, 245);
 }
 
 input[type="text"]:hover,
 input[type="number"]:hover,
-select:hover {
+select:hover,
+textarea:hover {
   background-color: rgb(235, 235, 235);
 }

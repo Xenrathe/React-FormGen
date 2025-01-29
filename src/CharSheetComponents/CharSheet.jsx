@@ -31,9 +31,9 @@ function CharSheet() {
 
   const [narrativeBlock, setNarrativeBlock] = useState({
     oneUniqueThing: "",
-    iconRelationships: {},
-    backgrounds: {}
-  })
+    iconRelationships: [],
+    backgrounds: {},
+  });
   // END INDIVIDUAL COMPONENT DATA SETS //
 
   // SYNTHESIS INTO CHARACTER OBJECT //
