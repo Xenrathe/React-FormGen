@@ -32,7 +32,7 @@ export class Character {
     this.hasShield = hasShield == "Shield"; //boolean
     this.weaponType = weaponType; //an object {"melee": meleeString, "ranged": rangedString}
     this.oneUniqueThing = oneUniqueThing; //a longer string
-    this.iconRelationships = iconRelationships; //an array of objects, like [{'archmage', 1}, {'lich', -2}]
+    this.iconRelationships = iconRelationships; //just strings but eventually an array of objects, like [{'archmage', 1}, {'lich', -2}]
     this.backgrounds = backgrounds; //an array of objects, like [{'street thief', 4}, {'magician', 2}]
 
     this.abilityScores = this.calculateAbilityScores(); //object with key-value, like ["Str"] = 12
