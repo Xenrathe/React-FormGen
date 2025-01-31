@@ -3,7 +3,7 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
     const newRelations = {};
   
     for (let i = 1; i <= 4; i++) {
-      const key = document.getElementById(`icon-input-${i}`)?.value.trim();
+      const key = document.getElementById(`icon-input-${i}`)?.value;
       const value = parseInt(document.getElementById(`icon-input-num-${i}`)?.value, 10) || 0;
   
       if (key) {
@@ -40,30 +40,75 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
     return (maxPoints - sum);
   }
 
-  function generateIconRelationshipLines(numLines){
-    const lines = [];
+  const handleBackgrounds = () => {
+    const maxPerBg = character.queryMaxBackground()[1];
+    const newBackgrounds = {};
+  
+    for (let i = 1; i <= 4; i++) {
+      const key = document.getElementById(`background-input-${i}`)?.value;
+      let value = parseInt(document.getElementById(`background-input-num-${i}`)?.value, 10) || 0;
+  
+      if (value < 0) {
+        value = 1;
+      } else if (value > maxPerBg) {
+        value = 5;
+      }
 
+      if (key) {
+        newBackgrounds[key] = value;
+      }
+    }
+  
+    setNarrativeBlock({...narrativeBlock, 
+      backgrounds: newBackgrounds,
+    });
+
+    const backgroundsDiv = document.getElementById("backgrounds");
+    if (getBackgroundPointsRemaining(newBackgrounds) < 0) {
+      backgroundsDiv.classList.add('input-error');
+    } else {
+      backgroundsDiv.classList.remove('input-error');
+    }
+  };
+
+  function getBackgroundPointsRemaining(backgrounds) {
+    const maxBGs = character.queryMaxBackground();
+
+    let sum = 0;
+    Object.values(backgrounds).forEach ((value) => {
+      sum += value;
+    })
+
+    return (maxBGs[0] - sum);
+  }
+
+  function generateLinedInput(numLines, idBase, placeholder, dataObject, onChangeFn, includeNumber) {
+    const lines = [];
+  
     for (let i = 1; i <= numLines; i++) {
       lines.push(
-      <div key={`icon-rel-${i}`} className="single-line">
-        <input
-          type="text"
-          id={"icon-input-" + i}
-          className="lined-input"
-          value={Object.keys(narrativeBlock.iconRelationships)[i - 1] || ""}
-          onChange={handleIconRelations}
-        />
-        <input
-          type="number"
-          id={"icon-input-num-" + i}
-          className="lined-input"
-          value={Object.values(narrativeBlock.iconRelationships)[i - 1] || ""}
-          onChange={handleIconRelations}
-        />
-      </div>
+        <div key={`k-${idBase}-${i}`} className="single-line">
+          <input
+            type="text"
+            id={`${idBase}-` + i}
+            className="lined-input"
+            placeholder={i == 1 ? placeholder : ""}
+            value={Object.keys(dataObject)[i - 1] || ""}
+            onChange={onChangeFn}
+          />
+          {includeNumber && (
+            <input
+              type="number"
+              id={`${idBase}-num-` + i}
+              className="lined-input"
+              value={Object.values(dataObject)[i - 1] || ""}
+              onChange={onChangeFn}
+            />
+          )}
+        </div>
       );
-    };
-
+    }
+  
     return lines;
   }
 
@@ -85,8 +130,12 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
         />
       </div>
       <div id="icon-relationships" className="narrative-input lined-inputs">
-        <label className="title">Icon Relationships ({getRelationshipPointsRemaining(narrativeBlock.iconRelationships)} points)</label>
-          {generateIconRelationshipLines(4)}
+        <label className="title">Icon Relations ({getRelationshipPointsRemaining(narrativeBlock.iconRelationships)} pts)</label>
+          {generateLinedInput(4, "icon-input", "Archmage...", narrativeBlock.iconRelationships, handleIconRelations, true)}
+      </div>
+      <div id="backgrounds" className="narrative-input lined-inputs">
+        <label className="title">Backgrounds ({getBackgroundPointsRemaining(narrativeBlock.backgrounds)} pts)</label>
+        {generateLinedInput(8, "background-input", "Street urchin...", narrativeBlock.backgrounds, handleBackgrounds, true)}
       </div>
     </div>
   );

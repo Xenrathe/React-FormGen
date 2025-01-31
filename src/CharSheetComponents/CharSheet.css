@@ -195,8 +195,13 @@
   padding-left: 5px;
 }
 
-.lined-inputs .single-line {
+.lined-inputs .single-line input[type="number"] {
+  width: 20px;
+}
 
+.lined-inputs .single-line {
+  display: flex;
+  gap: 5px;
 }
 
 .lined-inputs .lined-input {
@@ -204,4 +209,5 @@
   border: 1px rgb(182, 182, 182);
   border-style: none none solid none;
   margin-bottom: 2px;
+  width: 120px;
 }

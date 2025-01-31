@@ -68,6 +68,17 @@ export class Character {
     return highestMod;
   }
 
+  //returns an array [totalPointsMax, maxPerBG]
+  queryMaxBackground() {
+    let maxTotal = 8;
+    let maxPer = 5;
+
+    // further backgrounding feat?
+    // something else?
+
+    return [maxTotal, maxPer]
+  }
+
   calculateMaxHP() {
     const levelToMultiplierMap = {
       1: 3,
@@ -159,7 +170,6 @@ export class Character {
 
     //get weapon from jobs data
     const weaponStringSplit = this.weaponType[attackType].split(" "); //e.g. ["1H", "Small"]
-    console.log(weaponStringSplit);
     const weaponData =
       jobs[this.job][attackType][weaponStringSplit[0]][weaponStringSplit[1]]; //{ATK: #, DMG: #}
 
