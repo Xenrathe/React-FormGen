@@ -57,7 +57,16 @@ const jobs = {
       Champion: [0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
       Epic: [0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
     },
-    talentChoices: barbarianAbilities["Talents"],
+    features: Object.fromEntries(
+      Object.entries(barbarianAbilities["Talents"]).filter(
+        ([_, value]) => value.Type === "Default"
+      )
+    ),
+    talentChoices: Object.fromEntries(
+      Object.entries(barbarianAbilities["Talents"]).filter(
+        ([_, value]) => value.Type !== "Default"
+      )
+    ),
   },
   Bard: {
     abilityBonus: ["dex", "cha"],
@@ -103,7 +112,16 @@ const jobs = {
     baseHP: 7,
     recoveries: [8, 8], //8 uses, 1d8
     talentProgression: 3,
-    talentChoices: bardAbilities["Talents"],
+    features: Object.fromEntries(
+      Object.entries(bardAbilities["Talents"]).filter(
+        ([_, value]) => value.Type === "Default"
+      )
+    ),
+    talentChoices: Object.fromEntries(
+      Object.entries(bardAbilities["Talents"]).filter(
+        ([_, value]) => value.Type !== "Default"
+      )
+    ),
     spellProgression: [
       [2, 0, 0, 0, 0], // Level 1
       [3, 0, 0, 0, 0], // Level 2
@@ -165,7 +183,16 @@ const jobs = {
     baseHP: 7,
     recoveries: [8, 8], //8 uses, 1d8
     talentProgression: 3,
-    talentChoices: clericAbilities["Talents"],
+    features: Object.fromEntries(
+      Object.entries(clericAbilities["Talents"]).filter(
+        ([_, value]) => value.Type === "Default"
+      )
+    ),
+    talentChoices: Object.fromEntries(
+      Object.entries(clericAbilities["Talents"]).filter(
+        ([_, value]) => value.Type !== "Default"
+      )
+    ),
     spellProgression: [
       [4, 0, 0, 0, 0], // Level 1
       [5, 0, 0, 0, 0], // Level 2
@@ -235,7 +262,16 @@ const jobs = {
       4, // Level 9
       4, // Level 10
     ],
-    talentChoices: fighterAbilities["Talents"],
+    features: Object.fromEntries(
+      Object.entries(fighterAbilities["Talents"]).filter(
+        ([_, value]) => value.Type === "Default"
+      )
+    ),
+    talentChoices: Object.fromEntries(
+      Object.entries(fighterAbilities["Talents"]).filter(
+        ([_, value]) => value.Type !== "Default"
+      )
+    ),
     bonusAbilitySetTotal: [3, 4, 4, 5, 5, 6, 6, 7, 7, 8],
     bonusAbilitySetMax: [1, 1, 3, 3, 4, 4, 5, 5, 6, 6],
     bonusAbilitySet: fighterAbilities["Bonus"],
@@ -295,7 +331,16 @@ const jobs = {
       5, // Level 9
       5, // Level 10
     ],
-    talentChoices: paladinAbilities["Talents"],
+    features: Object.fromEntries(
+      Object.entries(paladinAbilities["Talents"]).filter(
+        ([_, value]) => value.Type === "Default"
+      )
+    ),
+    talentChoices: Object.fromEntries(
+      Object.entries(paladinAbilities["Talents"]).filter(
+        ([_, value]) => value.Type !== "Default"
+      )
+    ),
   },
   Ranger: {
     abilityBonus: ["str", "dex", "wis"],
@@ -352,7 +397,16 @@ const jobs = {
       5, // Level 9
       5, // Level 10
     ],
-    talentChoices: rangerAbilities["Talents"],
+    features: Object.fromEntries(
+      Object.entries(rangerAbilities["Talents"]).filter(
+        ([_, value]) => value.Type === "Default"
+      )
+    ),
+    talentChoices: Object.fromEntries(
+      Object.entries(rangerAbilities["Talents"]).filter(
+        ([_, value]) => value.Type !== "Default"
+      )
+    ),
     ACFeats: rangerAbilities["AC Feats"],
   },
   Rogue: {
@@ -399,7 +453,16 @@ const jobs = {
     baseHP: 6,
     recoveries: [8, 8], //8 uses, 1d8
     talentProgression: 3,
-    talentChoices: rogueAbilities["Talents"],
+    features: Object.fromEntries(
+      Object.entries(rogueAbilities["Talents"]).filter(
+        ([_, value]) => value.Type === "Default"
+      )
+    ),
+    talentChoices: Object.fromEntries(
+      Object.entries(rogueAbilities["Talents"]).filter(
+        ([_, value]) => value.Type !== "Default"
+      )
+    ),
     bonusAbilitySetTotal: [4, 5, 5, 6, 6, 7, 7, 8, 8, 9],
     bonusAbilitySetMax: [1, 1, 3, 3, 5, 5, 7, 7, 9, 9],
     bonusAbilitySet: rogueAbilities["Bonus"],
@@ -448,7 +511,16 @@ const jobs = {
     baseHP: 6,
     recoveries: [8, 6], // 8 uses, 1d6
     talentProgression: 3,
-    talentChoices: sorcererAbilities["Talents"],
+    features: Object.fromEntries(
+      Object.entries(sorcererAbilities["Talents"]).filter(
+        ([_, value]) => value.Type === "Default"
+      )
+    ),
+    talentChoices: Object.fromEntries(
+      Object.entries(sorcererAbilities["Talents"]).filter(
+        ([_, value]) => value.Type !== "Default"
+      )
+    ),
     spellProgression: [
       [4, 0, 0, 0, 0], // Level 1
       [5, 0, 0, 0, 0], // Level 2
@@ -507,7 +579,16 @@ const jobs = {
     baseHP: 6,
     recoveries: [8, 6], // 8 uses, 1d6
     talentProgression: 3,
-    talentChoices: wizardAbilities["Talents"],
+    features: Object.fromEntries(
+      Object.entries(wizardAbilities["Talents"]).filter(
+        ([_, value]) => value.Type === "Default"
+      )
+    ),
+    talentChoices: Object.fromEntries(
+      Object.entries(wizardAbilities["Talents"]).filter(
+        ([_, value]) => value.Type !== "Default"
+      )
+    ),
     spellProgression: [
       [5, 0, 0, 0, 0], // Level 1
       [6, 0, 0, 0, 0], // Level 2

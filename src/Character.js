@@ -11,6 +11,8 @@ export class Character {
     job,
     jobBonus,
     jobTalents,
+    jobSpells,
+    jobBonusAbs,
     feats,
     armorType,
     hasShield,
@@ -27,7 +29,19 @@ export class Character {
     this.job = job; //a string
     this.jobBonus = jobBonus; //a string
     this.jobTalents = jobTalents; //an array of strings
-    this.feats = feats; //an array of strings
+    this.jobSpells = jobSpells;
+    this.jobBonusAbs = jobBonusAbs;
+
+    this.feats = feats;
+    /* structured multi-tier object
+      {"general": [{"Linguist": "Champion"}, etc],
+      "racial": ["Heritage of the Sword": "Adventurer", etc],
+      "talent": [{"Slayer": "Epic"}],
+      "spell": etc,
+      "bonus": etc
+      }
+    */ 
+
     this.armorType = armorType; //a string, "None", "Light", or "Heavy"
     this.hasShield = hasShield == "Shield"; //boolean
     this.weaponType = weaponType; //an object {"melee": meleeString, "ranged": rangedString}

@@ -4,10 +4,11 @@ import "./CharSheet.css";
 import { useState, useEffect } from "react";
 import { Character } from "../Character.js";
 import NarrativeBlock from "./NarrativeBlock.jsx";
+import AbilitiesBlock from "./AbilitiesBlock.jsx";
 
 function CharSheet() {
   // INDIVIDUAL COMPONENT DATA SETS //
-  const [basicsData, setBasicsData] = useState({
+  const [basicsBlock, setBasicsBlock] = useState({
     name: "",
     level: 1,
     race: "Dark Elf",
@@ -34,23 +35,32 @@ function CharSheet() {
     iconRelationships: [],
     backgrounds: {},
   });
+
+  const [abilitiesBlock, setAbilitiesBlock] = useState({
+    talents: [],
+    spells: [],
+    bonusAbs: [],
+    feats: [],
+  });
   // END INDIVIDUAL COMPONENT DATA SETS //
 
   // SYNTHESIS INTO CHARACTER OBJECT //
   const [character, setCharacter] = useState(
     new Character(
       statBlock,
-      basicsData.name,
-      basicsData.level,
-      basicsData.race,
-      basicsData.raceBonus,
-      basicsData.job,
-      basicsData.jobBonus,
-      [], // jobTalents
-      [], // feats
-      basicsData.armor,
-      basicsData.shield,
-      { melee: basicsData.melee, ranged: basicsData.ranged },
+      basicsBlock.name,
+      basicsBlock.level,
+      basicsBlock.race,
+      basicsBlock.raceBonus,
+      basicsBlock.job,
+      basicsBlock.jobBonus,
+      abilitiesBlock.talents,
+      abilitiesBlock.spells,
+      abilitiesBlock.bonusAbs, //e.g. Bard's battle cries
+      abilitiesBlock.feats,
+      basicsBlock.armor,
+      basicsBlock.shield,
+      { melee: basicsBlock.melee, ranged: basicsBlock.ranged },
       narrativeBlock.oneUniqueThing,
       narrativeBlock.iconRelationships,
       narrativeBlock.backgrounds
@@ -60,29 +70,31 @@ function CharSheet() {
   useEffect(() => {
     const updatedCharacter = new Character(
       statBlock,
-      basicsData.name,
-      basicsData.level,
-      basicsData.race,
-      basicsData.raceBonus,
-      basicsData.job,
-      basicsData.jobBonus,
-      [], // jobTalents
-      [], // feats
-      basicsData.armor,
-      basicsData.shield,
-      { melee: basicsData.melee, ranged: basicsData.ranged },
+      basicsBlock.name,
+      basicsBlock.level,
+      basicsBlock.race,
+      basicsBlock.raceBonus,
+      basicsBlock.job,
+      basicsBlock.jobBonus,
+      abilitiesBlock.talents,
+      abilitiesBlock.spells,
+      abilitiesBlock.bonusAbs, //e.g. Bard's battle cries
+      abilitiesBlock.feats,
+      basicsBlock.armor,
+      basicsBlock.shield,
+      { melee: basicsBlock.melee, ranged: basicsBlock.ranged },
       narrativeBlock.oneUniqueThing,
       narrativeBlock.iconRelationships,
       narrativeBlock.backgrounds
     );
     setCharacter(updatedCharacter);
-  }, [basicsData, statBlock, narrativeBlock]);
+  }, [basicsBlock, statBlock, narrativeBlock, abilitiesBlock]);
   // END SYNTHESIS INTO CHARACTER OBJECT //
 
   // ACTUAL DOM STUFF
   return (
     <div className="charsheet">
-      <BasicsBlock basicsData={basicsData} setBasicsData={setBasicsData} />
+      <BasicsBlock basicsData={basicsBlock} setBasicsData={setBasicsBlock} />
       <StatBlock
         character={character}
         statBlock={statBlock}
@@ -92,6 +104,11 @@ function CharSheet() {
         character={character}
         narrativeBlock={narrativeBlock}
         setNarrativeBlock={setNarrativeBlock}
+      />
+      <AbilitiesBlock
+        character={character}
+        abilitiesBlock={abilitiesBlock}
+        setAbilitiesBlock={setAbilitiesBlock}
       />
     </div>
   );

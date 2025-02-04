@@ -1,4 +1,4 @@
-import getRacialPowersAndFeats from "./racialpowers";
+import getRacialPowersAndFeats from "./abilities/racialpowers";
 
 const races = {
   "Dark Elf": {

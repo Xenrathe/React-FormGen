@@ -1,7 +1,7 @@
 # To-do List
-* NarrativeBlock (basic / write-in)
 * AbilitiesBlock (basic / write-in)
-* ItemsBlock (basic / write-in)
+* Alter character data based on feats
+* ItemsBlock (basic / write-in) OR put block into Narrative?
 * Make sure all inputs have keys
 * Avatar upload / chooser somewhere
 * Gender??
