@@ -61,7 +61,8 @@
 }
 
 #statblock,
-#narrativeblock {
+#narrativeblock,
+#abilitiesblock {
   display: flex;
   justify-content: space-between;
 }
@@ -156,34 +157,6 @@
   grid-column: 2 / 4;
 }
 
-#narrativeblock {
-  padding-top: 15px;
-  justify-content: center;
-  gap: 15px;
-}
-
-#narrativeblock #one-unique-thing {
-  position: relative;
-}
-
-#narrativeblock #unique-input {
-  height: 200px;
-  width: 200px;
-  padding: 8px;
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.5;
-  overflow: hidden;
-  resize: none;
-}
-
-#icon-relationships {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  height: 216px;
-}
-
 .lined-inputs {
   border: 1px solid rgb(182, 182, 182);
   padding: 0px 10px;
@@ -210,4 +183,49 @@
   border-style: none none solid none;
   margin-bottom: 2px;
   width: 120px;
+}
+
+#narrativeblock {
+  padding-top: 15px;
+  justify-content: center;
+  gap: 15px;
+}
+
+#narrativeblock #one-unique-thing,
+#abilitiesblock .abilities-input {
+  position: relative;
+}
+
+#narrativeblock #unique-input {
+  height: 200px;
+  width: 200px;
+  padding: 8px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  overflow: hidden;
+  resize: none;
+}
+
+#icon-relationships {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 216px;
+}
+
+#abilitiesblock .abilities-input {
+  min-width: 200px;
+  margin-top: 10px;
+  padding-top: 15px;
+}
+
+#popupMod.hidden {
+  display: none;
+}
+
+#popupMod.visible {
+  display: block;
+  position: static;
+  width: 50%;
 }

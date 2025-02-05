@@ -35,7 +35,7 @@ const races = {
   },
   "Wood Elf": {
     abilityBonus: ["dex", "wis"],
-    racialPowersAndFeats: getRacialPowersAndFeats("High Elf"),
+    racialPowersAndFeats: getRacialPowersAndFeats("Wood Elf"),
   },
 };
 

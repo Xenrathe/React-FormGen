@@ -40,7 +40,13 @@ function CharSheet() {
     talents: [],
     spells: [],
     bonusAbs: [],
-    feats: [],
+    feats: {
+      "general": [],
+      "racial": [],
+      "talent": [],
+      "spell": [],
+      "bonus": []  
+    },
   });
   // END INDIVIDUAL COMPONENT DATA SETS //
 

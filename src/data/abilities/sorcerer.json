@@ -9,7 +9,7 @@
       "Base": "Spells with the breath weapon keyword have a chance to be re-used during battle. Each breath weapon spell lists the chance of re-using it (usually 16+). At the start of each round after you’ve cast the breath weapon spell, make the re-use roll. Success indicates that you may re-use that spell as a standard action, but for that round only. If you fail the re-use roll, you don’t have the option to re-use the spell, but you get another chance at the beginning of the next round. \n\nThe breath weapon power lasts for a single battle only. \n\nYou can have only one breath weapon spell active at a time. If you cast a different breath weapon spell when you have an earlier spell active, the new spell cancels the earlier spell. \n\nFailing a death save cancels any breath weapon spells you have active.",
       "Adventurer": "Failing a death save no longer cancels your breath weapon spells. Keep rolling the entire battle."
     },
-    "Chain": {
+    "Chain Spell": {
       "Type": "Default",
       "Base": "When you attack with a chain spell and get a natural even roll, you can roll another attack against a different enemy within range. Keep on rolling attacks as long as you get even rolls and don’t run out of new targets. Each enemy can be targeted only once."
     },
