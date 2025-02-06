@@ -3,7 +3,7 @@ import jobs from "../data/jobs";
 import genFeats from "../data/abilities/general.json"
 import { useState } from "react";
 
-function PopupModal({popupInfo}) {
+function PopupModal({popupInfo, setPopupInfo}) {
   if (popupInfo.mode == "hidden") {
     return (
       <div id="popupMod" className="hidden">
@@ -14,6 +14,14 @@ function PopupModal({popupInfo}) {
     return (
       <div id="popupMod" className="visible">
 
+      </div>
+    );
+  } else if (popupInfo.singleItem != null) {
+    return (
+      <div id="popupMod" className="visible">
+        <button className="close-btn" onClick={() => setPopupInfo({ ...popupInfo, mode: "hidden" })}>✖</button>
+        <span className="title">{popupInfo.title}</span>
+        <span className="description">{popupInfo.singleItem.Base}</span>
       </div>
     );
   }
@@ -84,13 +92,14 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
 
   const [popupInfo, setPopupInfo] = useState({
     mode: "",
-    ability: null,
-    list: jobs[character.job].spellList,
+    title: "Cruel",
+    singleItem: races["Dark Elf"].racialPowersAndFeats["Cruel"],
+    list: null,
   });
 
   return (
     <div id="abilitiesblock" className="input-group">
-      <PopupModal popupInfo={popupInfo}/>
+      <PopupModal popupInfo={popupInfo} setPopupInfo={setPopupInfo}/>
       <div className="title-label">Abilities</div>
       <div id="job-race-gen" className="abilities-input lined-inputs">
         <label className="subtitle-label">Class, Race, Gen Feats</label>
