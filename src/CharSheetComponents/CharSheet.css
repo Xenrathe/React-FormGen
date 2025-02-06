@@ -159,7 +159,6 @@
 
 .lined-inputs {
   border: 1px solid rgb(182, 182, 182);
-  padding: 0px 10px;
 }
 
 .lined-inputs .title {
@@ -168,8 +167,12 @@
   padding-left: 5px;
 }
 
+#narrativeblock .lined-input {
+  width: 120px;
+}
+
 .lined-inputs .single-line input[type="number"] {
-  width: 20px;
+  width: 20px !important;
 }
 
 .lined-inputs .single-line {
@@ -182,7 +185,49 @@
   border: 1px rgb(182, 182, 182);
   border-style: none none solid none;
   margin-bottom: 2px;
-  width: 120px;
+}
+
+.single-line-w-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  background-color: white;
+  margin-bottom: 2px;
+  width: 170px;
+  height: 25px;
+}
+
+.single-line-w-btn span {
+  width: 150px;
+  max-width: 150px;
+  white-space: nowrap;
+  line-height: 1;
+  max-height: 17px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.single-line-w-btn button {
+  padding: 2px;
+  border: 1px solid black;
+  border-radius: 0px;
+  width: 16px;
+  height: 16px;
+  margin-bottom: 2px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.single-line-w-btn button:hover {
+  background-color: rgb(138, 138, 138);
+  color: white;
+}
+
+.single-line-w-btn button:focus {
+  outline: none;
 }
 
 #narrativeblock {
@@ -196,9 +241,15 @@
   position: relative;
 }
 
+#narrativeblock .narrative-input {
+  box-sizing: border-box;
+  height: 216px;
+  padding: 0px 10px;
+}
+
 #narrativeblock #unique-input {
-  height: 200px;
-  width: 200px;
+  box-sizing: border-box;
+  height: 100%;
   padding: 8px;
   margin: 0;
   font-size: 15px;
@@ -206,6 +257,7 @@
   overflow: hidden;
   resize: none;
 }
+
 
 #icon-relationships {
   display: flex;
@@ -215,9 +267,9 @@
 }
 
 #abilitiesblock .abilities-input {
-  min-width: 200px;
+  min-width: 180px;
   margin-top: 10px;
-  padding-top: 15px;
+  padding: 10px;
 }
 
 #popupMod.hidden {

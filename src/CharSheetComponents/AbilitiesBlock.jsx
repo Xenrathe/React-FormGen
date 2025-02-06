@@ -92,19 +92,19 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
     <div id="abilitiesblock" className="input-group">
       <PopupModal popupInfo={popupInfo}/>
       <div className="title-label">Abilities</div>
-      <div id="job-race-gen" className="abilities-input">
+      <div id="job-race-gen" className="abilities-input lined-inputs">
         <label className="subtitle-label">Class, Race, Gen Feats</label>
         {generateLinedInputWithBtn("general", character)}
       </div>
-      <div id="talents" className="abilities-input">
+      <div id="talents" className="abilities-input lined-inputs">
         <label className="subtitle-label">Talents</label>
         {generateLinedInputWithBtn("talents", character)}
       </div>
-      <div id="spells" className="abilities-input">
+      <div id="spells" className="abilities-input lined-inputs">
         <label className="subtitle-label">Spells</label>
         {generateLinedInputWithBtn("spells", character)}
       </div>
-      <div id="bonusAbs" className="abilities-input">
+      <div id="bonusAbs" className="abilities-input lined-inputs">
         <label className="subtitle-label">Bonus Abs</label>
         {generateLinedInputWithBtn("bonusAbs", character)}
       </div>
