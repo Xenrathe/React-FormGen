@@ -284,7 +284,15 @@
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   z-index: 1000;
+}
+
+#popupMod .title {
   text-align: center;
+}
+
+#popupMod.wide {
+  width: 600px;
+  max-width: 90%;
 }
 
 #popupMod.hidden {
