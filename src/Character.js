@@ -35,7 +35,7 @@ export class Character {
     this.feats = feats;
     /* structured multi-tier object
       {"general": [{"Linguist": "Champion"}, etc],
-      "racial": ["Heritage of the Sword": "Adventurer", etc],
+      "racial": [{"Heritage of the Sword": "Adventurer"}, etc],
       "talent": [{"Slayer": "Epic"}],
       "spell": etc,
       "bonus": etc
