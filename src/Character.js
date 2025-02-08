@@ -40,7 +40,7 @@ export class Character {
       "spell": etc,
       "bonus": etc
       }
-    */ 
+    */
 
     this.armorType = armorType; //a string, "None", "Light", or "Heavy"
     this.hasShield = hasShield == "Shield"; //boolean
@@ -90,7 +90,41 @@ export class Character {
     // further backgrounding feat?
     // something else?
 
-    return [maxTotal, maxPer]
+    return [maxTotal, maxPer];
+  }
+
+  // 1A - 2A - 3A - 4A (levels 1-4)
+  // 1C - 2C - 3C (levels 5-7)
+  // 1E - 2E - 3E (levels 8-10)
+  // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
+  queryMaxFeats() {
+    let maxAdv = this.level > 4 ? 4 : this.level;
+    maxAdv = this.race == "Human" ? maxAdv + 1 : maxAdv;
+
+    // clamped between 0 and 3
+    const maxChamp = Math.min(3, Math.max(this.level - 4, 0));
+
+    // clamped between 0 and 3
+    const maxEpic = Math.min(3, Math.max(this.level - 7, 0));
+
+    return { Adventurer: maxAdv, Champion: maxChamp, Epic: maxEpic };
+  }
+
+  // this.feats must be in correct data structure (see constructor above)
+  // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
+  queryCurrentFeats() {
+    let counts = { Adventurer: 0, Champion: 0, Epic: 0 };
+
+    Object.keys(this.feats).forEach((typeKey) => {
+      this.feats[typeKey].forEach((feat) => {
+        const featValues = Object.values(feat);
+        if (featValues.length != 0) {
+          counts[featValues[0]] += 1;
+        }
+      });
+    });
+
+    return counts;
   }
 
   calculateMaxHP() {
@@ -173,9 +207,12 @@ export class Character {
   calculateRecoveryDice() {
     const uses = jobs[this.job].recoveries[0];
     const diceSize = jobs[this.job].recoveries[1];
-    const plusSign = this.abilityModifiers.con >= 0 ? '+' : '';
+    const plusSign = this.abilityModifiers.con >= 0 ? "+" : "";
 
-    return [uses, `${this.level}d${diceSize}${plusSign}${this.abilityModifiers.con}`];
+    return [
+      uses,
+      `${this.level}d${diceSize}${plusSign}${this.abilityModifiers.con}`,
+    ];
   }
 
   calculateAtk(isMelee) {
