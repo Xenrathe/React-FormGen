@@ -120,12 +120,27 @@ function generateLinedInputWithBtn(mode, character, setPopupInfo) {
   return lines;
 }
 
-/*
 function getFeatsRemaining(character) {
   const advFeatsRemain = character.queryMaxFeats().Adventurer - character.queryCurrentFeats().Adventurer;
+  const champFeatsRemain = character.queryMaxFeats().Champion - character.queryCurrentFeats().Champion;
+  const epicFeatsRemain = character.queryMaxFeats().Epic - character.queryCurrentFeats().Epic;
 
-  let returnString = `(Feats Remain: ${advFeatsRemain}`
-}*/
+  if (advFeatsRemain == 0 && champFeatsRemain == 0 && epicFeatsRemain == 0) {
+    return '';
+  }
+
+  let returnString = `(Feats Remain: ${advFeatsRemain} A`
+  if (character.level > 4) {
+    returnString += `, ${champFeatsRemain} C`
+  }
+  if (character.level > 7 ) {
+    returnString += `, ${epicFeatsRemain} E`
+  }
+
+  returnString += ')';
+
+  return returnString;
+}
 
 function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
   const [popupInfo, setPopupInfo] = useState({
@@ -138,7 +153,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
     <div id="abilitiesblock" className="input-group">
       <PopupModal popupInfo={popupInfo} setPopupInfo={setPopupInfo} />
       <div className="title-label">
-        Abilities ({`${character.queryMaxFeats() - character}`})
+        Abilities {getFeatsRemaining(character)}
       </div>
       <div id="job-race-gen" className="abilities-input lined-inputs">
         <label className="subtitle-label">Class, Race, Gen Feats</label>
