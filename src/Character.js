@@ -127,6 +127,9 @@ export class Character {
     return counts;
   }
 
+  queryHasFeat(featObject) {
+  }
+
   calculateMaxHP() {
     const levelToMultiplierMap = {
       1: 3,

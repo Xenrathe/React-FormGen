@@ -325,3 +325,9 @@
   font-size: 1rem;
   color: #333;
 }
+
+#popupMod .feats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

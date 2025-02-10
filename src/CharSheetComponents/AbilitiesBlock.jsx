@@ -5,6 +5,7 @@ import { useState } from "react";
 
 function PopupModal({ popupInfo, setPopupInfo }) {
   if (popupInfo.list != null) {
+    //NEEDS IMPLEMENTATION
     return <div id="popupMod" className="visible"></div>;
   } else if (popupInfo.singleItem != null) {
     return (
@@ -31,6 +32,20 @@ function PopupModal({ popupInfo, setPopupInfo }) {
               <br />
             </span>
           ))}
+        </span>
+        <span className="feats">
+          {Object.keys(popupInfo.singleItem)
+            .filter((tier) => tier !== "Base" && tier !== "Type")
+            .map((tier) => {
+              const featText = `${tier} - ${popupInfo.singleItem[tier]}`;
+              const btnVisible = !(character.level < 8 && tier == 'Epic') && !(character.level < 5 && tier == 'Champion');
+              const hasFeat = 
+              return (
+                <span key={`${popupInfo.title}-${tier}`}>
+                  <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
+                  </span>
+              );
+          })}
         </span>
       </div>
     );
@@ -72,7 +87,6 @@ function generateLinedInputWithBtn(mode, character, setPopupInfo) {
       }
     });
 
-    console.log(dataArray);
     /* 
     // includes feats from the character.feats.general
     Object.keys(character.feats.general).forEach((title) => {
