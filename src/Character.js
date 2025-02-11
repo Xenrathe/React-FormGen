@@ -80,10 +80,10 @@ export class Character {
     let existingFeats = [];
 
     if (type.toLowerCase() == "racial") {
-      Object.keys(races[this.race].racialPowersAndFeats["Adventurer"]).forEach(
-        (title) => {
-          existingFeats.push(title);
-        }
+      existingFeats.push(
+        ...["Adventurer", "Champion", "Epic"].flatMap((tier) =>
+          Object.keys(races[this.race]?.racialPowersAndFeats?.[tier] || {})
+        )
       );
     } else if (type.toLowerCase() == "general") {
       Object.keys(genFeats).forEach((title) => {

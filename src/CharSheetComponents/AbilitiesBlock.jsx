@@ -3,6 +3,9 @@ import jobs from "../data/jobs";
 import genFeats from "../data/abilities/generalfeats.json";
 import { useState } from "react";
 
+// Popup box when users clicks [i] or [+] button
+// [i] will populate the PopupModal with information + associated feats to add
+// [+] will populate the PopupModal with talents, spells, etc to add
 function PopupModal({ popupInfo, setPopupInfo, character }) {
   if (popupInfo.list != null) {
     //NEEDS IMPLEMENTATION
@@ -42,6 +45,9 @@ function PopupModal({ popupInfo, setPopupInfo, character }) {
                 !(character.level < 8 && tier == "Epic") &&
                 !(character.level < 5 && tier == "Champion");
               const hasFeat = character.queryHasFeat(popupInfo.title, tier);
+
+              // needs an add/remove button for viable feats
+              // needs some color-code or other visual info to show if feat is owned
               return (
                 <span key={`${popupInfo.title}-${tier}`}>
                   <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
@@ -115,6 +121,8 @@ function generateLinedInputWithBtn(mode, character, setPopupInfo) {
 
   const lines = [];
 
+  // needs to be altered to show if ability has associated feats
+  // maybe just by adding an (A) or (C) or (E) after?
   for (let i = 1; i <= numLines; i++) {
     const item = dataArray[i - 1];
     const title = item ? Object.keys(item)[0] : "";
