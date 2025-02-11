@@ -3,65 +3,6 @@ import jobs from "../data/jobs";
 import genFeats from "../data/abilities/generalfeats.json";
 import { useState } from "react";
 
-// Popup box when users clicks [i] or [+] button
-// [i] will populate the PopupModal with information + associated feats to add
-// [+] will populate the PopupModal with talents, spells, etc to add
-function PopupModal({ popupInfo, setPopupInfo, character }) {
-  if (popupInfo.list != null) {
-    //NEEDS IMPLEMENTATION
-    return <div id="popupMod" className="visible"></div>;
-  } else if (popupInfo.singleItem != null) {
-    return (
-      <div
-        id="popupMod"
-        className={`visible ${
-          popupInfo.singleItem.Base.length > 1000 ? "wide" : ""
-        }`}
-      >
-        <button
-          className="close-btn"
-          onClick={() =>
-            setPopupInfo({ title: "", singleItem: null, list: null })
-          }
-        >
-          ✖
-        </button>
-        <span className="title">{popupInfo.title}</span>
-        <span className="description">
-          {popupInfo.singleItem.Base.split("\n\n").map((paragraph, index) => (
-            <span key={index}>
-              {paragraph}
-              <br />
-              <br />
-            </span>
-          ))}
-        </span>
-        <span className="feats">
-          {Object.keys(popupInfo.singleItem)
-            .filter((tier) => tier !== "Base" && tier !== "Type")
-            .map((tier) => {
-              const featText = `${tier} - ${popupInfo.singleItem[tier]}`;
-              const btnVisible =
-                !(character.level < 8 && tier == "Epic") &&
-                !(character.level < 5 && tier == "Champion");
-              const hasFeat = character.queryHasFeat(popupInfo.title, tier);
-
-              // needs an add/remove button for viable feats
-              // needs some color-code or other visual info to show if feat is owned
-              return (
-                <span key={`${popupInfo.title}-${tier}`}>
-                  <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
-                </span>
-              );
-            })}
-        </span>
-      </div>
-    );
-  } else {
-    return <div id="popupMod" className="hidden"></div>;
-  }
-}
-
 function generateLinedInputWithBtn(mode, character, setPopupInfo) {
   let numLines = 10;
   let dataArray = [];
@@ -175,6 +116,90 @@ function getFeatsRemainingString(character) {
   return returnString;
 }
 
+function alterFeats(featName, featTier, isAdding, abilitiesBlock, setAbilitiesBlock) {
+  let newFeatArray = [];
+
+  if (isAdding) {
+    console.log("adding!");
+    newFeatArray = [...abilitiesBlock.feats, {[featName]: featTier}];
+  } else {
+    console.log(`removingFeat: ${featName} - ${featTier}`);
+    const tiers = ["Adventurer", "Champion", "Epic"];
+    const removeIndex = tiers.indexOf(featTier); //gives minimumIndex of removal
+
+    newFeatArray = abilitiesBlock.feats.filter(feat => {
+      const [name, tier] = Object.entries(feat)[0];
+      return !(name == featName && tiers.indexOf(tier) >= removeIndex);
+    });
+  }
+
+  console.log(newFeatArray);
+  setAbilitiesBlock({...abilitiesBlock, feats: newFeatArray});
+}
+
+// Popup box when users clicks [i] or [+] button
+// [i] will populate the PopupModal with information + associated feats to add
+// [+] will populate the PopupModal with talents, spells, etc to add
+function PopupModal({ popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock }) {
+  if (popupInfo.list != null) {
+    //NEEDS IMPLEMENTATION
+    return <div id="popupMod" className="visible"></div>;
+  } else if (popupInfo.singleItem != null) {
+    return (
+      <div
+        id="popupMod"
+        className={`visible ${
+          popupInfo.singleItem.Base.length > 1000 ? "wide" : ""
+        }`}
+      >
+        <button
+          className="close-btn"
+          onClick={() =>
+            setPopupInfo({ title: "", singleItem: null, list: null })
+          }
+        >
+          ✖
+        </button>
+        <span className="title">{popupInfo.title}</span>
+        <span className="description">
+          {popupInfo.singleItem.Base.split("\n\n").map((paragraph, index) => (
+            <span key={index}>
+              {paragraph}
+              <br />
+              <br />
+            </span>
+          ))}
+        </span>
+        <span className="feats">
+          {Object.keys(popupInfo.singleItem)
+            .filter((tier) => tier !== "Base" && tier !== "Type")
+            .map((tier) => {
+              const featText = `${tier} - ${popupInfo.singleItem[tier]}`;
+              const btnVisible =
+                !(character.level < 8 && tier == "Epic") &&
+                !(character.level < 5 && tier == "Champion");
+              const hasFeat = character.queryHasFeat(popupInfo.title, tier);
+              // needs an add/remove button for viable feats
+              // needs some color-code or other visual info to show if feat is owned
+              return (
+                <span key={`${popupInfo.title}-${tier}`} className={`feat ${hasFeat && 'owned'}`}>
+                  <button 
+                    onClick={hasFeat ? () => alterFeats(popupInfo.title, tier, false, abilitiesBlock, setAbilitiesBlock) : () => alterFeats(popupInfo.title, tier, true, abilitiesBlock, setAbilitiesBlock)} 
+                    className={`${btnVisible ? 'visible' : 'hidden'} ${hasFeat ? 'remove' : 'add'}`}>
+                    {`${hasFeat ? '-' : '+'}`}
+                  </button>
+                  <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
+                </span>
+              );
+            })}
+        </span>
+      </div>
+    );
+  } else {
+    return <div id="popupMod" className="hidden"></div>;
+  }
+}
+
 function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
   const [popupInfo, setPopupInfo] = useState({
     title: "",
@@ -188,6 +213,8 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         popupInfo={popupInfo}
         setPopupInfo={setPopupInfo}
         character={character}
+        abilitiesBlock={abilitiesBlock}
+        setAbilitiesBlock={setAbilitiesBlock}
       />
       <div className="title-label">
         Abilities {getFeatsRemainingString(character)}

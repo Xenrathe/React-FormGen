@@ -33,7 +33,7 @@ export class Character {
     this.jobSpells = jobSpells;
     this.jobBonusAbs = jobBonusAbs;
 
-    this.feats = feats; //an array of objects {"Linguist": "Champion"}
+    this.feats = feats; //an array of objects {"Linguist": "Champion"}.
     this.armorType = armorType; //a string, "None", "Light", or "Heavy"
     this.hasShield = hasShield == "Shield"; //boolean
     this.weaponType = weaponType; //an object {"melee": meleeString, "ranged": rangedString}
@@ -98,6 +98,25 @@ export class Character {
     });
 
     return matchingFeats;
+  }
+
+  //featName = string
+  //featTier = "Adventurer", "Champion", or "Epic"
+  addFeat(featName, featTier) {
+    this.feats.push({[featName]: featTier});
+  }
+
+  //featName = string
+  //featTier = "Adventurer", "Champion", or "Epic"
+  //will also remove all higher tiers. e.g. removing Adventurer tier will also remove Champ + Epic
+  removeFeat(featName, featTier) {
+    const tiers = ["Adventurer", "Champion", "Epic"];
+    const removeIndex = tiers.indexOf(featTier); //gives minimumIndex of removal
+
+    this.feats = this.feats.filter(feat => {
+      const [name, tier] = Object.entries(feat)[0];
+      return !(name == featName && tiers.indexOf(tier) >= removeIndex);
+    });
   }
 
   calculateMaxHP() {
@@ -261,6 +280,7 @@ export class Character {
   queryCurrentFeats() {
     let counts = { Adventurer: 0, Champion: 0, Epic: 0 };
 
+    //console.log(this.feats);
     this.feats.forEach((feat) => {
       const tier = Object.values(feat)[0];
       counts[tier] += 1;
@@ -281,12 +301,10 @@ export class Character {
   queryHasFeat(featName, featTier) {
     // search through this.feats to see if feat is owned
     let ownedFeat = null;
-    Object.values(this.feats).forEach((featArray) => {
-      featArray.forEach((feat) => {
-        if (Object.keys(feat)[0] == featName) {
-          ownedFeat = feat;
-        }
-      });
+    this.feats.forEach((feat) => {
+      if (Object.keys(feat)[0] == featName) {
+        ownedFeat = feat;
+      }
     });
 
     if (ownedFeat == null) {
