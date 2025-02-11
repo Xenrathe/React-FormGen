@@ -1,9 +1,9 @@
 import races from "../data/races";
 import jobs from "../data/jobs";
-import genFeats from "../data/abilities/general.json";
+import genFeats from "../data/abilities/generalfeats.json";
 import { useState } from "react";
 
-function PopupModal({ popupInfo, setPopupInfo }) {
+function PopupModal({ popupInfo, setPopupInfo, character }) {
   if (popupInfo.list != null) {
     //NEEDS IMPLEMENTATION
     return <div id="popupMod" className="visible"></div>;
@@ -38,14 +38,16 @@ function PopupModal({ popupInfo, setPopupInfo }) {
             .filter((tier) => tier !== "Base" && tier !== "Type")
             .map((tier) => {
               const featText = `${tier} - ${popupInfo.singleItem[tier]}`;
-              const btnVisible = !(character.level < 8 && tier == 'Epic') && !(character.level < 5 && tier == 'Champion');
-              const hasFeat = 
+              const btnVisible =
+                !(character.level < 8 && tier == "Epic") &&
+                !(character.level < 5 && tier == "Champion");
+              const hasFeat = character.queryHasFeat(popupInfo.title, tier);
               return (
                 <span key={`${popupInfo.title}-${tier}`}>
                   <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
-                  </span>
+                </span>
               );
-          })}
+            })}
         </span>
       </div>
     );
@@ -70,7 +72,7 @@ function generateLinedInputWithBtn(mode, character, setPopupInfo) {
 
     // --includes racialfeats from character.feats.racial
     // data structure: {"Heritage of the Sword": "Adventurer"}
-    character.feats.racial.forEach((entry) => {
+    character.getFeats("racial").forEach((entry) => {
       const tier = Object.values(entry)[0];
       const title = Object.keys(entry)[0];
       const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
@@ -87,11 +89,16 @@ function generateLinedInputWithBtn(mode, character, setPopupInfo) {
       }
     });
 
-    /* 
     // includes feats from the character.feats.general
-    Object.keys(character.feats.general).forEach((title) => {
-      dataArray.push(title);
-    });*/
+    character.getFeats("general").forEach((entry) => {
+      const tier = Object.values(entry)[0];
+      const title = Object.keys(entry)[0];
+      const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
+      const obj = {
+        Base: genFeats[title][tier],
+      };
+      dataArray.push({ [title]: obj });
+    });
   }
 
   //mode = "talents"
@@ -134,40 +141,48 @@ function generateLinedInputWithBtn(mode, character, setPopupInfo) {
   return lines;
 }
 
-function getFeatsRemaining(character) {
-  const advFeatsRemain = character.queryMaxFeats().Adventurer - character.queryCurrentFeats().Adventurer;
-  const champFeatsRemain = character.queryMaxFeats().Champion - character.queryCurrentFeats().Champion;
-  const epicFeatsRemain = character.queryMaxFeats().Epic - character.queryCurrentFeats().Epic;
+function getFeatsRemainingString(character) {
+  const advFeatsRemain =
+    character.queryMaxFeats().Adventurer -
+    character.queryCurrentFeats().Adventurer;
+  const champFeatsRemain =
+    character.queryMaxFeats().Champion - character.queryCurrentFeats().Champion;
+  const epicFeatsRemain =
+    character.queryMaxFeats().Epic - character.queryCurrentFeats().Epic;
 
   if (advFeatsRemain == 0 && champFeatsRemain == 0 && epicFeatsRemain == 0) {
-    return '';
+    return "";
   }
 
-  let returnString = `(Feats Remain: ${advFeatsRemain} A`
+  let returnString = `(Feats Remain: ${advFeatsRemain} A`;
   if (character.level > 4) {
-    returnString += `, ${champFeatsRemain} C`
+    returnString += `, ${champFeatsRemain} C`;
   }
-  if (character.level > 7 ) {
-    returnString += `, ${epicFeatsRemain} E`
+  if (character.level > 7) {
+    returnString += `, ${epicFeatsRemain} E`;
   }
 
-  returnString += ')';
+  returnString += ")";
 
   return returnString;
 }
 
 function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
   const [popupInfo, setPopupInfo] = useState({
-    title: "Cruel",
-    singleItem: races["Dark Elf"].racialPowersAndFeats["Cruel"],
+    title: "",
+    singleItem: null,
     list: null,
   });
 
   return (
     <div id="abilitiesblock" className="input-group">
-      <PopupModal popupInfo={popupInfo} setPopupInfo={setPopupInfo} />
+      <PopupModal
+        popupInfo={popupInfo}
+        setPopupInfo={setPopupInfo}
+        character={character}
+      />
       <div className="title-label">
-        Abilities {getFeatsRemaining(character)}
+        Abilities {getFeatsRemainingString(character)}
       </div>
       <div id="job-race-gen" className="abilities-input lined-inputs">
         <label className="subtitle-label">Class, Race, Gen Feats</label>

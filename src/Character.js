@@ -1,5 +1,6 @@
 import races from "./data/races";
 import jobs from "./data/jobs";
+import genFeats from "./data/abilities/generalfeats.json";
 
 export class Character {
   constructor(
@@ -32,16 +33,7 @@ export class Character {
     this.jobSpells = jobSpells;
     this.jobBonusAbs = jobBonusAbs;
 
-    this.feats = feats;
-    /* structured multi-tier object
-      {"general": [{"Linguist": "Champion"}, etc],
-      "racial": [{"Heritage of the Sword": "Adventurer"}, etc],
-      "talent": [{"Slayer": "Epic"}],
-      "spell": etc,
-      "bonus": etc
-      }
-    */
-
+    this.feats = feats; //an array of objects {"Linguist": "Champion"}
     this.armorType = armorType; //a string, "None", "Light", or "Heavy"
     this.hasShield = hasShield == "Shield"; //boolean
     this.weaponType = weaponType; //an object {"melee": meleeString, "ranged": rangedString}
@@ -82,52 +74,30 @@ export class Character {
     return highestMod;
   }
 
-  //returns an array [totalPointsMax, maxPerBG]
-  queryMaxBackground() {
-    let maxTotal = 8;
-    let maxPer = 5;
+  //types can be "general" or "racial"
+  getFeats(type) {
+    let matchingFeats = [];
+    let existingFeats = [];
 
-    // further backgrounding feat?
-    // something else?
-
-    return [maxTotal, maxPer];
-  }
-
-  // 1A - 2A - 3A - 4A (levels 1-4)
-  // 1C - 2C - 3C (levels 5-7)
-  // 1E - 2E - 3E (levels 8-10)
-  // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
-  queryMaxFeats() {
-    let maxAdv = this.level > 4 ? 4 : this.level;
-    maxAdv = this.race == "Human" ? maxAdv + 1 : maxAdv;
-
-    // clamped between 0 and 3
-    const maxChamp = Math.min(3, Math.max(this.level - 4, 0));
-
-    // clamped between 0 and 3
-    const maxEpic = Math.min(3, Math.max(this.level - 7, 0));
-
-    return { Adventurer: maxAdv, Champion: maxChamp, Epic: maxEpic };
-  }
-
-  // this.feats must be in correct data structure (see constructor above)
-  // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
-  queryCurrentFeats() {
-    let counts = { Adventurer: 0, Champion: 0, Epic: 0 };
-
-    Object.keys(this.feats).forEach((typeKey) => {
-      this.feats[typeKey].forEach((feat) => {
-        const featValues = Object.values(feat);
-        if (featValues.length != 0) {
-          counts[featValues[0]] += 1;
+    if (type.toLowerCase() == "racial") {
+      Object.keys(races[this.race].racialPowersAndFeats["Adventurer"]).forEach(
+        (title) => {
+          existingFeats.push(title);
         }
+      );
+    } else if (type.toLowerCase() == "general") {
+      Object.keys(genFeats).forEach((title) => {
+        existingFeats.push(title);
       });
+    }
+
+    this.feats.forEach((feat) => {
+      if (existingFeats.includes(Object.keys(feat)[0])) {
+        matchingFeats.push(feat);
+      }
     });
 
-    return counts;
-  }
-
-  queryHasFeat(featObject) {
+    return matchingFeats;
   }
 
   calculateMaxHP() {
@@ -256,7 +226,83 @@ export class Character {
     return atkArray;
   }
 
-  calculateRangedAtk() {}
-
   calculateRacialPowers() {}
+
+  //returns an array [totalPointsMax, maxPerBG]
+  queryMaxBackground() {
+    let maxTotal = 8;
+    let maxPer = 5;
+
+    // further backgrounding feat?
+    // something else?
+
+    return [maxTotal, maxPer];
+  }
+
+  // 1A - 2A - 3A - 4A (levels 1-4)
+  // 1C - 2C - 3C (levels 5-7)
+  // 1E - 2E - 3E (levels 8-10)
+  // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
+  queryMaxFeats() {
+    let maxAdv = this.level > 4 ? 4 : this.level;
+    maxAdv = this.race == "Human" ? maxAdv + 1 : maxAdv;
+
+    // clamped between 0 and 3
+    const maxChamp = Math.min(3, Math.max(this.level - 4, 0));
+
+    // clamped between 0 and 3
+    const maxEpic = Math.min(3, Math.max(this.level - 7, 0));
+
+    return { Adventurer: maxAdv, Champion: maxChamp, Epic: maxEpic };
+  }
+
+  // this.feats must be in correct data structure (see constructor above)
+  // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
+  queryCurrentFeats() {
+    let counts = { Adventurer: 0, Champion: 0, Epic: 0 };
+
+    this.feats.forEach((feat) => {
+      const tier = Object.values(feat)[0];
+      counts[tier] += 1;
+    });
+    /*
+    Object.keys(this.feats).forEach((typeKey) => {
+      this.feats[typeKey].forEach((feat) => {
+        const featValues = Object.values(feat);
+        if (featValues.length != 0) {
+          counts[featValues[0]] += 1;
+        }
+      });
+    });*/
+
+    return counts;
+  }
+
+  queryHasFeat(featName, featTier) {
+    // search through this.feats to see if feat is owned
+    let ownedFeat = null;
+    Object.values(this.feats).forEach((featArray) => {
+      featArray.forEach((feat) => {
+        if (Object.keys(feat)[0] == featName) {
+          ownedFeat = feat;
+        }
+      });
+    });
+
+    if (ownedFeat == null) {
+      return false;
+    }
+
+    const ownedFeatTier = Object.values(ownedFeat)[0];
+
+    if (ownedFeatTier == "Epic") {
+      return true;
+    } else if (ownedFeatTier == "Champion" && featTier != "Epic") {
+      return true;
+    } else if (ownedFeatTier == "Adventurer" && featTier == "Adventurer") {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
