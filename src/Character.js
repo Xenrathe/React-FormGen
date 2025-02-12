@@ -75,6 +75,7 @@ export class Character {
   }
 
   //types can be "general" or "racial"
+  //this gives STAND ALONE feats only
   getFeats(type) {
     let matchingFeats = [];
     let existingFeats = [];
@@ -102,6 +103,8 @@ export class Character {
 
   //featName = string
   //featTier = "Adventurer", "Champion", or "Epic"
+  //you may need to call this multiple times to add multiple tiers in a single click
+  //the logic to do so is left to whatever external function calls this
   addFeat(featName, featTier) {
     this.feats.push({[featName]: featTier});
   }
@@ -277,7 +280,7 @@ export class Character {
 
   // this.feats must be in correct data structure (see constructor above)
   // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
-  queryCurrentFeats() {
+  queryCurrentFeatCounts() {
     let counts = { Adventurer: 0, Champion: 0, Epic: 0 };
 
     //console.log(this.feats);
@@ -298,18 +301,58 @@ export class Character {
     return counts;
   }
 
+  //returns true or false
   queryHasFeat(featName, featTier) {
+    const highestFeatTier = this.queryHighestFeatTier(featName);
+
+    // does not have feat at all
+    if (!highestFeatTier) {
+      return false;
+    }
+
+    if (highestFeatTier == "Epic") {
+      return true;
+    } else if (highestFeatTier == "Champion" && featTier != "Epic") {
+      return true;
+    } else if (highestFeatTier == "Adventurer" && featTier == "Adventurer") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //returns highest tier (e.g. "Epic") of feat owned
+  //returns false if not owned
+  queryHighestFeatTier(featName) {
     // search through this.feats to see if feat is owned
-    let ownedFeat = null;
+    let ownedFeats = [];
     this.feats.forEach((feat) => {
       if (Object.keys(feat)[0] == featName) {
-        ownedFeat = feat;
+        ownedFeats.push(feat);
       }
     });
 
-    if (ownedFeat == null) {
+    if (ownedFeats.length == 0) {
       return false;
     }
+
+    const tiers = ["Adventurer", "Champion", "Epic"];
+    let highestIndex = 0;
+
+    ownedFeats.forEach((feat) => {
+      const tierIndex = tiers.indexOf(Object.values(feat)[0]);
+      if (tierIndex >= highestIndex){
+        highestIndex = tierIndex;
+      }
+    });
+
+    return tiers[highestIndex];
+
+    /* OLD CODE FOR OLD IMPLEMENTATION
+    this.feats = this.feats.filter(feat => {
+      const [name, tier] = Object.entries(feat)[0];
+      return !(name == featName && tiers.indexOf(tier) >= removeIndex);
+    });
 
     const ownedFeatTier = Object.values(ownedFeat)[0];
 
@@ -321,6 +364,6 @@ export class Character {
       return true;
     } else {
       return false;
-    }
+    }*/
   }
 }
