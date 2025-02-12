@@ -120,17 +120,37 @@ function alterFeats(
   featName,
   featTier,
   isAdding,
+  hasAdv,
+  hasChamp,
   abilitiesBlock,
   setAbilitiesBlock
 ) {
   let newFeatArray = [];
 
   if (isAdding) {
-    newFeatArray = [...abilitiesBlock.feats, { [featName]: featTier }];
+    //remove all feats of the given name
+    newFeatArray = abilitiesBlock.feats.filter((feat) => {
+      const name = Object.keys(feat)[0];
+      return !(name == featName)
+    });
+
+    //add multiple tiers of feats, depending on situation
+    if (featTier == "Adventurer" || hasAdv) {
+      newFeatArray.push({[featName]: "Adventurer" });
+    }
+
+    if (featTier == "Champion" || (featTier == "Epic") && hasChamp) {
+      newFeatArray.push({[featName]: "Champion" });
+    }
+
+    if (featTier == "Epic") {
+      newFeatArray.push({[featName]: "Epic" });
+    }
   } else {
     const tiers = ["Adventurer", "Champion", "Epic"];
     const removeIndex = tiers.indexOf(featTier); //gives minimumIndex of removal
 
+    //remove potentially multiple tiers of feat
     newFeatArray = abilitiesBlock.feats.filter((feat) => {
       const [name, tier] = Object.entries(feat)[0];
       return !(name == featName && tiers.indexOf(tier) >= removeIndex);
@@ -151,10 +171,25 @@ function PopupModal({
   abilitiesBlock,
   setAbilitiesBlock,
 }) {
+
   if (popupInfo.list != null) {
     //NEEDS IMPLEMENTATION
     return <div id="popupMod" className="visible"></div>;
   } else if (popupInfo.singleItem != null) {
+
+    // this block is necessary to know how to add/subtract multiple tiers at once
+    // most abilities have all three tiers... but some don't / skip a tier.
+    let hasAdv = false;
+    let hasChamp = false;
+    Object.keys(popupInfo.singleItem).forEach((tier) => {
+      if (tier == "Adventurer") {
+        hasAdv = true;
+      } else if (tier == "Champion") {
+        hasChamp = true;
+      }
+    });
+
+
     return (
       <div
         id="popupMod"
@@ -189,32 +224,22 @@ function PopupModal({
                 !(character.level < 8 && tier == "Epic") &&
                 !(character.level < 5 && tier == "Champion");
               const hasFeat = character.queryHasFeat(popupInfo.title, tier);
-              // needs an add/remove button for viable feats
-              // needs some color-code or other visual info to show if feat is owned
               return (
                 <span
                   key={`${popupInfo.title}-${tier}`}
                   className={`feat ${hasFeat && "owned"}`}
                 >
                   <button
-                    onClick={
-                      hasFeat
-                        ? () =>
-                            alterFeats(
-                              popupInfo.title,
-                              tier,
-                              false,
-                              abilitiesBlock,
-                              setAbilitiesBlock
-                            )
-                        : () =>
-                            alterFeats(
-                              popupInfo.title,
-                              tier,
-                              true,
-                              abilitiesBlock,
-                              setAbilitiesBlock
-                            )
+                    onClick={() => 
+                      alterFeats(
+                        popupInfo.title,
+                        tier,
+                        !hasFeat, // add or remove
+                        hasAdv,
+                        hasChamp,
+                        abilitiesBlock,
+                        setAbilitiesBlock
+                      )
                     }
                     className={`${btnVisible ? "visible" : "hidden"} ${
                       hasFeat ? "remove" : "add"
