@@ -351,8 +351,32 @@
   width: 100%;
   height: 100%;
   padding: 0px;
-  font-size: 100px;
   opacity: 0;
+  outline: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+
+  container-type: size;
+  container-name: btn-container;
+}
+
+@container btn-container (max-height: 100px) {
+  #popupMod span.text {
+    font-size: 70px;
+  }
+}
+
+@container btn-container (min-height: 101px) {
+  #popupMod span.text {
+    font-size: 100px;
+  }
+}
+
+#popupMod .feat button span.minus {
+  transform: translateY(-10%);
 }
 
 #popupMod .feat button.add:hover {
@@ -372,5 +396,4 @@
 }
 
 #popupMod .feat .add {
-
 }

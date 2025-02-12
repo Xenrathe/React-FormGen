@@ -116,31 +116,41 @@ function getFeatsRemainingString(character) {
   return returnString;
 }
 
-function alterFeats(featName, featTier, isAdding, abilitiesBlock, setAbilitiesBlock) {
+function alterFeats(
+  featName,
+  featTier,
+  isAdding,
+  abilitiesBlock,
+  setAbilitiesBlock
+) {
   let newFeatArray = [];
 
   if (isAdding) {
-    console.log("adding!");
-    newFeatArray = [...abilitiesBlock.feats, {[featName]: featTier}];
+    newFeatArray = [...abilitiesBlock.feats, { [featName]: featTier }];
   } else {
-    console.log(`removingFeat: ${featName} - ${featTier}`);
     const tiers = ["Adventurer", "Champion", "Epic"];
     const removeIndex = tiers.indexOf(featTier); //gives minimumIndex of removal
 
-    newFeatArray = abilitiesBlock.feats.filter(feat => {
+    newFeatArray = abilitiesBlock.feats.filter((feat) => {
       const [name, tier] = Object.entries(feat)[0];
       return !(name == featName && tiers.indexOf(tier) >= removeIndex);
     });
   }
 
   console.log(newFeatArray);
-  setAbilitiesBlock({...abilitiesBlock, feats: newFeatArray});
+  setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray });
 }
 
 // Popup box when users clicks [i] or [+] button
 // [i] will populate the PopupModal with information + associated feats to add
 // [+] will populate the PopupModal with talents, spells, etc to add
-function PopupModal({ popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock }) {
+function PopupModal({
+  popupInfo,
+  setPopupInfo,
+  character,
+  abilitiesBlock,
+  setAbilitiesBlock,
+}) {
   if (popupInfo.list != null) {
     //NEEDS IMPLEMENTATION
     return <div id="popupMod" className="visible"></div>;
@@ -182,11 +192,37 @@ function PopupModal({ popupInfo, setPopupInfo, character, abilitiesBlock, setAbi
               // needs an add/remove button for viable feats
               // needs some color-code or other visual info to show if feat is owned
               return (
-                <span key={`${popupInfo.title}-${tier}`} className={`feat ${hasFeat && 'owned'}`}>
-                  <button 
-                    onClick={hasFeat ? () => alterFeats(popupInfo.title, tier, false, abilitiesBlock, setAbilitiesBlock) : () => alterFeats(popupInfo.title, tier, true, abilitiesBlock, setAbilitiesBlock)} 
-                    className={`${btnVisible ? 'visible' : 'hidden'} ${hasFeat ? 'remove' : 'add'}`}>
-                    {`${hasFeat ? '-' : '+'}`}
+                <span
+                  key={`${popupInfo.title}-${tier}`}
+                  className={`feat ${hasFeat && "owned"}`}
+                >
+                  <button
+                    onClick={
+                      hasFeat
+                        ? () =>
+                            alterFeats(
+                              popupInfo.title,
+                              tier,
+                              false,
+                              abilitiesBlock,
+                              setAbilitiesBlock
+                            )
+                        : () =>
+                            alterFeats(
+                              popupInfo.title,
+                              tier,
+                              true,
+                              abilitiesBlock,
+                              setAbilitiesBlock
+                            )
+                    }
+                    className={`${btnVisible ? "visible" : "hidden"} ${
+                      hasFeat ? "remove" : "add"
+                    }`}
+                  >
+                    <span className={`text${hasFeat ? " minus" : ""}`}>{`${
+                      hasFeat ? "-" : "+"
+                    }`}</span>
                   </button>
                   <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
                 </span>
