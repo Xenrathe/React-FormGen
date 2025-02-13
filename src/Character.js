@@ -77,28 +77,29 @@ export class Character {
   //types can be "general" or "racial"
   //this gives STAND ALONE feats only
   getFeats(type) {
-    let matchingFeats = [];
-    let existingFeats = [];
+    let ownedFeats = [];
+    let potentialFeats = [];
 
     if (type.toLowerCase() == "racial") {
-      existingFeats.push(
+      potentialFeats.push(
         ...["Adventurer", "Champion", "Epic"].flatMap((tier) =>
           Object.keys(races[this.race]?.racialPowersAndFeats?.[tier] || {})
         )
       );
     } else if (type.toLowerCase() == "general") {
       Object.keys(genFeats).forEach((title) => {
-        existingFeats.push(title);
+        potentialFeats.push(title);
       });
     }
 
     this.feats.forEach((feat) => {
-      if (existingFeats.includes(Object.keys(feat)[0])) {
-        matchingFeats.push(feat);
+      if (potentialFeats.includes(Object.keys(feat)[0])) {
+        ownedFeats.push(feat);
+        potentialFeats.splice(potentialFeats.indexOf(feat), 1);
       }
     });
 
-    return matchingFeats;
+    return { ownedFeats: ownedFeats, potentialFeats: potentialFeats };
   }
 
   //featName = string
@@ -106,7 +107,7 @@ export class Character {
   //you may need to call this multiple times to add multiple tiers in a single click
   //the logic to do so is left to whatever external function calls this
   addFeat(featName, featTier) {
-    this.feats.push({[featName]: featTier});
+    this.feats.push({ [featName]: featTier });
   }
 
   //featName = string
@@ -116,7 +117,7 @@ export class Character {
     const tiers = ["Adventurer", "Champion", "Epic"];
     const removeIndex = tiers.indexOf(featTier); //gives minimumIndex of removal
 
-    this.feats = this.feats.filter(feat => {
+    this.feats = this.feats.filter((feat) => {
       const [name, tier] = Object.entries(feat)[0];
       return !(name == featName && tiers.indexOf(tier) >= removeIndex);
     });
@@ -341,7 +342,7 @@ export class Character {
 
     ownedFeats.forEach((feat) => {
       const tierIndex = tiers.indexOf(Object.values(feat)[0]);
-      if (tierIndex >= highestIndex){
+      if (tierIndex >= highestIndex) {
         highestIndex = tierIndex;
       }
     });

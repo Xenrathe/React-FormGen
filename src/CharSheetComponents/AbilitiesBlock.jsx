@@ -11,12 +11,13 @@ function getFeatsRemaining(character) {
   const champFeatsRemain = maxFeats.Champion - currentFeatCounts.Champion;
   const epicFeatsRemain = maxFeats.Epic - currentFeatCounts.Epic;
 
-  return [advFeatsRemain, champFeatsRemain, epicFeatsRemain]
+  return [advFeatsRemain, champFeatsRemain, epicFeatsRemain];
 }
 
 //returns a string e.g. "(Feats Remain: 1 A, 2 C, 2 E)" ; returns "" if no Feats remain
 function getFeatsRemainingString(character) {
-  const [advFeatsRemain, champFeatsRemain, epicFeatsRemain] = getFeatsRemaining(character);
+  const [advFeatsRemain, champFeatsRemain, epicFeatsRemain] =
+    getFeatsRemaining(character);
 
   if (advFeatsRemain == 0 && champFeatsRemain == 0 && epicFeatsRemain == 0) {
     return "";
@@ -50,20 +51,20 @@ function alterFeats(
     //remove all feats of the given name
     newFeatArray = abilitiesBlock.feats.filter((feat) => {
       const name = Object.keys(feat)[0];
-      return !(name == featName)
+      return !(name == featName);
     });
 
     //add multiple tiers of feats, depending on situation
     if (featTier == "Adventurer" || hasAdv) {
-      newFeatArray.push({[featName]: "Adventurer" });
+      newFeatArray.push({ [featName]: "Adventurer" });
     }
 
-    if (featTier == "Champion" || (featTier == "Epic") && hasChamp) {
-      newFeatArray.push({[featName]: "Champion" });
+    if (featTier == "Champion" || (featTier == "Epic" && hasChamp)) {
+      newFeatArray.push({ [featName]: "Champion" });
     }
 
     if (featTier == "Epic") {
-      newFeatArray.push({[featName]: "Epic" });
+      newFeatArray.push({ [featName]: "Epic" });
     }
   } else {
     const tiers = ["Adventurer", "Champion", "Epic"];
@@ -79,7 +80,7 @@ function alterFeats(
   setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray });
 }
 
-function LinedInputsWithBtn({mode, character, setPopupInfo}) {
+function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
   let numLines = 10;
   let dataOnLines = [];
   let dataForAdd = [];
@@ -89,44 +90,44 @@ function LinedInputsWithBtn({mode, character, setPopupInfo}) {
     Object.entries(races[character.race].racialPowersAndFeats).forEach(
       ([title, obj]) => {
         if (!["Adventurer", "Champion", "Epic"].includes(title)) {
-          dataOnLines.push({ [title]: obj });
+          dataOnLines.push({ [title]: obj, removable: false });
         }
       }
     );
 
+    // includes features from jobs[character.job].features
+    Object.entries(jobs[character.job].features).forEach(([title, obj]) => {
+      if (!["Adventurer", "Champion", "Epic"].includes(title)) {
+        dataOnLines.push({ [title]: obj, removable: false });
+      }
+    });
+
     // --includes racialfeats from character.feats.racial
     // data structure: {"Heritage of the Sword": "Adventurer"}
-    character.getFeats("racial").forEach((entry) => {
+    const racialFeatInfo = character.getFeats("racial"); //has both ownedFeats and potentialFeats
+    dataForAdd.push(...racialFeatInfo.potentialFeats);
+    racialFeatInfo.ownedFeats.forEach((entry) => {
       const tier = Object.values(entry)[0];
       const title = Object.keys(entry)[0];
       const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
       const obj = {
         Base: races[character.race].racialpowersAndFeats[tier][title],
       };
-      dataOnLines.push({ [title]: obj });
-    });
-
-    // includes features from jobs[character.job].features
-    Object.entries(jobs[character.job].features).forEach(([title, obj]) => {
-      if (!["Adventurer", "Champion", "Epic"].includes(title)) {
-        dataOnLines.push({ [title]: obj });
-      }
+      dataOnLines.push({ [title]: obj, removable: true });
     });
 
     // includes feats from the character.feats.general
-    let ownedGenFeats = [];
-    character.getFeats("general").forEach((entry) => {
+    const generalFeatInfo = character.getFeats("general");
+    dataForAdd.push(...generalFeatInfo.potentialFeats);
+    generalFeatInfo.ownedFeats.forEach((entry) => {
       const tier = Object.values(entry)[0];
       const title = Object.keys(entry)[0];
       const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
       const obj = {
         Base: genFeats[title][tier],
       };
-      dataOnLines.push({ [title]: obj });
-      ownedGenFeats.push({ [title]: obj });
+      dataOnLines.push({ [title]: obj, removable: true });
     });
-
-    //Fill out dataForAdd - general feats NOT currently owned
   }
 
   //mode = "talents"
@@ -143,30 +144,31 @@ function LinedInputsWithBtn({mode, character, setPopupInfo}) {
 
   const lines = [];
 
-  // needs to be altered to show if ability has associated feats
-  // maybe just by adding an (A) or (C) or (E) after?
   for (let i = 1; i <= numLines; i++) {
     const item = dataOnLines[i - 1];
     const title = item ? Object.keys(item)[0] : "";
     const obj = item ? Object.values(item)[0] : "";
+    const removable = item ? item.removable : false;
     const highestTier = character.queryHighestFeatTier(title);
     const highestTierLetter = highestTier ? `(${highestTier.charAt(0)})` : "";
 
-    //need to alter this to always include [-] or [+] (sometimes disabled) and sometimes an [i]
+    // need functionality for x button
+    // need functionality for + button
     lines.push(
       <div key={`k-${mode}-${i}`} className="single-line-w-btn">
         <span className="lined-input">{title + highestTierLetter}</span>
-        {item ? (
-          <button
-            onClick={() =>
-              setPopupInfo({ title: title, singleItem: obj, list: null })
-            }
-          >
-            i
-          </button>
-        ) : (
-          <button>+</button>
-        )}
+        <div className="buttons">
+          {item ? removable && <button>✖</button> : <button>+</button>}
+          {item && (
+            <button
+              onClick={() =>
+                setPopupInfo({ title: title, singleItem: obj, list: null })
+              }
+            >
+              i
+            </button>
+          )}
+        </div>
       </div>
     );
   }
@@ -184,12 +186,10 @@ function PopupModal({
   abilitiesBlock,
   setAbilitiesBlock,
 }) {
-
   if (popupInfo.list != null) {
     //NEEDS IMPLEMENTATION
     return <div id="popupMod" className="visible"></div>;
   } else if (popupInfo.singleItem != null) {
-
     // this block is necessary to know how to add/subtract multiple tiers at once
     // most abilities have all three tiers... but some don't / skip a tier.
     let hasAdv = false;
@@ -201,7 +201,6 @@ function PopupModal({
         hasChamp = true;
       }
     });
-
 
     return (
       <div
@@ -244,7 +243,7 @@ function PopupModal({
                   className={`feat ${hasFeat && "owned"}`}
                 >
                   <button
-                    onClick={() => 
+                    onClick={() =>
                       alterFeats(
                         popupInfo.title,
                         tier,
@@ -290,7 +289,10 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
   });
 
   return (
-    <div id="abilitiesblock" className={"input-group" + (tooManyFeats ? " input-error" : "")}>
+    <div
+      id="abilitiesblock"
+      className={"input-group" + (tooManyFeats ? " input-error" : "")}
+    >
       <PopupModal
         popupInfo={popupInfo}
         setPopupInfo={setPopupInfo}
@@ -303,19 +305,35 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
       </div>
       <div id="job-race-gen" className="abilities-input lined-inputs">
         <label className="subtitle-label">Class, Race, Gen Feats</label>
-        <LinedInputsWithBtn mode="general" character={character} setPopupInfo={setPopupInfo}/>
+        <LinedInputsWithBtn
+          mode="general"
+          character={character}
+          setPopupInfo={setPopupInfo}
+        />
       </div>
       <div id="talents" className="abilities-input lined-inputs">
         <label className="subtitle-label">Talents</label>
-        <LinedInputsWithBtn mode="talents" character={character} setPopupInfo={setPopupInfo}/>
+        <LinedInputsWithBtn
+          mode="talents"
+          character={character}
+          setPopupInfo={setPopupInfo}
+        />
       </div>
       <div id="spells" className="abilities-input lined-inputs">
         <label className="subtitle-label">Spells</label>
-        <LinedInputsWithBtn mode="spells" character={character} setPopupInfo={setPopupInfo}/>
+        <LinedInputsWithBtn
+          mode="spells"
+          character={character}
+          setPopupInfo={setPopupInfo}
+        />
       </div>
       <div id="bonusAbs" className="abilities-input lined-inputs">
         <label className="subtitle-label">Bonus Abs</label>
-        <LinedInputsWithBtn mode="bonusAbs" character={character} setPopupInfo={setPopupInfo}/>
+        <LinedInputsWithBtn
+          mode="bonusAbs"
+          character={character}
+          setPopupInfo={setPopupInfo}
+        />
       </div>
     </div>
   );
