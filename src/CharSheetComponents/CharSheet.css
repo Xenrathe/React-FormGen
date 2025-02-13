@@ -294,6 +294,13 @@
   max-width: 90%;
 }
 
+#popupMod.widest {
+  width: 900px;
+  max-width: 95%;
+  max-height: 95%;
+  overflow-y: scroll;
+}
+
 #popupMod.hidden {
   display: none;
 }
@@ -324,6 +331,10 @@
   display: block;
   font-size: 1rem;
   color: #333;
+}
+
+#popupMod.widest .description {
+  font-size: 14px;
 }
 
 #popupMod .feats {

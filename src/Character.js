@@ -26,14 +26,16 @@ export class Character {
     this.name = name; //a string
     this.level = level; //a number 1-10
     this.race = race; //a string
-    this.raceBonus = raceBonus; //a string
+    this.raceBonus = raceBonus; //a string representing BONUS STAT from race
     this.job = job; //a string
-    this.jobBonus = jobBonus; //a string
-    this.jobTalents = jobTalents; //an array of strings
+    this.jobBonus = jobBonus; //a string representing BONUS STAT from job
+    this.jobTalents = jobTalents;
     this.jobSpells = jobSpells;
     this.jobBonusAbs = jobBonusAbs;
-
     this.feats = feats; //an array of objects {"Linguist": "Champion"}.
+
+    this.#trimFeatsAndAbilities(); //removes feats, talents, spells, etc incompatible with job and race
+
     this.armorType = armorType; //a string, "None", "Light", or "Heavy"
     this.hasShield = hasShield == "Shield"; //boolean
     this.weaponType = weaponType; //an object {"melee": meleeString, "ranged": rangedString}
@@ -74,32 +76,37 @@ export class Character {
     return highestMod;
   }
 
+  //NOT IMPLEMENTED
+  //adjust jobTalents, jobSpells, jobBonusAbs, and feats to remove ones incompatible with job and
+  #trimFeatsAndAbilities(){
+
+  }
+
   //types can be "general" or "racial"
   //this gives STAND ALONE feats only
   getFeats(type) {
     let ownedFeats = [];
     let potentialFeats = [];
 
-    if (type.toLowerCase() == "racial") {
-      potentialFeats.push(
-        ...["Adventurer", "Champion", "Epic"].flatMap((tier) =>
-          Object.keys(races[this.race]?.racialPowersAndFeats?.[tier] || {})
-        )
-      );
-    } else if (type.toLowerCase() == "general") {
-      Object.keys(genFeats).forEach((title) => {
-        potentialFeats.push(title);
-      });
+    if (type.toLowerCase() === "racial") {
+        potentialFeats = Object.entries(races[this.race]?.racialPowersAndFeats || {})
+            .filter(([_, tiers]) => !("Base" in tiers)) // exclude default / required features
+            .map(([name, tiers]) => ({ [name]: tiers }));
+    } else if (type.toLowerCase() === "general") {
+        potentialFeats = Object.entries(genFeats).map(([name, tiers]) => ({ [name]: tiers }));
     }
 
     this.feats.forEach((feat) => {
-      if (potentialFeats.includes(Object.keys(feat)[0])) {
-        ownedFeats.push(feat);
-        potentialFeats.splice(potentialFeats.indexOf(feat), 1);
-      }
+        const featName = Object.keys(feat)[0];
+        const index = potentialFeats.findIndex((f) => featName in f);
+        if (index !== -1) {
+            ownedFeats.push(potentialFeats[index]);
+            potentialFeats.splice(index, 1);
+        }
     });
 
-    return { ownedFeats: ownedFeats, potentialFeats: potentialFeats };
+    console.log(potentialFeats);
+    return { ownedFeats, potentialFeats };
   }
 
   //featName = string

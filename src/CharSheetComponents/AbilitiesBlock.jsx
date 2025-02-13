@@ -89,7 +89,7 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
     // includes racialpowers from races[character.race].racialPowersAndFeats
     Object.entries(races[character.race].racialPowersAndFeats).forEach(
       ([title, obj]) => {
-        if (!["Adventurer", "Champion", "Epic"].includes(title)) {
+        if (Object.keys(obj)[0] == "Base") { //do not include OPTIONAL feats
           dataOnLines.push({ [title]: obj, removable: false });
         }
       }
@@ -97,12 +97,10 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
 
     // includes features from jobs[character.job].features
     Object.entries(jobs[character.job].features).forEach(([title, obj]) => {
-      if (!["Adventurer", "Champion", "Epic"].includes(title)) {
-        dataOnLines.push({ [title]: obj, removable: false });
-      }
+      dataOnLines.push({ [title]: obj, removable: false });
     });
 
-    // --includes racialfeats from character.feats.racial
+    // --includes OPTIONAL racialfeats from character.feats.racial
     // data structure: {"Heritage of the Sword": "Adventurer"}
     const racialFeatInfo = character.getFeats("racial"); //has both ownedFeats and potentialFeats
     dataForAdd.push(...racialFeatInfo.potentialFeats);
@@ -116,7 +114,7 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
       dataOnLines.push({ [title]: obj, removable: true });
     });
 
-    // includes feats from the character.feats.general
+    // includes OPTIONAL feats from the character.feats.general
     const generalFeatInfo = character.getFeats("general");
     dataForAdd.push(...generalFeatInfo.potentialFeats);
     generalFeatInfo.ownedFeats.forEach((entry) => {
@@ -158,7 +156,14 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
       <div key={`k-${mode}-${i}`} className="single-line-w-btn">
         <span className="lined-input">{title + highestTierLetter}</span>
         <div className="buttons">
-          {item ? removable && <button>✖</button> : <button>+</button>}
+          {item ? removable && <button>✖</button> : 
+          
+              <button 
+                onClick={() =>
+                  setPopupInfo({ title: "Add Feats", singleItem: null, list: dataForAdd })
+                }>
+                +
+              </button>}
           {item && (
             <button
               onClick={() =>
@@ -187,8 +192,63 @@ function PopupModal({
   setAbilitiesBlock,
 }) {
   if (popupInfo.list != null) {
+    console.log(popupInfo.list );
     //NEEDS IMPLEMENTATION
-    return <div id="popupMod" className="visible"></div>;
+    return (
+      <div id="popupMod" className="visible">
+        <button
+          className="close-btn"
+          onClick={() =>
+            setPopupInfo({ title: "", singleItem: null, list: null })
+          }
+        >
+          ✖
+        </button>
+        <span className="title">{popupInfo.title}</span>
+        <span className="addable-items">
+          {popupInfo.list.forEach((item) => {
+            const title = 'hi';
+          })}
+          {Object.keys(popupInfo.singleItem)
+            .filter((tier) => tier !== "Base" && tier !== "Type")
+            .map((tier) => {
+              const featText = `${tier} - ${popupInfo.singleItem[tier]}`;
+              const btnVisible =
+                !(character.level < 8 && tier == "Epic") &&
+                !(character.level < 5 && tier == "Champion");
+              const hasFeat = character.queryHasFeat(popupInfo.title, tier);
+
+              return (
+                <span
+                  key={`${popupInfo.title}-${tier}`}
+                  className={`feat ${hasFeat && "owned"}`}
+                >
+                  <button
+                    onClick={() =>
+                      alterFeats(
+                        popupInfo.title,
+                        tier,
+                        !hasFeat, // add or remove
+                        hasAdv,
+                        hasChamp,
+                        abilitiesBlock,
+                        setAbilitiesBlock
+                      )
+                    }
+                    className={`${btnVisible ? "visible" : "hidden"} ${
+                      hasFeat ? "remove" : "add"
+                    }`}
+                  >
+                    <span className={`text${hasFeat ? " minus" : ""}`}>{`${
+                      hasFeat ? "-" : "+"
+                    }`}</span>
+                  </button>
+                  <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
+                </span>
+              );
+            })}
+        </span>
+      </div>);
   } else if (popupInfo.singleItem != null) {
     // this block is necessary to know how to add/subtract multiple tiers at once
     // most abilities have all three tiers... but some don't / skip a tier.
@@ -205,9 +265,10 @@ function PopupModal({
     return (
       <div
         id="popupMod"
-        className={`visible ${
-          popupInfo.singleItem.Base.length > 1000 ? "wide" : ""
-        }`}
+        className={`visible
+            ${popupInfo.singleItem.Base.length > 1000 && popupInfo.singleItem.Base.length <= 2000 ? " wide" : ""}
+            ${popupInfo.singleItem.Base.length > 2000 ? " widest" : ""}
+            `}
       >
         <button
           className="close-btn"
