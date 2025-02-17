@@ -105,7 +105,6 @@ export class Character {
         }
     });
 
-    console.log(potentialFeats);
     return { ownedFeats, potentialFeats };
   }
 
@@ -291,7 +290,6 @@ export class Character {
   queryCurrentFeatCounts() {
     let counts = { Adventurer: 0, Champion: 0, Epic: 0 };
 
-    //console.log(this.feats);
     this.feats.forEach((feat) => {
       const tier = Object.values(feat)[0];
       counts[tier] += 1;

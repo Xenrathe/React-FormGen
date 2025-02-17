@@ -337,13 +337,18 @@
   font-size: 14px;
 }
 
-#popupMod .feats {
+#popupMod .feats, #popupMod .addable-items {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-#popupMod .feats .feat {
+#popupMod.widest .addable-items, #popupMod.wide .addable-items {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#popupMod .feats .feat, #popupMod .addable-items .addable-item {
   position: relative;
   border: solid 1px rgb(139, 139, 139);
   padding: 4px;
@@ -354,7 +359,43 @@
   color: red;
 }
 
-#popupMod .feat button {
+#popupMod.wide .addable-items .addable-item {
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5em;
+  max-height: 12em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 8;
+}
+
+#popupMod.widest .addable-items .addable-item {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5em;
+  max-height: 9em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+}
+
+@container btn-container (max-height: 100px) {
+  #popupMod span.text {
+    font-size: 70px;
+  }
+}
+
+@container btn-container (min-height: 101px) {
+  #popupMod span.text {
+    font-size: 100px;
+  }
+}
+
+#popupMod .alterBtn {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -374,29 +415,17 @@
   container-name: btn-container;
 }
 
-@container btn-container (max-height: 100px) {
-  #popupMod span.text {
-    font-size: 70px;
-  }
-}
-
-@container btn-container (min-height: 101px) {
-  #popupMod span.text {
-    font-size: 100px;
-  }
-}
-
-#popupMod .feat button span.minus {
+#popupMod .alterBtn span.minus {
   transform: translateY(-10%);
 }
 
-#popupMod .feat button.add:hover {
+#popupMod .alterBtn.add:hover {
   background-color: rgba(178, 196, 167, 0.664);
   color: rgb(70, 119, 39);
   opacity: 1;
 }
 
-#popupMod .feat button.remove:hover {
+#popupMod .alterBtn.remove:hover {
   background-color: rgba(196, 170, 167, 0.664);
   color: rgb(119, 39, 39);
   opacity: 1;

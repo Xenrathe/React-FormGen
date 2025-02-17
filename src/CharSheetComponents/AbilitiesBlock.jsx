@@ -46,7 +46,7 @@ function alterFeats(
   setAbilitiesBlock
 ) {
   let newFeatArray = [];
-
+  console.log(`alteringFeat: ${featName}, Tier: ${featTier}`)
   if (isAdding) {
     //remove all feats of the given name
     newFeatArray = abilitiesBlock.feats.filter((feat) => {
@@ -102,14 +102,15 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
 
     // --includes OPTIONAL racialfeats from character.feats.racial
     // data structure: {"Heritage of the Sword": "Adventurer"}
-    const racialFeatInfo = character.getFeats("racial"); //has both ownedFeats and potentialFeats
+    const racialFeatInfo = character.getFeats("racial"); //returns both ownedFeats and potentialFeats
     dataForAdd.push(...racialFeatInfo.potentialFeats);
     racialFeatInfo.ownedFeats.forEach((entry) => {
-      const tier = Object.values(entry)[0];
       const title = Object.keys(entry)[0];
+      const tier = Object.keys(Object.values(entry)[0])[0];
       const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
+      console.log(races[character.race].racialPowersAndFeats);
       const obj = {
-        Base: races[character.race].racialpowersAndFeats[tier][title],
+        Base: races[character.race].racialPowersAndFeats[title][tier],
       };
       dataOnLines.push({ [title]: obj, removable: true });
     });
@@ -144,11 +145,24 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
 
   for (let i = 1; i <= numLines; i++) {
     const item = dataOnLines[i - 1];
-    const title = item ? Object.keys(item)[0] : "";
     const obj = item ? Object.values(item)[0] : "";
     const removable = item ? item.removable : false;
+    const title = item ? Object.keys(item)[0] : '';
     const highestTier = character.queryHighestFeatTier(title);
     const highestTierLetter = highestTier ? `(${highestTier.charAt(0)})` : "";
+
+    let addTitle = "Add";
+    if (!item) {
+      if (mode == "general") {
+        addTitle = "Add Feats";
+      } else if (mode == "talents") {
+        addTitle = "Add Talents";
+      } else if (mode == "spells") {
+        addTitle = "Add Spells";
+      } else if (mode == "bonusAbs" && 'bonusAbilitySet' in jobs[character.job]) {
+        addTitle = `Add ${jobs[character.job].bonusAbilitySet.Name}`;
+      }
+    }
 
     // need functionality for x button
     // need functionality for + button
@@ -160,7 +174,7 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
           
               <button 
                 onClick={() =>
-                  setPopupInfo({ title: "Add Feats", singleItem: null, list: dataForAdd })
+                  setPopupInfo({ title: addTitle, singleItem: null, list: dataForAdd })
                 }>
                 +
               </button>}
@@ -192,10 +206,13 @@ function PopupModal({
   setAbilitiesBlock,
 }) {
   if (popupInfo.list != null) {
-    console.log(popupInfo.list );
-    //NEEDS IMPLEMENTATION
+    //console.log(popupInfo.list );
     return (
-      <div id="popupMod" className="visible">
+      <div id="popupMod" 
+            className={`visible
+            ${popupInfo.list.length > 4 && popupInfo.list.length < 9 ? " wide" : ""}
+            ${popupInfo.list.length > 8 ? " widest" : ""}`}
+      >
         <button
           className="close-btn"
           onClick={() =>
@@ -206,47 +223,36 @@ function PopupModal({
         </button>
         <span className="title">{popupInfo.title}</span>
         <span className="addable-items">
-          {popupInfo.list.forEach((item) => {
-            const title = 'hi';
-          })}
-          {Object.keys(popupInfo.singleItem)
-            .filter((tier) => tier !== "Base" && tier !== "Type")
-            .map((tier) => {
-              const featText = `${tier} - ${popupInfo.singleItem[tier]}`;
-              const btnVisible =
-                !(character.level < 8 && tier == "Epic") &&
-                !(character.level < 5 && tier == "Champion");
-              const hasFeat = character.queryHasFeat(popupInfo.title, tier);
-
-              return (
-                <span
-                  key={`${popupInfo.title}-${tier}`}
-                  className={`feat ${hasFeat && "owned"}`}
+          {popupInfo.list.map((item) => {
+            const name = Object.keys(item)[0];
+            const tier = Object.keys(Object.values(item)[0])[0];
+            const text = Object.values(Object.values(item)[0]);
+            
+            return (
+              <span
+                key={`${name}`}
+                className={`addable-item`}
+              >
+                <button
+                  onClick={() =>
+                    alterFeats(
+                      name,
+                      tier,
+                      true, // always add
+                      false, // will never already have adv
+                      false, // will never already have champ
+                      abilitiesBlock,
+                      setAbilitiesBlock
+                    )
+                  }
+                  className="alterBtn visible add"
                 >
-                  <button
-                    onClick={() =>
-                      alterFeats(
-                        popupInfo.title,
-                        tier,
-                        !hasFeat, // add or remove
-                        hasAdv,
-                        hasChamp,
-                        abilitiesBlock,
-                        setAbilitiesBlock
-                      )
-                    }
-                    className={`${btnVisible ? "visible" : "hidden"} ${
-                      hasFeat ? "remove" : "add"
-                    }`}
-                  >
-                    <span className={`text${hasFeat ? " minus" : ""}`}>{`${
-                      hasFeat ? "-" : "+"
-                    }`}</span>
-                  </button>
-                  <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
-                </span>
-              );
-            })}
+                  <span className="text">+</span>
+                </button>
+                <strong>{name}</strong> - {text}
+              </span>
+            );
+          })}
         </span>
       </div>);
   } else if (popupInfo.singleItem != null) {
@@ -315,7 +321,7 @@ function PopupModal({
                         setAbilitiesBlock
                       )
                     }
-                    className={`${btnVisible ? "visible" : "hidden"} ${
+                    className={`alterBtn ${btnVisible ? "visible" : "hidden"} ${
                       hasFeat ? "remove" : "add"
                     }`}
                   >
