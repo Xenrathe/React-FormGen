@@ -36,6 +36,8 @@ function getFeatsRemainingString(character) {
   return returnString;
 }
 
+//add or remove a feat WITHIN another feat/ability
+//not for STAND ALONE feats or abilities
 function alterFeats(
   featName,
   featTier,
@@ -46,7 +48,6 @@ function alterFeats(
   setAbilitiesBlock
 ) {
   let newFeatArray = [];
-  console.log(`alteringFeat: ${featName}, Tier: ${featTier}`)
   if (isAdding) {
     //remove all feats of the given name
     newFeatArray = abilitiesBlock.feats.filter((feat) => {
@@ -80,7 +81,23 @@ function alterFeats(
   setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray });
 }
 
-function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
+//remove stand-alone feats, spells, etc
+function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
+  if (mode == "general") {
+    const newFeatArray = abilitiesBlock.feats.filter(
+      (feat) => Object.keys(feat)[0] != name
+    );
+    setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray });
+  }
+}
+
+function LinedInputsWithBtn({
+  mode,
+  character,
+  setPopupInfo,
+  abilitiesBlock,
+  setAbilitiesBlock,
+}) {
   let numLines = 10;
   let dataOnLines = [];
   let dataForAdd = [];
@@ -89,7 +106,8 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
     // includes racialpowers from races[character.race].racialPowersAndFeats
     Object.entries(races[character.race].racialPowersAndFeats).forEach(
       ([title, obj]) => {
-        if (Object.keys(obj)[0] == "Base") { //do not include OPTIONAL feats
+        if (Object.keys(obj)[0] == "Base") {
+          //do not include OPTIONAL feats
           dataOnLines.push({ [title]: obj, removable: false });
         }
       }
@@ -108,10 +126,12 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
       const title = Object.keys(entry)[0];
       const tier = Object.keys(Object.values(entry)[0])[0];
       const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
-      console.log(races[character.race].racialPowersAndFeats);
-      const obj = {
-        Base: races[character.race].racialPowersAndFeats[title][tier],
-      };
+      const obj = Object.fromEntries(
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
+          subKey,
+          subValue,
+        ])
+      );
       dataOnLines.push({ [title]: obj, removable: true });
     });
 
@@ -119,12 +139,17 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
     const generalFeatInfo = character.getFeats("general");
     dataForAdd.push(...generalFeatInfo.potentialFeats);
     generalFeatInfo.ownedFeats.forEach((entry) => {
-      const tier = Object.values(entry)[0];
       const title = Object.keys(entry)[0];
+      const tier = Object.keys(Object.values(entry)[0])[0];
       const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
-      const obj = {
-        Base: genFeats[title][tier],
-      };
+      // put the object into standard form
+      const obj = Object.fromEntries(
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
+          subKey,
+          subValue,
+        ])
+      );
+      console.log(obj);
       dataOnLines.push({ [title]: obj, removable: true });
     });
   }
@@ -147,7 +172,7 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
     const item = dataOnLines[i - 1];
     const obj = item ? Object.values(item)[0] : "";
     const removable = item ? item.removable : false;
-    const title = item ? Object.keys(item)[0] : '';
+    const title = item ? Object.keys(item)[0] : "";
     const highestTier = character.queryHighestFeatTier(title);
     const highestTierLetter = highestTier ? `(${highestTier.charAt(0)})` : "";
 
@@ -159,7 +184,10 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
         addTitle = "Add Talents";
       } else if (mode == "spells") {
         addTitle = "Add Spells";
-      } else if (mode == "bonusAbs" && 'bonusAbilitySet' in jobs[character.job]) {
+      } else if (
+        mode == "bonusAbs" &&
+        "bonusAbilitySet" in jobs[character.job]
+      ) {
         addTitle = `Add ${jobs[character.job].bonusAbilitySet.Name}`;
       }
     }
@@ -170,14 +198,29 @@ function LinedInputsWithBtn({ mode, character, setPopupInfo }) {
       <div key={`k-${mode}-${i}`} className="single-line-w-btn">
         <span className="lined-input">{title + highestTierLetter}</span>
         <div className="buttons">
-          {item ? removable && <button>✖</button> : 
-          
-              <button 
+          {item ? (
+            removable && (
+              <button
                 onClick={() =>
-                  setPopupInfo({ title: addTitle, singleItem: null, list: dataForAdd })
-                }>
-                +
-              </button>}
+                  removeAbility(mode, title, abilitiesBlock, setAbilitiesBlock)
+                }
+              >
+                x
+              </button>
+            )
+          ) : (
+            <button
+              onClick={() =>
+                setPopupInfo({
+                  title: addTitle,
+                  singleItem: null,
+                  list: dataForAdd,
+                })
+              }
+            >
+              +
+            </button>
+          )}
           {item && (
             <button
               onClick={() =>
@@ -208,9 +251,14 @@ function PopupModal({
   if (popupInfo.list != null) {
     //console.log(popupInfo.list );
     return (
-      <div id="popupMod" 
-            className={`visible
-            ${popupInfo.list.length > 4 && popupInfo.list.length < 9 ? " wide" : ""}
+      <div
+        id="popupMod"
+        className={`visible
+            ${
+              popupInfo.list.length > 4 && popupInfo.list.length < 9
+                ? " wide"
+                : ""
+            }
             ${popupInfo.list.length > 8 ? " widest" : ""}`}
       >
         <button
@@ -227,14 +275,11 @@ function PopupModal({
             const name = Object.keys(item)[0];
             const tier = Object.keys(Object.values(item)[0])[0];
             const text = Object.values(Object.values(item)[0]);
-            
+
             return (
-              <span
-                key={`${name}`}
-                className={`addable-item`}
-              >
+              <span key={`${name}`} className={`addable-item`}>
                 <button
-                  onClick={() =>
+                  onClick={() => {
                     alterFeats(
                       name,
                       tier,
@@ -243,8 +288,9 @@ function PopupModal({
                       false, // will never already have champ
                       abilitiesBlock,
                       setAbilitiesBlock
-                    )
-                  }
+                    );
+                    setPopupInfo({ title: "", singleItem: null, list: null });
+                  }}
                   className="alterBtn visible add"
                 >
                   <span className="text">+</span>
@@ -254,12 +300,31 @@ function PopupModal({
             );
           })}
         </span>
-      </div>);
+      </div>
+    );
   } else if (popupInfo.singleItem != null) {
     // this block is necessary to know how to add/subtract multiple tiers at once
     // most abilities have all three tiers... but some don't / skip a tier.
     let hasAdv = false;
     let hasChamp = false;
+
+    const infoLength = Object.values(popupInfo.singleItem)
+      .map((value) => value.length)
+      .reduce((sum, length) => sum + length, 0);
+
+    const baseDescription =
+      "Base" in popupInfo.singleItem ? (
+        <span className="description">
+          {popupInfo.singleItem.Base.split("\n\n").map((paragraph, index) => (
+            <span key={index}>
+              {paragraph}
+              <br />
+              <br />
+            </span>
+          ))}
+        </span>
+      ) : null;
+
     Object.keys(popupInfo.singleItem).forEach((tier) => {
       if (tier == "Adventurer") {
         hasAdv = true;
@@ -272,8 +337,8 @@ function PopupModal({
       <div
         id="popupMod"
         className={`visible
-            ${popupInfo.singleItem.Base.length > 1000 && popupInfo.singleItem.Base.length <= 2000 ? " wide" : ""}
-            ${popupInfo.singleItem.Base.length > 2000 ? " widest" : ""}
+            ${infoLength > 1000 && infoLength <= 2000 ? " wide" : ""}
+            ${infoLength > 2000 ? " widest" : ""}
             `}
       >
         <button
@@ -285,15 +350,7 @@ function PopupModal({
           ✖
         </button>
         <span className="title">{popupInfo.title}</span>
-        <span className="description">
-          {popupInfo.singleItem.Base.split("\n\n").map((paragraph, index) => (
-            <span key={index}>
-              {paragraph}
-              <br />
-              <br />
-            </span>
-          ))}
-        </span>
+        {baseDescription}
         <span className="feats">
           {Object.keys(popupInfo.singleItem)
             .filter((tier) => tier !== "Base" && tier !== "Type")
@@ -376,6 +433,8 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           mode="general"
           character={character}
           setPopupInfo={setPopupInfo}
+          abilitiesBlock={abilitiesBlock}
+          setAbilitiesBlock={setAbilitiesBlock}
         />
       </div>
       <div id="talents" className="abilities-input lined-inputs">
@@ -384,6 +443,8 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           mode="talents"
           character={character}
           setPopupInfo={setPopupInfo}
+          abilitiesBlock={abilitiesBlock}
+          setAbilitiesBlock={setAbilitiesBlock}
         />
       </div>
       <div id="spells" className="abilities-input lined-inputs">
@@ -392,6 +453,8 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           mode="spells"
           character={character}
           setPopupInfo={setPopupInfo}
+          abilitiesBlock={abilitiesBlock}
+          setAbilitiesBlock={setAbilitiesBlock}
         />
       </div>
       <div id="bonusAbs" className="abilities-input lined-inputs">
@@ -400,6 +463,8 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           mode="bonusAbs"
           character={character}
           setPopupInfo={setPopupInfo}
+          abilitiesBlock={abilitiesBlock}
+          setAbilitiesBlock={setAbilitiesBlock}
         />
       </div>
     </div>

@@ -208,6 +208,12 @@
   text-overflow: ellipsis;
 }
 
+.single-line-w-btn .buttons {
+  display: flex;
+  justify-content: end;
+  width: 32px;
+}
+
 .single-line-w-btn button {
   padding: 2px;
   border: 1px solid black;
@@ -337,18 +343,21 @@
   font-size: 14px;
 }
 
-#popupMod .feats, #popupMod .addable-items {
+#popupMod .feats,
+#popupMod .addable-items {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-#popupMod.widest .addable-items, #popupMod.wide .addable-items {
+#popupMod.widest .addable-items,
+#popupMod.wide .addable-items {
   flex-direction: row;
   flex-wrap: wrap;
 }
 
-#popupMod .feats .feat, #popupMod .addable-items .addable-item {
+#popupMod .feats .feat,
+#popupMod .addable-items .addable-item {
   position: relative;
   border: solid 1px rgb(139, 139, 139);
   padding: 4px;
