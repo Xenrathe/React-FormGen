@@ -392,7 +392,13 @@
   -webkit-line-clamp: 6;
 }
 
-@container btn-container (max-height: 100px) {
+@container btn-container (max-height: 50px) {
+  #popupMod span.text {
+    font-size: 50px;
+  }
+}
+
+@container btn-container (min-height: 51px) and (max-height: 100px) {
   #popupMod span.text {
     font-size: 70px;
   }

@@ -111,7 +111,7 @@ const jobs = {
     MD: 11,
     baseHP: 7,
     recoveries: [8, 8], //8 uses, 1d8
-    talentProgression: 3,
+    talentProgression: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     features: Object.fromEntries(
       Object.entries(bardAbilities["Talents"]).filter(
         ([_, value]) => value.Type === "Default"
@@ -182,7 +182,7 @@ const jobs = {
     MD: 11,
     baseHP: 7,
     recoveries: [8, 8], //8 uses, 1d8
-    talentProgression: 3,
+    talentProgression: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     features: Object.fromEntries(
       Object.entries(clericAbilities["Talents"]).filter(
         ([_, value]) => value.Type === "Default"
@@ -452,7 +452,7 @@ const jobs = {
     MD: 10,
     baseHP: 6,
     recoveries: [8, 8], //8 uses, 1d8
-    talentProgression: 3,
+    talentProgression: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     features: Object.fromEntries(
       Object.entries(rogueAbilities["Talents"]).filter(
         ([_, value]) => value.Type === "Default"
@@ -510,7 +510,7 @@ const jobs = {
     MD: 10,
     baseHP: 6,
     recoveries: [8, 6], // 8 uses, 1d6
-    talentProgression: 3,
+    talentProgression: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     features: Object.fromEntries(
       Object.entries(sorcererAbilities["Talents"]).filter(
         ([_, value]) => value.Type === "Default"
@@ -578,7 +578,7 @@ const jobs = {
     MD: 12,
     baseHP: 6,
     recoveries: [8, 6], // 8 uses, 1d6
-    talentProgression: 3,
+    talentProgression: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
     features: Object.fromEntries(
       Object.entries(wizardAbilities["Talents"]).filter(
         ([_, value]) => value.Type === "Default"

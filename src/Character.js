@@ -29,7 +29,7 @@ export class Character {
     this.raceBonus = raceBonus; //a string representing BONUS STAT from race
     this.job = job; //a string
     this.jobBonus = jobBonus; //a string representing BONUS STAT from job
-    this.jobTalents = jobTalents;
+    this.jobTalents = jobTalents; //an array of strings
     this.jobSpells = jobSpells;
     this.jobBonusAbs = jobBonusAbs;
     this.feats = feats; //an array of objects {"Linguist": "Champion"}.
@@ -80,53 +80,6 @@ export class Character {
   //adjust jobTalents, jobSpells, jobBonusAbs, and feats to remove ones incompatible with job and
   #trimFeatsAndAbilities(){
 
-  }
-
-  //types can be "general" or "racial"
-  //this gives STAND ALONE feats only
-  getFeats(type) {
-    let ownedFeats = [];
-    let potentialFeats = [];
-
-    if (type.toLowerCase() === "racial") {
-        potentialFeats = Object.entries(races[this.race]?.racialPowersAndFeats || {})
-            .filter(([_, tiers]) => !("Base" in tiers)) // exclude default / required features
-            .map(([name, tiers]) => ({ [name]: tiers }));
-    } else if (type.toLowerCase() === "general") {
-        potentialFeats = Object.entries(genFeats).map(([name, tiers]) => ({ [name]: tiers }));
-    }
-
-    this.feats.forEach((feat) => {
-        const featName = Object.keys(feat)[0];
-        const index = potentialFeats.findIndex((f) => featName in f);
-        if (index !== -1) {
-            ownedFeats.push(potentialFeats[index]);
-            potentialFeats.splice(index, 1);
-        }
-    });
-
-    return { ownedFeats, potentialFeats };
-  }
-
-  //featName = string
-  //featTier = "Adventurer", "Champion", or "Epic"
-  //you may need to call this multiple times to add multiple tiers in a single click
-  //the logic to do so is left to whatever external function calls this
-  addFeat(featName, featTier) {
-    this.feats.push({ [featName]: featTier });
-  }
-
-  //featName = string
-  //featTier = "Adventurer", "Champion", or "Epic"
-  //will also remove all higher tiers. e.g. removing Adventurer tier will also remove Champ + Epic
-  removeFeat(featName, featTier) {
-    const tiers = ["Adventurer", "Champion", "Epic"];
-    const removeIndex = tiers.indexOf(featTier); //gives minimumIndex of removal
-
-    this.feats = this.feats.filter((feat) => {
-      const [name, tier] = Object.entries(feat)[0];
-      return !(name == featName && tiers.indexOf(tier) >= removeIndex);
-    });
   }
 
   calculateMaxHP() {
@@ -257,6 +210,53 @@ export class Character {
 
   calculateRacialPowers() {}
 
+  //type can be "general" or "racial"
+  //this gives STAND ALONE feats only, separated into { ownedFeats, potentialFeats }
+  getFeats(type) {
+    let ownedFeats = [];
+    let potentialFeats = [];
+
+    if (type.toLowerCase() === "racial") {
+        potentialFeats = Object.entries(races[this.race]?.racialPowersAndFeats || {})
+            .filter(([_, tiers]) => !("Base" in tiers)) // exclude default / required features
+            .map(([name, tiers]) => ({ [name]: tiers }));
+    } else if (type.toLowerCase() === "general") {
+        potentialFeats = Object.entries(genFeats).map(([name, tiers]) => ({ [name]: tiers }));
+    }
+
+    this.feats.forEach((feat) => {
+        const featName = Object.keys(feat)[0];
+        const index = potentialFeats.findIndex((f) => featName in f);
+        if (index !== -1) {
+            ownedFeats.push(potentialFeats[index]);
+            potentialFeats.splice(index, 1);
+        }
+    });
+
+    return { ownedFeats, potentialFeats };
+  }
+
+  //featName = string
+  //featTier = "Adventurer", "Champion", or "Epic"
+  //you may need to call this multiple times to add multiple tiers in a single click
+  //the logic to do so is left to whatever external function calls this
+  addFeat(featName, featTier) {
+    this.feats.push({ [featName]: featTier });
+  }
+
+  //featName = string
+  //featTier = "Adventurer", "Champion", or "Epic"
+  //will also remove all higher tiers. e.g. removing Adventurer tier will also remove Champ + Epic
+  removeFeat(featName, featTier) {
+    const tiers = ["Adventurer", "Champion", "Epic"];
+    const removeIndex = tiers.indexOf(featTier); //gives minimumIndex of removal
+
+    this.feats = this.feats.filter((feat) => {
+      const [name, tier] = Object.entries(feat)[0];
+      return !(name == featName && tiers.indexOf(tier) >= removeIndex);
+    });
+  }
+
   //returns an array [totalPointsMax, maxPerBG]
   queryMaxBackground() {
     let maxTotal = 8;
@@ -268,11 +268,63 @@ export class Character {
     return [maxTotal, maxPer];
   }
 
+  // for most jobs, returns a single number
+  // for barbarian, however, returns an array [adventurer max, champ max, epic max]
+  #queryTalentsMax() {
+    if (this.job == "Barbarian") {
+      const maxAdv = jobs["Barbarian"].talentProgression.Adventurer[this.level - 1];
+      const maxChamp = jobs["Barbarian"].talentProgression.Champion[this.level - 1];
+      const maxEpic = jobs["Barbarian"].talentProgression.Epic[this.level - 1];
+
+      return [maxAdv, maxChamp, maxEpic];
+    }
+    else {
+      const maxTalents = jobs[this.job].talentProgression[this.level - 1];
+
+      return maxTalents;
+    }
+  }
+
+  // for most jobs, returns a single number
+  // for barbarian, however, returns an array [adventurer #, champ #, epic #]
+  #queryTalentsCurrentCounts() {
+    if (this.job == "Barbarian") {
+      const tiers = ["Adventurer", "Champion", "Epic"];
+      let counts = [0, 0, 0];
+
+      this.jobTalents.forEach ((talent) => {
+        counts[tiers.indexOf(jobs["Barbarian"].talentChoices[talent].Type)] += 1;
+      })
+
+      return counts;
+    } else {
+      return this.jobTalents.length;
+    }
+  }
+
+  //for most jobs, returns an array with one number [#]
+  // for barbarian, however, returns an array [adventurer #, champ #, epic #]
+  queryTalentsRemaining() {
+    const currentTalentCounts = this.#queryTalentsCurrentCounts();
+    const maxTalents = this.#queryTalentsMax();
+
+    if (this.job == "Barbarian") {
+      const advTalentsRemain = maxTalents[0] - currentTalentCounts[0];
+      const champTalentsRemain = maxTalents[1] - currentTalentCounts[1];
+      const epicTalentsRemain = maxTalents[2] - currentTalentCounts[2];
+  
+      return [advTalentsRemain, champTalentsRemain, epicTalentsRemain];
+    }
+    else {
+      return [maxTalents - currentTalentCounts];
+    }
+  }
+
   // 1A - 2A - 3A - 4A (levels 1-4)
   // 1C - 2C - 3C (levels 5-7)
   // 1E - 2E - 3E (levels 8-10)
   // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
-  queryMaxFeats() {
+  #queryFeatsMax() {
     let maxAdv = this.level > 4 ? 4 : this.level;
     maxAdv = this.race == "Human" ? maxAdv + 1 : maxAdv;
 
@@ -287,29 +339,31 @@ export class Character {
 
   // this.feats must be in correct data structure (see constructor above)
   // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
-  queryCurrentFeatCounts() {
+  #queryFeatsCurrentCounts() {
     let counts = { Adventurer: 0, Champion: 0, Epic: 0 };
 
     this.feats.forEach((feat) => {
       const tier = Object.values(feat)[0];
       counts[tier] += 1;
     });
-    /*
-    Object.keys(this.feats).forEach((typeKey) => {
-      this.feats[typeKey].forEach((feat) => {
-        const featValues = Object.values(feat);
-        if (featValues.length != 0) {
-          counts[featValues[0]] += 1;
-        }
-      });
-    });*/
 
     return counts;
   }
 
+  //returns an array [adv #, champ #, epic #]
+  queryFeatsRemaining() {
+    const currentFeatCounts = this.#queryFeatsCurrentCounts();
+    const maxFeats = this.#queryFeatsMax();
+    const advFeatsRemain = maxFeats.Adventurer - currentFeatCounts.Adventurer;
+    const champFeatsRemain = maxFeats.Champion - currentFeatCounts.Champion;
+    const epicFeatsRemain = maxFeats.Epic - currentFeatCounts.Epic;
+
+    return [advFeatsRemain, champFeatsRemain, epicFeatsRemain];
+  }
+
   //returns true or false
-  queryHasFeat(featName, featTier) {
-    const highestFeatTier = this.queryHighestFeatTier(featName);
+  queryFeatIsOwned(featName, featTier) {
+    const highestFeatTier = this.queryFeatHighestTier(featName);
 
     // does not have feat at all
     if (!highestFeatTier) {
@@ -329,7 +383,7 @@ export class Character {
 
   //returns highest tier (e.g. "Epic") of feat owned
   //returns false if not owned
-  queryHighestFeatTier(featName) {
+  queryFeatHighestTier(featName) {
     // search through this.feats to see if feat is owned
     let ownedFeats = [];
     this.feats.forEach((feat) => {

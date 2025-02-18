@@ -164,7 +164,7 @@ function PopupModal({
               const btnVisible =
                 !(character.level < 8 && tier == "Epic") &&
                 !(character.level < 5 && tier == "Champion");
-              const hasFeat = character.queryHasFeat(popupInfo.title, tier);
+              const hasFeat = character.queryFeatIsOwned(popupInfo.title, tier);
 
               return (
                 <span

@@ -4,37 +4,32 @@ import genFeats from "../data/abilities/generalfeats.json";
 import PopupModal from "./PopupModal.jsx";
 import { useState } from "react";
 
-//returns an array [adv #, champ #, epic #]
-function getFeatsRemaining(character) {
-  const currentFeatCounts = character.queryCurrentFeatCounts();
-  const maxFeats = character.queryMaxFeats();
-  const advFeatsRemain = maxFeats.Adventurer - currentFeatCounts.Adventurer;
-  const champFeatsRemain = maxFeats.Champion - currentFeatCounts.Champion;
-  const epicFeatsRemain = maxFeats.Epic - currentFeatCounts.Epic;
-
-  return [advFeatsRemain, champFeatsRemain, epicFeatsRemain];
-}
-
 //returns a string e.g. "(Feats Remain: 1 A, 2 C, 2 E)" ; returns "" if no Feats remain
-function getFeatsRemainingString(character) {
-  const [advFeatsRemain, champFeatsRemain, epicFeatsRemain] =
-    getFeatsRemaining(character);
+function getAbilitiesRemainingString(character, typeOfAbility, includeTitle, abilitiesRemainingArray) {
 
-  if (advFeatsRemain == 0 && champFeatsRemain == 0 && epicFeatsRemain == 0) {
-    return "";
+  const title = includeTitle ? `${typeOfAbility} Remain: ` : "";
+  if (character.job == "Barbarian" && typeOfAbility == "Talents" || typeOfAbility == "Feats"){
+    const [advRemain, champRemain, epicRemain] = abilitiesRemainingArray;
+
+    if (advRemain == 0 && champRemain == 0 && epicRemain == 0) {
+      return "";
+    }
+
+    let returnString = `(${title}${advRemain} A`;
+    if (character.level > 4) {
+      returnString += `, ${champRemain} C`;
+    }
+    if (character.level > 7) {
+      returnString += `, ${epicRemain} E`;
+    }
+
+    returnString += ")";
+
+    return returnString;
+  } else if (typeOfAbility == "Talents") {
+    return `(${title}${abilitiesRemainingArray[0]})`;
   }
 
-  let returnString = `(Feats Remain: ${advFeatsRemain} A`;
-  if (character.level > 4) {
-    returnString += `, ${champFeatsRemain} C`;
-  }
-  if (character.level > 7) {
-    returnString += `, ${epicFeatsRemain} E`;
-  }
-
-  returnString += ")";
-
-  return returnString;
 }
 
 //remove stand-alone feats, spells, etc
@@ -129,7 +124,7 @@ function LinedInputsWithBtn({
     const obj = item ? Object.values(item)[0] : "";
     const removable = item ? item.removable : false;
     const title = item ? Object.keys(item)[0] : "";
-    const highestTier = character.queryHighestFeatTier(title);
+    const highestTier = character.queryFeatHighestTier(title);
     const highestTierLetter = highestTier ? `(${highestTier.charAt(0)})` : "";
 
     let addTitle = "Add";
@@ -202,16 +197,25 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
   });
 
   let tooManyFeats = false;
-  getFeatsRemaining(character).forEach((featNum) => {
+  character.queryFeatsRemaining().forEach((featNum) => {
     if (featNum < 0) {
       tooManyFeats = true;
     }
   });
 
+  let tooManyTalents = false;
+  character.queryTalentsRemaining().forEach((talentNum) => {
+    if (talentNum < 0) {
+      tooManyTalents = true;
+    }
+  });
+
+  const hasError = (tooManyTalents || tooManyFeats);
+
   return (
     <div
       id="abilitiesblock"
-      className={"input-group" + (tooManyFeats ? " input-error" : "")}
+      className={"input-group" + (hasError ? " input-error" : "")}
     >
       <PopupModal
         popupInfo={popupInfo}
@@ -221,7 +225,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         setAbilitiesBlock={setAbilitiesBlock}
       />
       <div className="title-label">
-        Abilities {getFeatsRemainingString(character)}
+        Abilities {getAbilitiesRemainingString(character, "Feats", true, character.queryFeatsRemaining())}
       </div>
       <div id="job-race-gen" className="abilities-input lined-inputs">
         <label className="subtitle-label">Class, Race, Gen Feats</label>
@@ -234,7 +238,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         />
       </div>
       <div id="talents" className="abilities-input lined-inputs">
-        <label className="subtitle-label">Talents</label>
+        <label className="subtitle-label">Talents {getAbilitiesRemainingString(character, "Talents", false, character.queryTalentsRemaining())}</label>
         <LinedInputsWithBtn
           mode="talents"
           character={character}
