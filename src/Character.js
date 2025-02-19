@@ -308,14 +308,15 @@ export class Character {
   }
 
   // for most jobs, returns a single number
-  // for barbarian, however, returns an array [adventurer max, champ max, epic max]
+  // for barbarian (and other non-core class?), however, returns an array [adventurer max, champ max, epic max]
   #queryTalentsMax() {
-    if (this.job == "Barbarian") {
+    const hasTieredTalents = "Adventurer" in jobs[this.job].talentProgression;
+    if (hasTieredTalents) {
       const maxAdv =
-        jobs["Barbarian"].talentProgression.Adventurer[this.level - 1];
+        jobs[this.job].talentProgression.Adventurer[this.level - 1];
       const maxChamp =
-        jobs["Barbarian"].talentProgression.Champion[this.level - 1];
-      const maxEpic = jobs["Barbarian"].talentProgression.Epic[this.level - 1];
+        jobs[this.job].talentProgression.Champion[this.level - 1];
+      const maxEpic = jobs[this.job].talentProgression.Epic[this.level - 1];
 
       return [maxAdv, maxChamp, maxEpic];
     } else {
@@ -326,15 +327,16 @@ export class Character {
   }
 
   // for most jobs, returns a single number
-  // for barbarian, however, returns an array [adventurer #, champ #, epic #]
+  // for barbarian (and other non-core class?), however, returns an array [adventurer #, champ #, epic #]
   #queryTalentsCurrentCounts() {
-    if (this.job == "Barbarian") {
+    const hasTieredTalents = "Adventurer" in jobs[this.job].talentProgression;
+    if (hasTieredTalents) {
       const tiers = ["Adventurer", "Champion", "Epic"];
       let counts = [0, 0, 0];
 
       this.jobTalents.forEach((talent) => {
         counts[
-          tiers.indexOf(jobs["Barbarian"].talentChoices[talent].Type)
+          tiers.indexOf(jobs[this.job].talentChoices[talent].Type)
         ] += 1;
       });
 
@@ -344,13 +346,44 @@ export class Character {
     }
   }
 
+  //this gives talents, separated into { ownedTalents, potentialTalents }
+  getTalents() {
+    let ownedFeats = [];
+    let potentialFeats = [];
+
+    if (type.toLowerCase() === "racial") {
+      potentialFeats = Object.entries(
+        races[this.race]?.racialPowersAndFeats || {}
+      )
+        .filter(([_, tiers]) => !("Base" in tiers)) // exclude default / required features
+        .map(([name, tiers]) => ({ [name]: tiers }));
+    } else if (type.toLowerCase() === "general") {
+      potentialFeats = Object.entries(genFeats).map(([name, tiers]) => ({
+        [name]: tiers,
+      }));
+    }
+
+    this.feats.forEach((feat) => {
+      const featName = Object.keys(feat)[0];
+      const index = potentialFeats.findIndex((f) => featName in f);
+      if (index !== -1) {
+        ownedFeats.push(potentialFeats[index]);
+        potentialFeats.splice(index, 1);
+      }
+    });
+
+    return { ownedFeats, potentialFeats };
+  }
+
   //for most jobs, returns an array with one number [#]
-  // for barbarian, however, returns an array [adventurer #, champ #, epic #]
+  // for barbarian (or other non-core classes?), however, returns an array [adventurer #, champ #, epic #]
   queryTalentsRemaining() {
     const currentTalentCounts = this.#queryTalentsCurrentCounts();
     const maxTalents = this.#queryTalentsMax();
 
-    if (this.job == "Barbarian") {
+    const hasTieredTalents = "Adventurer" in jobs[this.job].talentProgression;
+
+    if (hasTieredTalents) {
       const advTalentsRemain = maxTalents[0] - currentTalentCounts[0];
       const champTalentsRemain = maxTalents[1] - currentTalentCounts[1];
       const epicTalentsRemain = maxTalents[2] - currentTalentCounts[2];
