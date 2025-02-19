@@ -8,8 +8,10 @@ export class Character {
     name,
     level,
     race,
+    oldRace,
     raceBonus,
     job,
+    oldJob,
     jobBonus,
     jobTalents,
     jobSpells,
@@ -26,8 +28,10 @@ export class Character {
     this.name = name; //a string
     this.level = level; //a number 1-10
     this.race = race; //a string
+    this.oldRace = oldRace;
     this.raceBonus = raceBonus; //a string representing BONUS STAT from race
     this.job = job; //a string
+    this.oldJob = oldJob;
     this.jobBonus = jobBonus; //a string representing BONUS STAT from job
     this.jobTalents = jobTalents; //an array of strings
     this.jobSpells = jobSpells;
@@ -54,7 +58,6 @@ export class Character {
     this.rangedAtk = this.calculateAtk(false); //same as above
     this.maxHP = this.calculateMaxHP();
     this.recoveries = this.calculateRecoveryDice(); //[# daily, "XdY + Z"]
-    this.racialPowers = this.calculateRacialPowers();
   }
 
   //utility function returns middleMod from a set of 3
@@ -76,10 +79,44 @@ export class Character {
     return highestMod;
   }
 
-  //NOT IMPLEMENTED
   //adjust jobTalents, jobSpells, jobBonusAbs, and feats to remove ones incompatible with job and
-  #trimFeatsAndAbilities(){
+  #trimFeatsAndAbilities() {
+    //if race changed, remove racialFeats from old race
+    if (this.race !== this.oldRace) {
+      console.log(
+        `REMOVING OLD RACE STUFF. race: ${this.race}. oldRace: ${this.oldRace}`
+      );
+      Object.keys(races[this.oldRace].racialPowersAndFeats).forEach((name) => {
+        this.removeFeat(name, "Adventurer");
+      });
 
+      this.oldRace = this.race; //reset to say they're synchronized now
+    }
+
+    if (this.job != this.oldJob) {
+      //there's no overlap for these so clear them
+      this.jobTalents = [];
+      this.jobSpells = [];
+      this.jobBonusAbs = [];
+
+      console.log("REMOVING OLD JOB STUFF");
+      //clear all feats that are NOT general or racial
+      const racialPowersNames = Object.keys(
+        races[this.race].racialPowersAndFeats
+      );
+      const generalFeatNames = Object.keys(genFeats);
+      this.feats.forEach((feat) => {
+        const featName = Object.keys(feat)[0];
+        if (
+          !racialPowersNames.includes(featName) &&
+          !generalFeatNames.includes(featName)
+        ) {
+          this.removeFeat(featName, "Adventurer");
+        }
+      });
+
+      this.oldJob = this.job;
+    }
   }
 
   calculateMaxHP() {
@@ -208,8 +245,6 @@ export class Character {
     return atkArray;
   }
 
-  calculateRacialPowers() {}
-
   //type can be "general" or "racial"
   //this gives STAND ALONE feats only, separated into { ownedFeats, potentialFeats }
   getFeats(type) {
@@ -217,20 +252,24 @@ export class Character {
     let potentialFeats = [];
 
     if (type.toLowerCase() === "racial") {
-        potentialFeats = Object.entries(races[this.race]?.racialPowersAndFeats || {})
-            .filter(([_, tiers]) => !("Base" in tiers)) // exclude default / required features
-            .map(([name, tiers]) => ({ [name]: tiers }));
+      potentialFeats = Object.entries(
+        races[this.race]?.racialPowersAndFeats || {}
+      )
+        .filter(([_, tiers]) => !("Base" in tiers)) // exclude default / required features
+        .map(([name, tiers]) => ({ [name]: tiers }));
     } else if (type.toLowerCase() === "general") {
-        potentialFeats = Object.entries(genFeats).map(([name, tiers]) => ({ [name]: tiers }));
+      potentialFeats = Object.entries(genFeats).map(([name, tiers]) => ({
+        [name]: tiers,
+      }));
     }
 
     this.feats.forEach((feat) => {
-        const featName = Object.keys(feat)[0];
-        const index = potentialFeats.findIndex((f) => featName in f);
-        if (index !== -1) {
-            ownedFeats.push(potentialFeats[index]);
-            potentialFeats.splice(index, 1);
-        }
+      const featName = Object.keys(feat)[0];
+      const index = potentialFeats.findIndex((f) => featName in f);
+      if (index !== -1) {
+        ownedFeats.push(potentialFeats[index]);
+        potentialFeats.splice(index, 1);
+      }
     });
 
     return { ownedFeats, potentialFeats };
@@ -272,13 +311,14 @@ export class Character {
   // for barbarian, however, returns an array [adventurer max, champ max, epic max]
   #queryTalentsMax() {
     if (this.job == "Barbarian") {
-      const maxAdv = jobs["Barbarian"].talentProgression.Adventurer[this.level - 1];
-      const maxChamp = jobs["Barbarian"].talentProgression.Champion[this.level - 1];
+      const maxAdv =
+        jobs["Barbarian"].talentProgression.Adventurer[this.level - 1];
+      const maxChamp =
+        jobs["Barbarian"].talentProgression.Champion[this.level - 1];
       const maxEpic = jobs["Barbarian"].talentProgression.Epic[this.level - 1];
 
       return [maxAdv, maxChamp, maxEpic];
-    }
-    else {
+    } else {
       const maxTalents = jobs[this.job].talentProgression[this.level - 1];
 
       return maxTalents;
@@ -292,9 +332,11 @@ export class Character {
       const tiers = ["Adventurer", "Champion", "Epic"];
       let counts = [0, 0, 0];
 
-      this.jobTalents.forEach ((talent) => {
-        counts[tiers.indexOf(jobs["Barbarian"].talentChoices[talent].Type)] += 1;
-      })
+      this.jobTalents.forEach((talent) => {
+        counts[
+          tiers.indexOf(jobs["Barbarian"].talentChoices[talent].Type)
+        ] += 1;
+      });
 
       return counts;
     } else {
@@ -312,10 +354,9 @@ export class Character {
       const advTalentsRemain = maxTalents[0] - currentTalentCounts[0];
       const champTalentsRemain = maxTalents[1] - currentTalentCounts[1];
       const epicTalentsRemain = maxTalents[2] - currentTalentCounts[2];
-  
+
       return [advTalentsRemain, champTalentsRemain, epicTalentsRemain];
-    }
-    else {
+    } else {
       return [maxTalents - currentTalentCounts];
     }
   }

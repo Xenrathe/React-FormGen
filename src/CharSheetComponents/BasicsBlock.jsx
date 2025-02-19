@@ -57,17 +57,23 @@ function BasicsBlock({ basicsData, setBasicsData }) {
         setBasicsData({
           ...basicsData,
           jobBonus: newJob.abilityBonus[1],
+          oldJob: basicsData.job,
           job: event.target.value,
         });
       } else {
         setBasicsData({
           ...basicsData,
           jobBonus: newJob.abilityBonus[0],
+          oldJob: basicsData.job,
           job: event.target.value,
         });
       }
     } else {
-      setBasicsData({ ...basicsData, job: event.target.value });
+      setBasicsData({
+        ...basicsData,
+        oldJob: basicsData.job,
+        job: event.target.value,
+      });
     }
   };
 
@@ -80,17 +86,23 @@ function BasicsBlock({ basicsData, setBasicsData }) {
         setBasicsData({
           ...basicsData,
           raceBonus: newRace.abilityBonus[1],
+          oldRace: basicsData.race,
           race: event.target.value,
         });
       } else {
         setBasicsData({
           ...basicsData,
           raceBonus: newRace.abilityBonus[0],
+          oldRace: basicsData.race,
           race: event.target.value,
         });
       }
     } else {
-      setBasicsData({ ...basicsData, race: event.target.value });
+      setBasicsData({
+        ...basicsData,
+        oldRace: basicsData.race,
+        race: event.target.value,
+      });
     }
   };
 

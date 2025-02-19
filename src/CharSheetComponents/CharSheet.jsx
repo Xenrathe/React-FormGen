@@ -12,8 +12,10 @@ function CharSheet() {
     name: "",
     level: 1,
     race: "Dark Elf",
+    oldRace: "Dark Elf",
     raceBonus: "Dex",
     job: "Barbarian",
+    oldJob: "Barbarian",
     jobBonus: "Con",
     melee: "1H Small",
     ranged: "Thrown Small",
@@ -51,8 +53,10 @@ function CharSheet() {
       basicsBlock.name,
       basicsBlock.level,
       basicsBlock.race,
+      basicsBlock.oldRace,
       basicsBlock.raceBonus,
       basicsBlock.job,
+      basicsBlock.oldJob,
       basicsBlock.jobBonus,
       abilitiesBlock.talents,
       abilitiesBlock.spells,
@@ -73,12 +77,14 @@ function CharSheet() {
       basicsBlock.name,
       basicsBlock.level,
       basicsBlock.race,
+      basicsBlock.oldRace,
       basicsBlock.raceBonus,
       basicsBlock.job,
+      basicsBlock.oldJob,
       basicsBlock.jobBonus,
       abilitiesBlock.talents,
       abilitiesBlock.spells,
-      abilitiesBlock.bonusAbs, //e.g. Bard's battle cries
+      abilitiesBlock.bonusAbs, // e.g. Bard's battle cries
       abilitiesBlock.feats,
       basicsBlock.armor,
       basicsBlock.shield,
@@ -87,6 +93,23 @@ function CharSheet() {
       narrativeBlock.iconRelationships,
       narrativeBlock.backgrounds
     );
+
+    // because the character constructor potentially trims old racial or job abilities
+    // we may need to reupdate the abilities block
+    const newAbilities = {
+      talents: updatedCharacter.jobTalents,
+      spells: updatedCharacter.jobSpells,
+      bonusAbs: updatedCharacter.jobBonusAbs,
+      feats: updatedCharacter.feats,
+    };
+
+    // without this, we may end up in an infinite loop
+    if (JSON.stringify(newAbilities) !== JSON.stringify(abilitiesBlock)) {
+      console.log(JSON.stringify(newAbilities));
+      console.log(JSON.stringify(abilitiesBlock));
+      setAbilitiesBlock(newAbilities);
+    }
+
     setCharacter(updatedCharacter);
   }, [basicsBlock, statBlock, narrativeBlock, abilitiesBlock]);
   // END SYNTHESIS INTO CHARACTER OBJECT //
