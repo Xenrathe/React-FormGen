@@ -94,6 +94,14 @@ function CharSheet() {
       narrativeBlock.backgrounds
     );
 
+    // Update oldJob and oldRace only if they have changed
+    setBasicsBlock((prev) => {
+      if (prev.oldJob !== prev.job || prev.oldRace !== prev.race) {
+        return { ...prev, oldJob: prev.job, oldRace: prev.race };
+      }
+      return prev;
+    });
+
     // because the character constructor potentially trims old racial or job abilities
     // we may need to reupdate the abilities block
     const newAbilities = {
