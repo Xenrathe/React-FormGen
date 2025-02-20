@@ -43,6 +43,42 @@ function alterFeats(
   setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray });
 }
 
+function alterTalents(talentName, isAdding, abilitiesBlock, setAbilitiesBlock) {
+  let newTalentArray = [];
+  if (isAdding) {
+    newTalentArray.push(...abilitiesBlock.talents);
+    newTalentArray.push(talentName);
+  } else {
+    newTalentArray = abilitiesBlock.talents.filter((talent) => talent != talentName);
+  }
+
+  setAbilitiesBlock({...abilitiesBlock, talents: newTalentArray});
+}
+
+//returns "" if no exclusive, otherwise returns name of exclusive ability
+function checkExclusivity(abilityItem, abilitiesBlock) {
+  //no exclusion
+  if (!("Exclusive" in abilityItem)) {
+    return "";
+  }
+
+  //only a single item
+  const exclusions = abilityItem.Exclusive;
+  if (!Array.isArray(exclusions)){
+    return abilitiesBlock.talents.includes(exclusions) ? exclusions : "";
+  }
+
+  //run through whole array
+  let exclusionName = "";
+  exclusions.forEach((abilityName) => {
+    if (abilitiesBlock.talents.includes(abilityName) || abilitiesBlock.spells.includes(abilityName) || abilitiesBlock.bonusAbs.includes(abilityName) || abilitiesBlock.feats.includes(abilityName)) {
+      exclusionName = abilityName;
+    }
+  });
+
+  return exclusionName;
+}
+
 // Popup box when users clicks [i] or [+] button
 // [i] will populate the PopupModal with information + associated feats to add
 // [+] will populate the PopupModal with talents, spells, etc to add
@@ -51,10 +87,9 @@ function PopupModal({
   setPopupInfo,
   character,
   abilitiesBlock,
-  setAbilitiesBlock,
+  setAbilitiesBlock
 }) {
   if (popupInfo.list != null) {
-    //console.log(popupInfo.list );
     return (
       <div
         id="popupMod"
@@ -78,27 +113,38 @@ function PopupModal({
         <span className="addable-items">
           {popupInfo.list.map((item) => {
             const name = Object.keys(item)[0];
-            const tier = Object.keys(Object.values(item)[0])[0];
-            const text = Object.values(Object.values(item)[0]);
+            const tier = popupInfo.mode == "general" ? Object.keys(Object.values(item)[0])[0] : Object.values(item)[0].Type;
+            const text = popupInfo.mode == "general" ? Object.values(Object.values(item)[0]) : Object.values(item)[0].Base;
+            const onClickFn = popupInfo.mode == "general" ? () => alterFeats(
+              name,
+              tier,
+              true, 
+              false, 
+              false, 
+              abilitiesBlock,
+              setAbilitiesBlock
+            ) : () => alterTalents(name, true, abilitiesBlock, setAbilitiesBlock);
+
+            // tier / level restrictions
+            const levelRestricted = (tier == "Epic" && character.level < 8 || tier == "Champion" && character.level < 5);
+            // or exclusive restrictions
+            //let exclusiveRestricted = (popupInfo.mode == "talents" && "Exclusive" in Object.values(item)[0] && abilitiesBlock.talents.includes(Object.values(item)[0].Exclusive));
+            const exclusiveRestricted = checkExclusivity(Object.values(item)[0], abilitiesBlock);
+
+            let buttonText = levelRestricted ? "Tier Too High" : "+";
+            buttonText = exclusiveRestricted !== "" ? `Exclusive w/ ${exclusiveRestricted}` : buttonText;
 
             return (
               <span key={`${name}`} className={`addable-item`}>
                 <button
                   onClick={() => {
-                    alterFeats(
-                      name,
-                      tier,
-                      true, // always add
-                      false, // will never already have adv
-                      false, // will never already have champ
-                      abilitiesBlock,
-                      setAbilitiesBlock
-                    );
+                    onClickFn();
                     setPopupInfo({ title: "", singleItem: null, list: null });
                   }}
                   className="alterBtn visible add"
+                  disabled={levelRestricted || exclusiveRestricted}
                 >
-                  <span className="text">+</span>
+                  <span className="text">{buttonText}</span>
                 </button>
                 <strong>{name}</strong> - {text}
               </span>
@@ -117,6 +163,38 @@ function PopupModal({
       .map((value) => value.length)
       .reduce((sum, length) => sum + length, 0);
 
+    const exclusionAdd = "Exclusive" in popupInfo.singleItem ? (
+      <strong>
+        Exclusive with {Array.isArray(popupInfo.singleItem.Exclusive) ? popupInfo.singleItem.Exclusive.join("; ") : popupInfo.singleItem.Exclusive}
+        <br/>
+        <br/>
+      </strong>
+    ) : null;
+
+    const invocationAdd = "Invocation" in popupInfo.singleItem ? (
+      <span>
+        <strong>Invocation: </strong>{popupInfo.singleItem.Invocation}
+        <br/>
+        <br/>
+      </span>
+    ) : null;
+
+    const advantageAdd = "Advantage" in popupInfo.singleItem ? (
+      <span>
+        <strong>Advantage: </strong>{popupInfo.singleItem.Advantage}
+        <br/>
+        <br/>
+      </span>
+    ) : null;
+
+    const actsAdd = "Acts" in popupInfo.singleItem ? (
+      <span>
+        <strong>Acts: </strong>{popupInfo.singleItem.Acts}
+        <br/>
+        <br/>
+      </span>
+    ) : null;
+
     const baseDescription =
       "Base" in popupInfo.singleItem ? (
         <span className="description">
@@ -127,6 +205,7 @@ function PopupModal({
               <br />
             </span>
           ))}
+          {invocationAdd}{actsAdd}{advantageAdd}{exclusionAdd}
         </span>
       ) : null;
 
@@ -158,7 +237,7 @@ function PopupModal({
         {baseDescription}
         <span className="feats">
           {Object.keys(popupInfo.singleItem)
-            .filter((tier) => tier !== "Base" && tier !== "Type")
+            .filter((tier) => tier == "Adventurer" || tier == "Champion" || tier == "Epic")
             .map((tier) => {
               const featText = `${tier} - ${popupInfo.singleItem[tier]}`;
               const btnVisible =

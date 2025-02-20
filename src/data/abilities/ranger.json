@@ -70,79 +70,79 @@
       "Champion": "If you fight with two one-handed melee weapons, whenever an enemy makes a melee attack against you and rolls a natural 1, you can make an opportunity attack against that foe as a free action.",
       "Epic": "One battle per day, increase the damage you deal with missed attacks to triple your level instead of double your level."
     },
-    "Animal Companion - Bear (also Giant Badger, Wolverine)": {
+    "AC - Bear / Giant Badger / Wolverine": {
       "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
       "Acts": "After ranger",
-      "Advantage": "The bear gains temporary hit points equal to its level each time it hits with an attack.",
+      "Advantage": "The animal gains temporary hit points equal to its level each time it hits with an attack.",
       "Champion": "The temporary hit points increase to double its level.",
       "Exclusive": [
-        "Animal Companion - Boar (also Spiky Lizard)",
-        "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)",
-        "Animal Companion - Panther (also Lion, Tiger)",
-        "Animal Companion - Snake (also Giant Spider, Poison Toad)",
-        "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)"
+        "AC - Boar / Spiky Lizard",
+        "AC - Big Cat",
+        "AC - Bird",
+        "AC - Venomous Beast",
+        "AC - Wolf / Big Dog / Hyena"
       ]
     },
-    "Animal Companion - Boar (also Spiky Lizard)": {
+    "AC - Boar / Spiky Lizard": {
       "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
       "Acts": "Before ranger",
-      "Advantage": "The boar gains a +1 attack bonus when it moves before its attack during the same turn.",
+      "Advantage": "The animal gains a +1 attack bonus when it moves before its attack during the same turn.",
       "Exclusive": [
-        "Animal Companion - Bear (also Giant Badger, Wolverine)",
-        "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)",
-        "Animal Companion - Panther (also Lion, Tiger)",
-        "Animal Companion - Snake (also Giant Spider, Poison Toad)",
-        "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)"
+        "AC - Bear / Giant Badger / Wolverine",
+        "AC - Big Cat",
+        "AC - Bird",
+        "AC - Venomous Beast",
+        "AC - Wolf / Big Dog / Hyena"
       ]
     },
-    "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)": {
+    "AC - Bird": {
       "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
       "Acts": "Before ranger",
       "Advantage": "It flies! Its melee damage die is dropped by one size (d6 at level 0).",
       "Exclusive": [
-        "Animal Companion - Bear (also Giant Badger, Wolverine)",
-        "Animal Companion - Boar (also Spiky Lizard)",
-        "Animal Companion - Panther (also Lion, Tiger)",
-        "Animal Companion - Snake (also Giant Spider, Poison Toad)",
-        "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)"
+        "AC - Bear / Giant Badger / Wolverine",
+        "AC - Boar / Spiky Lizard",
+        "AC - Bird",
+        "AC - Venomous Beast",
+        "AC - Wolf / Big Dog / Hyena"
       ]
     },
-    "Animal Companion - Panther (also Lion, Tiger)": {
+    "AC - Big Cat": {
       "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
       "Acts": "Before ranger",
-      "Advantage": "The panther’s crit range expands by 2 against enemies with lower initiative.",
+      "Advantage": "The cat's crit range expands by 2 against enemies with lower initiative.",
       "Exclusive": [
-        "Animal Companion - Bear (also Giant Badger, Wolverine)",
-        "Animal Companion - Boar (also Spiky Lizard)",
-        "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)",
-        "Animal Companion - Snake (also Giant Spider, Poison Toad)",
-        "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)"
+        "AC - Bear / Giant Badger / Wolverine",
+        "AC - Boar / Spiky Lizard",
+        "AC - Bird",
+        "AC - Venomous Beast",
+        "AC - Wolf / Big Dog / Hyena"
       ]
     },
-    "Animal Companion - Snake (also Giant Spider, Poison Toad)": {
+    "AC - Venomous Beast": {
       "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
       "Acts": "After ranger",
-      "Advantage": "The snake also deals ongoing poison damage equal to twice your level on a natural attack roll of 18+.",
+      "Advantage": "The venomous beast also deals ongoing poison damage equal to twice your level on a natural attack roll of 18+.",
       "Champion": "The ongoing damage is three times your level instead.",
       "Epic": "The ongoing damage is four times your level instead.",
       "Exclusive": [
-        "Animal Companion - Bear (also Giant Badger, Wolverine)",
-        "Animal Companion - Boar (also Spiky Lizard)",
-        "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)",
-        "Animal Companion - Panther (also Lion, Tiger)",
-        "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)"
+        "AC - Bear / Giant Badger / Wolverine",
+        "AC - Boar / Spiky Lizard",
+        "AC - Big Cat",
+        "AC - Bird",
+        "AC - Wolf / Big Dog / Hyena"
       ]
     },
-    "Animal Companion - Wolf (also Big Dog, Coyote, Hyena, Jackal)": {
+    "AC - Wolf / Big Dog / Hyena": {
       "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
       "Acts": "After ranger",
-      "Advantage": "The wolf gains a +1 attack bonus against enemies its master attacked the same turn, or against enemies engaged with its master.",
+      "Advantage": "The animal gains a +1 attack bonus against enemies its master attacked the same turn, or against enemies engaged with its master.",
       "Exclusive": [
-        "Animal Companion - Bear (also Giant Badger, Wolverine)",
-        "Animal Companion - Boar (also Spiky Lizard)",
-        "Animal Companion - Eagle (also Falcon, Hawk, Owl, Vulture)",
-        "Animal Companion - Panther (also Lion, Tiger)",
-        "Animal Companion - Snake (also Giant Spider, Poison Toad)"
+        "AC - Bear / Giant Badger / Wolverine",
+        "AC - Boar / Spiky Lizard",
+        "AC - Big Cat",
+        "AC - Bird",
+        "AC - Venomous Beast"
       ]
     }
   },

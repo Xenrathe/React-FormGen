@@ -39,6 +39,9 @@ function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
       (feat) => Object.keys(feat)[0] != name
     );
     setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray });
+  } else if (mode == "talents") {
+    const newTalentArray = abilitiesBlock.talents.filter((talent) => talent != name);
+    setAbilitiesBlock({...abilitiesBlock, talents: newTalentArray});
   }
 }
 
@@ -78,10 +81,10 @@ function LinedInputsWithBtn({
       const tier = Object.keys(Object.values(entry)[0])[0];
       const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
       const obj = Object.fromEntries(
-        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => {[
           subKey,
           subValue,
-        ])
+        ]})
       );
       dataOnLines.push({ [title]: obj, removable: true });
     });
@@ -100,14 +103,26 @@ function LinedInputsWithBtn({
           subValue,
         ])
       );
-      console.log(obj);
       dataOnLines.push({ [title]: obj, removable: true });
     });
   }
-
-  //mode = "talents"
-  // includes talents from character.jobTalents
-  // --includes associated feats from character.feats.talent
+  else if (mode == "talents") {
+    // includes talents from character.jobTalents
+    const talentInfo = character.getTalents();
+    dataForAdd.push(...talentInfo.potentialTalents);
+    talentInfo.ownedTalents.forEach((entry) => {
+      const title = Object.keys(entry)[0];
+      //const tier = Object.keys(Object.values(entry)[0])[0];
+      // put the object into standard form
+      const obj = Object.fromEntries(
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
+          subKey,
+          subValue,
+        ])
+      );
+      dataOnLines.push({ [title]: obj, removable: true });
+    });
+  }
 
   //mode = "spells"
   // includes spells from character.jobSpells
@@ -124,8 +139,15 @@ function LinedInputsWithBtn({
     const obj = item ? Object.values(item)[0] : "";
     const removable = item ? item.removable : false;
     const title = item ? Object.keys(item)[0] : "";
-    const highestTier = character.queryFeatHighestTier(title);
-    const highestTierLetter = highestTier ? `(${highestTier.charAt(0)})` : "";
+
+    // tier letter addon
+    let highestTier = character.queryFeatHighestTier(title);
+    let highestTierLetter = highestTier ? `(${highestTier.charAt(0)})` : "";
+
+    if (mode == "talents" && obj != "") {
+      const tiers = ["Adventurer", "Champion", "Epic"];
+      highestTierLetter = tiers.includes(obj.Type) ? ` (${obj.Type.charAt(0)})` : "";
+    }
 
     let addTitle = "Add";
     if (!item) {
@@ -166,6 +188,7 @@ function LinedInputsWithBtn({
                   title: addTitle,
                   singleItem: null,
                   list: dataForAdd,
+                  mode: mode
                 })
               }
             >
@@ -175,7 +198,7 @@ function LinedInputsWithBtn({
           {item && (
             <button
               onClick={() =>
-                setPopupInfo({ title: title, singleItem: obj, list: null })
+                setPopupInfo({ title: title, singleItem: obj, list: null, mode: mode })
               }
             >
               i
@@ -194,6 +217,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
     title: "",
     singleItem: null,
     list: null,
+    mode: "",
   });
 
   let tooManyFeats = false;

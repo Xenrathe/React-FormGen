@@ -42,7 +42,7 @@
     },
     "High Arcana": {
       "Type": "Optional",
-      "Base": "Your study of the highest orders of magic gives you options that lesser wizards cannot match: Memorization.\n\nWhen you pick your spells, you can choose any daily wizard spell twice (instead of once). This doesn’t apply to spells that start as recharge spells. For example, at 7th level when you have five 7th level spells and four 5th level spells, you could choose fireball twice as a 7th level spell, or once as a 7th level spell and once as a 5th level spell. (Your 3rd level spell slot can’t be used for fireball because fireball starts as a 5th level spell.)",
+      "Base": "Your study of the highest orders of magic gives you options that lesser wizards cannot match: Memorization and a bonus spell: counter-magic.\n\nMemorization: When you pick your spells, you can choose any daily wizard spell twice (instead of once). This doesn’t apply to spells that start as recharge spells. For example, at 7th level when you have five 7th level spells and four 5th level spells, you could choose fireball twice as a 7th level spell, or once as a 7th level spell and once as a 5th level spell. (Your 3rd level spell slot can’t be used for fireball because fireball starts as a 5th level spell.)",
       "Counter-magic": {
         "Type": "Close-quarters spell",
         "Action": "Free",

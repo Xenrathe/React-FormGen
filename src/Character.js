@@ -83,9 +83,6 @@ export class Character {
   #trimFeatsAndAbilities() {
     //if race changed, remove racialFeats from old race
     if (this.race !== this.oldRace) {
-      console.log(
-        `REMOVING OLD RACE STUFF. race: ${this.race}. oldRace: ${this.oldRace}`
-      );
       Object.keys(races[this.oldRace].racialPowersAndFeats).forEach((name) => {
         this.removeFeat(name, "Adventurer");
       });
@@ -99,7 +96,6 @@ export class Character {
       this.jobSpells = [];
       this.jobBonusAbs = [];
 
-      console.log("REMOVING OLD JOB STUFF");
       //clear all feats that are NOT general or racial
       const racialPowersNames = Object.keys(
         races[this.race].racialPowersAndFeats
@@ -348,31 +344,23 @@ export class Character {
 
   //this gives talents, separated into { ownedTalents, potentialTalents }
   getTalents() {
-    let ownedFeats = [];
-    let potentialFeats = [];
+    let ownedTalents = [];
+    let potentialTalents = [];
 
-    if (type.toLowerCase() === "racial") {
-      potentialFeats = Object.entries(
-        races[this.race]?.racialPowersAndFeats || {}
-      )
-        .filter(([_, tiers]) => !("Base" in tiers)) // exclude default / required features
-        .map(([name, tiers]) => ({ [name]: tiers }));
-    } else if (type.toLowerCase() === "general") {
-      potentialFeats = Object.entries(genFeats).map(([name, tiers]) => ({
-        [name]: tiers,
-      }));
-    }
+    potentialTalents = Object.entries(jobs[this.job].talentChoices).map(([name, tiers]) => ({
+      [name]: tiers,
+    }));
 
-    this.feats.forEach((feat) => {
-      const featName = Object.keys(feat)[0];
-      const index = potentialFeats.findIndex((f) => featName in f);
-      if (index !== -1) {
-        ownedFeats.push(potentialFeats[index]);
-        potentialFeats.splice(index, 1);
+    this.jobTalents.forEach((talent) => {
+      const index = potentialTalents.findIndex((f) => talent in f);
+      if (index !== -1) { // remove from potential because already owned
+        ownedTalents.push(potentialTalents[index]);
+        potentialTalents.splice(index, 1);
       }
+      
     });
 
-    return { ownedFeats, potentialFeats };
+    return { ownedTalents, potentialTalents };
   }
 
   //for most jobs, returns an array with one number [#]

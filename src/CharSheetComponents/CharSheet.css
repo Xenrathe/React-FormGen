@@ -296,7 +296,7 @@
 }
 
 #popupMod.wide {
-  width: 600px;
+  width: 630px;
   max-width: 90%;
 }
 
@@ -396,17 +396,29 @@
   #popupMod span.text {
     font-size: 50px;
   }
+
+  #popupMod button[disabled] .text {
+    font-size: 15px;
+  }
 }
 
 @container btn-container (min-height: 51px) and (max-height: 100px) {
   #popupMod span.text {
     font-size: 70px;
   }
+
+  #popupMod button[disabled] .text {
+    font-size: 20px;
+  }
 }
 
 @container btn-container (min-height: 101px) {
   #popupMod span.text {
     font-size: 100px;
+  }
+
+  #popupMod button[disabled] .text {
+    font-size: 25px;
   }
 }
 
@@ -434,13 +446,13 @@
   transform: translateY(-10%);
 }
 
-#popupMod .alterBtn.add:hover {
+#popupMod .alterBtn:not(:disabled).add:hover {
   background-color: rgba(178, 196, 167, 0.664);
   color: rgb(70, 119, 39);
   opacity: 1;
 }
 
-#popupMod .alterBtn.remove:hover {
+#popupMod .alterBtn.remove:hover, #popupMod .alterBtn[disabled] {
   background-color: rgba(196, 170, 167, 0.664);
   color: rgb(119, 39, 39);
   opacity: 1;
