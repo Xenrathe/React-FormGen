@@ -1,5 +1,5 @@
 # To-do List
-* HighArcana Counter-spell & Cleric's Invocation are added / removed from spells when taken
+* HighArcana Counter-spell & Cleric's Invocation (?) are added / removed from spells when taken
 * AnimalCompanion Feats / Wizard's Familiar abilities
 * AbilitiesBlock (pull from database / JSON files)
 * Alter character data based on feats, talents, etc (is a slog)

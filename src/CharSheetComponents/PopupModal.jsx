@@ -1,3 +1,15 @@
+function alterFamiliarAbs(familiarAbName, isAdding, abilitiesBlock, setAbilitiesBlock){
+  let newFamiliarAbArray = [];
+  if (isAdding) {
+    newFamiliarAbArray.push(...abilitiesBlock.familiarAbs);
+    newFamiliarAbArray.push(familiarAbName);
+  } else {
+    newFamiliarAbArray = abilitiesBlock.familiarAbs.filter((familiarAb) => familiarAb != familiarAbName);
+  }
+
+  setAbilitiesBlock({...abilitiesBlock, familiarAbs: newFamiliarAbArray});
+}
+
 //add or remove a feat WITHIN another feat/ability
 //not for STAND ALONE feats or abilities
 function alterFeats(
@@ -58,7 +70,7 @@ function alterTalents(talentName, isAdding, abilitiesBlock, setAbilitiesBlock) {
 //returns "" if no exclusive, otherwise returns name of exclusive ability
 function checkExclusivity(abilityItem, abilitiesBlock) {
   //no exclusion
-  if (!("Exclusive" in abilityItem)) {
+  if (typeof abilityItem !== 'object' || !("Exclusive" in abilityItem)) {
     return "";
   }
 
@@ -77,6 +89,44 @@ function checkExclusivity(abilityItem, abilitiesBlock) {
   });
 
   return exclusionName;
+}
+
+function addableItemInfo(popupInfo, item, abilitiesBlock, setAbilitiesBlock) {
+  const name = Object.keys(item)[0];
+  let tier = "";
+  if (popupInfo.mode == "general") {
+    tier = Object.keys(Object.values(item)[0])[0];
+  } else if (popupInfo.mode == "talents") {
+    tier = Object.values(item)[0].Type;
+  }
+
+  let text = "";
+  if (popupInfo.mode == "general") {
+    text = Object.values(Object.values(item)[0]);
+  } else if (popupInfo.mode == "talents") {
+    text = Object.values(item)[0].Base;
+  } else if (popupInfo.mode == "Familiar") {
+    text = Object.values(item)[0];
+  }
+
+  let onClickFn = null;
+  if (popupInfo.mode == "general") {
+    onClickFn = () => alterFeats(
+      name,
+      tier,
+      true, 
+      false, 
+      false, 
+      abilitiesBlock,
+      setAbilitiesBlock
+    );
+  } else if (popupInfo.mode == "talents") {
+    onClickFn = () => alterTalents(name, true, abilitiesBlock, setAbilitiesBlock);
+  } else if (popupInfo.mode == "Familiar") {
+    onClickFn = () => alterFamiliarAbs(name, true, abilitiesBlock, setAbilitiesBlock);
+  }
+
+  return ([name, tier, text, onClickFn])
 }
 
 // Popup box when users clicks [i] or [+] button
@@ -112,18 +162,7 @@ function PopupModal({
         <span className="title">{popupInfo.title}</span>
         <span className="addable-items">
           {popupInfo.list.map((item) => {
-            const name = Object.keys(item)[0];
-            const tier = popupInfo.mode == "general" ? Object.keys(Object.values(item)[0])[0] : Object.values(item)[0].Type;
-            const text = popupInfo.mode == "general" ? Object.values(Object.values(item)[0]) : Object.values(item)[0].Base;
-            const onClickFn = popupInfo.mode == "general" ? () => alterFeats(
-              name,
-              tier,
-              true, 
-              false, 
-              false, 
-              abilitiesBlock,
-              setAbilitiesBlock
-            ) : () => alterTalents(name, true, abilitiesBlock, setAbilitiesBlock);
+            const [name, tier, text, onClickFn] = addableItemInfo(popupInfo, item, abilitiesBlock, setAbilitiesBlock);
 
             // tier / level restrictions
             const levelRestricted = (tier == "Epic" && character.level < 8 || tier == "Champion" && character.level < 5);

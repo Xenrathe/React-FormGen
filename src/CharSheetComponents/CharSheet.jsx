@@ -43,6 +43,7 @@ function CharSheet() {
     spells: [],
     bonusAbs: [],
     feats: [],
+    familiarAbs: []
   });
   // END INDIVIDUAL COMPONENT DATA SETS //
 
@@ -62,6 +63,7 @@ function CharSheet() {
       abilitiesBlock.spells,
       abilitiesBlock.bonusAbs, //e.g. Bard's battle cries
       abilitiesBlock.feats,
+      abilitiesBlock.familiarAbs,
       basicsBlock.armor,
       basicsBlock.shield,
       { melee: basicsBlock.melee, ranged: basicsBlock.ranged },
@@ -86,6 +88,7 @@ function CharSheet() {
       abilitiesBlock.spells,
       abilitiesBlock.bonusAbs, // e.g. Bard's battle cries
       abilitiesBlock.feats,
+      abilitiesBlock.familiarAbs,
       basicsBlock.armor,
       basicsBlock.shield,
       { melee: basicsBlock.melee, ranged: basicsBlock.ranged },
@@ -109,12 +112,11 @@ function CharSheet() {
       spells: updatedCharacter.jobSpells,
       bonusAbs: updatedCharacter.jobBonusAbs,
       feats: updatedCharacter.feats,
+      familiarAbs: updatedCharacter.familiarAbs,
     };
 
     // without this, we may end up in an infinite loop
     if (JSON.stringify(newAbilities) !== JSON.stringify(abilitiesBlock)) {
-      console.log(JSON.stringify(newAbilities));
-      console.log(JSON.stringify(abilitiesBlock));
       setAbilitiesBlock(newAbilities);
     }
 

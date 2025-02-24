@@ -17,6 +17,7 @@ export class Character {
     jobSpells,
     jobBonusAbs,
     feats,
+    familiarAbs,
     armorType,
     hasShield,
     weaponType,
@@ -37,6 +38,7 @@ export class Character {
     this.jobSpells = jobSpells;
     this.jobBonusAbs = jobBonusAbs;
     this.feats = feats; //an array of objects {"Linguist": "Champion"}.
+    this.familiarAbs = familiarAbs; //an array of strings
 
     this.#trimFeatsAndAbilities(); //removes feats, talents, spells, etc incompatible with job and race
 
@@ -242,33 +244,33 @@ export class Character {
   }
 
   //type can be "general" or "racial"
-  //this gives STAND ALONE feats only, separated into { ownedFeats, potentialFeats }
+  //this gives STAND ALONE feats only, separated into { owned, potential }
   getFeats(type) {
-    let ownedFeats = [];
-    let potentialFeats = [];
+    let owned = [];
+    let potential = [];
 
     if (type.toLowerCase() === "racial") {
-      potentialFeats = Object.entries(
+      potential = Object.entries(
         races[this.race]?.racialPowersAndFeats || {}
       )
         .filter(([_, tiers]) => !("Base" in tiers)) // exclude default / required features
         .map(([name, tiers]) => ({ [name]: tiers }));
     } else if (type.toLowerCase() === "general") {
-      potentialFeats = Object.entries(genFeats).map(([name, tiers]) => ({
+      potential = Object.entries(genFeats).map(([name, tiers]) => ({
         [name]: tiers,
       }));
     }
 
     this.feats.forEach((feat) => {
       const featName = Object.keys(feat)[0];
-      const index = potentialFeats.findIndex((f) => featName in f);
+      const index = potential.findIndex((f) => featName in f);
       if (index !== -1) {
-        ownedFeats.push(potentialFeats[index]);
-        potentialFeats.splice(index, 1);
+        owned.push(potential[index]);
+        potential.splice(index, 1);
       }
     });
 
-    return { ownedFeats, potentialFeats };
+    return { owned, potential };
   }
 
   //featName = string
@@ -342,25 +344,25 @@ export class Character {
     }
   }
 
-  //this gives talents, separated into { ownedTalents, potentialTalents }
+  //this gives talents, separated into { owned, potential }
   getTalents() {
-    let ownedTalents = [];
-    let potentialTalents = [];
+    let owned = [];
+    let potential = [];
 
-    potentialTalents = Object.entries(jobs[this.job].talentChoices).map(([name, tiers]) => ({
+    potential = Object.entries(jobs[this.job].talentChoices).map(([name, tiers]) => ({
       [name]: tiers,
     }));
 
     this.jobTalents.forEach((talent) => {
-      const index = potentialTalents.findIndex((f) => talent in f);
+      const index = potential.findIndex((f) => talent in f);
       if (index !== -1) { // remove from potential because already owned
-        ownedTalents.push(potentialTalents[index]);
-        potentialTalents.splice(index, 1);
+        owned.push(potential[index]);
+        potential.splice(index, 1);
       }
       
     });
 
-    return { ownedTalents, potentialTalents };
+    return { owned, potential };
   }
 
   //for most jobs, returns an array with one number [#]
@@ -380,6 +382,48 @@ export class Character {
     } else {
       return [maxTalents - currentTalentCounts];
     }
+  }
+
+  #queryFamiliarAbsMax(){
+    console.log(this.feats);
+    if (!this.jobTalents.includes("Wizard's Familiar")) {
+      return 0;
+    } else if (this.feats.some(feat => feat["Wizard's Familiar"] == "Epic")) { //THIS MUST BE BEFORE ADVENTURER!
+      return 4;
+    } else if (this.feats.some(feat => feat["Wizard's Familiar"] == "Adventurer")) {
+      return 3;
+    } else {
+      return 2;
+    }
+  }
+
+  #queryFamiliarAbsCurrent(){
+    return this.familiarAbs.length;
+  }
+
+  queryFamiliarAbilitiesRemaining() {
+    return this.#queryFamiliarAbsMax() - this.#queryFamiliarAbsCurrent();
+  }
+
+  //this gives familiar abilities, separated into { owned, potential }
+  getFamiliarAbs(){
+    let owned = [];
+    let potential = [];
+
+    potential = Object.entries(jobs["Wizard"].familiarAbilities).map(([name, value]) => ({
+      [name]: value,
+    }));
+
+    this.familiarAbs.forEach((familiarAb) => {
+      const index = potential.findIndex((f) => familiarAb in f);
+      if (index !== -1) { // remove from potential because already owned
+        owned.push(potential[index]);
+        potential.splice(index, 1);
+      }
+      
+    });
+
+    return { owned, potential };
   }
 
   // 1A - 2A - 3A - 4A (levels 1-4)
@@ -447,21 +491,21 @@ export class Character {
   //returns false if not owned
   queryFeatHighestTier(featName) {
     // search through this.feats to see if feat is owned
-    let ownedFeats = [];
+    let owned = [];
     this.feats.forEach((feat) => {
       if (Object.keys(feat)[0] == featName) {
-        ownedFeats.push(feat);
+        owned.push(feat);
       }
     });
 
-    if (ownedFeats.length == 0) {
+    if (owned.length == 0) {
       return false;
     }
 
     const tiers = ["Adventurer", "Champion", "Epic"];
     let highestIndex = 0;
 
-    ownedFeats.forEach((feat) => {
+    owned.forEach((feat) => {
       const tierIndex = tiers.indexOf(Object.values(feat)[0]);
       if (tierIndex >= highestIndex) {
         highestIndex = tierIndex;

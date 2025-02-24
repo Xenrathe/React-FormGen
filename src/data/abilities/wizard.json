@@ -59,7 +59,7 @@
       "Type": "Optional",
       "Base": "Rename each of your daily and recharge spells. Think up the most over-the-top and extravagant names you can muster. Since these alternate spells are so lengthy, they take an additional quick action to cast.\n\nWhile the regular effects of the spells are the same as the more common versions, they have a small bonus effect appropriate to the situation.\n\nThe bonus effect is determined by the GM, or by a collaboration between the GM and the player. It should add to the storytelling power of the situation. The bonus effect should suit the name of the spell or the way it’s delivered, and shouldn’t precisely match up with what the spell normally accomplishes."
     },
-    "Wizard’s Familiar": {
+    "Wizard's Familiar": {
       "Type": "Optional",
       "Base": "Your familiar is a tiny or small animal or creature that aids your magic and provides companionship. It also provides opportunities for improvisation between you and the GM.\n\nYour familiar is as intelligent as a normal person. It can communicate with you and will stay close to you unless you’ve chosen abilities that let it roam. Your familiar is on your side but it’s not perfectly in your control.\n\nIf your familiar dies, it can come back to you the next time you get a full heal-up. (The method or story used is between you and the GM.) Alternatively, you can get a new familiar.\n\nFamiliars are useless in combat, except as indicated by their abilities. Ordinarily, they aren’t damaged by enemy attacks and spells unless the story calls for it.",
       "Adventurer": "Your familiar gains another ability.",
@@ -69,7 +69,7 @@
   },
   "Familiar Abilities": {
     "Agile": "You gain a +2 bonus to Dexterity skill checks.",
-    "Alert, Maybe Even Insightful": "You gain a +2 bonus to Wisdom skill checks.",
+    "Alert / Insightful": "You gain a +2 bonus to Wisdom skill checks.",
     "Counter-bite": "Each battle, if your familiar is close to you, it bites the first enemy that hits you with a melee attack after that attack, dealing 1d4 damage per level (no attack roll) to that enemy.",
     "Flight": "Your familiar flies as well as a hawk. It doesn’t fly that often and usually sticks with you, but it can do so when its other abilities allow.",
     "Mimic": "One battle per day, you gain the use of the racial power (without feats) of one nearby ally.",

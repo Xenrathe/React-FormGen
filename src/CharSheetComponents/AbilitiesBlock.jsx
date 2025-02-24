@@ -42,6 +42,9 @@ function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
   } else if (mode == "talents") {
     const newTalentArray = abilitiesBlock.talents.filter((talent) => talent != name);
     setAbilitiesBlock({...abilitiesBlock, talents: newTalentArray});
+  } else if (mode == "Familiar") {
+    const newFamiliarAbArray = abilitiesBlock.familiarAbs.filter((familiarAb) => familiarAb != name);
+    setAbilitiesBlock({...abilitiesBlock, familiarAbs: newFamiliarAbArray});
   }
 }
 
@@ -51,8 +54,8 @@ function LinedInputsWithBtn({
   setPopupInfo,
   abilitiesBlock,
   setAbilitiesBlock,
+  numLines = 10
 }) {
-  let numLines = 10;
   let dataOnLines = [];
   let dataForAdd = [];
 
@@ -74,9 +77,9 @@ function LinedInputsWithBtn({
 
     // --includes OPTIONAL racialfeats from character.feats.racial
     // data structure: {"Heritage of the Sword": "Adventurer"}
-    const racialFeatInfo = character.getFeats("racial"); //returns both ownedFeats and potentialFeats
-    dataForAdd.push(...racialFeatInfo.potentialFeats);
-    racialFeatInfo.ownedFeats.forEach((entry) => {
+    const racialFeatInfo = character.getFeats("racial"); //returns both owned and potential
+    dataForAdd.push(...racialFeatInfo.potential);
+    racialFeatInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
       const tier = Object.keys(Object.values(entry)[0])[0];
       const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
@@ -91,8 +94,8 @@ function LinedInputsWithBtn({
 
     // includes OPTIONAL feats from the character.feats.general
     const generalFeatInfo = character.getFeats("general");
-    dataForAdd.push(...generalFeatInfo.potentialFeats);
-    generalFeatInfo.ownedFeats.forEach((entry) => {
+    dataForAdd.push(...generalFeatInfo.potential);
+    generalFeatInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
       const tier = Object.keys(Object.values(entry)[0])[0];
       const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
@@ -109,8 +112,9 @@ function LinedInputsWithBtn({
   else if (mode == "talents") {
     // includes talents from character.jobTalents
     const talentInfo = character.getTalents();
-    dataForAdd.push(...talentInfo.potentialTalents);
-    talentInfo.ownedTalents.forEach((entry) => {
+    dataForAdd.push(...talentInfo.potential);
+    console.log(dataForAdd);
+    talentInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
       //const tier = Object.keys(Object.values(entry)[0])[0];
       // put the object into standard form
@@ -122,6 +126,26 @@ function LinedInputsWithBtn({
       );
       dataOnLines.push({ [title]: obj, removable: true });
     });
+  }
+  else if (mode == "Familiar") {
+    // includes familiar abilities from character.familiarAbs
+    const familiarAbInfo = character.getFamiliarAbs();
+    dataForAdd.push(...familiarAbInfo.potential);
+    console.log(dataForAdd);
+    familiarAbInfo.owned.forEach((entry) => {
+      const title = Object.keys(entry)[0];
+      // put the object into standard form
+      const obj = Object.fromEntries(
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
+          subKey,
+          subValue,
+        ])
+      );
+      dataOnLines.push({ [title]: obj, removable: true });
+    });
+  }
+  else if (mode == "Animal Companion") {
+
   }
 
   //mode = "spells"
@@ -165,8 +189,6 @@ function LinedInputsWithBtn({
       }
     }
 
-    // need functionality for x button
-    // need functionality for + button
     lines.push(
       <div key={`k-${mode}-${i}`} className="single-line-w-btn">
         <span className="lined-input">{title + highestTierLetter}</span>
@@ -234,7 +256,18 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
     }
   });
 
-  const hasError = (tooManyTalents || tooManyFeats);
+  const hasError = (tooManyTalents || tooManyFeats); //used to add an error class to div
+
+  //for rangers animal companion or wizard's familiar, adds an extra block to add feats/abilities
+  let animalsBlock = "";
+  character.getTalents().owned.forEach((talent) => {
+    const name = Object.keys(talent)[0];
+    if (name == "Wizard's Familiar"){
+      animalsBlock = "Familiar";
+    } else if (name.substring(0, 2) == "AC") {
+      animalsBlock = "Animal Companion";
+    }
+  })
 
   return (
     <div
@@ -261,15 +294,31 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           setAbilitiesBlock={setAbilitiesBlock}
         />
       </div>
-      <div id="talents" className="abilities-input lined-inputs">
-        <label className="subtitle-label">Talents {getAbilitiesRemainingString(character, "Talents", false, character.queryTalentsRemaining())}</label>
-        <LinedInputsWithBtn
-          mode="talents"
-          character={character}
-          setPopupInfo={setPopupInfo}
-          abilitiesBlock={abilitiesBlock}
-          setAbilitiesBlock={setAbilitiesBlock}
-        />
+      <div id="talents-and-pets">
+        <div id="talents" className="abilities-input lined-inputs">
+          <label className="subtitle-label">Talents {getAbilitiesRemainingString(character, "Talents", false, character.queryTalentsRemaining())}</label>
+          <LinedInputsWithBtn
+            mode="talents"
+            character={character}
+            setPopupInfo={setPopupInfo}
+            abilitiesBlock={abilitiesBlock}
+            setAbilitiesBlock={setAbilitiesBlock}
+            numLines={animalsBlock == "" ? 10 : 5}
+          />
+        </div>
+        {animalsBlock && (
+          <div id="pets" className="abilities-input lined-inputs">
+            <label className="subtitle-label">{animalsBlock}{character.queryFamiliarAbilitiesRemaining() == 0 ? "" : (` (${character.queryFamiliarAbilitiesRemaining()})`)}</label>
+            <LinedInputsWithBtn
+              mode={animalsBlock}
+              character={character}
+              setPopupInfo={setPopupInfo}
+              abilitiesBlock={abilitiesBlock}
+              setAbilitiesBlock={setAbilitiesBlock}
+              numLines={4}
+            />
+          </div>
+        )}
       </div>
       <div id="spells" className="abilities-input lined-inputs">
         <label className="subtitle-label">Spells</label>
