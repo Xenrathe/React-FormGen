@@ -94,14 +94,14 @@ function checkExclusivity(abilityItem, abilitiesBlock) {
 function addableItemInfo(popupInfo, item, abilitiesBlock, setAbilitiesBlock) {
   const name = Object.keys(item)[0];
   let tier = "";
-  if (popupInfo.mode == "general") {
+  if (popupInfo.mode == "general" || popupInfo.mode == "Animal Companion") {
     tier = Object.keys(Object.values(item)[0])[0];
   } else if (popupInfo.mode == "talents") {
     tier = Object.values(item)[0].Type;
   }
 
   let text = "";
-  if (popupInfo.mode == "general") {
+  if (popupInfo.mode == "general" || popupInfo.mode == "Animal Companion") {
     text = Object.values(Object.values(item)[0]);
   } else if (popupInfo.mode == "talents") {
     text = Object.values(item)[0].Base;
@@ -110,7 +110,7 @@ function addableItemInfo(popupInfo, item, abilitiesBlock, setAbilitiesBlock) {
   }
 
   let onClickFn = null;
-  if (popupInfo.mode == "general") {
+  if (popupInfo.mode == "general" || popupInfo.mode == "Animal Companion") {
     onClickFn = () => alterFeats(
       name,
       tier,
@@ -198,8 +198,6 @@ function PopupModal({
     let hasAdv = false;
     let hasChamp = false;
 
-    console.log(popupInfo.singleItem);
-
     const infoLength = Object.values(popupInfo.singleItem)
       .map((value) => value.length)
       .reduce((sum, length) => sum + length, 0);
@@ -281,10 +279,8 @@ function PopupModal({
             .filter((tier) => tier == "Adventurer" || tier == "Champion" || tier == "Epic")
             .map((tier) => {
               const featText = `${tier} - ${popupInfo.singleItem[tier]}`;
-              const btnVisible =
-                !(character.level < 8 && tier == "Epic") &&
-                !(character.level < 5 && tier == "Champion");
               const hasFeat = character.queryFeatIsOwned(popupInfo.title, tier);
+              const btnVisible = hasFeat || !(character.level < 8 && tier == "Epic") && !(character.level < 5 && tier == "Champion");
 
               return (
                 <span

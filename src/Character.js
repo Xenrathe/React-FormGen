@@ -92,11 +92,13 @@ export class Character {
       this.oldRace = this.race; //reset to say they're synchronized now
     }
 
+    //if job changed, remove all non-general or racial abilities and feats
     if (this.job != this.oldJob) {
       //there's no overlap for these so clear them
       this.jobTalents = [];
       this.jobSpells = [];
       this.jobBonusAbs = [];
+      this.familiarAbs = [];
 
       //clear all feats that are NOT general or racial
       const racialPowersNames = Object.keys(
@@ -114,6 +116,18 @@ export class Character {
       });
 
       this.oldJob = this.job;
+    }
+
+    //if player removes familiar as a talent, it also removes associated information
+    if (!this.jobTalents.includes("Wizard's Familiar")) {
+      this.familiarAbs = [];
+    }
+
+    //if player removes any of the "AC" (animal companion) talents, will also remove associated feats
+    if (this.jobTalents.filter((talent) => talent.substring(0,2) == "AC").length < 1) {
+      Object.keys(jobs["Ranger"].ACFeats).forEach((title) => {
+        this.removeFeat(title, "Adventurer");
+      })
     }
   }
 
@@ -243,8 +257,8 @@ export class Character {
     return atkArray;
   }
 
-  //type can be "general" or "racial"
-  //this gives STAND ALONE feats only, separated into { owned, potential }
+  //type can be "general" or "racial" or "ac" (animal companion)
+  //this gives STAND ALONE (or ANIMAL COMPANION) feats only, separated into { owned, potential }
   getFeats(type) {
     let owned = [];
     let potential = [];
@@ -257,6 +271,10 @@ export class Character {
         .map(([name, tiers]) => ({ [name]: tiers }));
     } else if (type.toLowerCase() === "general") {
       potential = Object.entries(genFeats).map(([name, tiers]) => ({
+        [name]: tiers,
+      }));
+    } else if (type.toLowerCase() === "ac" && "ACFeats" in jobs[this.job]) {
+      potential = Object.entries(jobs[this.job].ACFeats).map(([name, tiers]) => ({
         [name]: tiers,
       }));
     }
@@ -307,7 +325,7 @@ export class Character {
 
   // for most jobs, returns a single number
   // for barbarian (and other non-core class?), however, returns an array [adventurer max, champ max, epic max]
-  #queryTalentsMax() {
+  queryTalentsMax() {
     const hasTieredTalents = "Adventurer" in jobs[this.job].talentProgression;
     if (hasTieredTalents) {
       const maxAdv =
@@ -369,7 +387,7 @@ export class Character {
   // for barbarian (or other non-core classes?), however, returns an array [adventurer #, champ #, epic #]
   queryTalentsRemaining() {
     const currentTalentCounts = this.#queryTalentsCurrentCounts();
-    const maxTalents = this.#queryTalentsMax();
+    const maxTalents = this.queryTalentsMax();
 
     const hasTieredTalents = "Adventurer" in jobs[this.job].talentProgression;
 
@@ -466,6 +484,15 @@ export class Character {
     return [advFeatsRemain, champFeatsRemain, epicFeatsRemain];
   }
 
+  //gives number of Animal Companion feats; used for expanding animal companion box in case user really wants to load up on AC feats
+  queryACFeatsCount() {
+    let count = 0;
+    if ("ACFeats" in jobs[this.job]) {
+      count = this.feats.filter((ownedFeat) => Object.keys(jobs[this.job].ACFeats).includes(Object.keys(ownedFeat)[0])).length;
+    }
+    return count;
+  }
+
   //returns true or false
   queryFeatIsOwned(featName, featTier) {
     const highestFeatTier = this.queryFeatHighestTier(featName);
@@ -512,23 +539,5 @@ export class Character {
     });
 
     return tiers[highestIndex];
-
-    /* OLD CODE FOR OLD IMPLEMENTATION
-    this.feats = this.feats.filter(feat => {
-      const [name, tier] = Object.entries(feat)[0];
-      return !(name == featName && tiers.indexOf(tier) >= removeIndex);
-    });
-
-    const ownedFeatTier = Object.values(ownedFeat)[0];
-
-    if (ownedFeatTier == "Epic") {
-      return true;
-    } else if (ownedFeatTier == "Champion" && featTier != "Epic") {
-      return true;
-    } else if (ownedFeatTier == "Adventurer" && featTier == "Adventurer") {
-      return true;
-    } else {
-      return false;
-    }*/
   }
 }

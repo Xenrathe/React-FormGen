@@ -1,6 +1,5 @@
 import races from "../data/races";
 import jobs from "../data/jobs";
-import genFeats from "../data/abilities/generalfeats.json";
 import PopupModal from "./PopupModal.jsx";
 import { useState } from "react";
 
@@ -34,7 +33,7 @@ function getAbilitiesRemainingString(character, typeOfAbility, includeTitle, abi
 
 //remove stand-alone feats, spells, etc
 function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
-  if (mode == "general") {
+  if (mode == "general" || mode == "Animal Companion") {
     const newFeatArray = abilitiesBlock.feats.filter(
       (feat) => Object.keys(feat)[0] != name
     );
@@ -81,8 +80,6 @@ function LinedInputsWithBtn({
     dataForAdd.push(...racialFeatInfo.potential);
     racialFeatInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
-      const tier = Object.keys(Object.values(entry)[0])[0];
-      const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
       const obj = Object.fromEntries(
         Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => {[
           subKey,
@@ -97,8 +94,6 @@ function LinedInputsWithBtn({
     dataForAdd.push(...generalFeatInfo.potential);
     generalFeatInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
-      const tier = Object.keys(Object.values(entry)[0])[0];
-      const adjTitle = `(${tier.substring(0, 1)}) ${title}`;
       // put the object into standard form
       const obj = Object.fromEntries(
         Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
@@ -134,12 +129,23 @@ function LinedInputsWithBtn({
       const title = Object.keys(entry)[0];
       //put into a standard form
       const obj = {Base: Object.values(entry)[0]};
-      console.log(obj);
       dataOnLines.push({ [title]: obj, removable: true });
     });
   }
   else if (mode == "Animal Companion") {
-
+    const acFeatInfo = character.getFeats("ac");
+    dataForAdd.push(...acFeatInfo.potential);
+    acFeatInfo.owned.forEach((entry) => {
+      const title = Object.keys(entry)[0];
+      // put the object into standard form
+      const obj = Object.fromEntries(
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
+          subKey,
+          subValue,
+        ])
+      );
+      dataOnLines.push({ [title]: obj, removable: true });
+    });
   }
 
   //mode = "spells"
@@ -177,7 +183,9 @@ function LinedInputsWithBtn({
         addTitle = "Add Spells";
       } else if (mode == "Familiar") {
         addTitle = "Add Familiar Abilities";
-      } else if (
+      } else if (mode == "Animal Companion") {
+        addTitle = "Add AC Feats";
+      }else if (
         mode == "bonusAbs" && "bonusAbilitySet" in jobs[character.job]) {
         addTitle = `Add ${jobs[character.job].bonusAbilitySet.Name}`;
       }
@@ -297,7 +305,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
             setPopupInfo={setPopupInfo}
             abilitiesBlock={abilitiesBlock}
             setAbilitiesBlock={setAbilitiesBlock}
-            numLines={animalsBlock == "" ? 10 : 5}
+            numLines={animalsBlock == "" ? 10 : character.queryTalentsMax()}
           />
         </div>
         {animalsBlock && (
@@ -309,7 +317,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
               setPopupInfo={setPopupInfo}
               abilitiesBlock={abilitiesBlock}
               setAbilitiesBlock={setAbilitiesBlock}
-              numLines={4}
+              numLines={Math.max(4, character.queryACFeatsCount() + 1)}
             />
           </div>
         )}
