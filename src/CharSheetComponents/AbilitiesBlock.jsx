@@ -113,7 +113,6 @@ function LinedInputsWithBtn({
     // includes talents from character.jobTalents
     const talentInfo = character.getTalents();
     dataForAdd.push(...talentInfo.potential);
-    console.log(dataForAdd);
     talentInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
       //const tier = Object.keys(Object.values(entry)[0])[0];
@@ -131,16 +130,11 @@ function LinedInputsWithBtn({
     // includes familiar abilities from character.familiarAbs
     const familiarAbInfo = character.getFamiliarAbs();
     dataForAdd.push(...familiarAbInfo.potential);
-    console.log(dataForAdd);
     familiarAbInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
-      // put the object into standard form
-      const obj = Object.fromEntries(
-        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
-          subKey,
-          subValue,
-        ])
-      );
+      //put into a standard form
+      const obj = {Base: Object.values(entry)[0]};
+      console.log(obj);
       dataOnLines.push({ [title]: obj, removable: true });
     });
   }
@@ -181,10 +175,10 @@ function LinedInputsWithBtn({
         addTitle = "Add Talents";
       } else if (mode == "spells") {
         addTitle = "Add Spells";
+      } else if (mode == "Familiar") {
+        addTitle = "Add Familiar Abilities";
       } else if (
-        mode == "bonusAbs" &&
-        "bonusAbilitySet" in jobs[character.job]
-      ) {
+        mode == "bonusAbs" && "bonusAbilitySet" in jobs[character.job]) {
         addTitle = `Add ${jobs[character.job].bonusAbilitySet.Name}`;
       }
     }

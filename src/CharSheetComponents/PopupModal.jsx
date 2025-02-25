@@ -198,6 +198,8 @@ function PopupModal({
     let hasAdv = false;
     let hasChamp = false;
 
+    console.log(popupInfo.singleItem);
+
     const infoLength = Object.values(popupInfo.singleItem)
       .map((value) => value.length)
       .reduce((sum, length) => sum + length, 0);

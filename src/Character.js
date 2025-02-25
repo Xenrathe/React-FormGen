@@ -385,7 +385,6 @@ export class Character {
   }
 
   #queryFamiliarAbsMax(){
-    console.log(this.feats);
     if (!this.jobTalents.includes("Wizard's Familiar")) {
       return 0;
     } else if (this.feats.some(feat => feat["Wizard's Familiar"] == "Epic")) { //THIS MUST BE BEFORE ADVENTURER!
