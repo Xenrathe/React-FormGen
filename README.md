@@ -1,6 +1,7 @@
 # To-do List
 * HighArcana Counter-spell & Cleric's Invocation (?) are added / removed from spells when taken
-* AnimalCompanion Feats / Wizard's Familiar abilities
+* Too many familiar abilities error check
+* AbilitiesBlock sub-blocks borrows space from other sub-blocks to maintain formatting
 * AbilitiesBlock (pull from database / JSON files)
 * Alter character data based on feats, talents, etc (is a slog)
 * ItemsBlock (basic / write-in) OR put block into Narrative?

@@ -147,6 +147,23 @@ function LinedInputsWithBtn({
       dataOnLines.push({ [title]: obj, removable: true });
     });
   }
+  else if (mode == "spells"){
+    // includes talents from character.jobTalents
+    const spellInfo = character.getSpells();
+    dataForAdd.push(...spellInfo.potential);
+    spellInfo.owned.forEach((entry) => {
+      const title = Object.keys(entry)[0];
+      //const tier = Object.keys(Object.values(entry)[0])[0];
+      // put the object into standard form
+      const obj = Object.fromEntries(
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
+          subKey,
+          subValue,
+        ])
+      );
+      dataOnLines.push({ [title]: obj, removable: true });
+    });
+  }
 
   //mode = "spells"
   // includes spells from character.jobSpells
@@ -322,16 +339,19 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           </div>
         )}
       </div>
-      <div id="spells" className="abilities-input lined-inputs">
-        <label className="subtitle-label">Spells</label>
-        <LinedInputsWithBtn
-          mode="spells"
-          character={character}
-          setPopupInfo={setPopupInfo}
-          abilitiesBlock={abilitiesBlock}
-          setAbilitiesBlock={setAbilitiesBlock}
-        />
-      </div>
+      {character.querySpellsMax() != 0 && (
+        <div id="spells" className="abilities-input lined-inputs">
+          <label className="subtitle-label">Spells</label>
+          <LinedInputsWithBtn
+            mode="spells"
+            character={character}
+            setPopupInfo={setPopupInfo}
+            abilitiesBlock={abilitiesBlock}
+            setAbilitiesBlock={setAbilitiesBlock}
+            numLines={Math.max(10, character.querySpellsMax())}
+          />
+        </div>
+      )}
       <div id="bonusAbs" className="abilities-input lined-inputs">
         <label className="subtitle-label">Bonus Abs</label>
         <LinedInputsWithBtn

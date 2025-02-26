@@ -107,6 +107,15 @@ function addableItemInfo(popupInfo, item, abilitiesBlock, setAbilitiesBlock) {
     text = Object.values(item)[0].Base;
   } else if (popupInfo.mode == "Familiar") {
     text = Object.values(item)[0];
+  } else if (popupInfo.mode == "spells") {
+    const itemValues = Object.values(item)[0];
+    if ("Effect" in itemValues) {
+      text = itemValues.Effect;
+    } else if ("Hit" in itemValues) {
+      text = itemValues.Hit;
+    } else if ("Effect (Power)" in itemValues) {
+      text = itemValues["Effect (Power)"];
+    }
   }
 
   let onClickFn = null;
