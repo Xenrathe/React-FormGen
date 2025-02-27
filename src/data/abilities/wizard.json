@@ -46,6 +46,7 @@
       "Counter-magic": {
         "Type": "Close-quarters spell",
         "Action": "Free",
+        "Level": 0,
         "Frequency": "Once per battle",
         "Trigger": "A nearby creature you can see casts a spell.",
         "Target": "The nearby creature casting a spell.",

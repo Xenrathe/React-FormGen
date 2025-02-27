@@ -104,6 +104,67 @@ function alterSpells(
   setAbilitiesBlock({ ...abilitiesBlock, spells: newSpellArray });
 }
 
+function getSingleItemDescription(popupInfo) {
+  console.log(popupInfo);
+  const exclusionAdd =
+    "Exclusive" in popupInfo.singleItem ? (
+      <strong>
+        Exclusive with{" "}
+        {Array.isArray(popupInfo.singleItem.Exclusive)
+          ? popupInfo.singleItem.Exclusive.join("; ")
+          : popupInfo.singleItem.Exclusive}
+        <br />
+        <br />
+      </strong>
+    ) : null;
+
+  const invocationAdd =
+    "Invocation" in popupInfo.singleItem ? (
+      <span>
+        <strong>Invocation: </strong>
+        {popupInfo.singleItem.Invocation}
+        <br />
+        <br />
+      </span>
+    ) : null;
+
+  const advantageAdd =
+    "Advantage" in popupInfo.singleItem ? (
+      <span>
+        <strong>Advantage: </strong>
+        {popupInfo.singleItem.Advantage}
+        <br />
+        <br />
+      </span>
+    ) : null;
+
+  const actsAdd =
+    "Acts" in popupInfo.singleItem ? (
+      <span>
+        <strong>Acts: </strong>
+        {popupInfo.singleItem.Acts}
+        <br />
+        <br />
+      </span>
+    ) : null;
+
+  return "Base" in popupInfo.singleItem ? (
+    <span className="description">
+      {popupInfo.singleItem.Base.split("\n\n").map((paragraph, index) => (
+        <span key={index}>
+          {paragraph}
+          <br />
+          <br />
+        </span>
+      ))}
+      {invocationAdd}
+      {actsAdd}
+      {advantageAdd}
+      {exclusionAdd}
+    </span>
+  ) : null;
+}
+
 //returns "" if no exclusive, otherwise returns name of exclusive ability
 function checkExclusivity(abilityItem, abilitiesBlock) {
   //no exclusion
@@ -170,6 +231,10 @@ function addableItemInfo(
       text = itemValues.Hit;
     } else if ("Effect (Power)" in itemValues) {
       text = itemValues["Effect (Power)"];
+    }
+
+    if (`Level ${level}` in itemValues) {
+      text += `\n\n(Level ${level}: ${itemValues[`Level ${level}`]})`;
     }
   }
 
@@ -286,65 +351,6 @@ function PopupModal({
       .map((value) => value.length)
       .reduce((sum, length) => sum + length, 0);
 
-    const exclusionAdd =
-      "Exclusive" in popupInfo.singleItem ? (
-        <strong>
-          Exclusive with{" "}
-          {Array.isArray(popupInfo.singleItem.Exclusive)
-            ? popupInfo.singleItem.Exclusive.join("; ")
-            : popupInfo.singleItem.Exclusive}
-          <br />
-          <br />
-        </strong>
-      ) : null;
-
-    const invocationAdd =
-      "Invocation" in popupInfo.singleItem ? (
-        <span>
-          <strong>Invocation: </strong>
-          {popupInfo.singleItem.Invocation}
-          <br />
-          <br />
-        </span>
-      ) : null;
-
-    const advantageAdd =
-      "Advantage" in popupInfo.singleItem ? (
-        <span>
-          <strong>Advantage: </strong>
-          {popupInfo.singleItem.Advantage}
-          <br />
-          <br />
-        </span>
-      ) : null;
-
-    const actsAdd =
-      "Acts" in popupInfo.singleItem ? (
-        <span>
-          <strong>Acts: </strong>
-          {popupInfo.singleItem.Acts}
-          <br />
-          <br />
-        </span>
-      ) : null;
-
-    const baseDescription =
-      "Base" in popupInfo.singleItem ? (
-        <span className="description">
-          {popupInfo.singleItem.Base.split("\n\n").map((paragraph, index) => (
-            <span key={index}>
-              {paragraph}
-              <br />
-              <br />
-            </span>
-          ))}
-          {invocationAdd}
-          {actsAdd}
-          {advantageAdd}
-          {exclusionAdd}
-        </span>
-      ) : null;
-
     Object.keys(popupInfo.singleItem).forEach((tier) => {
       if (tier == "Adventurer") {
         hasAdv = true;
@@ -370,7 +376,7 @@ function PopupModal({
           ✖
         </button>
         <span className="title">{popupInfo.title}</span>
-        {baseDescription}
+        {getSingleItemDescription(popupInfo)}
         <span className="feats">
           {Object.keys(popupInfo.singleItem)
             .filter(
@@ -378,7 +384,6 @@ function PopupModal({
                 tier == "Adventurer" || tier == "Champion" || tier == "Epic"
             )
             .map((tier) => {
-              const featText = `${tier} - ${popupInfo.singleItem[tier]}`;
               const hasFeat = character.queryFeatIsOwned(popupInfo.title, tier);
               const btnVisible =
                 hasFeat ||

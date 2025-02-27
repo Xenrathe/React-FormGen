@@ -190,7 +190,7 @@
         "Target": "1d4 nearby enemies in a group; breath weapon",
         "Attack": "Charisma + Level vs. PD",
         "Hit": "15 + Charisma ongoing poison damage.",
-        "Miss": "Even: 5 ongoing poison damage.\nOdd: 5 ongoing poison damage.",
+        "Miss": "5 ongoing poison damage.",
         "Level 5": "25 + Charisma ongoing poison damage; 10 ongoing on a miss.",
         "Level 7": "35 + Charisma ongoing poison damage; 15 ongoing on a miss.",
         "Level 9": "50 + Charisma ongoing poison damage; 25 ongoing on a miss.",

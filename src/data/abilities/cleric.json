@@ -1,16 +1,16 @@
 {
   "Talents": {
-    "Cast for Power and Cast for Broad Effect": {
+    "Cast for Power / Broad Effect": {
       "Type": "Default",
-      "Base": "The spell can be used one of two ways—either as a more powerful effect on one target (power) or as a weaker effect on multiple targets (broad). Spells cast for power cannot target the caster. Spells cast for broad effect can."
+      "Base": "Some cleric spells can be used one of two ways—either as a more powerful effect on one target (power) or as a weaker effect on multiple targets (broad). Spells cast for power cannot target the caster. Spells cast for broad effect can."
     },
     "Free Recovery": {
       "Type": "Default",
-      "Base": "The cleric can recover hit points as if they were using a recovery (without actually spending the recovery)."
+      "Base": "Some cleric spells allow recovery of hit points as if using a recovery, without actually spending the recovery."
     },
     "Heal Using a Recovery": {
       "Type": "Default",
-      "Base": "The character targeted with a healing effect uses one of their recoveries and rolls their own recovery dice."
+      "Base": "The character targeted with this healing effect uses one of their recoveries and rolls their own recovery dice."
     },
     "Invocation": {
       "Type": "Default",
@@ -18,7 +18,7 @@
     },
     "Ritual Magic": {
       "Type": "Default",
-      "Base": "Clerics can cast their spells as rituals. (See Rituals.)"
+      "Base": "Clerics can cast their spells as rituals."
     },
     "Healing": {
       "Type": "Optional",
@@ -162,7 +162,6 @@
         "Type": "Ranged Spell",
         "Action": "Quick",
         "Frequency": "Daily",
-        "Special": "You can cast this spell for power or for broad effect.",
         "Effect (Power)": "One nearby ally gains a +2 bonus to AC this battle.",
         "Effect (Broad)": "Choose up to three nearby creatures (including you); each target gains a +1 bonus to AC this battle.",
         "Level 3": "The bonus also applies to PD.",

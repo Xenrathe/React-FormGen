@@ -338,11 +338,6 @@ export class Character {
         }))
       );
 
-    //Wizard's talent-based counter-spell
-    if (this.jobTalents.includes("High Arcana")) {
-      owned.push("Counter-spell");
-    }
-
     //Some jobs may include cantrips (Cleric, Wizard in core rules)
     if (Object.keys(jobs[this.job].spellList).includes("Level 0")) {
       if (this.job == "Cleric") {
@@ -359,6 +354,14 @@ export class Character {
       owned.push({ "Utility Spell": { Level: 0 } });
     }
 
+    //Wizard's talent-based counter-magic
+    if (this.jobTalents.includes("High Arcana")) {
+      owned.push({
+        "Counter-magic":
+          jobs["Wizard"].talentChoices["High Arcana"]["Counter-magic"],
+      });
+    }
+
     this.jobSpells.forEach((spell) => {
       const spellName = Object.keys(spell)[0];
       const index = potential.findIndex((f) => spellName in f);
@@ -371,7 +374,6 @@ export class Character {
           10
         );
         owned.push(item);
-        console.log(item);
 
         // potential does not include owned
         potential.splice(index, 1);

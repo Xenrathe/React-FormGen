@@ -156,7 +156,6 @@ function getDataSets(mode, character) {
     dataForAdd.push(...spellInfo.potential);
     spellInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
-      //const tier = Object.keys(Object.values(entry)[0])[0];
       // put the object into standard form
       const obj = Object.fromEntries(
         Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
@@ -164,7 +163,7 @@ function getDataSets(mode, character) {
           subValue,
         ])
       );
-      dataOnLines.push({ [title]: obj, removable: true });
+      dataOnLines.push({ [title]: obj, removable: obj.Level != 0 });
     });
   }
 
