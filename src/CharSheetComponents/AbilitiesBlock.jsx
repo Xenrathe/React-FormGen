@@ -4,10 +4,17 @@ import PopupModal from "./PopupModal.jsx";
 import { useState } from "react";
 
 //returns a string e.g. "(Feats Remain: 1 A, 2 C, 2 E)" ; returns "" if no Feats remain
-function getAbilitiesRemainingString(character, typeOfAbility, includeTitle, abilitiesRemainingArray) {
-
+function getAbilitiesRemainingString(
+  character,
+  typeOfAbility,
+  includeTitle,
+  abilitiesRemainingArray
+) {
   const title = includeTitle ? `${typeOfAbility} Remain: ` : "";
-  if (character.job == "Barbarian" && typeOfAbility == "Talents" || typeOfAbility == "Feats"){
+  if (
+    (character.job == "Barbarian" && typeOfAbility == "Talents") ||
+    typeOfAbility == "Feats"
+  ) {
     const [advRemain, champRemain, epicRemain] = abilitiesRemainingArray;
 
     if (advRemain == 0 && champRemain == 0 && epicRemain == 0) {
@@ -28,7 +35,6 @@ function getAbilitiesRemainingString(character, typeOfAbility, includeTitle, abi
   } else if (typeOfAbility == "Talents") {
     return `(${title}${abilitiesRemainingArray[0]})`;
   }
-
 }
 
 //remove stand-alone feats, spells, etc
@@ -39,22 +45,25 @@ function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
     );
     setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray });
   } else if (mode == "talents") {
-    const newTalentArray = abilitiesBlock.talents.filter((talent) => talent != name);
-    setAbilitiesBlock({...abilitiesBlock, talents: newTalentArray});
+    const newTalentArray = abilitiesBlock.talents.filter(
+      (talent) => talent != name
+    );
+    setAbilitiesBlock({ ...abilitiesBlock, talents: newTalentArray });
   } else if (mode == "Familiar") {
-    const newFamiliarAbArray = abilitiesBlock.familiarAbs.filter((familiarAb) => familiarAb != name);
-    setAbilitiesBlock({...abilitiesBlock, familiarAbs: newFamiliarAbArray});
+    const newFamiliarAbArray = abilitiesBlock.familiarAbs.filter(
+      (familiarAb) => familiarAb != name
+    );
+    setAbilitiesBlock({ ...abilitiesBlock, familiarAbs: newFamiliarAbArray });
+  } else if (mode == "spells") {
+    const newSpellArray = abilitiesBlock.spells.filter(
+      (spell) => Object.keys(spell)[0] != name
+    );
+    setAbilitiesBlock({ ...abilitiesBlock, spells: newSpellArray });
   }
 }
 
-function LinedInputsWithBtn({
-  mode,
-  character,
-  setPopupInfo,
-  abilitiesBlock,
-  setAbilitiesBlock,
-  numLines = 10
-}) {
+//returns [dataForLines, dataToAdd] based on which mode / dataset is desired
+function getDataSets(mode, character) {
   let dataOnLines = [];
   let dataForAdd = [];
 
@@ -81,10 +90,9 @@ function LinedInputsWithBtn({
     racialFeatInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
       const obj = Object.fromEntries(
-        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => {[
-          subKey,
-          subValue,
-        ]})
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => {
+          [subKey, subValue];
+        })
       );
       dataOnLines.push({ [title]: obj, removable: true });
     });
@@ -103,8 +111,7 @@ function LinedInputsWithBtn({
       );
       dataOnLines.push({ [title]: obj, removable: true });
     });
-  }
-  else if (mode == "talents") {
+  } else if (mode == "talents") {
     // includes talents from character.jobTalents
     const talentInfo = character.getTalents();
     dataForAdd.push(...talentInfo.potential);
@@ -120,19 +127,17 @@ function LinedInputsWithBtn({
       );
       dataOnLines.push({ [title]: obj, removable: true });
     });
-  }
-  else if (mode == "Familiar") {
+  } else if (mode == "Familiar") {
     // includes familiar abilities from character.familiarAbs
     const familiarAbInfo = character.getFamiliarAbs();
     dataForAdd.push(...familiarAbInfo.potential);
     familiarAbInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
       //put into a standard form
-      const obj = {Base: Object.values(entry)[0]};
+      const obj = { Base: Object.values(entry)[0] };
       dataOnLines.push({ [title]: obj, removable: true });
     });
-  }
-  else if (mode == "Animal Companion") {
+  } else if (mode == "Animal Companion") {
     const acFeatInfo = character.getFeats("ac");
     dataForAdd.push(...acFeatInfo.potential);
     acFeatInfo.owned.forEach((entry) => {
@@ -146,9 +151,7 @@ function LinedInputsWithBtn({
       );
       dataOnLines.push({ [title]: obj, removable: true });
     });
-  }
-  else if (mode == "spells"){
-    // includes talents from character.jobTalents
+  } else if (mode == "spells") {
     const spellInfo = character.getSpells();
     dataForAdd.push(...spellInfo.potential);
     spellInfo.owned.forEach((entry) => {
@@ -165,13 +168,22 @@ function LinedInputsWithBtn({
     });
   }
 
-  //mode = "spells"
-  // includes spells from character.jobSpells
-  // --includes associated feats from character.feats.spell
-
   //mode = "bonusAbs"
   // includes bonusAbs from character.jobBonusAbs
   // --includes associated feats from character.feats.bonus
+
+  return [dataOnLines, dataForAdd];
+}
+
+function LinedInputsWithBtn({
+  mode,
+  character,
+  setPopupInfo,
+  abilitiesBlock,
+  setAbilitiesBlock,
+  numLines = 10,
+}) {
+  const [dataOnLines, dataForAdd] = getDataSets(mode, character);
 
   const lines = [];
 
@@ -187,8 +199,14 @@ function LinedInputsWithBtn({
 
     if (mode == "talents" && obj != "") {
       const tiers = ["Adventurer", "Champion", "Epic"];
-      highestTierLetter = tiers.includes(obj.Type) ? ` (${obj.Type.charAt(0)})` : "";
+      highestTierLetter = tiers.includes(obj.Type)
+        ? ` (${obj.Type.charAt(0)})`
+        : "";
     }
+
+    //spell-level addon
+    const spellLevelAddon =
+      mode == "spells" && obj != "" ? `(${obj.Level})` : "";
 
     let addTitle = "Add";
     if (!item) {
@@ -202,15 +220,19 @@ function LinedInputsWithBtn({
         addTitle = "Add Familiar Abilities";
       } else if (mode == "Animal Companion") {
         addTitle = "Add AC Feats";
-      }else if (
-        mode == "bonusAbs" && "bonusAbilitySet" in jobs[character.job]) {
+      } else if (
+        mode == "bonusAbs" &&
+        "bonusAbilitySet" in jobs[character.job]
+      ) {
         addTitle = `Add ${jobs[character.job].bonusAbilitySet.Name}`;
       }
     }
 
     lines.push(
       <div key={`k-${mode}-${i}`} className="single-line-w-btn">
-        <span className="lined-input">{title + highestTierLetter}</span>
+        <span className="lined-input">
+          {title + highestTierLetter + spellLevelAddon}
+        </span>
         <div className="buttons">
           {item ? (
             removable && (
@@ -229,7 +251,7 @@ function LinedInputsWithBtn({
                   title: addTitle,
                   singleItem: null,
                   list: dataForAdd,
-                  mode: mode
+                  mode: mode,
                 })
               }
             >
@@ -239,7 +261,12 @@ function LinedInputsWithBtn({
           {item && (
             <button
               onClick={() =>
-                setPopupInfo({ title: title, singleItem: obj, list: null, mode: mode })
+                setPopupInfo({
+                  title: title,
+                  singleItem: obj,
+                  list: null,
+                  mode: mode,
+                })
               }
             >
               i
@@ -275,18 +302,25 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
     }
   });
 
-  const hasError = (tooManyTalents || tooManyFeats); //used to add an error class to div
+  let tooManySpells = false;
+  character.querySpellLevelsRemaining().forEach((spellNum) => {
+    if (spellNum < 0) {
+      tooManySpells = true;
+    }
+  });
+
+  const hasError = tooManyTalents || tooManyFeats || tooManySpells; //used to add an error class to div
 
   //for rangers animal companion or wizard's familiar, adds an extra block to add feats/abilities
   let animalsBlock = "";
   character.getTalents().owned.forEach((talent) => {
     const name = Object.keys(talent)[0];
-    if (name == "Wizard's Familiar"){
+    if (name == "Wizard's Familiar") {
       animalsBlock = "Familiar";
     } else if (name.substring(0, 2) == "AC") {
       animalsBlock = "Animal Companion";
     }
-  })
+  });
 
   return (
     <div
@@ -301,7 +335,13 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         setAbilitiesBlock={setAbilitiesBlock}
       />
       <div className="title-label">
-        Abilities {getAbilitiesRemainingString(character, "Feats", true, character.queryFeatsRemaining())}
+        Abilities{" "}
+        {getAbilitiesRemainingString(
+          character,
+          "Feats",
+          true,
+          character.queryFeatsRemaining()
+        )}
       </div>
       <div id="job-race-gen" className="abilities-input lined-inputs">
         <label className="subtitle-label">Class, Race, Gen Feats</label>
@@ -315,7 +355,15 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
       </div>
       <div id="talents-and-pets">
         <div id="talents" className="abilities-input lined-inputs">
-          <label className="subtitle-label">Talents {getAbilitiesRemainingString(character, "Talents", false, character.queryTalentsRemaining())}</label>
+          <label className="subtitle-label">
+            Talents
+            {getAbilitiesRemainingString(
+              character,
+              "Talents",
+              false,
+              character.queryTalentsRemaining()
+            )}
+          </label>
           <LinedInputsWithBtn
             mode="talents"
             character={character}
@@ -327,7 +375,12 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         </div>
         {animalsBlock && (
           <div id="pets" className="abilities-input lined-inputs">
-            <label className="subtitle-label">{animalsBlock}{character.queryFamiliarAbilitiesRemaining() == 0 ? "" : (` (${character.queryFamiliarAbilitiesRemaining()})`)}</label>
+            <label className="subtitle-label">
+              {animalsBlock}
+              {character.queryFamiliarAbilitiesRemaining() == 0
+                ? ""
+                : ` (${character.queryFamiliarAbilitiesRemaining()})`}
+            </label>
             <LinedInputsWithBtn
               mode={animalsBlock}
               character={character}
@@ -341,7 +394,21 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
       </div>
       {character.querySpellsMax() != 0 && (
         <div id="spells" className="abilities-input lined-inputs">
-          <label className="subtitle-label">Spells</label>
+          <label className="subtitle-label">
+            Spells{" "}
+            {(() => {
+              const spellText = character
+                .querySpellLevelsRemaining()
+                .map((spellCount, index) => {
+                  if (spellCount === 0) return "";
+                  return `L${index * 2 + 1}: ${spellCount}`;
+                })
+                .filter(Boolean) // this removes empty strings...
+                .join(" "); // ...so we can join with spaces
+
+              return spellText ? `(${spellText})` : "";
+            })()}
+          </label>
           <LinedInputsWithBtn
             mode="spells"
             character={character}

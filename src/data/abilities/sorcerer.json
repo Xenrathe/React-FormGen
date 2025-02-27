@@ -2,7 +2,7 @@
   "Talents": {
     "Access to Wizardry": {
       "Type": "Default",
-      "Base": "Starting at 3rd level, you can take a wizard spell in place of a sorcerer spell. The wizard spell must be two levels lower than the sorcerer spell."
+      "Base": "Starting at Level 3, you can take a wizard spell in place of a sorcerer spell. The wizard spell must be two levels lower than the sorcerer spell."
     },
     "Breath Weapon": {
       "Type": "Default",
@@ -77,7 +77,7 @@
     "Spell Fist": {
       "Type": "Optional",
       "Base": "Your style of sorcery emphasizes close-range fighting. There are two advantages and one possible drawback to your style.\n\nYou gain a +2 bonus to AC.\n\nYou can use ranged spells while engaged with enemies without taking opportunity attacks.\n\nYou use your Constitution modifier instead of your Charisma modifier to determine the damage you add to all your sorcerer spells.",
-      "Adventurer": "When you miss with a sorcerer spell against an enemy you are engaged with, add your Charisma modifier to the damage you deal. At 5th level, add double your Charisma modifier; at 8th level, triple it.",
+      "Adventurer": "When you miss with a sorcerer spell against an enemy you are engaged with, add your Charisma modifier to the damage you deal. At Level 5, add double your Charisma modifier; at 8th level, triple it.",
       "Champion": "Once per battle, you can include one enemy engaged with you as an additional target of any attack spell you cast that targets other enemies.",
       "Epic": "Once per day when you cast an empowered spell, each enemy engaged with you becomes an additional target of that spell if it’s not already targeted by the spell."
     },
@@ -99,10 +99,10 @@
         "Attack": "Charisma + Level vs. PD",
         "Hit": "3d6 + Charisma cold damage.",
         "Miss": "Half damage.",
-        "3rd Level": "5d6 damage.",
-        "5th Level": "4d10 damage.",
-        "7th Level": "6d12 damage.",
-        "9th Level": "10d12 damage.",
+        "Level 3": "5d6 damage.",
+        "Level 5": "4d10 damage.",
+        "Level 7": "6d12 damage.",
+        "Level 9": "10d12 damage.",
         "Special": "Breath Weapon: For the rest of the battle, roll a d20 at the start of each of your turns. On a 16+, you can use breath of the white dragon that turn if you wish."
       },
       "Burning Hands": {
@@ -112,10 +112,10 @@
         "Targets": "Up to two nearby enemies in a group",
         "Attack": "Charisma + Level vs. PD",
         "Hit": "1d6 + Charisma fire damage.",
-        "3rd Level": "1d8 damage.",
-        "5th Level": "2d8 damage.",
-        "7th Level": "3d8 damage.",
-        "9th Level": "5d8 damage.",
+        "Level 3": "1d8 damage.",
+        "Level 5": "2d8 damage.",
+        "Level 7": "3d8 damage.",
+        "Level 9": "5d8 damage.",
         "Adventurer": "When you miss with burning hands, you deal fire damage to the target equal to each damage die that rolled its maximum possible result.",
         "Champion": "When you roll a natural 18+ with a burning hands attack roll, you can choose another nearby target for the spell. The new target doesn’t have to be part of the original group.",
         "Epic": "You can now target each enemy engaged with you with your burning hands spell in addition to any other targets."
@@ -129,10 +129,10 @@
         "Attack": "Charisma + Level vs. PD",
         "Hit": "1d8 + Charisma random energy damage, and if the natural attack roll was even, you gain a chaotic benefit as if you had gathered power.",
         "Miss": "Damage equal to your level.",
-        "3rd Level": "3d8 damage.",
-        "5th Level": "5d8 damage.",
-        "7th Level": "7d8 damage.",
-        "9th Level": "9d8 damage.",
+        "Level 3": "3d8 damage.",
+        "Level 5": "5d8 damage.",
+        "Level 7": "7d8 damage.",
+        "Level 9": "9d8 damage.",
         "Adventurer": "You don’t take the –2 penalty for attacking a far away enemy with the spell.",
         "Champion": "If you are a champion-tier sorcerer, roll any chaotic benefit gained with this spell on the epic chaotic benefits table. If you are an epic-tier sorcerer, choose the epic chaotic benefit you want instead of rolling."
       },
@@ -144,10 +144,10 @@
         "Attack": "Charisma + Level vs. PD",
         "Hit": "3d6 + Charisma lightning damage.",
         "Miss": "Half damage.",
-        "3rd Level": "7d6 damage.",
-        "5th Level": "6d10 damage.",
-        "7th Level": "10d10 damage.",
-        "9th Level": "2d8 x 10 damage.",
+        "Level 3": "7d6 damage.",
+        "Level 5": "6d10 damage.",
+        "Level 7": "10d10 damage.",
+        "Level 9": "2d8 x 10 damage.",
         "Adventurer": "Once per battle, you can reroll one of your lightning fork attacks rolls.",
         "Champion": "If you miss all targets with lightning fork, you don’t expend it.",
         "Epic": "The recharge roll for lightning fork is now 11+.",
@@ -159,10 +159,10 @@
         "Frequency": "Recharge 16+ after battle",
         "Target": "You or one nearby ally",
         "Effect": "Until the end of the battle, the target gains resist damage 12+ to the following energy type of your choice: cold, fire, lightning, thunder.",
-        "3rd Level": "Choose two types of energy the target gains resistance to.",
-        "5th Level": "Resistance is now 16+.",
-        "7th Level": "The spell now affects two targets.",
-        "9th Level": "Recharge roll is now 11+.",
+        "Level 3": "Choose two types of energy the target gains resistance to.",
+        "Level 5": "Resistance is now 16+.",
+        "Level 7": "The spell now affects two targets.",
+        "Level 9": "Recharge roll is now 11+.",
         "Adventurer": "You can target an additional creature with the spell."
       },
       "Scorching Ray": {
@@ -173,10 +173,10 @@
         "Attack": "Charisma + Level vs. PD",
         "Hit": "1d6 + Charisma fire damage, and if the natural attack roll is even, the target also takes 1d8 ongoing fire damage.",
         "Miss": "Damage equal to your level.",
-        "3rd Level": "3d6 damage; 2d4 ongoing.",
-        "5th Level": "4d6 damage; 2d6 ongoing.",
-        "7th Level": "6d6 damage; 3d6 ongoing.",
-        "9th Level": "10d6 damage; 5d6 ongoing.",
+        "Level 3": "3d6 damage; 2d4 ongoing.",
+        "Level 5": "4d6 damage; 2d6 ongoing.",
+        "Level 7": "6d6 damage; 3d6 ongoing.",
+        "Level 9": "10d6 damage; 5d6 ongoing.",
         "Adventurer": "You can now use the spell against a far away target, but with a –2 attack penalty.",
         "Champion": "Each time you cast the spell, you can have the attack deal random energy damage instead of fire damage. Replace the fire entry on the random energy table with your choice of negative energy or acid.",
         "Epic": "You don’t take the –2 penalty for attacking a far away enemy with the spell."
@@ -191,9 +191,9 @@
         "Attack": "Charisma + Level vs. PD",
         "Hit": "15 + Charisma ongoing poison damage.",
         "Miss": "Even: 5 ongoing poison damage.\nOdd: 5 ongoing poison damage.",
-        "5th Level": "25 + Charisma ongoing poison damage; 10 ongoing on a miss.",
-        "7th Level": "35 + Charisma ongoing poison damage; 15 ongoing on a miss.",
-        "9th Level": "50 + Charisma ongoing poison damage; 25 ongoing on a miss.",
+        "Level 5": "25 + Charisma ongoing poison damage; 10 ongoing on a miss.",
+        "Level 7": "35 + Charisma ongoing poison damage; 15 ongoing on a miss.",
+        "Level 9": "50 + Charisma ongoing poison damage; 25 ongoing on a miss.",
         "Special": "Breath Weapon: For the rest of the battle, roll a d20 at the start of each of your turns; on a 16+, you can use breath of the green that turn if you wish."
       },
       "Chaos Pulse": {
@@ -204,9 +204,9 @@
         "Attack": "Charisma + Level vs. PD",
         "Hit": "3d10 + Charisma random energy damage.",
         "Miss": "Even: Half damage.\nOdd: Damage equal to your level.",
-        "5th Level": "5d10 damage.",
-        "7th Level": "7d10 damage.",
-        "9th Level": "9d10 damage."
+        "Level 5": "5d10 damage.",
+        "Level 7": "7d10 damage.",
+        "Level 9": "9d10 damage."
       },
       "Dragon’s Leap": {
         "Type": "Ranged spell",
@@ -214,9 +214,9 @@
         "Frequency": "Daily",
         "Target": "You; breath weapon",
         "Effect": "You can fly at the rate you normally move until the end of your turn. (So if you don’t land or find someplace to hang from, you’ll fall.)",
-        "5th Level": "You can now fly until the end of your next turn.",
-        "7th Level": "You can now fly twice as fast as you normally move on the ground. You also gain a +5 bonus to disengage checks.",
-        "9th Level": "The spell is now recharge 16+ after battle instead of daily.",
+        "Level 5": "You can now fly until the end of your next turn.",
+        "Level 7": "You can now fly twice as fast as you normally move on the ground. You also gain a +5 bonus to disengage checks.",
+        "Level 9": "The spell is now recharge 16+ after battle instead of daily.",
         "Special": "Breath Weapon: For the rest of the battle, roll a d20 at the start of each of your turns; on a 16+, you can use dragon’s leap this turn if you wish. (Yeah, we know it’s not actually a breath weapon, but it works as part of the draconic sorcerer package.)"
       },
       "Echoing Thunder": {
@@ -227,9 +227,9 @@
         "Attack": "Charisma + Level vs. PD",
         "Hit": "3d6 + Charisma thunder damage, and the first enemy that hits you with a melee attack before the start of your next turn takes 2d6 thunder damage. (An empowered spell does not double this aftershock damage.)",
         "Miss": "Damage equal to your level.",
-        "5th Level": "5d6 damage; 2d6 aftershock damage.",
-        "7th Level": "7d6 damage; 3d6 aftershock damage.",
-        "9th Level": "9d6 damage; 4d6 aftershock damage.",
+        "Level 5": "5d6 damage; 2d6 aftershock damage.",
+        "Level 7": "7d6 damage; 3d6 aftershock damage.",
+        "Level 9": "9d6 damage; 4d6 aftershock damage.",
         "Champion": "The spell’s aftershock damage is now also doubled when echoing thunder is empowered."
       }
     },
@@ -242,8 +242,8 @@
         "Attack": "Charisma + Level vs. MD",
         "Hit": "10d6 + Charisma acid damage, and 20 ongoing acid damage.",
         "Miss": "10 ongoing acid damage.",
-        "7th Level": "10d10 damage, and 40 ongoing damage; 20 ongoing on a miss.",
-        "9th Level": "2d6 x 10 damage, and 60 ongoing damage; 30 ongoing on a miss.",
+        "Level 7": "10d10 damage, and 40 ongoing damage; 20 ongoing on a miss.",
+        "Level 9": "2d6 x 10 damage, and 60 ongoing damage; 30 ongoing on a miss.",
         "Special": "Breath Weapon: For the rest of the battle, roll a d20 at the start of each of your turns; on a 16+, you can use breath of the black that turn if you wish.",
         "Epic": "Double the spell’s ongoing damage on a miss."
       },
@@ -255,8 +255,8 @@
         "Attack": "Charisma + Level vs. MD",
         "Hit": "8d6 + Charisma psychic damage, and if the natural attack roll is even, you can teleport to a nearby location you can see.",
         "Miss": "Damage equal to your level.",
-        "7th Level": "9d10 damage.",
-        "9th Level": "10d12 damage.",
+        "Level 7": "9d10 damage.",
+        "Level 9": "10d12 damage.",
         "Special": "Once you cast this spell in a battle, you can cast it at-will for the rest of that battle.",
         "Epic": "Once per battle, the teleport from a hit with the elven shadows can be to a far away location you can see."
       },
@@ -268,8 +268,8 @@
         "Attack": "Charisma + Level vs. PD",
         "Hit": "2d4 x 10 random energy damage, and you take damage of the same type equal to the unmodified dice roll (2d4, 2d8, or 2d12). (Note that there’s no Charisma bonus to damage.)",
         "Miss": "Half damage, and you still take random energy damage equal to the unmodified dice roll.",
-        "7th Level": "2d8 x 10 damage.",
-        "9th Level": "2d12 x 10 damage.",
+        "Level 7": "2d8 x 10 damage.",
+        "Level 9": "2d12 x 10 damage.",
         "Special": "Chain Spell: Each time you make a natural even attack roll, you can attack a different target with the spell."
       },
       "Unearthly Glamour": {
@@ -277,8 +277,8 @@
         "Action": "Standard",
         "Frequency": "Daily",
         "Effect": "You gain a +5 bonus to all Charisma skill checks for the next five minutes. If you fail a Charisma skill check during this time, however, anyone you were attempting to convince or influence with the check is freaked out or disgusted by the supernatural glamour attached to you and has extremely negative reactions to you.",
-        "7th Level": "The effect lasts for 1 hour.",
-        "9th Level": "The effect lasts for 2 hours."
+        "Level 7": "The effect lasts for 1 hour.",
+        "Level 9": "The effect lasts for 2 hours."
       }
     },
     "Level 7": {
@@ -290,7 +290,7 @@
         "Attack": "Charisma + Level vs. PD",
         "Hit": "10d12 + Charisma lightning damage, and at the start of the target’s next turn, 1d6 of its nearby allies take 20 lightning damage.",
         "Miss": "Half damage, and no damage to target’s allies.",
-        "9th Level": "2d10 x 10 damage; 25 lightning damage to nearby allies.",
+        "Level 9": "2d10 x 10 damage; 25 lightning damage to nearby allies.",
         "Special": "Breath Spell: For the rest of the battle, roll a d20 at the start of each of your turns; on a 16+, you can use breath of the blue this turn if you wish.",
         "Epic": "You can now target a far away enemy with the spell (no attack penalty)."
       },
@@ -300,7 +300,7 @@
         "Frequency": "Daily",
         "Target": "1d4 + 1 nearby allies",
         "Effect": "You steal the once-per-battle racial powers of your allies this battle, but you don’t get the advantage of your allies’ feats or items that improve those powers.\nEach ally you steal a racial power from can roll an easy save (6+). Success means they get to use their power also this battle. Failure means they can’t; you took it fully.\nYou can’t steal racial powers you already possess.",
-        "9th Level": "You get to use your allies’ powers as if you also had any of their feats that improve those powers."
+        "Level 9": "You get to use your allies’ powers as if you also had any of their feats that improve those powers."
       },
       "Touch of Evil": {
         "Type": "Close-quarters spell",
@@ -333,7 +333,7 @@
         "Type": "Close-quarters spell",
         "Action": "Quick",
         "Frequency": "Daily",
-        "Effect": "Roll your relationship dice that you have with a sorcerous heroic icon.\nFor each 6 you roll, you gain one 7th level or lower spell from any spellcasting class that you can cast this battle. For each 5 you roll, you gain one 5th level or lower spell from any spellcasting class that you can cast this battle.\nIf the escalation die is 5+, you can swap the escalation die for one or your rolls. If you get no successes, you regain the spell after this battle.\nYou can acquire one of the new spells the same round you cast this spell. Then select and acquire any other gained spells at the start of your next turn.\nYou can use your Charisma as the ability score that provides the acquired spells’ attack bonuses and damage bonuses (if any). Other ability score references remain unchanged.\nAs you might expect, each 5 you roll also invokes an icon-related complication or obligation in the tradition of rolling 5s on relationship checks."
+        "Effect": "Roll your relationship dice that you have with a sorcerous heroic icon.\nFor each 6 you roll, you gain one Level 7 or lower spell from any spellcasting class that you can cast this battle. For each 5 you roll, you gain one Level 5 or lower spell from any spellcasting class that you can cast this battle.\nIf the escalation die is 5+, you can swap the escalation die for one or your rolls. If you get no successes, you regain the spell after this battle.\nYou can acquire one of the new spells the same round you cast this spell. Then select and acquire any other gained spells at the start of your next turn.\nYou can use your Charisma as the ability score that provides the acquired spells’ attack bonuses and damage bonuses (if any). Other ability score references remain unchanged.\nAs you might expect, each 5 you roll also invokes an icon-related complication or obligation in the tradition of rolling 5s on relationship checks."
       }
     }
   }

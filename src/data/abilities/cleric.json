@@ -117,30 +117,30 @@
         "Special": "You can cast this spell for power or for broad effect.",
         "Effect (Power)": "One nearby ally gains a +2 attack bonus until the end of the battle.",
         "Effect (Broad)": "Choose up to three nearby creatures (including you); each target gains a +1 attack bonus until the end of the battle.",
-        "3rd Level": "Each target also gains 1d10 temporary hit points per point of the attack bonus.",
-        "5th Level": "Each target also gains 2d10 temporary hit points instead of 1d10 per point of the attack bonus.",
-        "7th Level": "All attack bonuses granted by the spell increase by +1.",
-        "9th Level": "Each target also gains 3d10 temporary hit points instead of 2d10 per point of the attack bonus."
+        "Level 3": "Each target also gains 1d10 temporary hit points per point of the attack bonus.",
+        "Level 5": "Each target also gains 2d10 temporary hit points instead of 1d10 per point of the attack bonus.",
+        "Level 7": "All attack bonuses granted by the spell increase by +1.",
+        "Level 9": "Each target also gains 3d10 temporary hit points instead of 2d10 per point of the attack bonus."
       },
       "Cure Wounds": {
         "Type": "Ranged Spell",
         "Action": "Quick",
         "Frequency": "Daily",
         "Effect": "You or a nearby ally can heal using a free recovery.",
-        "3rd Level": "The target can also roll a save against each save ends effect.",
-        "5th Level": "This spell is now recharge 16+ after battle instead of daily.",
-        "7th Level": "The target can heal using two free recoveries instead of one.",
-        "9th Level": "This spell is now recharge 11+ instead."
+        "Level 3": "The target can also roll a save against each save ends effect.",
+        "Level 5": "This spell is now recharge 16+ after battle instead of daily.",
+        "Level 7": "The target can heal using two free recoveries instead of one.",
+        "Level 9": "This spell is now recharge 11+ instead."
       },
       "Hammer of Faith": {
         "Type": "Close-Quarters Spell",
         "Action": "Standard",
         "Frequency": "Daily",
         "Effect": "Until the end of the battle, your basic melee attacks use d12s as their base weapon damage dice.",
-        "3rd Level": "The spell now requires only a quick action to cast.",
-        "5th Level": "You deal half damage on misses with basic melee attacks this battle.",
-        "7th Level": "Once during the battle, you can reroll a basic melee attack.",
-        "9th Level": "For the rest of the battle, change any of your basic melee attack damage dice rolls that are less than the escalation die to the escalation die value."
+        "Level 3": "The spell now requires only a quick action to cast.",
+        "Level 5": "You deal half damage on misses with basic melee attacks this battle.",
+        "Level 7": "Once during the battle, you can reroll a basic melee attack.",
+        "Level 9": "For the rest of the battle, change any of your basic melee attack damage dice rolls that are less than the escalation die to the escalation die value."
       },
       "Javelin of Faith": {
         "Type": "Ranged Spell",
@@ -150,11 +150,11 @@
         "Attack": "Wisdom + Level vs. PD",
         "Hit": "1d6 + Wisdom holy damage.",
         "Miss": "Damage equal to your level.",
-        "3rd Level": "3d6 damage.",
-        "5th Level": "6d6 damage.",
-        "7th Level": "6d10 damage.",
-        "9th Level": "8d10 damage.",
-        "Adventurer": "The spell also deals +1d6 damage against an undamaged target. At 5th level that increases to +2d6 damage; at 8th level it increases to +4d6 damage.",
+        "Level 3": "3d6 damage.",
+        "Level 5": "6d6 damage.",
+        "Level 7": "6d10 damage.",
+        "Level 9": "8d10 damage.",
+        "Adventurer": "The spell also deals +1d6 damage against an undamaged target. At Level 5 that increases to +2d6 damage; at 8th level it increases to +4d6 damage.",
         "Champion": "You can now target a far away enemy with the spell at a –2 attack penalty.",
         "Epic": "If your natural attack roll is an 18+, make the attack a second time against a different target as a free action."
       },
@@ -165,10 +165,10 @@
         "Special": "You can cast this spell for power or for broad effect.",
         "Effect (Power)": "One nearby ally gains a +2 bonus to AC this battle.",
         "Effect (Broad)": "Choose up to three nearby creatures (including you); each target gains a +1 bonus to AC this battle.",
-        "3rd Level": "The bonus also applies to PD.",
-        "5th Level": "The bonus increases by +1 while the target is staggered.",
-        "7th Level": "The bonus also applies to MD.",
-        "9th Level": "The bonus when cast for power increases to +4. The bonus when cast for broad effect increases to +2."
+        "Level 3": "The bonus also applies to PD.",
+        "Level 5": "The bonus increases by +1 while the target is staggered.",
+        "Level 7": "The bonus also applies to MD.",
+        "Level 9": "The bonus when cast for power increases to +4. The bonus when cast for broad effect increases to +2."
       },
       "Spirits of the Righteous": {
         "Type": "Ranged Spell",
@@ -178,10 +178,10 @@
         "Attack": "Wisdom + Level vs. MD",
         "Hit": "4d6 + Wisdom holy damage, and your nearby ally with the fewest hit points gains a +4 bonus to AC until the end of your next turn.",
         "Miss": "Your nearby ally with the fewest hit points gains a +2 bonus to AC until the end of your next turn.",
-        "3rd Level": "7d6 damage.",
-        "5th Level": "7d10 damage.",
-        "7th Level": "10d12 damage.",
-        "9th Level": "2d8 x 10 damage.",
+        "Level 3": "7d6 damage.",
+        "Level 5": "7d10 damage.",
+        "Level 7": "10d12 damage.",
+        "Level 9": "2d8 x 10 damage.",
         "Champion": "You also gain the bonus to AC until the end of your next turn on a hit."
       },
       "Turn Undead": {
@@ -194,10 +194,10 @@
         "Hit by 4+": "1d10 x your level holy damage, and the target is dazed until the end of your next turn.",
         "Hit by 8+": "Against non-mooks, holy damage equal to half the target’s maximum hit points, and the target is dazed (save ends). Against mooks, the +8 result now deals 4d10 x your level holy damage.",
         "Hit by 12+ or Natural 20": "Against non-mooks, the target is destroyed. Against mooks, the +12 result now deals 4d20 x your level holy damage.",
-        "3rd Level": "Target with 90 hp or fewer.",
-        "5th Level": "Target with 150 hp or fewer.",
-        "7th Level": "Target with 240 hp or fewer.",
-        "9th Level": "Target with 400 hp or fewer.",
+        "Level 3": "Target with 90 hp or fewer.",
+        "Level 5": "Target with 150 hp or fewer.",
+        "Level 7": "Target with 240 hp or fewer.",
+        "Level 9": "Target with 400 hp or fewer.",
         "Adventurer": "You can expend your daily use of turn undead to gain an additional use of heal in one battle.",
         "Champion": "You can choose to target either demons or undead with the spell (but not both with the same casting).",
         "Epic": "Increase the targeting limit by 100 hp."
@@ -212,18 +212,18 @@
         "Attack": "Wisdom + Level vs. MD",
         "Hit": "The target is weakened until the end of its next turn. On its next turn, if it’s unengaged, it does not attack and moves away from you. If it’s engaged, the target attempts to disengage as its first action, and moves away if it succeeds. If it fails, it moves away as its second action (drawing opportunity attacks). In either case, it will not attack unless it has no options for escape.",
         "Miss": "The target hates you for having tried to scare it, and it wants to hurt you most of all, but it won’t be any stupider than usual in pursuing that goal.",
-        "5th Level": "Target with 120 hp or fewer.",
-        "7th Level": "Target with 190 hp or fewer.",
-        "9th Level": "Target with 300 hp or fewer."
+        "Level 5": "Target with 120 hp or fewer.",
+        "Level 7": "Target with 190 hp or fewer.",
+        "Level 9": "Target with 300 hp or fewer."
       },
       "Combat Boon": {
         "Type": "Close-quarters Spell",
         "Action": "Standard",
         "Frequency": "At-Will",
         "Effect": "Make a basic melee attack. If the attack hits, you or one conscious nearby ally can roll a save against a save ends effect.",
-        "5th Level": "The save gains a +1 bonus.",
-        "7th Level": "If the attack hits, you and your nearby conscious allies can roll a total of two saves (one per character).",
-        "9th Level": "The save bonus increases to +2.",
+        "Level 5": "The save gains a +1 bonus.",
+        "Level 7": "If the attack hits, you and your nearby conscious allies can roll a total of two saves (one per character).",
+        "Level 9": "The save bonus increases to +2.",
         "Adventurer": "If you score a critical hit with the combat boon attack, the subsequent save automatically succeeds.",
         "Champion": "One nearby conscious ally can roll a save even if your attack misses."
       },
@@ -233,9 +233,9 @@
         "Frequency": "Daily",
         "Effect (Power)": "One nearby ally gains 40 temporary hit points.",
         "Effect (Broad)": "Choose up to three nearby creatures (including you); each target gains 20 temporary hit points.",
-        "5th Level": "Temporary hp = 60/30.",
-        "7th Level": "Temporary hp = 80/40.",
-        "9th Level": "Temporary hp = 100/50."
+        "Level 5": "Temporary hp = 60/30.",
+        "Level 7": "Temporary hp = 80/40.",
+        "Level 9": "Temporary hp = 100/50."
       },
       "Judgment": {
         "Type": "Ranged Spell",
@@ -245,9 +245,9 @@
         "Attack": "Wisdom + Level vs. MD",
         "Hit": "5d10 + Wisdom holy damage.",
         "Miss": "Holy damage equal to your level.",
-        "5th Level": "8d10 damage.",
-        "7th Level": "2d6 x 10 damage.",
-        "9th Level": "2d10 x 10 damage.",
+        "Level 5": "8d10 damage.",
+        "Level 7": "2d6 x 10 damage.",
+        "Level 9": "2d10 x 10 damage.",
         "Champion": "The spell now deals half damage on a miss.",
         "Epic": "The spell is now recharge 16+ after battle instead of daily."
       },
@@ -257,9 +257,9 @@
         "Frequency": "Daily",
         "Effect (Power)": "One nearby ally can heal using a single recovery and regain double the usual number of hit points.",
         "Effect (Broad)": "Choose up to three nearby creatures (including you); each target can heal using a recovery.",
-        "5th Level": "The spell can now target far away allies.",
-        "7th Level": "Power equals triple the usual hp for one recovery; broad equals 150% the usual hp per recovery.",
-        "9th Level": "Recoveries provided by the spell are now free.",
+        "Level 5": "The spell can now target far away allies.",
+        "Level 7": "Power equals triple the usual hp for one recovery; broad equals 150% the usual hp per recovery.",
+        "Level 9": "Recoveries provided by the spell are now free.",
         "Champion": "This spell is now a close-quarters spell."
       },
       "Strength of the Gods": {
@@ -268,9 +268,9 @@
         "Frequency": "Daily",
         "Effect (Power)": "One nearby ally deals +2d8 damage with melee attacks this battle.",
         "Effect (Broad)": "Choose up to three nearby creatures (including you); each target deals +1d8 damage with melee attacks this battle.",
-        "5th Level": "Power +4d6, Broad +2d6.",
-        "7th Level": "Power +4d10, Broad +2d10.",
-        "9th Level": "Power +6d10, Broad +3d10."
+        "Level 5": "Power +4d6, Broad +2d6.",
+        "Level 7": "Power +4d10, Broad +2d10.",
+        "Level 9": "Power +6d10, Broad +3d10."
       }
     },
     "Level 5": {
@@ -279,16 +279,16 @@
         "Action": "Quick",
         "Frequency": "Daily",
         "Effect": "For the rest of this battle, all enemies near you with 100 hp or fewer take a penalty to their Mental Defense equal to your Charisma modifier. Whenever one of those enemies misses with an attack roll, it takes holy damage equal to double your level.",
-        "5th Level": "160 hp or fewer.",
-        "7th Level": "250 hp or fewer."
+        "Level 5": "160 hp or fewer.",
+        "Level 7": "250 hp or fewer."
       },
       "Sanctuary": {
         "Type": "Close-quarters Spell",
         "Action": "Standard",
         "Frequency": "Daily",
         "Effect": "Choose yourself or a nearby ally. Enemies with 100 hp or fewer cannot attack the chosen target until that creature attacks or the escalation die reaches 6+.",
-        "5th Level": "160 hp or fewer.",
-        "7th Level": "250 hp or fewer."
+        "Level 5": "160 hp or fewer.",
+        "Level 7": "250 hp or fewer."
       },
       "Sphere of Radiance": {
         "Type": "Close-quarters Spell",
@@ -299,8 +299,8 @@
         "Attack": "Wisdom + Level vs. MD",
         "Hit": "7d8 + Charisma holy damage.",
         "Miss": "Half damage.",
-        "5th Level": "8d12 damage.",
-        "7th Level": "2d8 x 10 damage."
+        "Level 5": "8d12 damage.",
+        "Level 7": "2d8 x 10 damage."
       }
     },
     "Level 7": {
@@ -309,7 +309,7 @@
         "Action": "Quick",
         "Frequency": "Daily",
         "Effect": "Choose a defense: AC, PD, or MD. For the rest of the battle while you are conscious, you and each ally near you gains a +1 bonus to that defense. Each enemy that misses you or one of your nearby allies with an attack against the defense you chose is hampered until the end of its next turn.",
-        "9th Level": "Attacks against the chosen defense cannot score critical hits.",
+        "Level 9": "Attacks against the chosen defense cannot score critical hits.",
         "Epic": "The spell is now recharge 16+ after battle instead of daily."
       },
       "Resurrection": {
@@ -319,7 +319,7 @@
         "Effect": "You can bring a creature back to life in more or less normal condition, with varying levels of recovery. The first time you cast this spell, it’s with a single standard action, but you lose one spell slot. The person resurrected comes back at roughly half strength.",
         "Limited Casting": "The first time in your life that you use the spell, you can cast it with a single standard action. Using the spell removes one of your spell slots until you gain a level. (You get one less spell per full heal-up.) The person you are resurrecting comes back at roughly half strength, e.g. expending half their recoveries, being dazed (save ends), and, for each ability, having a 50% chance that it is expended.\n\nThe second time in your life you cast the spell, it takes at least three or four rounds and costs you roughly half your hit points and daily powers/spells. The person you are resurrecting comes back at something like one-quarter strength.\n\nThe third time you cast the spell it has to be as a ritual. The spell chews you up and leaves you with only a few hit points, then gnaws at the person you have resurrected, who takes days to recover well enough to qualify as an adventurer or combatant.\n\nThe fourth time you cast the spell it nearly kills you. The resurrection succeeds but the person you’ve resurrected is going to be a mess for a month or more, regardless of any other magic you use.\n\nThe fifth time you resurrect someone, that’s the end of your story and you die. There’s only a 50% chance that the resurrection spell works on the target. You’ve used up your quota of resurrection magic. You’re not coming back via this spell, either.",
         "Limited Resurrection": "If the target of your resurrection spell has been resurrected more times than you have cast the spell, there is a 50% chance that the experience will play out using their higher number of resurrections instead of the number of times you have cast the spell.",
-        "9th Level": "You no longer need to have most of the corpse to perform this spell."
+        "Level 9": "You no longer need to have most of the corpse to perform this spell."
       }
     },
     "Level 9": {

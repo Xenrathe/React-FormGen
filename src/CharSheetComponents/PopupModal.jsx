@@ -1,13 +1,20 @@
-function alterFamiliarAbs(familiarAbName, isAdding, abilitiesBlock, setAbilitiesBlock){
+function alterFamiliarAbs(
+  familiarAbName,
+  isAdding,
+  abilitiesBlock,
+  setAbilitiesBlock
+) {
   let newFamiliarAbArray = [];
   if (isAdding) {
     newFamiliarAbArray.push(...abilitiesBlock.familiarAbs);
     newFamiliarAbArray.push(familiarAbName);
   } else {
-    newFamiliarAbArray = abilitiesBlock.familiarAbs.filter((familiarAb) => familiarAb != familiarAbName);
+    newFamiliarAbArray = abilitiesBlock.familiarAbs.filter(
+      (familiarAb) => familiarAb != familiarAbName
+    );
   }
 
-  setAbilitiesBlock({...abilitiesBlock, familiarAbs: newFamiliarAbArray});
+  setAbilitiesBlock({ ...abilitiesBlock, familiarAbs: newFamiliarAbArray });
 }
 
 //add or remove a feat WITHIN another feat/ability
@@ -61,29 +68,64 @@ function alterTalents(talentName, isAdding, abilitiesBlock, setAbilitiesBlock) {
     newTalentArray.push(...abilitiesBlock.talents);
     newTalentArray.push(talentName);
   } else {
-    newTalentArray = abilitiesBlock.talents.filter((talent) => talent != talentName);
+    newTalentArray = abilitiesBlock.talents.filter(
+      (talent) => talent != talentName
+    );
   }
 
-  setAbilitiesBlock({...abilitiesBlock, talents: newTalentArray});
+  setAbilitiesBlock({ ...abilitiesBlock, talents: newTalentArray });
+}
+
+function alterSpells(
+  spellName,
+  spellLevel,
+  isAdding,
+  abilitiesBlock,
+  setAbilitiesBlock
+) {
+  let newSpellArray = [];
+  if (isAdding) {
+    // remove any other level of the given spell - there should be only ONE copy of a spell
+    alterSpells(
+      spellName,
+      "doesn't matter",
+      false,
+      abilitiesBlock,
+      setAbilitiesBlock
+    );
+    newSpellArray.push(...abilitiesBlock.spells);
+    newSpellArray.push({ [spellName]: `Level ${spellLevel}` });
+  } else {
+    newSpellArray = abilitiesBlock.spells.filter(
+      (spell) => Object.keys(spell)[0] != spellName
+    );
+  }
+
+  setAbilitiesBlock({ ...abilitiesBlock, spells: newSpellArray });
 }
 
 //returns "" if no exclusive, otherwise returns name of exclusive ability
 function checkExclusivity(abilityItem, abilitiesBlock) {
   //no exclusion
-  if (typeof abilityItem !== 'object' || !("Exclusive" in abilityItem)) {
+  if (typeof abilityItem !== "object" || !("Exclusive" in abilityItem)) {
     return "";
   }
 
   //only a single item
   const exclusions = abilityItem.Exclusive;
-  if (!Array.isArray(exclusions)){
+  if (!Array.isArray(exclusions)) {
     return abilitiesBlock.talents.includes(exclusions) ? exclusions : "";
   }
 
   //run through whole array
   let exclusionName = "";
   exclusions.forEach((abilityName) => {
-    if (abilitiesBlock.talents.includes(abilityName) || abilitiesBlock.spells.includes(abilityName) || abilitiesBlock.bonusAbs.includes(abilityName) || abilitiesBlock.feats.includes(abilityName)) {
+    if (
+      abilitiesBlock.talents.includes(abilityName) ||
+      abilitiesBlock.spells.includes(abilityName) ||
+      abilitiesBlock.bonusAbs.includes(abilityName) ||
+      abilitiesBlock.feats.includes(abilityName)
+    ) {
       exclusionName = abilityName;
     }
   });
@@ -91,13 +133,26 @@ function checkExclusivity(abilityItem, abilitiesBlock) {
   return exclusionName;
 }
 
-function addableItemInfo(popupInfo, item, abilitiesBlock, setAbilitiesBlock) {
+function addableItemInfo(
+  popupInfo,
+  item,
+  character,
+  abilitiesBlock,
+  setAbilitiesBlock
+) {
   const name = Object.keys(item)[0];
   let tier = "";
   if (popupInfo.mode == "general" || popupInfo.mode == "Animal Companion") {
     tier = Object.keys(Object.values(item)[0])[0];
   } else if (popupInfo.mode == "talents") {
     tier = Object.values(item)[0].Type;
+  }
+
+  let level = "";
+  if (popupInfo.mode == "spells") {
+    let minimumLevelAvailable =
+      character.querySpellLevelMaximums().findIndex((num) => num > 0) * 2 + 1;
+    level = Math.max(Object.values(item)[0].Level, minimumLevelAvailable);
   }
 
   let text = "";
@@ -120,22 +175,28 @@ function addableItemInfo(popupInfo, item, abilitiesBlock, setAbilitiesBlock) {
 
   let onClickFn = null;
   if (popupInfo.mode == "general" || popupInfo.mode == "Animal Companion") {
-    onClickFn = () => alterFeats(
-      name,
-      tier,
-      true, 
-      false, 
-      false, 
-      abilitiesBlock,
-      setAbilitiesBlock
-    );
+    onClickFn = () =>
+      alterFeats(
+        name,
+        tier,
+        true,
+        false,
+        false,
+        abilitiesBlock,
+        setAbilitiesBlock
+      );
   } else if (popupInfo.mode == "talents") {
-    onClickFn = () => alterTalents(name, true, abilitiesBlock, setAbilitiesBlock);
+    onClickFn = () =>
+      alterTalents(name, true, abilitiesBlock, setAbilitiesBlock);
   } else if (popupInfo.mode == "Familiar") {
-    onClickFn = () => alterFamiliarAbs(name, true, abilitiesBlock, setAbilitiesBlock);
+    onClickFn = () =>
+      alterFamiliarAbs(name, true, abilitiesBlock, setAbilitiesBlock);
+  } else if (popupInfo.mode == "spells") {
+    onClickFn = () =>
+      alterSpells(name, level, true, abilitiesBlock, setAbilitiesBlock);
   }
 
-  return ([name, tier, text, onClickFn])
+  return [name, tier, text, onClickFn];
 }
 
 // Popup box when users clicks [i] or [+] button
@@ -146,7 +207,7 @@ function PopupModal({
   setPopupInfo,
   character,
   abilitiesBlock,
-  setAbilitiesBlock
+  setAbilitiesBlock,
 }) {
   if (popupInfo.list != null) {
     return (
@@ -171,16 +232,30 @@ function PopupModal({
         <span className="title">{popupInfo.title}</span>
         <span className="addable-items">
           {popupInfo.list.map((item) => {
-            const [name, tier, text, onClickFn] = addableItemInfo(popupInfo, item, abilitiesBlock, setAbilitiesBlock);
+            const [name, tier, text, onClickFn] = addableItemInfo(
+              popupInfo,
+              item,
+              character,
+              abilitiesBlock,
+              setAbilitiesBlock
+            );
 
             // tier / level restrictions
-            const levelRestricted = (tier == "Epic" && character.level < 8 || tier == "Champion" && character.level < 5);
+            const levelRestricted =
+              (tier == "Epic" && character.level < 8) ||
+              (tier == "Champion" && character.level < 5);
             // or exclusive restrictions
             //let exclusiveRestricted = (popupInfo.mode == "talents" && "Exclusive" in Object.values(item)[0] && abilitiesBlock.talents.includes(Object.values(item)[0].Exclusive));
-            const exclusiveRestricted = checkExclusivity(Object.values(item)[0], abilitiesBlock);
+            const exclusiveRestricted = checkExclusivity(
+              Object.values(item)[0],
+              abilitiesBlock
+            );
 
             let buttonText = levelRestricted ? "Tier Too High" : "+";
-            buttonText = exclusiveRestricted !== "" ? `Exclusive w/ ${exclusiveRestricted}` : buttonText;
+            buttonText =
+              exclusiveRestricted !== ""
+                ? `Exclusive w/ ${exclusiveRestricted}`
+                : buttonText;
 
             return (
               <span key={`${name}`} className={`addable-item`}>
@@ -211,37 +286,47 @@ function PopupModal({
       .map((value) => value.length)
       .reduce((sum, length) => sum + length, 0);
 
-    const exclusionAdd = "Exclusive" in popupInfo.singleItem ? (
-      <strong>
-        Exclusive with {Array.isArray(popupInfo.singleItem.Exclusive) ? popupInfo.singleItem.Exclusive.join("; ") : popupInfo.singleItem.Exclusive}
-        <br/>
-        <br/>
-      </strong>
-    ) : null;
+    const exclusionAdd =
+      "Exclusive" in popupInfo.singleItem ? (
+        <strong>
+          Exclusive with{" "}
+          {Array.isArray(popupInfo.singleItem.Exclusive)
+            ? popupInfo.singleItem.Exclusive.join("; ")
+            : popupInfo.singleItem.Exclusive}
+          <br />
+          <br />
+        </strong>
+      ) : null;
 
-    const invocationAdd = "Invocation" in popupInfo.singleItem ? (
-      <span>
-        <strong>Invocation: </strong>{popupInfo.singleItem.Invocation}
-        <br/>
-        <br/>
-      </span>
-    ) : null;
+    const invocationAdd =
+      "Invocation" in popupInfo.singleItem ? (
+        <span>
+          <strong>Invocation: </strong>
+          {popupInfo.singleItem.Invocation}
+          <br />
+          <br />
+        </span>
+      ) : null;
 
-    const advantageAdd = "Advantage" in popupInfo.singleItem ? (
-      <span>
-        <strong>Advantage: </strong>{popupInfo.singleItem.Advantage}
-        <br/>
-        <br/>
-      </span>
-    ) : null;
+    const advantageAdd =
+      "Advantage" in popupInfo.singleItem ? (
+        <span>
+          <strong>Advantage: </strong>
+          {popupInfo.singleItem.Advantage}
+          <br />
+          <br />
+        </span>
+      ) : null;
 
-    const actsAdd = "Acts" in popupInfo.singleItem ? (
-      <span>
-        <strong>Acts: </strong>{popupInfo.singleItem.Acts}
-        <br/>
-        <br/>
-      </span>
-    ) : null;
+    const actsAdd =
+      "Acts" in popupInfo.singleItem ? (
+        <span>
+          <strong>Acts: </strong>
+          {popupInfo.singleItem.Acts}
+          <br />
+          <br />
+        </span>
+      ) : null;
 
     const baseDescription =
       "Base" in popupInfo.singleItem ? (
@@ -253,7 +338,10 @@ function PopupModal({
               <br />
             </span>
           ))}
-          {invocationAdd}{actsAdd}{advantageAdd}{exclusionAdd}
+          {invocationAdd}
+          {actsAdd}
+          {advantageAdd}
+          {exclusionAdd}
         </span>
       ) : null;
 
@@ -285,11 +373,17 @@ function PopupModal({
         {baseDescription}
         <span className="feats">
           {Object.keys(popupInfo.singleItem)
-            .filter((tier) => tier == "Adventurer" || tier == "Champion" || tier == "Epic")
+            .filter(
+              (tier) =>
+                tier == "Adventurer" || tier == "Champion" || tier == "Epic"
+            )
             .map((tier) => {
               const featText = `${tier} - ${popupInfo.singleItem[tier]}`;
               const hasFeat = character.queryFeatIsOwned(popupInfo.title, tier);
-              const btnVisible = hasFeat || !(character.level < 8 && tier == "Epic") && !(character.level < 5 && tier == "Champion");
+              const btnVisible =
+                hasFeat ||
+                (!(character.level < 8 && tier == "Epic") &&
+                  !(character.level < 5 && tier == "Champion"));
 
               return (
                 <span

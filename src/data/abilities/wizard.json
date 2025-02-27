@@ -19,7 +19,7 @@
     },
     "Utility Spell": {
       "Type": "Default",
-      "Base": "When you choose spells during a full heal-up, instead of taking a standard spell, you can choose to give up a spell slot to memorize the utility spell at the same level. When you take the utility spell, you gain access to a range of useful non-combat spells of the level you memorized it or below. You cast each utility spell at the level of the spell slot you gave up for it. You can give up multiple spell slots to take utility spell multiple times.\n\nChoose from among the following utility spells:\n\n1st level: disguise self, feather fall, hold portal\n3rd level: arcane eye, levitate, message, speak with item\n5th level: wall of stone, water breathing\n7th level: scrying",
+      "Base": "When you choose spells during a full heal-up, instead of taking a standard spell, you can choose to give up a spell slot to memorize the utility spell at the same level. When you take the utility spell, you gain access to a range of useful non-combat spells of the level you memorized it or below. You cast each utility spell at the level of the spell slot you gave up for it. You can give up multiple spell slots to take utility spell multiple times.\n\nChoose from among the following utility spells:\n\n1st level: disguise self, feather fall, hold portal\nLevel 3: arcane eye, levitate, message, speak with item\nLevel 5: wall of stone, water breathing\nLevel 7: scrying",
       "Adventurer": "Each utility spell you take lets you cast two spells from the available options instead of one.",
       "Champion": "As above, but you can cast three utility spells instead of one."
     },
@@ -32,7 +32,7 @@
     },
     "Cantrip Mastery": {
       "Type": "Optional",
-      "Base": "Cantrips are at-will spells for you. Unlike normal wizards, who use a standard action to cast a cantrip, you can cast a cantrip as a quick action.\n\nTo do something particularly cunning or surprising with one of your cantrips where the GM isn’t sure whether you could pull off that use of the spell, roll a normal save (11+) to cast the spell the way you envision it.\n\nAdditionally, you can expend a 3rd level spell slot or higher to choose one cantrip per spell slot you have given up and create a once-per-day related effect with it that is much greater, if you and your GM can agree on a cool effect that suits the cantrip.",
+      "Base": "Cantrips are at-will spells for you. Unlike normal wizards, who use a standard action to cast a cantrip, you can cast a cantrip as a quick action.\n\nTo do something particularly cunning or surprising with one of your cantrips where the GM isn’t sure whether you could pull off that use of the spell, roll a normal save (11+) to cast the spell the way you envision it.\n\nAdditionally, you can expend a Level 3 spell slot or higher to choose one cantrip per spell slot you have given up and create a once-per-day related effect with it that is much greater, if you and your GM can agree on a cool effect that suits the cantrip.",
       "Adventurer": "You can use cantrip-style versions of any wizard spell you have memorized. When you expend a spell, however, you can’t make cantrip-style use of it any more. The key is that none of these uses should be combat relevant or deal damage.\n\nThe Cantrip Mastery talent is more about enhancing roleplaying and less about combat usefulness."
     },
     "Evocation": {
@@ -42,7 +42,7 @@
     },
     "High Arcana": {
       "Type": "Optional",
-      "Base": "Your study of the highest orders of magic gives you options that lesser wizards cannot match: Memorization and a bonus spell: counter-magic.\n\nMemorization: When you pick your spells, you can choose any daily wizard spell twice (instead of once). This doesn’t apply to spells that start as recharge spells. For example, at 7th level when you have five 7th level spells and four 5th level spells, you could choose fireball twice as a 7th level spell, or once as a 7th level spell and once as a 5th level spell. (Your 3rd level spell slot can’t be used for fireball because fireball starts as a 5th level spell.)",
+      "Base": "Your study of the highest orders of magic gives you options that lesser wizards cannot match: Memorization and a bonus spell: counter-magic.\n\nMemorization: When you pick your spells, you can choose any daily wizard spell twice (instead of once). This doesn’t apply to spells that start as recharge spells. For example, at Level 7 when you have five Level 7 spells and four Level 5 spells, you could choose fireball twice as a Level 7 spell, or once as a Level 7 spell and once as a Level 5 spell. (Your Level 3 spell slot can’t be used for fireball because fireball starts as a Level 5 spell.)",
       "Counter-magic": {
         "Type": "Close-quarters spell",
         "Action": "Free",
@@ -86,30 +86,30 @@
           "Frequency": "Daily",
           "Action": "Standard",
           "Effect": "This spell provides you with an effective magical disguise that lasts about ten minutes, making the skill check to avoid unmasking one step easier: easy if it would have been a normal task, normal if it would have been a hard task, and hard if it would have been a ridiculously hard task. The spell only affects your general appearance, not your size. It can be used to hide your features behind the generic features of another person or race. Using it to impersonate a specific creature makes it less effective as a disguise (-2 to -5 penalty).",
-          "3rd Level": "The spell lasts for 1 hour.",
-          "5th Level": "The spell also provides smell; +2 bonus to any checks.",
-          "7th Level": "The spell also handles correct-sounding vocal patterns and rough mannerisms; +4 bonus to any checks.",
-          "9th Level": "You can now target an ally with the spell; you can also now use it on up to two creatures at once."
+          "Level 3": "The spell lasts for 1 hour.",
+          "Level 5": "The spell also provides smell; +2 bonus to any checks.",
+          "Level 7": "The spell also handles correct-sounding vocal patterns and rough mannerisms; +4 bonus to any checks.",
+          "Level 9": "You can now target an ally with the spell; you can also now use it on up to two creatures at once."
         },
         "Feather Fall": {
           "Type": "Close-quarters spell",
           "Frequency": "Daily",
           "Action": "Free",
           "Effect": "When you cast this spell, it arrests your fall, letting you glide down the ground over a round or two.",
-          "3rd Level": "You can now target a nearby ally with the spell.",
-          "5th Level": "You can now target up to two nearby creatures with the spell.",
-          "7th Level": "You can now target up to five nearby creatures with the spell.",
-          "9th Level": "You gain some control over where a target falls, like a quickly gliding feather."
+          "Level 3": "You can now target a nearby ally with the spell.",
+          "Level 5": "You can now target up to two nearby creatures with the spell.",
+          "Level 7": "You can now target up to five nearby creatures with the spell.",
+          "Level 9": "You gain some control over where a target falls, like a quickly gliding feather."
         },
         "Hold Portal": {
           "Type": "Ranged spell",
           "Frequency": "Daily",
           "Action": "Standard",
           "Effect": "You cast this spell on a door. For ten minutes, adventurer-tier creatures can’t get through the door. Champion-tier creatures can batter it down; each attempt requires a DC 20 Intelligence skill check (including an applicable background) by the caster to resist the battering and keep the spell going. Epic-tier creatures can walk right through.",
-          "3rd Level": "The spell now lasts for an hour. Adventurer-tier creatures are stymied. Champion-tier creatures can batter the door down or destroy it after three failed DC 20 skill checks by the spellcaster. Epic creatures notice that the now-busted door had magic on it.",
-          "5th Level": "Champion-tier creatures take a few minutes to force the door open. Epic creatures can force it open after one failed DC 25 skill check by the spellcaster.",
-          "7th Level": "Champion-tier creatures are stymied for up to an hour by the door. Epic tier creatures get through after three failed DC 25 skill checks by the spellcaster.",
-          "9th Level": "Champion-tier creatures can’t enter. Epic-tier creatures can’t get through for an hour."
+          "Level 3": "The spell now lasts for an hour. Adventurer-tier creatures are stymied. Champion-tier creatures can batter the door down or destroy it after three failed DC 20 skill checks by the spellcaster. Epic creatures notice that the now-busted door had magic on it.",
+          "Level 5": "Champion-tier creatures take a few minutes to force the door open. Epic creatures can force it open after one failed DC 25 skill check by the spellcaster.",
+          "Level 7": "Champion-tier creatures are stymied for up to an hour by the door. Epic tier creatures get through after three failed DC 25 skill checks by the spellcaster.",
+          "Level 9": "Champion-tier creatures can’t enter. Epic-tier creatures can’t get through for an hour."
         }
       },
       "Level 3": {
@@ -118,28 +118,28 @@
           "Frequency": "Daily",
           "Action": "Standard",
           "Effect": "Until the end of the battle, you can use a move action to rise straight up into the air or descend straight down. The spell itself won’t move you horizontally. The up-or-down movement is about half as fast as your normal movement. While levitating, you take a –2 penalty to your attacks and are vulnerable to attacks against you.",
-          "5th Level": "You can now cast the spell on a nearby willing ally instead of yourself.",
-          "7th Level": "You can now cast the spell as a quick action, and the spell can now affect two targets.",
-          "9th Level": "The spell can now affect five targets."
+          "Level 5": "You can now cast the spell on a nearby willing ally instead of yourself.",
+          "Level 7": "You can now cast the spell as a quick action, and the spell can now affect two targets.",
+          "Level 9": "The spell can now affect five targets."
         },
         "Message": {
           "Type": "Close-quarters spell",
           "Frequency": "Daily",
           "Action": "Quick",
           "Effect": "You send a one to two sentence message to another person you know and have touched in the last week. Sending a message to a person you can see is always easy. Sending a message to a person you can’t see requires a skill check using Intelligence against the highest-tier environment that you or the sender are occupying.",
-          "3rd Level": "Across half a city, at most.",
-          "5th Level": "Across the entire city and a bit into the countryside.",
-          "7th Level": "Between cities near to each other.",
-          "9th Level": "From any city to any other city, or across a sea."
+          "Level 3": "Across half a city, at most.",
+          "Level 5": "Across the entire city and a bit into the countryside.",
+          "Level 7": "Between cities near to each other.",
+          "Level 9": "From any city to any other city, or across a sea."
         },
         "Speak with Item": {
           "Type": "Close-quarters spell",
           "Frequency": "Daily",
           "Action": "Quick",
           "Effect": "Speak briefly, mind-to-mind, with a magic item you are touching that is owned by you or one of your allies. The item’s owner gets a free power recharge roll if that item’s power has been expended.",
-          "5th Level": "You no longer need to be touching the item; it only has to be nearby.",
-          "7th Level": "The item’s owner gains a +2 bonus to the item recharge roll.",
-          "9th Level": "If the item recharge roll fails, you keep this spell, but the item won’t talk to you until after your next full heal-up."
+          "Level 5": "You no longer need to be touching the item; it only has to be nearby.",
+          "Level 7": "The item’s owner gains a +2 bonus to the item recharge roll.",
+          "Level 9": "If the item recharge roll fails, you keep this spell, but the item won’t talk to you until after your next full heal-up."
         }
       },
       "Level 5": {
@@ -148,8 +148,8 @@
           "Frequency": "Daily",
           "Action": "Quick",
           "Effect": "You can breathe underwater for the rest of the battle (or about five minutes). You become aware a couple of rounds ahead of when the magic of the spell is about to end.",
-          "7th Level": "You and 1d4 + 2 nearby allies can breathe underwater this battle.",
-          "9th Level": "The spell affects you and 1d6 + 2 nearby allies for 4d6 hours."
+          "Level 7": "You and 1d4 + 2 nearby allies can breathe underwater this battle.",
+          "Level 9": "The spell affects you and 1d6 + 2 nearby allies for 4d6 hours."
         }
       },
       "Level 7": {
@@ -157,8 +157,8 @@
           "Type": "Ranged spell",
           "Frequency": "Daily",
           "Action": "Standard",
-          "Effect": "You can use this spell to get information you shouldn’t be able to get, peering in on other people’s lives for a short period of time, usually no more than ten minutes at a time. Some areas may be warded at the GM’s discretion. You must have touched the person you wish to spy on in the last month, or, at 9th level, within the last year.",
-          "9th Level": "You can spy on the person even if you haven’t touched them in the last year. The scrying effect lasts for up to 1 hour."
+          "Effect": "You can use this spell to get information you shouldn’t be able to get, peering in on other people’s lives for a short period of time, usually no more than ten minutes at a time. Some areas may be warded at the GM’s discretion. You must have touched the person you wish to spy on in the last month, or, at Level 9, within the last year.",
+          "Level 9": "You can spy on the person even if you haven’t touched them in the last year. The scrying effect lasts for up to 1 hour."
         }
       }
     },
@@ -236,10 +236,10 @@
         "Attack": "Intelligence + Level vs. PD",
         "Hit": "4d10 acid damage, and 5 ongoing acid damage.",
         "Miss": "5 ongoing acid damage, and you regain the spell during your next quick rest.",
-        "3rd Level": "5d10 damage, and 10 ongoing damage; 10 ongoing on a miss.",
-        "5th Level": "8d10 damage, and 15 ongoing damage; 15 ongoing on a miss.",
-        "7th Level": "3d4 x 10 damage, and 25 ongoing damage; 25 ongoing on a miss.",
-        "9th Level": "5d4 x 10 damage, and 40 ongoing damage; 40 ongoing on a miss."
+        "Level 3": "5d10 damage, and 10 ongoing damage; 10 ongoing on a miss.",
+        "Level 5": "8d10 damage, and 15 ongoing damage; 15 ongoing on a miss.",
+        "Level 7": "3d4 x 10 damage, and 25 ongoing damage; 25 ongoing on a miss.",
+        "Level 9": "5d4 x 10 damage, and 40 ongoing damage; 40 ongoing on a miss."
       },
       "Blur": {
         "Type": "Ranged spell",
@@ -247,10 +247,10 @@
         "Action": "Standard",
         "Target": "You or one nearby ally",
         "Effect": "For the rest of the battle (or for five minutes), attacks against the target miss 20% of the time.",
-        "3rd Level": "The spell is now a quick action to cast.",
-        "5th Level": "Miss 25% of the time.",
-        "7th Level": "Miss 30% of the time, and you can now target 1d2 creatures with the spell.",
-        "9th Level": "Miss 30% of the time, and you can now target two creatures with the spell."
+        "Level 3": "The spell is now a quick action to cast.",
+        "Level 5": "Miss 25% of the time.",
+        "Level 7": "Miss 30% of the time, and you can now target 1d2 creatures with the spell.",
+        "Level 9": "Miss 30% of the time, and you can now target two creatures with the spell."
       },
       "Charm Person": {
         "Type": "Ranged spell",
@@ -261,10 +261,10 @@
         "Attack": "Intelligence + Level vs. MD",
         "Hit": "The target believes you are their friend until you or your allies take hostile action against them. (Attacking their normal allies is okay.) If you or your allies attack the target or order the target to attack its normal allies, the target can roll a normal save to break the charm effect during its turn each round.",
         "Miss": "On a miss, the spell is not detectable by most others unless you miss by 4+ or roll a natural 1, in which case the target and its allies know what you tried to do and will usually be angry about it.",
-        "3rd Level": "Target with 64 hp or fewer.",
-        "5th Level": "Target with 96 hp or fewer.",
-        "7th Level": "Target with 160 hp or fewer.",
-        "9th Level": "Target with 266 hp or fewer."
+        "Level 3": "Target with 64 hp or fewer.",
+        "Level 5": "Target with 96 hp or fewer.",
+        "Level 7": "Target with 160 hp or fewer.",
+        "Level 9": "Target with 266 hp or fewer."
       },
       "Color Spray": {
         "Type": "Close-quarters spell",
@@ -273,10 +273,10 @@
         "Target": "1d4 nearby enemies in a group",
         "Attack": "Intelligence + Level vs. MD",
         "Hit": "2d8 psychic damage, and if the target has 10 hp or fewer after the damage, it is weakened until the end of your next turn.",
-        "3rd Level": "4d6 damage, 20 hp or fewer.",
-        "5th Level": "6d8 damage, 30 hp or fewer.",
-        "7th Level": "10d6 damage, 40 hp or fewer.",
-        "9th Level": "10d12 damage, 60 hp or fewer.",
+        "Level 3": "4d6 damage, 20 hp or fewer.",
+        "Level 5": "6d8 damage, 30 hp or fewer.",
+        "Level 7": "10d6 damage, 40 hp or fewer.",
+        "Level 9": "10d12 damage, 60 hp or fewer.",
         "Adventurer": "Increase the hit point threshold of the weakened effect by 5 hp.",
         "Champion": "On a miss, the spell deals damage equal to your level.",
         "Epic": "The spell now targets 1d4 + 1 nearby enemies in a group."
@@ -288,13 +288,13 @@
         "Target": "One nearby or far away enemy",
         "Attack": "Automatic hit",
         "Effect": "2d4 force damage.",
-        "3rd Level": "2d8 damage.",
-        "5th Level": "4d6 damage.",
-        "7th Level": "6d6 damage.",
-        "9th Level": "10d6 damage.",
+        "Level 3": "2d8 damage.",
+        "Level 5": "4d6 damage.",
+        "Level 7": "6d6 damage.",
+        "Level 9": "10d6 damage.",
         "Adventurer": "You can choose two targets; roll half the damage dice for one missile and half the damage dice for the other, then assign one set of damage dice to each of the two targets.",
         "Champion": "Roll a d20 when you use the spell; if you roll a natural 20, the magic missile crits and deals double damage. (Rolling a 1 is not a fumble; this roll checks only to see if you can crit.)",
-        "Epic": "The 7th and 9th level versions of the spell now use d8s as damage dice."
+        "Epic": "The 7th and Level 9 versions of the spell now use d8s as damage dice."
       },
       "Ray of Frost": {
         "Type": "Ranged spell",
@@ -304,10 +304,10 @@
         "Attack": "Intelligence + Level vs. PD",
         "Hit": "3d6 cold damage",
         "Miss": "Damage equal to your level.",
-        "3rd Level": "4d8 damage.",
-        "5th Level": "6d8 damage.",
-        "7th Level": "7d10 damage.",
-        "9th Level": "10d12 damage.",
+        "Level 3": "4d8 damage.",
+        "Level 5": "6d8 damage.",
+        "Level 7": "7d10 damage.",
+        "Level 9": "10d12 damage.",
         "Adventurer": "When your ray of frost attack roll is a natural even hit, if the target is staggered after taking the damage, it is also dazed until the end of your next turn.",
         "Champion": "The target of the spell can also be far away.",
         "Epic": "When you cast the spell you can change the damage type to lightning or negative energy."
@@ -317,10 +317,10 @@
         "Frequency": "Recharge: 11+ after battle",
         "Action": "Free",
         "Effect": "The attacker must reroll the attack. You must accept the new result.",
-        "3rd Level": "You gain a +2 AC bonus against the rerolled attack.",
-        "5th Level": "You can also use the spell against attacks that target your Physical Defense; replace references to AC with PD.",
-        "7th Level": "The bonus to AC/PD on the rerolled attack increases to +4.",
-        "9th Level": "The bonus to AC/PD on the rerolled attack increases to +6.",
+        "Level 3": "You gain a +2 AC bonus against the rerolled attack.",
+        "Level 5": "You can also use the spell against attacks that target your Physical Defense; replace references to AC with PD.",
+        "Level 7": "The bonus to AC/PD on the rerolled attack increases to +4.",
+        "Level 9": "The bonus to AC/PD on the rerolled attack increases to +6.",
         "Adventurer": "You can now choose either of the attack rolls, in case the second one crits or is otherwise bad for you.",
         "Champion": "Recharge roll after battle is now 6+.",
         "Epic": "Hit or miss, you take only half damage from any attack you use shield against."
@@ -333,10 +333,10 @@
         "Attack": "Intelligence + Level vs. PD",
         "Hit": "1d4 lightning damage, and the target pops free from you.",
         "Miss": "You take damage equal to the target’s level from botched feedback.",
-        "3rd Level": "1d6 damage.",
-        "5th Level": "2d6 damage.",
-        "7th Level": "3d6 damage.",
-        "9th Level": "4d6 damage.",
+        "Level 3": "1d6 damage.",
+        "Level 5": "2d6 damage.",
+        "Level 7": "3d6 damage.",
+        "Level 9": "4d6 damage.",
         "Adventurer": "The spell now requires only a quick action to cast (once per round).",
         "Champion": "Once per battle, when you hit the target of the spell, you can also daze it until the end of your next turn.",
         "Epic": "The damage dice of the spell increase to d8s."
@@ -350,9 +350,9 @@
         "Attack": "Intelligence + Level vs. MD",
         "Hit": "The target is confused (save ends).",
         "Miss": "If you miss all targets, you regain this spell during your next quick rest.",
-        "5th Level": "Target with 160 hp or fewer, and the target can be far away.",
-        "7th Level": "Target with 250 hp or fewer, or two targets each with 125 hp or fewer.",
-        "9th Level": "Target with 500 hp or fewer, or two targets each with 250 hp or fewer.",
+        "Level 5": "Target with 160 hp or fewer, and the target can be far away.",
+        "Level 7": "Target with 250 hp or fewer, or two targets each with 125 hp or fewer.",
+        "Level 9": "Target with 500 hp or fewer, or two targets each with 250 hp or fewer.",
         "Adventurer": "On a miss against all targets with this spell, you can choose to daze those targets (save ends). If you do, you do not regain the spell.",
         "Champion": "Each failed save against the spell deals 6d10 psychic damage to the target.",
         "Epic": "The save against confused is now a difficult save (16+)."
@@ -365,9 +365,9 @@
         "Attack": "Intelligence + Level vs. PD",
         "Hit": "4d6 thunder damage, and the target pops free from you.",
         "Miss": "Damage equal to your level.",
-        "5th Level": "4d12 damage.",
-        "7th Level": "7d10 damage.",
-        "9th Level": "10d12 damage."
+        "Level 5": "4d12 damage.",
+        "Level 7": "7d10 damage.",
+        "Level 9": "10d12 damage."
       },
       "Force Salvo": {
         "Type": "Ranged spell",
@@ -376,9 +376,9 @@
         "Special": "The spell creates a number of force bolts equal to 1 + your Intelligence modifier. You must target a different creature with each bolt; any extras can’t be used.",
         "Attack": "Intelligence + Level vs. PD",
         "Hit": "4d10 force damage.",
-        "5th Level": "7d10 damage.",
-        "7th Level": "10d12 damage.",
-        "9th Level": "3d6 x 10 damage.",
+        "Level 5": "7d10 damage.",
+        "Level 7": "10d12 damage.",
+        "Level 9": "3d6 x 10 damage.",
         "Adventurer": "You can now target a specific creature with more than one bolt. Once you hit that target, you must target a different creature, and so on. (Roll your attack after each bolt before picking a target for the next bolt.)",
         "Champion": "On a miss, a bolt now deals miss damage equal to your level.",
         "Epic": "Increase the number of bolts by 1."
@@ -390,9 +390,9 @@
         "Attack": "Intelligence + Level vs. MD",
         "Hit": "The target cannot move or use move actions (hard save ends, 16+).",
         "Miss": "The target is dazed until the end of your next turn.",
-        "5th Level": "Target with 100 hp or fewer.",
-        "7th Level": "Target with 160 hp or fewer.",
-        "9th Level": "Target with 250 hp or fewer.",
+        "Level 5": "Target with 100 hp or fewer.",
+        "Level 7": "Target with 160 hp or fewer.",
+        "Level 9": "Target with 250 hp or fewer.",
         "Adventurer": "If the spell misses all targets, you regain the spell during your next quick rest.",
         "Champion": "The spell can target up to 2 nearby enemies whose total hit points don’t exceed the limit.",
         "Epic": "Increase the limit by +50 hp."
@@ -404,9 +404,9 @@
         "Attack": "Intelligence + Level vs. PD",
         "Hit": "7d8 lightning damage.",
         "Miss": "Half damage.",
-        "5th Level": "10d10 damage.",
-        "7th Level": "2d8 x 10 damage.",
-        "9th Level": "3d8 x 10 damage.",
+        "Level 5": "10d10 damage.",
+        "Level 7": "2d8 x 10 damage.",
+        "Level 9": "3d8 x 10 damage.",
         "Champion": "A natural even hit also deals 10 ongoing lightning damage.",
         "Epic": "A natural even hit now deals 20 ongoing lightning damage (hard save ends, 16+)."
       },
@@ -416,9 +416,9 @@
         "Target": "One nearby enemy with 100 hp or fewer",
         "Attack": "Intelligence + Level vs. MD",
         "Hit": "The target is hampered (only makes basic attacks) until the end of your next turn.",
-        "5th Level": "Target with 160 hp or fewer.",
-        "7th Level": "Target with 266 hp or fewer.",
-        "9th Level": "Target with 400 hp or fewer.",
+        "Level 5": "Target with 160 hp or fewer.",
+        "Level 7": "Target with 266 hp or fewer.",
+        "Level 9": "Target with 400 hp or fewer.",
         "Adventurer": "When you roll a natural even hit with the spell, you also deal psychic damage equal to double your level to the target.",
         "Champion": "When you hit the target with the spell, you also daze it until the end of your next turn.",
         "Epic": "When you roll a natural even miss against the target, you daze it until the end of your next turn."
@@ -430,9 +430,9 @@
         "Attack": "Intelligence + Level vs. MD",
         "Hit": "The target falls unconscious (hard save ends, 16+; it also ends if the target takes 10+ damage).",
         "Miss": "The target is dazed until the end of your next turn.",
-        "5th Level": "Targets 5d20 +50 max hp.",
-        "7th Level": "Targets 7d20 + 100 max hp.",
-        "9th Level": "Targets 9d20 + 200 max hp."
+        "Level 5": "Targets 5d20 +50 max hp.",
+        "Level 7": "Targets 7d20 + 100 max hp.",
+        "Level 9": "Targets 9d20 + 200 max hp."
       },
       "Teleport Shield": {
         "Type": "Close-quarters spell",
@@ -440,9 +440,9 @@
         "Target": "Always: For the rest of the battle, once per round when an enemy moves to engage you, you can make the following attack against it as a free action before it has the chance to attack in melee.",
         "Attack": "Intelligence + Level vs. PD",
         "Hit": "Teleport the enemy somewhere nearby you can see. You can place them in combat with one of your allies, but you can’t place them in a dangerous location. (It’s a defensive tool).",
-        "5th Level": "The teleported enemy also takes 4d10 damage.",
-        "7th Level": "6d10 damage.",
-        "9th Level": "10d10 damage.",
+        "Level 5": "The teleported enemy also takes 4d10 damage.",
+        "Level 7": "6d10 damage.",
+        "Level 9": "10d10 damage.",
         "Champion": "When your teleport shield attack misses, the spell’s attack is not expended that round.",
         "Epic": "You can now teleport the enemy somewhere far away that you can see; other restrictions still apply."
       }
@@ -455,8 +455,8 @@
         "Attack": "Intelligence + Level vs. MD",
         "Hit": "9d10 psychic damage, and the target is hampered until the end of your next turn.",
         "Miss": "Half damage.",
-        "7th Level": "3d4 x 10 damage.",
-        "9th Level": "3d6 x 10 damage.",
+        "Level 7": "3d4 x 10 damage.",
+        "Level 9": "3d6 x 10 damage.",
         "Champion": "When you roll a natural even miss with the spell, the target is also hampered until the end of your next turn.",
         "Epic": "Increase the number of targets to 1d4 + 1."
       },
@@ -465,8 +465,8 @@
         "Frequency": "Daily",
         "Target": "You",
         "Effect": "You teleport somewhere nearby that you can see.",
-        "7th Level": "Your destination can now be far away, but not so far that it is out of range of enemy attacks that can hit far away targets.",
-        "9th Level": "You can take one ally who is next to you along with you as you teleport."
+        "Level 7": "Your destination can now be far away, but not so far that it is out of range of enemy attacks that can hit far away targets.",
+        "Level 9": "You can take one ally who is next to you along with you as you teleport."
       },
       "Fireball": {
         "Type": "Ranged spell",
@@ -476,8 +476,8 @@
         "Attack": "Intelligence + Level vs. PD",
         "Hit": "10d10 fire damage.",
         "Miss": "Half damage. Your allies engaged with the target take one-fourth damage.",
-        "7th Level": "12d10 damage.",
-        "9th Level": "20d10 damage.",
+        "Level 7": "12d10 damage.",
+        "Level 9": "20d10 damage.",
         "Champion": "Casting the spell recklessly increases the number of additional targets to 1d4 instead of 1d3.",
         "Epic": "Increase the number of targets to 1d3 + 1 instead of 1d3."
       },
@@ -487,8 +487,8 @@
         "Target": "You or one nearby ally",
         "Effect": "Until the end of the battle (or for five minutes out of combat), the target becomes invisible until it attacks or uses some ridiculously flashy action.",
         "Special": "High Arcana: The duration out of combat is 1 hour instead.",
-        "7th Level": "You can now target 1d3 nearby allies (including you) with the spell.",
-        "9th Level": "Creatures made invisible by the spell have a 25% chance of remaining invisible the first time (and first time only) they attack or get flashy."
+        "Level 7": "You can now target 1d3 nearby allies (including you) with the spell.",
+        "Level 9": "Creatures made invisible by the spell have a 25% chance of remaining invisible the first time (and first time only) they attack or get flashy."
       }
     },
     "Level 7": {
@@ -497,35 +497,35 @@
         "Frequency": "Daily",
         "Target": "You or one nearby ally",
         "Effect": "For the rest of the battle (or for five minutes), the target gains resist damage 16+. Enemies who can see invisible creatures ignore this resistance. Whenever the target uses a move action, there is a 50% chance that it can teleport somewhere nearby instead of physically moving.",
-        "9th Level": "75% chance."
+        "Level 9": "75% chance."
       },
       "Flight": {
         "Type": "Ranged spell",
         "Frequency": "Daily",
         "Target": "You or one nearby ally",
         "Effect": "The target can fly until the end of the battle (or for five minutes). Your speed doesn’t increase appreciably but you can move in three-dimensions.",
-        "9th Level": "When you cast the spell, you can choose one: the effect lasts for an hour OR you can target 1d4 + 1 creatures for the normal duration."
+        "Level 9": "When you cast the spell, you can choose one: the effect lasts for an hour OR you can target 1d4 + 1 creatures for the normal duration."
       },
       "Haste": {
         "Type": "Ranged spell",
         "Frequency": "Daily",
         "Target": "You or one nearby ally",
         "Effect": "On the target’s next turn (not this one, if you cast it on yourself), the target gains an additional standard action. In addition, at the start of each of the target’s turns this battle, if the escalation die is even, roll a d20 and add the escalation die; on a 16+, the target gains an additional standard action that turn.",
-        "9th Level": "The roll for additional standard actions is now 11+ instead of 16+."
+        "Level 9": "The roll for additional standard actions is now 11+ instead of 16+."
       },
       "Invisibility Purge": {
         "Type": "Ranged spell",
         "Frequency": "Daily",
         "Target": "Any nearby enemies who are invisible, whether you know they are there or not",
         "Effect": "The target turns visible and cannot become invisible again this battle.",
-        "9th Level": "The spell also affects far away targets that you could normally see."
+        "Level 9": "The spell also affects far away targets that you could normally see."
       },
       "Overcome Resistance": {
         "Type": "Ranged spell",
         "Frequency": "Recharge 16+ after battle",
         "Target": "1d3 nearby allies (including yourself, if you wish)",
         "Effect": "Until the end of the battle, the target ignores the resistance power of any creature it targets with an attack.",
-        "9th Level": "You can now target 1d4 nearby allies with the spell."
+        "Level 9": "You can now target 1d4 nearby allies with the spell."
       },
       "Transfer Enchantment": {
         "Type": "Ranged spell",
@@ -535,7 +535,7 @@
         "Attack": "Intelligence + Level vs. MD",
         "Hit": "2d6 x 10 psychic damage, and you can transfer one condition caused by your enemies from you or the ally you are next to over to the target. If timing is required, interpret the transferred condition as if you had caused it with this spell.",
         "Miss": "Half damage.",
-        "9th Level": "2d10 x 10 damage; if the spell misses, you regain it during your next quick rest."
+        "Level 9": "2d10 x 10 damage; if the spell misses, you regain it during your next quick rest."
       }
     },
     "Level 9": {
