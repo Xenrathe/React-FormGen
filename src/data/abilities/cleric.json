@@ -99,7 +99,7 @@
   "Spells": {
     "Level 0": {
       "Heal": {
-        "Type": "Close-quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Quick",
         "Frequency": "You can use this spell twice per battle.",
         "Target": "You or one ally you are next to",
@@ -111,7 +111,7 @@
     },
     "Level 1": {
       "Bless": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Quick",
         "Frequency": "Daily",
         "Special": "You can cast this spell for power or for broad effect.",
@@ -123,7 +123,7 @@
         "Level 9": "Each target also gains 3d10 temporary hit points instead of 2d10 per point of the attack bonus."
       },
       "Cure Wounds": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Quick",
         "Frequency": "Daily",
         "Effect": "You or a nearby ally can heal using a free recovery.",
@@ -133,7 +133,7 @@
         "Level 9": "This spell is now recharge 11+ instead."
       },
       "Hammer of Faith": {
-        "Type": "Close-Quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Effect": "Until the end of the battle, your basic melee attacks use d12s as their base weapon damage dice.",
@@ -143,7 +143,7 @@
         "Level 9": "For the rest of the battle, change any of your basic melee attack damage dice rolls that are less than the escalation die to the escalation die value."
       },
       "Javelin of Faith": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
         "Target": "One nearby enemy",
@@ -159,7 +159,7 @@
         "Epic": "If your natural attack roll is an 18+, make the attack a second time against a different target as a free action."
       },
       "Shield of Faith": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Quick",
         "Frequency": "Daily",
         "Effect (Power)": "One nearby ally gains a +2 bonus to AC this battle.",
@@ -170,7 +170,7 @@
         "Level 9": "The bonus when cast for power increases to +4. The bonus when cast for broad effect increases to +2."
       },
       "Spirits of the Righteous": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Once per battle",
         "Target": "One nearby enemy",
@@ -184,7 +184,7 @@
         "Champion": "You also gain the bonus to AC until the end of your next turn on a hit."
       },
       "Turn Undead": {
-        "Type": "Close-Quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "1d4 nearby undead creatures, each with 55 hp or fewer.",
@@ -204,7 +204,7 @@
     },
     "Level 3": {
       "Cause Fear": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Quick",
         "Frequency": "Daily",
         "Target": "One nearby enemy with 75 hp or fewer",
@@ -216,7 +216,7 @@
         "Level 9": "Target with 300 hp or fewer."
       },
       "Combat Boon": {
-        "Type": "Close-quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "At-Will",
         "Effect": "Make a basic melee attack. If the attack hits, you or one conscious nearby ally can roll a save against a save ends effect.",
@@ -227,7 +227,7 @@
         "Champion": "One nearby conscious ally can roll a save even if your attack misses."
       },
       "Divine Endurance": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Quick",
         "Frequency": "Daily",
         "Effect (Power)": "One nearby ally gains 40 temporary hit points.",
@@ -237,7 +237,7 @@
         "Level 9": "Temporary hp = 100/50."
       },
       "Judgment": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "All nearby staggered enemies",
@@ -251,7 +251,7 @@
         "Epic": "The spell is now recharge 16+ after battle instead of daily."
       },
       "Mighty Healing": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Daily",
         "Effect (Power)": "One nearby ally can heal using a single recovery and regain double the usual number of hit points.",
@@ -259,10 +259,10 @@
         "Level 5": "The spell can now target far away allies.",
         "Level 7": "Power equals triple the usual hp for one recovery; broad equals 150% the usual hp per recovery.",
         "Level 9": "Recoveries provided by the spell are now free.",
-        "Champion": "This spell is now a close-quarters spell."
+        "Champion": "This spell is now a Close-quarters."
       },
       "Strength of the Gods": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Quick",
         "Frequency": "Daily",
         "Effect (Power)": "One nearby ally deals +2d8 damage with melee attacks this battle.",
@@ -274,7 +274,7 @@
     },
     "Level 5": {
       "Crisis of Faith": {
-        "Type": "Close-quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Quick",
         "Frequency": "Daily",
         "Effect": "For the rest of this battle, all enemies near you with 100 hp or fewer take a penalty to their Mental Defense equal to your Charisma modifier. Whenever one of those enemies misses with an attack roll, it takes holy damage equal to double your level.",
@@ -282,7 +282,7 @@
         "Level 7": "250 hp or fewer."
       },
       "Sanctuary": {
-        "Type": "Close-quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Effect": "Choose yourself or a nearby ally. Enemies with 100 hp or fewer cannot attack the chosen target until that creature attacks or the escalation die reaches 6+.",
@@ -290,7 +290,7 @@
         "Level 7": "250 hp or fewer."
       },
       "Sphere of Radiance": {
-        "Type": "Close-quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Effect": "You or one nearby ally can heal using a free recovery. Then make the following attack.",
@@ -304,7 +304,7 @@
     },
     "Level 7": {
       "Circle of Protection": {
-        "Type": "Close-quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Quick",
         "Frequency": "Daily",
         "Effect": "Choose a defense: AC, PD, or MD. For the rest of the battle while you are conscious, you and each ally near you gains a +1 bonus to that defense. Each enemy that misses you or one of your nearby allies with an attack against the defense you chose is hampered until the end of its next turn.",
@@ -312,7 +312,7 @@
         "Epic": "The spell is now recharge 16+ after battle instead of daily."
       },
       "Resurrection": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Special": "You can cast this spell only once per level, and a limited number of times in your life. You must have most of the corpse available to cast the spell. There’s no time limit on resurrecting a dead PC, so long as you have the corpse.",
         "Frequency": "Special",
         "Effect": "You can bring a creature back to life in more or less normal condition, with varying levels of recovery. The first time you cast this spell, it’s with a single standard action, but you lose one spell slot. The person resurrected comes back at roughly half strength.",
@@ -323,14 +323,14 @@
     },
     "Level 9": {
       "Overworld Travel": {
-        "Type": "Close-quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Special": "You must cast this spell outdoors. It enables you and a group of nearby allies to travel to most any location in the world that you can name. Travel takes between an hour and a day, depending on distance and the amount of effort exerted.",
         "Effect": "The destination can be in the overworld or in the land. It can’t be in the underworld."
       },
       "Prayer for Readiness": {
-        "Type": "Close-quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "Up to 5 allies",

@@ -105,7 +105,80 @@ function alterSpells(
 }
 
 function getSingleItemDescription(popupInfo) {
-  console.log(popupInfo);
+  const baseCategories = ["Base"];
+  const baseDescription = baseCategories
+    .filter((category) => category in popupInfo.singleItem)
+    .map((category) => (
+      <span key={category}>
+        {popupInfo.singleItem[category]
+          .split("\n\n")
+          .map((paragraph, index) => (
+            <span key={index}>
+              {paragraph}
+              <br />
+              <br />
+            </span>
+          ))}
+      </span>
+    ));
+
+  const spellBase =
+    "Frequency" in popupInfo.singleItem ? (
+      <span>
+        {popupInfo.singleItem.Type}; {popupInfo.singleItem.Frequency};{" "}
+        {"Action" in popupInfo.singleItem
+          ? `${popupInfo.singleItem.Action} action to cast`
+          : `${popupInfo.singleItem.Sustain} to cast/sustain`}
+        <br />
+        <br />
+      </span>
+    ) : null;
+
+  const spellCategories = [
+    "Target",
+    "Attack",
+    "Effect",
+    "Effect (Power)",
+    "Effect (Broad)",
+    "Opening & Sustained Effect",
+    "Hit",
+    "Hit by 4+",
+    "Hit by 8+",
+    "Hit by 12+ or Natural 20",
+    "Final Verse",
+    "Miss",
+    "Natural Even Miss",
+    "Special (Miss)",
+    "Special",
+    "Limited Casting",
+    "Limited Resurrection",
+  ];
+  const spellAdditions = spellCategories.map((category) => {
+    return category in popupInfo.singleItem ? (
+      <span>
+        <strong>{category}: </strong>
+        {popupInfo.singleItem[category]}
+        <br />
+      </span>
+    ) : null;
+  });
+
+  if (spellAdditions.length > 1) {
+    spellAdditions.push(<br />);
+  }
+
+  const additionCategories = ["Invocation", "Advantage", "Acts"];
+  const standardAdditions = additionCategories.map((category) => {
+    return category in popupInfo.singleItem ? (
+      <span>
+        <strong>{category}: </strong>
+        {popupInfo.singleItem[category]}
+        <br />
+        <br />
+      </span>
+    ) : null;
+  });
+
   const exclusionAdd =
     "Exclusive" in popupInfo.singleItem ? (
       <strong>
@@ -118,51 +191,15 @@ function getSingleItemDescription(popupInfo) {
       </strong>
     ) : null;
 
-  const invocationAdd =
-    "Invocation" in popupInfo.singleItem ? (
-      <span>
-        <strong>Invocation: </strong>
-        {popupInfo.singleItem.Invocation}
-        <br />
-        <br />
-      </span>
-    ) : null;
-
-  const advantageAdd =
-    "Advantage" in popupInfo.singleItem ? (
-      <span>
-        <strong>Advantage: </strong>
-        {popupInfo.singleItem.Advantage}
-        <br />
-        <br />
-      </span>
-    ) : null;
-
-  const actsAdd =
-    "Acts" in popupInfo.singleItem ? (
-      <span>
-        <strong>Acts: </strong>
-        {popupInfo.singleItem.Acts}
-        <br />
-        <br />
-      </span>
-    ) : null;
-
-  return "Base" in popupInfo.singleItem ? (
+  return (
     <span className="description">
-      {popupInfo.singleItem.Base.split("\n\n").map((paragraph, index) => (
-        <span key={index}>
-          {paragraph}
-          <br />
-          <br />
-        </span>
-      ))}
-      {invocationAdd}
-      {actsAdd}
-      {advantageAdd}
+      {baseDescription}
+      {spellBase}
+      {spellAdditions}
+      {standardAdditions}
       {exclusionAdd}
     </span>
-  ) : null;
+  );
 }
 
 //returns "" if no exclusive, otherwise returns name of exclusive ability
@@ -231,6 +268,8 @@ function addableItemInfo(
       text = itemValues.Hit;
     } else if ("Effect (Power)" in itemValues) {
       text = itemValues["Effect (Power)"];
+    } else if ("Opening & Sustained Effect" in itemValues) {
+      text = itemValues["Opening & Sustained Effect"];
     }
 
     if (`Level ${level}` in itemValues) {
@@ -359,6 +398,14 @@ function PopupModal({
       }
     });
 
+    const ownedSpellLevel =
+      "Level" in popupInfo.singleItem ? Number(popupInfo.singleItem.Level) : -1;
+
+    const maxSpellLevel =
+      character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 +
+      1;
+
+    console.log(popupInfo.singleItem);
     return (
       <div
         id="popupMod"
@@ -377,7 +424,45 @@ function PopupModal({
         </button>
         <span className="title">{popupInfo.title}</span>
         {getSingleItemDescription(popupInfo)}
-        <span className="feats">
+        <span className="single-selectables" id="spell-levels">
+          {Object.keys(popupInfo.singleItem)
+            .filter((key) => key.length > 5 && key.substring(0, 6) == "Level")
+            .map((key) => {
+              const spellLevel = Number(key.substring(5));
+              const hasLevel = ownedSpellLevel >= spellLevel;
+              const btnVisible = hasLevel || spellLevel <= maxSpellLevel;
+
+              return (
+                <span
+                  key={`${popupInfo.title}-${tier}`}
+                  className={`selectable ${hasFeat && "owned"}`}
+                >
+                  <button
+                    onClick={() =>
+                      alterFeats(
+                        popupInfo.title,
+                        tier,
+                        !hasFeat, // add or remove
+                        hasAdv,
+                        hasChamp,
+                        abilitiesBlock,
+                        setAbilitiesBlock
+                      )
+                    }
+                    className={`alterBtn ${btnVisible ? "visible" : "hidden"} ${
+                      hasFeat ? "remove" : "add"
+                    }`}
+                  >
+                    <span className={`text${hasFeat ? " minus" : ""}`}>{`${
+                      hasFeat ? "-" : "+"
+                    }`}</span>
+                  </button>
+                  <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
+                </span>
+              );
+            })}
+        </span>
+        <span className="single-selectables" id="feats">
           {Object.keys(popupInfo.singleItem)
             .filter(
               (tier) =>
@@ -393,7 +478,7 @@ function PopupModal({
               return (
                 <span
                   key={`${popupInfo.title}-${tier}`}
-                  className={`feat ${hasFeat && "owned"}`}
+                  className={`selectable ${hasFeat && "owned"}`}
                 >
                   <button
                     onClick={() =>

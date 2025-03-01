@@ -161,7 +161,7 @@
         "Level 9": "Add +15 hp to the recovery."
       },
       "Battle Chant": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
         "Special": "When you use battle chant, you can choose any battle cry effect you know as if you were making a basic melee attack, with the battle chant attack roll taking the place of the basic melee attack roll.",
@@ -177,7 +177,7 @@
         "Epic": "One battle per day, your battle chant damage dice become d10s."
       },
       "Befuddle": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Recharge 11+ after battle",
         "Target": "One nearby creature with 40 hp or fewer",
@@ -193,7 +193,7 @@
         "Epic": "On a hit, the confusion effect is now save ends."
       },
       "Charm Person": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "One nearby creature with 40 hp or fewer",
@@ -207,7 +207,7 @@
         "Level 9": "Target with 266 hp or fewer."
       },
       "Soundburst": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "1d4 nearby enemies in a group",
@@ -249,7 +249,7 @@
         "Epic": "Two of the targets can now be far away instead of nearby."
       },
       "Vicious Mockery": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Recharge 11+ after battle",
         "Target": "One nearby enemy",
@@ -264,10 +264,10 @@
         "Epic": "A natural even miss does not expend the spell."
       },
       "Wild Heal": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Daily",
-        "Targets": "Two random nearby allies. Choose the targets randomly from all nearby allies (including you) who are damaged.",
+        "Target": "Two random nearby allies. Choose the targets randomly from all nearby allies (including you) who are damaged.",
         "Effect": "Each target can heal using a recovery.",
         "Level 5": "Add +5 hp to the recovery.",
         "Level 7": "Add +15 hp to the recovery.",
@@ -288,7 +288,7 @@
         "Level 9": "Rolls to retain expended spells gain a bonus equal to the escalation die."
       },
       "Arrow of Verse": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Recharge 16+ after battle",
         "Target": "One nearby enemy",
@@ -301,7 +301,7 @@
         "Epic": "Bonus dice and miss dice are now d12s."
       },
       "Discombobulate": {
-        "Type": "Ranged Spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "One nearby creature with 100 hp or fewer",
@@ -330,7 +330,7 @@
         "Level 9": "7d6 damage."
       },
       "The Overworld Two-Step": {
-        "Type": "Close-quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Quick",
         "Frequency": "Recharge 16+ after battle",
         "Effect": "You can swap your position and the positions of all your nearby allies, even if you can’t see them when you cast the spell. Each position presently occupied by you or an ally must end up occupied after the swap, but otherwise you can swap freely.",
@@ -347,11 +347,11 @@
         "Final Verse": "The GM chooses an icon relevant to the situation; you choose the PC who will make an icon relationship check. That player makes the check and joins the GM in a duet of improvisation as to how the icon relationship roll has some impact on the current battle."
       },
       "Inspire Legends": {
-        "Type": "Close-quarters Spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Special": "Escalation die must be 4+.",
-        "Targets": "You and all nearby allies",
+        "Target": "You and all nearby allies",
         "Effect": "Each target can roll a d20 for each of its expended daily, recharge, and per battle powers and spells other than inspire legends. If the roll is 11+, the character regains the use of that power or spell."
       }
     }

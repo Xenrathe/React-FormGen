@@ -76,7 +76,7 @@
     },
     "Spell Fist": {
       "Type": "Optional",
-      "Base": "Your style of sorcery emphasizes close-range fighting. There are two advantages and one possible drawback to your style.\n\nYou gain a +2 bonus to AC.\n\nYou can use ranged spells while engaged with enemies without taking opportunity attacks.\n\nYou use your Constitution modifier instead of your Charisma modifier to determine the damage you add to all your sorcerer spells.",
+      "Base": "Your style of sorcery emphasizes close-range fighting. There are two advantages and one possible drawback to your style.\n\nYou gain a +2 bonus to AC.\n\nYou can use Rangeds while engaged with enemies without taking opportunity attacks.\n\nYou use your Constitution modifier instead of your Charisma modifier to determine the damage you add to all your sorcerer spells.",
       "Adventurer": "When you miss with a sorcerer spell against an enemy you are engaged with, add your Charisma modifier to the damage you deal. At Level 5, add double your Charisma modifier; at 8th level, triple it.",
       "Champion": "Once per battle, you can include one enemy engaged with you as an additional target of any attack spell you cast that targets other enemies.",
       "Epic": "Once per day when you cast an empowered spell, each enemy engaged with you becomes an additional target of that spell if it’s not already targeted by the spell."
@@ -92,7 +92,7 @@
   "Spells": {
     "Level 1": {
       "Breath of the White": {
-        "Type": "Close-quarters spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "1d2 nearby enemies in a group; breath weapon",
@@ -106,10 +106,10 @@
         "Special": "Breath Weapon: For the rest of the battle, roll a d20 at the start of each of your turns. On a 16+, you can use breath of the white dragon that turn if you wish."
       },
       "Burning Hands": {
-        "Type": "Close-quarters spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "At-Will",
-        "Targets": "Up to two nearby enemies in a group",
+        "Target": "Up to two nearby enemies in a group",
         "Attack": "Charisma + Level vs. PD",
         "Hit": "1d6 + Charisma fire damage.",
         "Level 3": "1d8 damage.",
@@ -121,7 +121,7 @@
         "Epic": "You can now target each enemy engaged with you with your burning hands spell in addition to any other targets."
       },
       "Chaos Bolt": {
-        "Type": "Ranged spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
         "Special": "The first time you use chaos bolt each battle, determine a random energy type. The spell deals that type of damage each time you use it that battle.",
@@ -137,10 +137,10 @@
         "Champion": "If you are a champion-tier sorcerer, roll any chaotic benefit gained with this spell on the epic chaotic benefits table. If you are an epic-tier sorcerer, choose the epic chaotic benefit you want instead of rolling."
       },
       "Lightning Fork": {
-        "Type": "Ranged spell; chain spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Recharge 16+ after battle",
-        "Target": "One nearby enemy",
+        "Target": "One nearby enemy, chain spell",
         "Attack": "Charisma + Level vs. PD",
         "Hit": "3d6 + Charisma lightning damage.",
         "Miss": "Half damage.",
@@ -154,7 +154,7 @@
         "Special": "Chain Spell: Each time you make a natural even attack roll, you can attack a different target with the spell."
       },
       "Resist Energy": {
-        "Type": "Ranged spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Recharge 16+ after battle",
         "Target": "You or one nearby ally",
@@ -166,7 +166,7 @@
         "Adventurer": "You can target an additional creature with the spell."
       },
       "Scorching Ray": {
-        "Type": "Ranged spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
         "Target": "One nearby enemy",
@@ -184,7 +184,7 @@
     },
     "Level 3": {
       "Breath of the Green": {
-        "Type": "Close-quarters spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "1d4 nearby enemies in a group; breath weapon",
@@ -197,7 +197,7 @@
         "Special": "Breath Weapon: For the rest of the battle, roll a d20 at the start of each of your turns; on a 16+, you can use breath of the green that turn if you wish."
       },
       "Chaos Pulse": {
-        "Type": "Ranged spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
         "Target": "One random nearby enemy",
@@ -209,7 +209,7 @@
         "Level 9": "9d10 damage."
       },
       "Dragon’s Leap": {
-        "Type": "Ranged spell",
+        "Type": "Ranged",
         "Action": "Quick",
         "Frequency": "Daily",
         "Target": "You; breath weapon",
@@ -220,7 +220,7 @@
         "Special": "Breath Weapon: For the rest of the battle, roll a d20 at the start of each of your turns; on a 16+, you can use dragon’s leap this turn if you wish. (Yeah, we know it’s not actually a breath weapon, but it works as part of the draconic sorcerer package.)"
       },
       "Echoing Thunder": {
-        "Type": "Ranged spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
         "Target": "One nearby enemy",
@@ -235,7 +235,7 @@
     },
     "Level 5": {
       "Breath of the Black": {
-        "Type": "Close-quarters spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "One nearby enemy; breath weapon",
@@ -248,7 +248,7 @@
         "Epic": "Double the spell’s ongoing damage on a miss."
       },
       "The Elven Shadows": {
-        "Type": "Ranged spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "One nearby enemy",
@@ -261,7 +261,7 @@
         "Epic": "Once per battle, the teleport from a hit with the elven shadows can be to a far away location you can see."
       },
       "Three Dooms": {
-        "Type": "Ranged spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Recharge 16+ after battle",
         "Target": "One nearby enemy; chain spell",
@@ -273,7 +273,7 @@
         "Special": "Chain Spell: Each time you make a natural even attack roll, you can attack a different target with the spell."
       },
       "Unearthly Glamour": {
-        "Type": "Ranged spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Daily",
         "Effect": "You gain a +5 bonus to all Charisma skill checks for the next five minutes. If you fail a Charisma skill check during this time, however, anyone you were attempting to convince or influence with the check is freaked out or disgusted by the supernatural glamour attached to you and has extremely negative reactions to you.",
@@ -283,7 +283,7 @@
     },
     "Level 7": {
       "Breath of the Blue": {
-        "Type": "Close-quarters spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "One nearby enemy; breath spell",
@@ -295,7 +295,7 @@
         "Epic": "You can now target a far away enemy with the spell (no attack penalty)."
       },
       "Stolen Faces": {
-        "Type": "Ranged spell",
+        "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "1d4 + 1 nearby allies",
@@ -303,7 +303,7 @@
         "Level 9": "You get to use your allies’ powers as if you also had any of their feats that improve those powers."
       },
       "Touch of Evil": {
-        "Type": "Close-quarters spell",
+        "Type": "Close-quarters",
         "Action": "Quick",
         "Frequency": "Daily",
         "Special": "If you are fighting one or more demons, roll an easy save (6+) at the start of each of your turns. Failure means that you are confused that turn.",
@@ -313,7 +313,7 @@
     },
     "Level 9": {
       "Breath of the Void": {
-        "Type": "Close-quarters spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Target": "One nearby enemy; breath spell",
@@ -323,14 +323,14 @@
         "Special": "Breath Spell: For the rest of the battle, roll a d20 at the start of each of your turns; on a 16+, you can use breath of the void this turn if you wish."
       },
       "Calling the Blood": {
-        "Type": "Close-quarters spell",
+        "Type": "Close-quarters",
         "Action": "Standard",
         "Frequency": "Daily",
         "Effect": "Randomly select an icon (preferably a sorcerous one). You gain some surprising or bizarre magical effect associated with the power of that icon to assist you. The effect is entirely up to the GM, though the immediate impact of the spell should always be favorable for you. The long-term consequences of randomly invoking the power of an icon that may be an enemy might not be favorable for you, and should be played for narrative interest by the GM, particularly if the impact of the spell was huge for you. Since this is a daily spell, sizeable impact is fine, but don’t award any extra effect for empowered casting, especially since the spell can be cast effectively out of combat.",
         "Epic": "Randomly choose twice, then choose the single result you prefer."
       },
       "Silver Flame": {
-        "Type": "Close-quarters spell",
+        "Type": "Close-quarters",
         "Action": "Quick",
         "Frequency": "Daily",
         "Effect": "Roll your relationship dice that you have with a sorcerous heroic icon.\nFor each 6 you roll, you gain one Level 7 or lower spell from any spellcasting class that you can cast this battle. For each 5 you roll, you gain one Level 5 or lower spell from any spellcasting class that you can cast this battle.\nIf the escalation die is 5+, you can swap the escalation die for one or your rolls. If you get no successes, you regain the spell after this battle.\nYou can acquire one of the new spells the same round you cast this spell. Then select and acquire any other gained spells at the start of your next turn.\nYou can use your Charisma as the ability score that provides the acquired spells’ attack bonuses and damage bonuses (if any). Other ability score references remain unchanged.\nAs you might expect, each 5 you roll also invokes an icon-related complication or obligation in the tradition of rolling 5s on relationship checks."
