@@ -347,7 +347,19 @@
 #popupMod .addable-items {
   display: flex;
   flex-direction: column;
+}
+
+#popupMod .addable-items, 
+#popupMod #feats.single-selectables{
   gap: 10px;
+}
+
+#popupMod #spell-levels.single-selectables {
+  gap: 2px;
+}
+
+#popupMod .single-selectables {
+  margin-top: 10px;
 }
 
 #popupMod.widest .addable-items,

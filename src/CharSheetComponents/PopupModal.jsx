@@ -86,21 +86,16 @@ function alterSpells(
   let newSpellArray = [];
   if (isAdding) {
     // remove any other level of the given spell - there should be only ONE copy of a spell
-    alterSpells(
-      spellName,
-      "doesn't matter",
-      false,
-      abilitiesBlock,
-      setAbilitiesBlock
+    newSpellArray = abilitiesBlock.spells.filter(
+      (spell) => Object.keys(spell)[0] != spellName
     );
-    newSpellArray.push(...abilitiesBlock.spells);
+
     newSpellArray.push({ [spellName]: `Level ${spellLevel}` });
   } else {
     newSpellArray = abilitiesBlock.spells.filter(
       (spell) => Object.keys(spell)[0] != spellName
     );
   }
-
   setAbilitiesBlock({ ...abilitiesBlock, spells: newSpellArray });
 }
 
@@ -163,9 +158,9 @@ function getSingleItemDescription(popupInfo) {
     ) : null;
   });
 
-  if (spellAdditions.length > 1) {
+  /*if (spellAdditions.length > 1) {
     spellAdditions.push(<br key="spell-addition-break" />);
-  }
+  }*/
 
   const additionCategories = ["Invocation", "Advantage", "Acts"];
   const standardAdditions = additionCategories.map((category) => {
@@ -373,15 +368,15 @@ function popupModalList(popupInfo, setPopupInfo, character, abilitiesBlock, setA
 }
 
 function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock) {
-// this block is necessary to know how to add/subtract multiple tiers at once
-  // most abilities have all three tiers... but some don't / skip a tier.
+  // used to set CSS class for width of popup
+  const infoLength = Object.values(popupInfo.singleItem)
+  .map((value) => value.length)
+  .reduce((sum, length) => sum + length, 0);
+
+  // this code is necessary to know how to add/subtract multiple tiers at once
+  // most abilities have all three tiers... but some don't (or skip a tier).
   let hasAdv = false;
   let hasChamp = false;
-
-  const infoLength = Object.values(popupInfo.singleItem)
-    .map((value) => value.length)
-    .reduce((sum, length) => sum + length, 0);
-
   Object.keys(popupInfo.singleItem).forEach((tier) => {
     if (tier == "Adventurer") {
       hasAdv = true;
@@ -390,14 +385,13 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
     }
   });
 
-  const ownedSpellLevel =
+  // these consts are used to determine spell level button clickability as well as default spell-level
+  let ownedSpellLevel =
     "Level" in popupInfo.singleItem ? Number(popupInfo.singleItem.Level) : -1;
-
   const maxSpellLevel =
     character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 +
     1;
 
-  console.log(popupInfo.singleItem);
   return (
     <div
       id="popupMod"
@@ -418,38 +412,31 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
       {getSingleItemDescription(popupInfo)}
       <span className="single-selectables" id="spell-levels">
         {Object.keys(popupInfo.singleItem)
-          .filter((key) => key.length > 5 && key.substring(0, 6) == "Level")
-          .map((key) => {
-            const spellLevel = Number(key.substring(5));
+          .filter((itemKey) => itemKey.length > 5 && itemKey.substring(0, 5) == "Level")
+          .map((itemKey) => {
+            const spellLevel = Number(itemKey.substring(5));
             const hasLevel = ownedSpellLevel >= spellLevel;
             const btnVisible = hasLevel || spellLevel <= maxSpellLevel;
+            console.log(`SpellLevel:${spellLevel}; hasLevel:${hasLevel}; btnVisible:${btnVisible}`);
 
             return (
               <span
-                key={`${popupInfo.title}-${tier}`}
-                className={`selectable ${hasFeat && "owned"}`}
+                key={`${popupInfo.title}-${itemKey}`}
+                className={`selectable ${hasLevel && "owned"}`}
               >
                 <button
                   onClick={() =>
-                    alterFeats(
-                      popupInfo.title,
-                      tier,
-                      !hasFeat, // add or remove
-                      hasAdv,
-                      hasChamp,
-                      abilitiesBlock,
-                      setAbilitiesBlock
-                    )
+                    alterSpells(popupInfo.title, spellLevel, !hasLevel, abilitiesBlock, setAbilitiesBlock)
                   }
                   className={`alterBtn ${btnVisible ? "visible" : "hidden"} ${
-                    hasFeat ? "remove" : "add"
+                    hasLevel ? "remove" : "add"
                   }`}
                 >
-                  <span className={`text${hasFeat ? " minus" : ""}`}>{`${
-                    hasFeat ? "-" : "+"
+                  <span className={`text${hasLevel ? " minus" : ""}`}>{`${
+                    hasLevel ? "-" : "+"
                   }`}</span>
                 </button>
-                <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
+                <strong>{itemKey}</strong> - {popupInfo.singleItem[itemKey]}
               </span>
             );
           })}
