@@ -303,6 +303,204 @@ function addableItemInfo(
   return [name, tier, text, onClickFn];
 }
 
+function popupModalList(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock){
+  return (
+    <div
+      id="popupMod"
+      className={`visible
+          ${
+            popupInfo.list.length > 4 && popupInfo.list.length < 9
+              ? " wide"
+              : ""
+          }
+          ${popupInfo.list.length > 8 ? " widest" : ""}`}
+    >
+      <button
+        className="close-btn"
+        onClick={() =>
+          setPopupInfo({ title: "", singleItem: null, list: null })
+        }
+      >
+        ✖
+      </button>
+      <span className="title">{popupInfo.title}</span>
+      <span className="addable-items">
+        {popupInfo.list.map((item) => {
+          const [name, tier, text, onClickFn] = addableItemInfo(
+            popupInfo,
+            item,
+            character,
+            abilitiesBlock,
+            setAbilitiesBlock
+          );
+
+          // tier / level restrictions
+          const levelRestricted =
+            (tier == "Epic" && character.level < 8) ||
+            (tier == "Champion" && character.level < 5);
+          // or exclusive restrictions
+          //let exclusiveRestricted = (popupInfo.mode == "talents" && "Exclusive" in Object.values(item)[0] && abilitiesBlock.talents.includes(Object.values(item)[0].Exclusive));
+          const exclusiveRestricted = checkExclusivity(
+            Object.values(item)[0],
+            abilitiesBlock
+          );
+
+          let buttonText = levelRestricted ? "Tier Too High" : "+";
+          buttonText =
+            exclusiveRestricted !== ""
+              ? `Exclusive w/ ${exclusiveRestricted}`
+              : buttonText;
+
+          return (
+            <span key={`${name}`} className={`addable-item`}>
+              <button
+                onClick={() => {
+                  onClickFn();
+                  setPopupInfo({ title: "", singleItem: null, list: null });
+                }}
+                className="alterBtn visible add"
+                disabled={levelRestricted || exclusiveRestricted}
+              >
+                <span className="text">{buttonText}</span>
+              </button>
+              <strong>{name}</strong> - {text}
+            </span>
+          );
+        })}
+      </span>
+    </div>
+  );
+}
+
+function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock) {
+// this block is necessary to know how to add/subtract multiple tiers at once
+  // most abilities have all three tiers... but some don't / skip a tier.
+  let hasAdv = false;
+  let hasChamp = false;
+
+  const infoLength = Object.values(popupInfo.singleItem)
+    .map((value) => value.length)
+    .reduce((sum, length) => sum + length, 0);
+
+  Object.keys(popupInfo.singleItem).forEach((tier) => {
+    if (tier == "Adventurer") {
+      hasAdv = true;
+    } else if (tier == "Champion") {
+      hasChamp = true;
+    }
+  });
+
+  const ownedSpellLevel =
+    "Level" in popupInfo.singleItem ? Number(popupInfo.singleItem.Level) : -1;
+
+  const maxSpellLevel =
+    character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 +
+    1;
+
+  console.log(popupInfo.singleItem);
+  return (
+    <div
+      id="popupMod"
+      className={`visible
+          ${infoLength > 1000 && infoLength <= 2000 ? " wide" : ""}
+          ${infoLength > 2000 ? " widest" : ""}
+          `}
+    >
+      <button
+        className="close-btn"
+        onClick={() =>
+          setPopupInfo({ title: "", singleItem: null, list: null })
+        }
+      >
+        ✖
+      </button>
+      <span className="title">{popupInfo.title}</span>
+      {getSingleItemDescription(popupInfo)}
+      <span className="single-selectables" id="spell-levels">
+        {Object.keys(popupInfo.singleItem)
+          .filter((key) => key.length > 5 && key.substring(0, 6) == "Level")
+          .map((key) => {
+            const spellLevel = Number(key.substring(5));
+            const hasLevel = ownedSpellLevel >= spellLevel;
+            const btnVisible = hasLevel || spellLevel <= maxSpellLevel;
+
+            return (
+              <span
+                key={`${popupInfo.title}-${tier}`}
+                className={`selectable ${hasFeat && "owned"}`}
+              >
+                <button
+                  onClick={() =>
+                    alterFeats(
+                      popupInfo.title,
+                      tier,
+                      !hasFeat, // add or remove
+                      hasAdv,
+                      hasChamp,
+                      abilitiesBlock,
+                      setAbilitiesBlock
+                    )
+                  }
+                  className={`alterBtn ${btnVisible ? "visible" : "hidden"} ${
+                    hasFeat ? "remove" : "add"
+                  }`}
+                >
+                  <span className={`text${hasFeat ? " minus" : ""}`}>{`${
+                    hasFeat ? "-" : "+"
+                  }`}</span>
+                </button>
+                <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
+              </span>
+            );
+          })}
+      </span>
+      <span className="single-selectables" id="feats">
+        {Object.keys(popupInfo.singleItem)
+          .filter(
+            (tier) =>
+              tier == "Adventurer" || tier == "Champion" || tier == "Epic"
+          )
+          .map((tier) => {
+            const hasFeat = character.queryFeatIsOwned(popupInfo.title, tier);
+            const btnVisible =
+              hasFeat ||
+              (!(character.level < 8 && tier == "Epic") &&
+                !(character.level < 5 && tier == "Champion"));
+
+            return (
+              <span
+                key={`${popupInfo.title}-${tier}`}
+                className={`selectable ${hasFeat && "owned"}`}
+              >
+                <button
+                  onClick={() =>
+                    alterFeats(
+                      popupInfo.title,
+                      tier,
+                      !hasFeat, // add or remove
+                      hasAdv,
+                      hasChamp,
+                      abilitiesBlock,
+                      setAbilitiesBlock
+                    )
+                  }
+                  className={`alterBtn ${btnVisible ? "visible" : "hidden"} ${
+                    hasFeat ? "remove" : "add"
+                  }`}
+                >
+                  <span className={`text${hasFeat ? " minus" : ""}`}>{`${
+                    hasFeat ? "-" : "+"
+                  }`}</span>
+                </button>
+                <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
+              </span>
+            );
+          })}
+      </span>
+    </div>
+  );
+}
+
 // Popup box when users clicks [i] or [+] button
 // [i] will populate the PopupModal with information + associated feats to add
 // [+] will populate the PopupModal with talents, spells, etc to add
@@ -314,199 +512,9 @@ function PopupModal({
   setAbilitiesBlock,
 }) {
   if (popupInfo.list != null) {
-    return (
-      <div
-        id="popupMod"
-        className={`visible
-            ${
-              popupInfo.list.length > 4 && popupInfo.list.length < 9
-                ? " wide"
-                : ""
-            }
-            ${popupInfo.list.length > 8 ? " widest" : ""}`}
-      >
-        <button
-          className="close-btn"
-          onClick={() =>
-            setPopupInfo({ title: "", singleItem: null, list: null })
-          }
-        >
-          ✖
-        </button>
-        <span className="title">{popupInfo.title}</span>
-        <span className="addable-items">
-          {popupInfo.list.map((item) => {
-            const [name, tier, text, onClickFn] = addableItemInfo(
-              popupInfo,
-              item,
-              character,
-              abilitiesBlock,
-              setAbilitiesBlock
-            );
-
-            // tier / level restrictions
-            const levelRestricted =
-              (tier == "Epic" && character.level < 8) ||
-              (tier == "Champion" && character.level < 5);
-            // or exclusive restrictions
-            //let exclusiveRestricted = (popupInfo.mode == "talents" && "Exclusive" in Object.values(item)[0] && abilitiesBlock.talents.includes(Object.values(item)[0].Exclusive));
-            const exclusiveRestricted = checkExclusivity(
-              Object.values(item)[0],
-              abilitiesBlock
-            );
-
-            let buttonText = levelRestricted ? "Tier Too High" : "+";
-            buttonText =
-              exclusiveRestricted !== ""
-                ? `Exclusive w/ ${exclusiveRestricted}`
-                : buttonText;
-
-            return (
-              <span key={`${name}`} className={`addable-item`}>
-                <button
-                  onClick={() => {
-                    onClickFn();
-                    setPopupInfo({ title: "", singleItem: null, list: null });
-                  }}
-                  className="alterBtn visible add"
-                  disabled={levelRestricted || exclusiveRestricted}
-                >
-                  <span className="text">{buttonText}</span>
-                </button>
-                <strong>{name}</strong> - {text}
-              </span>
-            );
-          })}
-        </span>
-      </div>
-    );
+    return popupModalList(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock);
   } else if (popupInfo.singleItem != null) {
-    // this block is necessary to know how to add/subtract multiple tiers at once
-    // most abilities have all three tiers... but some don't / skip a tier.
-    let hasAdv = false;
-    let hasChamp = false;
-
-    const infoLength = Object.values(popupInfo.singleItem)
-      .map((value) => value.length)
-      .reduce((sum, length) => sum + length, 0);
-
-    Object.keys(popupInfo.singleItem).forEach((tier) => {
-      if (tier == "Adventurer") {
-        hasAdv = true;
-      } else if (tier == "Champion") {
-        hasChamp = true;
-      }
-    });
-
-    const ownedSpellLevel =
-      "Level" in popupInfo.singleItem ? Number(popupInfo.singleItem.Level) : -1;
-
-    const maxSpellLevel =
-      character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 +
-      1;
-
-    console.log(popupInfo.singleItem);
-    return (
-      <div
-        id="popupMod"
-        className={`visible
-            ${infoLength > 1000 && infoLength <= 2000 ? " wide" : ""}
-            ${infoLength > 2000 ? " widest" : ""}
-            `}
-      >
-        <button
-          className="close-btn"
-          onClick={() =>
-            setPopupInfo({ title: "", singleItem: null, list: null })
-          }
-        >
-          ✖
-        </button>
-        <span className="title">{popupInfo.title}</span>
-        {getSingleItemDescription(popupInfo)}
-        <span className="single-selectables" id="spell-levels">
-          {Object.keys(popupInfo.singleItem)
-            .filter((key) => key.length > 5 && key.substring(0, 6) == "Level")
-            .map((key) => {
-              const spellLevel = Number(key.substring(5));
-              const hasLevel = ownedSpellLevel >= spellLevel;
-              const btnVisible = hasLevel || spellLevel <= maxSpellLevel;
-
-              return (
-                <span
-                  key={`${popupInfo.title}-${tier}`}
-                  className={`selectable ${hasFeat && "owned"}`}
-                >
-                  <button
-                    onClick={() =>
-                      alterFeats(
-                        popupInfo.title,
-                        tier,
-                        !hasFeat, // add or remove
-                        hasAdv,
-                        hasChamp,
-                        abilitiesBlock,
-                        setAbilitiesBlock
-                      )
-                    }
-                    className={`alterBtn ${btnVisible ? "visible" : "hidden"} ${
-                      hasFeat ? "remove" : "add"
-                    }`}
-                  >
-                    <span className={`text${hasFeat ? " minus" : ""}`}>{`${
-                      hasFeat ? "-" : "+"
-                    }`}</span>
-                  </button>
-                  <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
-                </span>
-              );
-            })}
-        </span>
-        <span className="single-selectables" id="feats">
-          {Object.keys(popupInfo.singleItem)
-            .filter(
-              (tier) =>
-                tier == "Adventurer" || tier == "Champion" || tier == "Epic"
-            )
-            .map((tier) => {
-              const hasFeat = character.queryFeatIsOwned(popupInfo.title, tier);
-              const btnVisible =
-                hasFeat ||
-                (!(character.level < 8 && tier == "Epic") &&
-                  !(character.level < 5 && tier == "Champion"));
-
-              return (
-                <span
-                  key={`${popupInfo.title}-${tier}`}
-                  className={`selectable ${hasFeat && "owned"}`}
-                >
-                  <button
-                    onClick={() =>
-                      alterFeats(
-                        popupInfo.title,
-                        tier,
-                        !hasFeat, // add or remove
-                        hasAdv,
-                        hasChamp,
-                        abilitiesBlock,
-                        setAbilitiesBlock
-                      )
-                    }
-                    className={`alterBtn ${btnVisible ? "visible" : "hidden"} ${
-                      hasFeat ? "remove" : "add"
-                    }`}
-                  >
-                    <span className={`text${hasFeat ? " minus" : ""}`}>{`${
-                      hasFeat ? "-" : "+"
-                    }`}</span>
-                  </button>
-                  <strong>{tier}</strong> - {popupInfo.singleItem[tier]}
-                </span>
-              );
-            })}
-        </span>
-      </div>
-    );
+    return popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock);
   } else {
     return <div id="popupMod" className="hidden"></div>;
   }
