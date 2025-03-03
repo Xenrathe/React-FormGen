@@ -113,7 +113,7 @@ function getSingleItemDescription(popupInfo) {
         {popupInfo.singleItem[category]
           .split("\n\n")
           .map((paragraph, index) => (
-            <span key={index}>
+            <span key={`${category}-${index}`}>
               {paragraph}
               <br />
               <br />
@@ -124,7 +124,7 @@ function getSingleItemDescription(popupInfo) {
 
   const spellBase =
     "Frequency" in popupInfo.singleItem ? (
-      <span>
+      <span key="spellbase">
         {popupInfo.singleItem.Type}; {popupInfo.singleItem.Frequency};{" "}
         {"Action" in popupInfo.singleItem
           ? `${popupInfo.singleItem.Action} action to cast`
@@ -155,7 +155,7 @@ function getSingleItemDescription(popupInfo) {
   ];
   const spellAdditions = spellCategories.map((category) => {
     return category in popupInfo.singleItem ? (
-      <span>
+      <span key={category}>
         <strong>{category}: </strong>
         {popupInfo.singleItem[category]}
         <br />
@@ -164,13 +164,13 @@ function getSingleItemDescription(popupInfo) {
   });
 
   if (spellAdditions.length > 1) {
-    spellAdditions.push(<br />);
+    spellAdditions.push(<br key="spell-addition-break" />);
   }
 
   const additionCategories = ["Invocation", "Advantage", "Acts"];
   const standardAdditions = additionCategories.map((category) => {
     return category in popupInfo.singleItem ? (
-      <span>
+      <span key={category}>
         <strong>{category}: </strong>
         {popupInfo.singleItem[category]}
         <br />
@@ -181,7 +181,7 @@ function getSingleItemDescription(popupInfo) {
 
   const exclusionAdd =
     "Exclusive" in popupInfo.singleItem ? (
-      <strong>
+      <strong key="exclusionadd">
         Exclusive with{" "}
         {Array.isArray(popupInfo.singleItem.Exclusive)
           ? popupInfo.singleItem.Exclusive.join("; ")

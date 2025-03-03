@@ -1,6 +1,5 @@
 # To-do List
 
-- Icon relation limits?
 - Too many familiar abilities error check
 - AbilitiesBlock sub-blocks borrows space from other sub-blocks to maintain formatting
 - AbilitiesBlock (pull from database / JSON files)

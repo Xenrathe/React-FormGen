@@ -4,8 +4,20 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
   
     for (let i = 1; i <= 4; i++) {
       const key = document.getElementById(`icon-input-${i}`)?.value;
-      const value = parseInt(document.getElementById(`icon-input-num-${i}`)?.value, 10) || 0;
+      let value = parseInt(document.getElementById(`icon-input-num-${i}`)?.value, 10) || 0;
   
+      let maxPoints = 3;
+
+      if (character.level >= 8) {
+        maxPoints = 4;
+      }
+
+      if (value < 0) {
+        value = 1;
+      } else if (value > maxPoints) {
+        value = maxPoints;
+      }
+
       if (key) {
         newRelations[key] = value;
       }
@@ -51,7 +63,7 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
       if (value < 0) {
         value = 1;
       } else if (value > maxPerBg) {
-        value = 5;
+        value = maxPerBg;
       }
 
       if (key) {
