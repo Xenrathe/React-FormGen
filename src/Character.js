@@ -462,6 +462,10 @@ export class Character {
     return spellSlots;
   }
 
+  querySpellLevelMinimum(){
+    return this.querySpellLevelMaximums().findIndex((num) => num > 0) * 2 + 1;
+  }
+
   querySpellLevelMaximums() {
     if ("spellProgression" in jobs[this.job]) {
       return jobs[this.job].spellProgression[this.level - 1];

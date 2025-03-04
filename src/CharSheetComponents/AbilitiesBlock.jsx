@@ -48,7 +48,11 @@ function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
     const newTalentArray = abilitiesBlock.talents.filter(
       (talent) => talent != name
     );
-    setAbilitiesBlock({ ...abilitiesBlock, talents: newTalentArray });
+    //and also remove associated feats
+    const newFeatArray = abilitiesBlock.feats.filter(
+      (feat) => Object.keys(feat)[0] != name
+    );
+    setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray, talents: newTalentArray });
   } else if (mode == "Familiar") {
     const newFamiliarAbArray = abilitiesBlock.familiarAbs.filter(
       (familiarAb) => familiarAb != name
@@ -58,7 +62,11 @@ function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
     const newSpellArray = abilitiesBlock.spells.filter(
       (spell) => Object.keys(spell)[0] != name
     );
-    setAbilitiesBlock({ ...abilitiesBlock, spells: newSpellArray });
+    //and also remove associated feats
+    const newFeatArray = abilitiesBlock.feats.filter(
+      (feat) => Object.keys(feat)[0] != name
+    );
+    setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray, spells: newSpellArray });
   }
 }
 

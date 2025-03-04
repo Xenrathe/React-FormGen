@@ -76,7 +76,9 @@ function alterTalents(talentName, isAdding, abilitiesBlock, setAbilitiesBlock) {
   setAbilitiesBlock({ ...abilitiesBlock, talents: newTalentArray });
 }
 
+// please note that this spell NEVER fully removes a spell - but only reduces its level
 function alterSpells(
+  character,
   spellName,
   spellLevel,
   isAdding,
@@ -84,18 +86,14 @@ function alterSpells(
   setAbilitiesBlock
 ) {
   let newSpellArray = [];
-  if (isAdding) {
-    // remove any other level of the given spell - there should be only ONE copy of a spell
-    newSpellArray = abilitiesBlock.spells.filter(
-      (spell) => Object.keys(spell)[0] != spellName
-    );
+  const minimumLevel = character.querySpellLevelMinimum();
+  let newLevel = isAdding ? spellLevel : Math.max(minimumLevel, spellLevel - 2); // the spellLevel - 2 works because this function will never be called at default / min level
 
-    newSpellArray.push({ [spellName]: `Level ${spellLevel}` });
-  } else {
-    newSpellArray = abilitiesBlock.spells.filter(
-      (spell) => Object.keys(spell)[0] != spellName
-    );
-  }
+  newSpellArray = abilitiesBlock.spells.filter(
+    (spell) => Object.keys(spell)[0] != spellName
+  );
+
+  newSpellArray.push({ [spellName]: `Level ${newLevel}` });
   setAbilitiesBlock({ ...abilitiesBlock, spells: newSpellArray });
 }
 
@@ -241,12 +239,7 @@ function addableItemInfo(
     tier = Object.values(item)[0].Type;
   }
 
-  let level = "";
-  if (popupInfo.mode == "spells") {
-    let minimumLevelAvailable =
-      character.querySpellLevelMaximums().findIndex((num) => num > 0) * 2 + 1;
-    level = Math.max(Object.values(item)[0].Level, minimumLevelAvailable);
-  }
+  const spellLevel = popupInfo.mode == "spells" ? Math.max(Object.values(item)[0].Level, character.querySpellLevelMinimum()) : "";
 
   let text = "";
   if (popupInfo.mode == "general" || popupInfo.mode == "Animal Companion") {
@@ -267,8 +260,8 @@ function addableItemInfo(
       text = itemValues["Opening & Sustained Effect"];
     }
 
-    if (`Level ${level}` in itemValues) {
-      text += `\n\n(Level ${level}: ${itemValues[`Level ${level}`]})`;
+    if (`Level ${spellLevel}` in itemValues) {
+      text += `\n\n(Level ${spellLevel}: ${itemValues[`Level ${spellLevel}`]})`;
     }
   }
 
@@ -292,7 +285,7 @@ function addableItemInfo(
       alterFamiliarAbs(name, true, abilitiesBlock, setAbilitiesBlock);
   } else if (popupInfo.mode == "spells") {
     onClickFn = () =>
-      alterSpells(name, level, true, abilitiesBlock, setAbilitiesBlock);
+      alterSpells(character, name, spellLevel, true, abilitiesBlock, setAbilitiesBlock);
   }
 
   return [name, tier, text, onClickFn];
@@ -385,9 +378,9 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
     }
   });
 
-  // these consts are used to determine spell level button clickability as well as default spell-level
-  let ownedSpellLevel =
-    "Level" in popupInfo.singleItem ? Number(popupInfo.singleItem.Level) : -1;
+  // these variables are used to determine spell level button clickability as well as default spell-level
+  let ownedSpellLevel = abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == popupInfo.title)?.[popupInfo.title].substring(6) ?? -1;
+  ownedSpellLevel = Number(ownedSpellLevel);
   const maxSpellLevel =
     character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 +
     1;
@@ -417,7 +410,6 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
             const spellLevel = Number(itemKey.substring(5));
             const hasLevel = ownedSpellLevel >= spellLevel;
             const btnVisible = hasLevel || spellLevel <= maxSpellLevel;
-            console.log(`SpellLevel:${spellLevel}; hasLevel:${hasLevel}; btnVisible:${btnVisible}`);
 
             return (
               <span
@@ -426,7 +418,7 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
               >
                 <button
                   onClick={() =>
-                    alterSpells(popupInfo.title, spellLevel, !hasLevel, abilitiesBlock, setAbilitiesBlock)
+                    alterSpells(character, popupInfo.title, spellLevel, !hasLevel, abilitiesBlock, setAbilitiesBlock)
                   }
                   className={`alterBtn ${btnVisible ? "visible" : "hidden"} ${
                     hasLevel ? "remove" : "add"
