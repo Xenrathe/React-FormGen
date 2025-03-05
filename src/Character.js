@@ -315,6 +315,13 @@ export class Character {
     return { owned, potential };
   }
 
+  //in core, only wizard should be calling for this
+  getCantrips(){
+    const list = Object.entries(jobs[this.job].spellList).filter(([level, _]) => level == "Level 0")[0][1];
+    console.log(list);
+    return list;
+  }
+
   //this gives spells, separated into { owned, potential }
   getSpells() {
     let owned = [];
@@ -345,7 +352,7 @@ export class Character {
           Heal: { ...jobs[this.job].spellList["Level 0"].Heal, Level: 0 },
         });
       } else {
-        owned.push({ Cantrips: { Level: 0 } });
+        owned.push({ Cantrips: { Type: "Ranged", Frequency: "At-will", Action: "Standard",Level: 0 } });
       }
     }
 

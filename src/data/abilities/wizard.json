@@ -168,64 +168,55 @@
         "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
-        "Special": "Cantrip",
         "Effect": "The cantrip creates a minor watch-sprite that can be instructed to scream if someone comes through an area or touches an object. Watch-sprites are notoriously stupid and sleepy, but with the right talking-to they might stay focused for the duration of the spell. At higher levels, the spell might summon little fanged spirits buzzing back and forth serving as both visual and actual deterrents."
       },
       "Arcane Mark": {
         "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
-        "Special": "Cantrip",
         "Effect": "The cantrip creates a magical sigil on an object or person. These sigils are usually plain to see, though a deliberately invisible mark can be made. It takes a difficult perception or magic check to notice."
       },
       "Ghost Sound": {
         "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
-        "Special": "Cantrip",
         "Effect": "This spell creates false noises emanating from somewhere nearby. The effect is like an exceptionally good version of throwing your voice, if your voice could create a wide variety of sounds. Attempted distractions with the cantrip are DC 15 challenges in adventurer environments, higher as you move into champion and epic environments. If someone is using ghost sound against the PCs, a Wisdom-based skill check can identify the sound as a magical fake."
       },
       "Knock": {
         "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
-        "Special": "Cantrip",
         "Effect": "This cantrip summons a magical servitor three to four times as big as your closed fist that swarms around the door and attempts to punch or push it open (depending on whether you want to be quiet or announce your presence). Success is determined with an Intelligence check against the environment’s DC using an appropriate magical background. This cantrip does nothing to avoid any traps that might exist."
       },
       "Light": {
         "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
-        "Special": "Cantrip",
         "Effect": "This cantrip creates a fairly wide and consistent field of light, up to 30 feet in diameter, though it isn’t bright enough to dazzle."
       },
       "Mage Hand": {
         "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
-        "Special": "Cantrip",
         "Effect": "This cantrip creates a small telekinetic effect that lasts a round at most. At best it’s about half as strong as the wizard’s own strongest hand. At worst it’s half as strong as the wizard when they’re weak from a bad fever."
       },
       "Mending": {
         "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
-        "Special": "Cantrip",
-        "Effect": "This cantrip summons a variety of tiny (hand-sized and smaller) magical sprites who swarm over a chosen broken object attempting to mend it (over the course of 1–6 rounds). Small-scale repairs like torn wineskins, muddy clothing, a broken handgrip on a sword, and similar repairs that anyone could fix with two to four hours of devoted work gets handled in seconds. More elaborate repairs to complicated objects might require an Intelligence check, or at the GM’s discretion could only be possible if the wizard has taken the Cantrip Mastery talent."
+        "Effect": "This cantrip summons a variety of tiny magical sprites who swarm over a chosen broken object attempting to mend it (over the course of 1–6 rounds). Small-scale repairs like torn wineskins, muddy clothing, a broken handgrip on a sword, and similar repairs that anyone could fix with two to four hours of devoted work gets handled in seconds. More elaborate repairs to complicated objects might require an Intelligence check, or at the GM’s discretion could only be possible if the wizard has taken the Cantrip Mastery talent."
       },
       "Prestidigitation": {
         "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
-        "Special": "Cantrip",
         "Effect": "This cantrip produces magic tricks and small illusions. One casting usually gives you a minute of fun. The magic has nowhere near as much real world force as mage hand."
       },
       "Spark": {
         "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "At-Will",
-        "Special": "Cantrip",
-        "Effect": "This is a minor fire creation spell, enough to light a pipe, or a campfire, or even a page or two of an unprotected spellbook. It doesn’t work against living beings or against things that couldn’t easily be set on fire with a few seconds of steady application of a candle. The target of the spark has to be nearby and in sight."
+        "Effect": "This cantrip produces a small fire, enough to light a pipe or campfire, or even a page of an unprotected spellbook. It doesn’t work against living beings or against things that couldn’t easily be set on fire with a candle. The target has to be nearby and in sight."
       }
     },
     "Level 1": {

@@ -101,8 +101,8 @@
       "Heal": {
         "Type": "Close-quarters",
         "Action": "Quick",
-        "Frequency": "You can use this spell twice per battle.",
-        "Target": "You or one ally you are next to",
+        "Frequency": "Twice per battle",
+        "Target": "You or one adjacent ally.",
         "Effect": "The target can heal using a recovery.",
         "Adventurer": "The target can now be a nearby ally instead of an ally you are next to.",
         "Champion": "If the target of your heal spell is an ally with 0 hp or below, that ally also adds hit points equal to 1d10 x your Charisma modifier to the recovery.",

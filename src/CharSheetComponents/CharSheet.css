@@ -350,7 +350,8 @@
 }
 
 #popupMod .addable-items, 
-#popupMod #feats.single-selectables{
+#popupMod #feats.single-selectables,
+#popupMod #cantrips.single-selectables{
   gap: 10px;
 }
 

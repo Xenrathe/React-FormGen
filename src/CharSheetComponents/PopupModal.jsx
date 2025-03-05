@@ -362,9 +362,10 @@ function popupModalList(popupInfo, setPopupInfo, character, abilitiesBlock, setA
 
 function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock) {
   // used to set CSS class for width of popup
-  const infoLength = Object.values(popupInfo.singleItem)
+  let infoLength = Object.values(popupInfo.singleItem)
   .map((value) => value.length)
   .reduce((sum, length) => sum + length, 0);
+  infoLength = popupInfo.title == "Cantrips" ? 3000 : infoLength; //special case for cantrips
 
   // this code is necessary to know how to add/subtract multiple tiers at once
   // most abilities have all three tiers... but some don't (or skip a tier).
@@ -403,6 +404,7 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
       </button>
       <span className="title">{popupInfo.title}</span>
       {getSingleItemDescription(popupInfo)}
+      {popupInfo.title == "Cantrips" ? popupModalCantripListing(character) : null}
       <span className="single-selectables" id="spell-levels">
         {Object.keys(popupInfo.singleItem)
           .filter((itemKey) => itemKey.length > 5 && itemKey.substring(0, 5) == "Level")
@@ -478,6 +480,25 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
       </span>
     </div>
   );
+}
+
+function popupModalCantripListing(character) {
+  const cantripList = character.getCantrips();
+
+  return (
+    <span className="single-selectables" id="cantrips">
+      {Object.keys(cantripList)
+      .map((itemKey) => {
+        const description = cantripList[itemKey].Effect;
+
+        return (
+          <span key={`${itemKey}`} className="selectable">
+            <strong>{itemKey}</strong> - {description}
+          </span>
+        );
+      })}
+    </span>
+  )
 }
 
 // Popup box when users clicks [i] or [+] button
