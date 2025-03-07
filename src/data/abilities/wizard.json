@@ -127,8 +127,7 @@
           "Type": "Close-quarters",
           "Frequency": "Daily",
           "Action": "Quick",
-          "Effect": "You send a one to two sentence message to another person you know and have touched in the last week. Sending a message to a person you can see is always easy. Sending a message to a person you can’t see requires a skill check using Intelligence against the highest-tier environment that you or the sender are occupying.",
-          "Level 3": "Across half a city, at most.",
+          "Effect": "You send a one to two sentence message to another person you know and have touched in the last week. Sending a message to a person you can see is always easy. Sending a message to a person you can’t see requires a skill check using Intelligence against the highest-tier environment that you or the sender are occupying.\n\nThe maximum distance you can send a message depends on the spell’s level, starting with across half a city at level 3.",
           "Level 5": "Across the entire city and a bit into the countryside.",
           "Level 7": "Between cities near to each other.",
           "Level 9": "From any city to any other city, or across a sea."
@@ -454,6 +453,7 @@
       },
       "Dimension Door": {
         "Type": "Close-quarters",
+        "Action": "Move",
         "Frequency": "Daily",
         "Target": "You",
         "Effect": "You teleport somewhere nearby that you can see.",

@@ -86,8 +86,9 @@ function alterSpells(
   setAbilitiesBlock
 ) {
   let newSpellArray = [];
-  const minimumLevel = character.querySpellLevelMinimum();
+  const minimumLevel = spellName == "Utility Spell" ? 0 : character.querySpellLevelMinimum();
   let newLevel = isAdding ? spellLevel : Math.max(minimumLevel, spellLevel - 2); // the spellLevel - 2 works because this function will never be called at default / min level
+
 
   newSpellArray = abilitiesBlock.spells.filter(
     (spell) => Object.keys(spell)[0] != spellName
@@ -119,9 +120,9 @@ function getSingleItemDescription(popupInfo) {
     "Frequency" in popupInfo.singleItem ? (
       <span key="spellbase">
         {popupInfo.singleItem.Type}; {popupInfo.singleItem.Frequency};{" "}
-        {"Action" in popupInfo.singleItem
-          ? `${popupInfo.singleItem.Action} action to cast`
-          : `${popupInfo.singleItem.Sustain} to cast/sustain`}
+        {"Sustain" in popupInfo.singleItem
+          ? `${popupInfo.singleItem.Sustain} to cast/sustain`
+          : `${popupInfo.singleItem?.Action ?? "Standard"} action to cast`}
         <br />
         <br />
       </span>
@@ -361,6 +362,7 @@ function popupModalList(popupInfo, setPopupInfo, character, abilitiesBlock, setA
 }
 
 function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock) {
+  console.log(popupInfo);
   // used to set CSS class for width of popup
   let infoLength = Object.values(popupInfo.singleItem)
   .map((value) => value.length)
@@ -381,6 +383,8 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
 
   // these variables are used to determine spell level button clickability as well as default spell-level
   let ownedSpellLevel = abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == popupInfo.title)?.[popupInfo.title].substring(6) ?? -1;
+  ownedSpellLevel = popupInfo.mode == "Utility" ? abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == "Utility Spell")?.["Utility Spell"].substring(6) ?? 0 : ownedSpellLevel;
+
   ownedSpellLevel = Number(ownedSpellLevel);
   const maxSpellLevel =
     character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 +
@@ -405,6 +409,7 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
       <span className="title">{popupInfo.title}</span>
       {getSingleItemDescription(popupInfo)}
       {popupInfo.title == "Cantrips" ? popupModalCantripListing(character) : null}
+      {popupInfo.title == "Utility Spell" ? popupModalUtilitySpellListing(character, abilitiesBlock, setPopupInfo) : null}
       <span className="single-selectables" id="spell-levels">
         {Object.keys(popupInfo.singleItem)
           .filter((itemKey) => itemKey.length > 5 && itemKey.substring(0, 5) == "Level")
@@ -424,7 +429,8 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
                   }
                   className={`alterBtn ${btnVisible ? "visible" : "hidden"} ${
                     hasLevel ? "remove" : "add"
-                  }`}
+                  } ${popupInfo.mode == "Utility" ? "utility" : ""}`}
+                  disabled={popupInfo.mode == "Utility"}
                 >
                   <span className={`text${hasLevel ? " minus" : ""}`}>{`${
                     hasLevel ? "-" : "+"
@@ -498,6 +504,41 @@ function popupModalCantripListing(character) {
         );
       })}
     </span>
+  )
+}
+
+function popupModalUtilitySpellListing(character, abilitiesBlock, setPopupInfo) {
+  const utilityList = character.getUtilitySpells();
+
+  let utilitySpellLevel = abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == "Utility Spell")?.["Utility Spell"].substring(6) ?? 0;
+
+  return (
+    <span className="single-selectables" id="utility-spells">
+        {utilityList.map((utilSpell) => {
+          const spellLevel = Number(Object.values(utilSpell)[0].Level);
+          const title = Object.keys(utilSpell)[0];
+          const hasLevel = utilitySpellLevel >= spellLevel;
+
+          //console.log(utilSpell);
+
+          return (
+            <span
+              key={`${title}`}
+              className={`selectable ${hasLevel && "owned"}`}
+            >
+              <button
+                onClick={() =>
+                  setPopupInfo({ title: title, singleItem: utilSpell[title], list: null, mode: "Utility" })
+                }
+                className="alterBtn visible add"
+              >
+                <span className="text">?</span>
+              </button>
+              <strong>{`${title} (Lvl: ${spellLevel})`}</strong>
+            </span>
+          );
+        })}
+      </span>
   )
 }
 

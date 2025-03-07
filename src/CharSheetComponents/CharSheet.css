@@ -355,12 +355,22 @@
   gap: 10px;
 }
 
+#popupMod #utility-spells.single-selectables{
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
 #popupMod #spell-levels.single-selectables {
   gap: 2px;
 }
 
 #popupMod .single-selectables {
   margin-top: 10px;
+}
+
+#popupMod #utility-spells.single-selectables .selectable{
+  max-width: 28%;
 }
 
 #popupMod.widest .addable-items,
@@ -455,18 +465,22 @@
   container-name: btn-container;
 }
 
+#popupMod .alterBtn.utility {
+  cursor: text;
+}
+
 #popupMod .alterBtn span.minus {
   transform: translateY(-10%);
 }
 
-#popupMod .alterBtn:not(:disabled).add:hover {
+#popupMod .alterBtn:not(:disabled):not(.utility).add:hover {
   background-color: rgba(178, 196, 167, 0.664);
   color: rgb(70, 119, 39);
   opacity: 1;
 }
 
-#popupMod .alterBtn.remove:hover,
-#popupMod .alterBtn[disabled] {
+#popupMod .alterBtn.remove:not(.utility):hover,
+#popupMod .alterBtn:not(.utility)[disabled] {
   background-color: rgba(196, 170, 167, 0.664);
   color: rgb(119, 39, 39);
   opacity: 1;

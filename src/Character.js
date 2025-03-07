@@ -318,7 +318,20 @@ export class Character {
   //in core, only wizard should be calling for this
   getCantrips(){
     const list = Object.entries(jobs[this.job].spellList).filter(([level, _]) => level == "Level 0")[0][1];
-    console.log(list);
+    return list;
+  }
+
+  //in core, only wizard should be calling for this
+  getUtilitySpells(){
+    const utilityObject = "Utility" in jobs[this.job].spellList ? jobs[this.job].spellList["Utility"] : null;
+    const list = Object.entries(utilityObject).flatMap(([level, spells]) =>
+      Object.entries(spells).map(([spellName, spellData]) => ({
+        [spellName]: {
+          ...spellData,
+          Level: parseInt(level.replace("Level ", ""), 10),
+        },
+      }))
+    );
     return list;
   }
 
@@ -358,7 +371,16 @@ export class Character {
 
     //Wizard can always take the generic 'Utility Spell'
     if (this.job == "Wizard") {
-      owned.push({ "Utility Spell": { Level: 0 } });
+      const ownedUtility = this.jobSpells.find((element) => Object.keys(element)[0] == "Utility Spell");
+      const utilitySpellLevel = ownedUtility ? Number(Object.values(ownedUtility)[0].substring(5)) : 0;
+      owned.push({ "Utility Spell": { Level: utilitySpellLevel, 
+          "Effect": "Take a spell-slot to allow using the following utility spells:",
+          "Level 1": "Disguise Self; Feather Fall; Hold Portal", 
+          "Level 3": "Levitate; Message; Speak with Item",
+          "Level 5": "Water Breathing",
+          "Level 7": "Scrying",
+          "Level 9": "Upgrades only"
+        } });
     }
 
     //Wizard's talent-based counter-magic
