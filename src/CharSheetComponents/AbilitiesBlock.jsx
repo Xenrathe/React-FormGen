@@ -96,121 +96,80 @@ function getDataSets(mode, character) {
   let dataOnLines = [];
   let dataForAdd = [];
 
-  if (mode == "general") {
-    // includes racialpowers from races[character.race].racialPowersAndFeats
-    Object.entries(races[character.race].racialPowersAndFeats).forEach(
-      ([title, obj]) => {
-        if (Object.keys(obj)[0] == "Base") {
-          //do not include OPTIONAL feats
-          dataOnLines.push({ [title]: obj, removable: false });
+  function processOwnedAbs(abilityInfo, removableCheck = () => true) {
+    abilityInfo.owned.forEach((entry) => {
+      const title = Object.keys(entry)[0];
+      const obj = Object.fromEntries(
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
+          subKey,
+          subValue,
+        ])
+      );
+      dataOnLines.push({ [title]: obj, removable: removableCheck(obj) });
+    });
+  }
+
+  const modeMapping = {
+    general: () => {
+      Object.entries(races[character.race].racialPowersAndFeats).forEach(
+        ([title, obj]) => {
+          if (Object.keys(obj)[0] === "Base") {
+            dataOnLines.push({ [title]: obj, removable: false });
+          }
         }
-      }
-    );
+      );
 
-    // includes features from jobs[character.job].features
-    Object.entries(jobs[character.job].features).forEach(([title, obj]) => {
-      dataOnLines.push({ [title]: obj, removable: false });
-    });
+      Object.entries(jobs[character.job].features).forEach(([title, obj]) => {
+        dataOnLines.push({ [title]: obj, removable: false });
+      });
 
-    // --includes OPTIONAL racialfeats from character.feats.racial
-    // data structure: {"Heritage of the Sword": "Adventurer"}
-    const racialFeatInfo = character.getFeats("racial"); //returns both owned and potential
-    dataForAdd.push(...racialFeatInfo.potential);
-    racialFeatInfo.owned.forEach((entry) => {
-      const title = Object.keys(entry)[0];
-      console.log(entry);
-      const obj = Object.fromEntries(
-        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
-          subKey,
-          subValue,
-        ])
-      );
-      dataOnLines.push({ [title]: obj, removable: true });
-    });
+      const racialFeatInfo = character.getFeats("racial");
+      dataForAdd.push(...racialFeatInfo.potential);
+      processOwnedAbs(racialFeatInfo, () => true);
 
-    // includes OPTIONAL feats from the character.feats.general
-    const generalFeatInfo = character.getFeats("general");
-    dataForAdd.push(...generalFeatInfo.potential);
-    generalFeatInfo.owned.forEach((entry) => {
-      const title = Object.keys(entry)[0];
-      console.log(entry);
-      // put the object into standard form
-      const obj = Object.fromEntries(
-        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
-          subKey,
-          subValue,
-        ])
-      );
-      dataOnLines.push({ [title]: obj, removable: true });
-    });
-  } else if (mode == "talents") {
-    // includes talents from character.jobTalents
-    const talentInfo = character.getTalents();
-    dataForAdd.push(...talentInfo.potential);
-    talentInfo.owned.forEach((entry) => {
-      const title = Object.keys(entry)[0];
-      //const tier = Object.keys(Object.values(entry)[0])[0];
-      // put the object into standard form
-      const obj = Object.fromEntries(
-        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
-          subKey,
-          subValue,
-        ])
-      );
-      dataOnLines.push({ [title]: obj, removable: true });
-    });
-  } else if (mode == "Familiar") {
-    // includes familiar abilities from character.familiarAbs
-    const familiarAbInfo = character.getFamiliarAbs();
-    dataForAdd.push(...familiarAbInfo.potential);
-    familiarAbInfo.owned.forEach((entry) => {
-      const title = Object.keys(entry)[0];
-      //put into a standard form
-      const obj = { Base: Object.values(entry)[0] };
-      dataOnLines.push({ [title]: obj, removable: true });
-    });
-  } else if (mode == "Animal Companion") {
-    const acFeatInfo = character.getFeats("ac");
-    dataForAdd.push(...acFeatInfo.potential);
-    acFeatInfo.owned.forEach((entry) => {
-      const title = Object.keys(entry)[0];
-      // put the object into standard form
-      const obj = Object.fromEntries(
-        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
-          subKey,
-          subValue,
-        ])
-      );
-      dataOnLines.push({ [title]: obj, removable: true });
-    });
-  } else if (mode == "spells") {
-    const spellInfo = character.getSpells();
-    dataForAdd.push(...spellInfo.potential);
-    spellInfo.owned.forEach((entry) => {
-      const title = Object.keys(entry)[0];
-      // put the object into standard form
-      const obj = Object.fromEntries(
-        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
-          subKey,
-          subValue,
-        ])
-      );
-      dataOnLines.push({ [title]: obj, removable: obj.Level != 0 });
-    });
-  } else if (mode == "bonusAbs") {
-    const bonusAbInfo = character.getBonusAbs();
-    dataForAdd.push(...bonusAbInfo.potential);
-    bonusAbInfo.owned.forEach((entry) => {
-      const title = Object.keys(entry)[0];
-      // put the object into standard form
-      const obj = Object.fromEntries(
-        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
-          subKey,
-          subValue,
-        ])
-      );
-      dataOnLines.push({ [title]: obj, removable: obj.Level != 0 });
-    });
+      const generalFeatInfo = character.getFeats("general");
+      dataForAdd.push(...generalFeatInfo.potential);
+      processOwnedAbs(generalFeatInfo, () => true);
+    },
+
+    talents: () => {
+      const talentInfo = character.getTalents();
+      dataForAdd.push(...talentInfo.potential);
+      processOwnedAbs(talentInfo, () => true);
+    },
+
+    Familiar: () => {
+      const familiarAbInfo = character.getFamiliarAbs();
+      dataForAdd.push(...familiarAbInfo.potential);
+      //data structure is a little different so I opted to not complicate processOwnedAbs
+      familiarAbInfo.owned.forEach((entry) => {
+        const title = Object.keys(entry)[0];
+        const obj = { Base: Object.values(entry)[0] };
+        dataOnLines.push({ [title]: obj, removable: true });
+      });
+    },
+
+    "Animal Companion": () => {
+      const acFeatInfo = character.getFeats("ac");
+      dataForAdd.push(...acFeatInfo.potential);
+      processOwnedAbs(acFeatInfo, () => true);
+    },
+
+    spells: () => {
+      const spellInfo = character.getSpells();
+      dataForAdd.push(...spellInfo.potential);
+      processOwnedAbs(spellInfo, (obj) => obj.Level !== 0);
+    },
+
+    bonusAbs: () => {
+      const bonusAbInfo = character.getBonusAbs();
+      dataForAdd.push(...bonusAbInfo.potential);
+      processOwnedAbs(bonusAbInfo, (obj) => obj.Level !== 0);
+    },
+  };
+
+  if (mode in modeMapping) {
+    modeMapping[mode]();
   }
 
   return [dataOnLines, dataForAdd];
