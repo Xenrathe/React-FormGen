@@ -281,80 +281,12 @@ export class Character {
     });
   }
 
-  //in core, only Bard, Fighter, and Rogue should be calling this
-  getBonusAbs() {
-    let owned = [];
-    let potential = [];
-
-    // only show levels currently available for level
-    potential = Object.entries(jobs[this.job].bonusAbilitySet)
-      .filter(
-        ([level, _]) =>
-          level !== "Name" && Number(level.substring(6)) <= this.level
-      )
-      .flatMap(([level, ability]) =>
-        Object.entries(ability).map(([abilityName, abilityData]) => ({
-          [abilityName]: {
-            ...abilityData,
-            Level: parseInt(level.replace("Level ", ""), 10),
-          },
-        }))
-      );
-
-    this.jobBonusAbs.forEach((ability) => {
-      const index = potential.findIndex((ab) => ability in ab);
-      if (index !== -1) {
-        // remove from potential because already owned
-        owned.push(potential[index]);
-        potential.splice(index, 1);
-      }
-    });
-
-    console.log(this.jobBonusAbs);
-
-    return { owned, potential };
-  }
-
   //in core, only wizard should be calling for this
   getCantrips() {
     const list = Object.entries(jobs[this.job].spellList).filter(
       ([level, _]) => level == "Level 0"
     )[0][1];
     return list;
-  }
-
-  //type can be "general" or "racial" or "ac" (animal companion)
-  //this gives STAND ALONE (or ANIMAL COMPANION) feats only, separated into { owned, potential }
-  getFeats(type) {
-    let owned = [];
-    let potential = [];
-
-    if (type.toLowerCase() === "racial") {
-      potential = Object.entries(races[this.race]?.racialPowersAndFeats || {})
-        .filter(([_, tiers]) => !("Base" in tiers)) // exclude default / required features
-        .map(([name, tiers]) => ({ [name]: tiers }));
-    } else if (type.toLowerCase() === "general") {
-      potential = Object.entries(genFeats).map(([name, tiers]) => ({
-        [name]: tiers,
-      }));
-    } else if (type.toLowerCase() === "ac" && "ACFeats" in jobs[this.job]) {
-      potential = Object.entries(jobs[this.job].ACFeats).map(
-        ([name, tiers]) => ({
-          [name]: tiers,
-        })
-      );
-    }
-
-    this.feats.forEach((feat) => {
-      const featName = Object.keys(feat)[0];
-      const index = potential.findIndex((f) => featName in f);
-      if (index !== -1) {
-        owned.push(potential[index]);
-        potential.splice(index, 1);
-      }
-    });
-
-    return { owned, potential };
   }
 
   //in core, only wizard should be calling for this
@@ -374,36 +306,35 @@ export class Character {
     return list;
   }
 
-  //this gives spells, separated into { owned, potential }
-  getSpells() {
+  #getOptions(type, sourceData, ownedThings, filterFn = () => true) {
     let owned = [];
     let potential = [];
 
-    // utility and level 0 spells (cantrips) will be specially added
-    // only show levels currently available for level
-    potential = Object.entries(jobs[this.job].spellList)
-      .filter(
-        ([level, _]) =>
-          level !== "Utility" &&
-          level !== "Level 0" &&
-          Number(level.substring(6)) <= this.level
-      )
-      .flatMap(([level, spells]) =>
-        Object.entries(spells).map(([spellName, spellData]) => ({
-          [spellName]: {
-            ...spellData,
-            Level: parseInt(level.replace("Level ", ""), 10),
-          },
-        }))
-      );
+    // Extract potential options from the provided source
+    if (type === "bonusAbs" || type === "spells") {
+      potential = Object.entries(sourceData)
+        .filter(([level, _]) => filterFn(level))
+        .flatMap(([level, abilities]) =>
+          Object.entries(abilities).map(([name, data]) => ({
+            [name]: {
+              ...data,
+              Level: parseInt(level.replace("Level ", ""), 10),
+            },
+          }))
+        );
+    } else {
+      potential = Object.entries(sourceData)
+        .filter(([_, tiers]) => filterFn(tiers))
+        .map(([name, tiers]) => ({
+          [name]: tiers,
+        }));
+    }
 
-    //Some jobs may include cantrips (Cleric, Wizard in core rules)
-    if (Object.keys(jobs[this.job].spellList).includes("Level 0")) {
-      if (this.job == "Cleric") {
-        owned.push({
-          Heal: { ...jobs[this.job].spellList["Level 0"].Heal, Level: 0 },
-        });
-      } else {
+    // Special cases for Spells
+    if (type === "spells") {
+      if (this.job === "Cleric" && sourceData["Level 0"]?.Heal) {
+        owned.push({ Heal: { ...sourceData["Level 0"].Heal, Level: 0 } });
+      } else if (this.job === "Wizard") {
         owned.push({
           Cantrips: {
             Type: "Ranged",
@@ -412,104 +343,117 @@ export class Character {
             Level: 0,
           },
         });
+
+        const ownedUtility = this.jobSpells.find(
+          (spell) => Object.keys(spell)[0] === "Utility Spell"
+        );
+        const utilitySpellLevel = ownedUtility
+          ? Number(Object.values(ownedUtility)[0].substring(5))
+          : 0;
+        owned.push({
+          "Utility Spell": {
+            Level: utilitySpellLevel,
+            Effect:
+              "Take a spell-slot to allow using the following utility spells:",
+            "Level 1": "Disguise Self; Feather Fall; Hold Portal",
+            "Level 3": "Levitate; Message; Speak with Item",
+            "Level 5": "Water Breathing",
+            "Level 7": "Scrying",
+            "Level 9": "Upgrades only",
+          },
+        });
+
+        if (this.jobTalents.includes("High Arcana")) {
+          owned.push({
+            "Counter-magic":
+              jobs["Wizard"].talentChoices["High Arcana"]["Counter-magic"],
+          });
+        }
       }
     }
 
-    //Wizard can always take the generic 'Utility Spell'
-    if (this.job == "Wizard") {
-      const ownedUtility = this.jobSpells.find(
-        (element) => Object.keys(element)[0] == "Utility Spell"
-      );
-      const utilitySpellLevel = ownedUtility
-        ? Number(Object.values(ownedUtility)[0].substring(5))
-        : 0;
-      owned.push({
-        "Utility Spell": {
-          Level: utilitySpellLevel,
-          Effect:
-            "Take a spell-slot to allow using the following utility spells:",
-          "Level 1": "Disguise Self; Feather Fall; Hold Portal",
-          "Level 3": "Levitate; Message; Speak with Item",
-          "Level 5": "Water Breathing",
-          "Level 7": "Scrying",
-          "Level 9": "Upgrades only",
-        },
-      });
-    }
-
-    //Wizard's talent-based counter-magic
-    if (this.jobTalents.includes("High Arcana")) {
-      owned.push({
-        "Counter-magic":
-          jobs["Wizard"].talentChoices["High Arcana"]["Counter-magic"],
-      });
-    }
-
-    this.jobSpells.forEach((spell) => {
-      const spellName = Object.keys(spell)[0];
-      const index = potential.findIndex((f) => spellName in f);
+    // Determine owned items and remove them from potential
+    ownedThings.forEach((item) => {
+      const itemName =
+        type == "talents" || type == "bonusAbs" || type == "familiarAbs"
+          ? item
+          : Object.keys(item)[0];
+      const index = potential.findIndex((f) => itemName in f);
       if (index !== -1) {
-        // potential spells use BASE level
-        // so we need to update to the actual chosen level
-        let item = potential[index];
-        item[spellName].Level = parseInt(
-          Object.values(spell)[0].replace("Level ", ""),
-          10
-        );
-        owned.push(item);
-
-        // potential does not include owned
+        if (type === "spells") {
+          let spellItem = potential[index];
+          spellItem[itemName].Level = parseInt(
+            Object.values(item)[0].replace("Level ", ""),
+            10
+          );
+          owned.push(spellItem);
+        } else {
+          owned.push(potential[index]);
+        }
         potential.splice(index, 1);
       }
     });
 
     return { owned, potential };
+  }
+
+  //in core, only Bard, Fighter, and Rogue should be calling this
+  getBonusAbs() {
+    return this.#getOptions(
+      "bonusAbs",
+      jobs[this.job].bonusAbilitySet,
+      this.jobBonusAbs,
+      (level) => level !== "Name" && Number(level.substring(6)) <= this.level
+    );
+  }
+
+  //type can be "general" or "racial" or "ac" (animal companion)
+  //this gives STAND ALONE (or ANIMAL COMPANION) feats only, separated into { owned, potential }
+  getFeats(type) {
+    let source;
+    let filterFn = () => true;
+    if (type.toLowerCase() === "racial") {
+      source = races[this.race]?.racialPowersAndFeats || {};
+      filterFn = (tiers) => !("Base" in tiers);
+    } else if (type.toLowerCase() === "general") {
+      source = genFeats;
+    } else if (type.toLowerCase() === "ac" && "ACFeats" in jobs[this.job]) {
+      source = jobs[this.job].ACFeats;
+    } else {
+      return { owned: [], potential: [] };
+    }
+    return this.#getOptions("feats", source, this.feats, filterFn);
+  }
+
+  //this gives spells, separated into { owned, potential }
+  getSpells() {
+    return this.#getOptions(
+      "spells",
+      jobs[this.job].spellList,
+      this.jobSpells,
+      (level) =>
+        level !== "Utility" &&
+        level !== "Level 0" &&
+        Number(level.substring(6)) <= this.level
+    );
   }
 
   //this gives talents, separated into { owned, potential }
   getTalents() {
-    let owned = [];
-    let potential = [];
-
-    potential = Object.entries(jobs[this.job].talentChoices).map(
-      ([name, tiers]) => ({
-        [name]: tiers,
-      })
+    return this.#getOptions(
+      "talents",
+      jobs[this.job].talentChoices,
+      this.jobTalents
     );
-
-    this.jobTalents.forEach((talent) => {
-      const index = potential.findIndex((f) => talent in f);
-      if (index !== -1) {
-        // remove from potential because already owned
-        owned.push(potential[index]);
-        potential.splice(index, 1);
-      }
-    });
-
-    return { owned, potential };
   }
 
   //this gives familiar abilities, separated into { owned, potential }
   getFamiliarAbs() {
-    let owned = [];
-    let potential = [];
-
-    potential = Object.entries(jobs["Wizard"].familiarAbilities).map(
-      ([name, value]) => ({
-        [name]: value,
-      })
+    return this.#getOptions(
+      "familiarAbs",
+      jobs[this.job].familiarAbilities,
+      this.familiarAbs
     );
-
-    this.familiarAbs.forEach((familiarAb) => {
-      const index = potential.findIndex((f) => familiarAb in f);
-      if (index !== -1) {
-        // remove from potential because already owned
-        owned.push(potential[index]);
-        potential.splice(index, 1);
-      }
-    });
-
-    return { owned, potential };
   }
 
   //returns an array [totalPointsMax, maxPerBG]

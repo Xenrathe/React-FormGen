@@ -118,10 +118,12 @@ function getDataSets(mode, character) {
     dataForAdd.push(...racialFeatInfo.potential);
     racialFeatInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
+      console.log(entry);
       const obj = Object.fromEntries(
-        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => {
-          [subKey, subValue];
-        })
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
+          subKey,
+          subValue,
+        ])
       );
       dataOnLines.push({ [title]: obj, removable: true });
     });
@@ -131,6 +133,7 @@ function getDataSets(mode, character) {
     dataForAdd.push(...generalFeatInfo.potential);
     generalFeatInfo.owned.forEach((entry) => {
       const title = Object.keys(entry)[0];
+      console.log(entry);
       // put the object into standard form
       const obj = Object.fromEntries(
         Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
@@ -208,8 +211,6 @@ function getDataSets(mode, character) {
       );
       dataOnLines.push({ [title]: obj, removable: obj.Level != 0 });
     });
-
-    console.log(bonusAbInfo);
   }
 
   return [dataOnLines, dataForAdd];

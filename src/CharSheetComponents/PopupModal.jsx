@@ -425,7 +425,6 @@ function popupModalSingleItem(
   abilitiesBlock,
   setAbilitiesBlock
 ) {
-  console.log(popupInfo);
   // used to set CSS class for width of popup
   let infoLength = Object.values(popupInfo.singleItem)
     .map((value) => value.length)
