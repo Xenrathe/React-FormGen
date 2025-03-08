@@ -1,11 +1,13 @@
 function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
   const handleIconRelations = () => {
     const newRelations = {};
-  
+
     for (let i = 1; i <= 4; i++) {
       const key = document.getElementById(`icon-input-${i}`)?.value;
-      let value = parseInt(document.getElementById(`icon-input-num-${i}`)?.value, 10) || 0;
-  
+      let value =
+        parseInt(document.getElementById(`icon-input-num-${i}`)?.value, 10) ||
+        0;
+
       let maxPoints = 3;
 
       if (character.level >= 8) {
@@ -22,16 +24,14 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
         newRelations[key] = value;
       }
     }
-  
-    setNarrativeBlock({...narrativeBlock, 
-      iconRelationships: newRelations,
-    });
+
+    setNarrativeBlock({ ...narrativeBlock, iconRelationships: newRelations });
 
     const iconRelationshipsDiv = document.getElementById("icon-relationships");
     if (getRelationshipPointsRemaining(newRelations) < 0) {
-      iconRelationshipsDiv.classList.add('input-error');
+      iconRelationshipsDiv.classList.add("input-error");
     } else {
-      iconRelationshipsDiv.classList.remove('input-error');
+      iconRelationshipsDiv.classList.remove("input-error");
     }
   };
 
@@ -45,21 +45,25 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
     }
 
     let sum = 0;
-    Object.values(iconRelationships).forEach ((value) => {
+    Object.values(iconRelationships).forEach((value) => {
       sum += Math.abs(value);
-    })
+    });
 
-    return (maxPoints - sum);
+    return maxPoints - sum;
   }
 
   const handleBackgrounds = () => {
-    const maxPerBg = character.queryMaxBackground()[1];
+    const maxPerBg = character.queryBackgroundMax()[1];
     const newBackgrounds = {};
-  
+
     for (let i = 1; i <= 4; i++) {
       const key = document.getElementById(`background-input-${i}`)?.value;
-      let value = parseInt(document.getElementById(`background-input-num-${i}`)?.value, 10) || 0;
-  
+      let value =
+        parseInt(
+          document.getElementById(`background-input-num-${i}`)?.value,
+          10
+        ) || 0;
+
       if (value < 0) {
         value = 1;
       } else if (value > maxPerBg) {
@@ -70,33 +74,38 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
         newBackgrounds[key] = value;
       }
     }
-  
-    setNarrativeBlock({...narrativeBlock, 
-      backgrounds: newBackgrounds,
-    });
+
+    setNarrativeBlock({ ...narrativeBlock, backgrounds: newBackgrounds });
 
     const backgroundsDiv = document.getElementById("backgrounds");
     if (getBackgroundPointsRemaining(newBackgrounds) < 0) {
-      backgroundsDiv.classList.add('input-error');
+      backgroundsDiv.classList.add("input-error");
     } else {
-      backgroundsDiv.classList.remove('input-error');
+      backgroundsDiv.classList.remove("input-error");
     }
   };
 
   function getBackgroundPointsRemaining(backgrounds) {
-    const maxBGs = character.queryMaxBackground();
+    const maxBGs = character.queryBackgroundMax();
 
     let sum = 0;
-    Object.values(backgrounds).forEach ((value) => {
+    Object.values(backgrounds).forEach((value) => {
       sum += value;
-    })
+    });
 
-    return (maxBGs[0] - sum);
+    return maxBGs[0] - sum;
   }
 
-  function generateLinedInput(numLines, idBase, placeholder, dataObject, onChangeFn, includeNumber) {
+  function generateLinedInput(
+    numLines,
+    idBase,
+    placeholder,
+    dataObject,
+    onChangeFn,
+    includeNumber
+  ) {
     const lines = [];
-  
+
     for (let i = 1; i <= numLines; i++) {
       lines.push(
         <div key={`k-${idBase}-${i}`} className="single-line">
@@ -120,7 +129,7 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
         </div>
       );
     }
-  
+
     return lines;
   }
 
@@ -142,12 +151,33 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
         />
       </div>
       <div id="icon-relationships" className="narrative-input lined-inputs">
-        <label className="title">Icon Relations ({getRelationshipPointsRemaining(narrativeBlock.iconRelationships)} pts)</label>
-          {generateLinedInput(4, "icon-input", "Archmage...", narrativeBlock.iconRelationships, handleIconRelations, true)}
+        <label className="title">
+          Icon Relations (
+          {getRelationshipPointsRemaining(narrativeBlock.iconRelationships)}{" "}
+          pts)
+        </label>
+        {generateLinedInput(
+          4,
+          "icon-input",
+          "Archmage...",
+          narrativeBlock.iconRelationships,
+          handleIconRelations,
+          true
+        )}
       </div>
       <div id="backgrounds" className="narrative-input lined-inputs">
-        <label className="title">Backgrounds ({getBackgroundPointsRemaining(narrativeBlock.backgrounds)} pts)</label>
-        {generateLinedInput(8, "background-input", "Street urchin...", narrativeBlock.backgrounds, handleBackgrounds, true)}
+        <label className="title">
+          Backgrounds (
+          {getBackgroundPointsRemaining(narrativeBlock.backgrounds)} pts)
+        </label>
+        {generateLinedInput(
+          8,
+          "background-input",
+          "Street urchin...",
+          narrativeBlock.backgrounds,
+          handleBackgrounds,
+          true
+        )}
       </div>
     </div>
   );

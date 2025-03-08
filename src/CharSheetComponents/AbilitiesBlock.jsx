@@ -52,7 +52,11 @@ function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
     const newFeatArray = abilitiesBlock.feats.filter(
       (feat) => Object.keys(feat)[0] != name
     );
-    setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray, talents: newTalentArray });
+    setAbilitiesBlock({
+      ...abilitiesBlock,
+      feats: newFeatArray,
+      talents: newTalentArray,
+    });
   } else if (mode == "Familiar") {
     const newFamiliarAbArray = abilitiesBlock.familiarAbs.filter(
       (familiarAb) => familiarAb != name
@@ -66,7 +70,24 @@ function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
     const newFeatArray = abilitiesBlock.feats.filter(
       (feat) => Object.keys(feat)[0] != name
     );
-    setAbilitiesBlock({ ...abilitiesBlock, feats: newFeatArray, spells: newSpellArray });
+    setAbilitiesBlock({
+      ...abilitiesBlock,
+      feats: newFeatArray,
+      spells: newSpellArray,
+    });
+  } else if (mode == "bonusAbs") {
+    const newBonusAbArray = abilitiesBlock.bonusAbs.filter(
+      (ability) => ability != name
+    );
+    //and also remove associated feats
+    const newFeatArray = abilitiesBlock.feats.filter(
+      (feat) => Object.keys(feat)[0] != name
+    );
+    setAbilitiesBlock({
+      ...abilitiesBlock,
+      feats: newFeatArray,
+      bonusAbs: newBonusAbArray,
+    });
   }
 }
 
@@ -173,11 +194,23 @@ function getDataSets(mode, character) {
       );
       dataOnLines.push({ [title]: obj, removable: obj.Level != 0 });
     });
-  }
+  } else if (mode == "bonusAbs") {
+    const bonusAbInfo = character.getBonusAbs();
+    dataForAdd.push(...bonusAbInfo.potential);
+    bonusAbInfo.owned.forEach((entry) => {
+      const title = Object.keys(entry)[0];
+      // put the object into standard form
+      const obj = Object.fromEntries(
+        Object.entries(Object.values(entry)[0]).map(([subKey, subValue]) => [
+          subKey,
+          subValue,
+        ])
+      );
+      dataOnLines.push({ [title]: obj, removable: obj.Level != 0 });
+    });
 
-  //mode = "bonusAbs"
-  // includes bonusAbs from character.jobBonusAbs
-  // --includes associated feats from character.feats.bonus
+    console.log(bonusAbInfo);
+  }
 
   return [dataOnLines, dataForAdd];
 }
@@ -360,45 +393,43 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           setAbilitiesBlock={setAbilitiesBlock}
         />
       </div>
-      <div id="talents-and-pets">
-        <div id="talents" className="abilities-input lined-inputs">
+      <div id="talents" className="abilities-input lined-inputs">
+        <label className="subtitle-label">
+          Talents
+          {getAbilitiesRemainingString(
+            character,
+            "Talents",
+            false,
+            character.queryTalentsRemaining()
+          )}
+        </label>
+        <LinedInputsWithBtn
+          mode="talents"
+          character={character}
+          setPopupInfo={setPopupInfo}
+          abilitiesBlock={abilitiesBlock}
+          setAbilitiesBlock={setAbilitiesBlock}
+          numLines={10}
+        />
+      </div>
+      {animalsBlock && (
+        <div id="pets" className="abilities-input lined-inputs">
           <label className="subtitle-label">
-            Talents
-            {getAbilitiesRemainingString(
-              character,
-              "Talents",
-              false,
-              character.queryTalentsRemaining()
-            )}
+            {animalsBlock}
+            {character.queryFamiliarAbilitiesRemaining() == 0
+              ? ""
+              : ` (${character.queryFamiliarAbilitiesRemaining()})`}
           </label>
           <LinedInputsWithBtn
-            mode="talents"
+            mode={animalsBlock}
             character={character}
             setPopupInfo={setPopupInfo}
             abilitiesBlock={abilitiesBlock}
             setAbilitiesBlock={setAbilitiesBlock}
-            numLines={animalsBlock == "" ? 10 : character.queryTalentsMax()}
+            numLines={10}
           />
         </div>
-        {animalsBlock && (
-          <div id="pets" className="abilities-input lined-inputs">
-            <label className="subtitle-label">
-              {animalsBlock}
-              {character.queryFamiliarAbilitiesRemaining() == 0
-                ? ""
-                : ` (${character.queryFamiliarAbilitiesRemaining()})`}
-            </label>
-            <LinedInputsWithBtn
-              mode={animalsBlock}
-              character={character}
-              setPopupInfo={setPopupInfo}
-              abilitiesBlock={abilitiesBlock}
-              setAbilitiesBlock={setAbilitiesBlock}
-              numLines={Math.max(4, character.queryACFeatsCount() + 1)}
-            />
-          </div>
-        )}
-      </div>
+      )}
       {character.querySpellsMax() != 0 && (
         <div id="spells" className="abilities-input lined-inputs">
           <label className="subtitle-label">
@@ -426,16 +457,21 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           />
         </div>
       )}
-      <div id="bonusAbs" className="abilities-input lined-inputs">
-        <label className="subtitle-label">Bonus Abs</label>
-        <LinedInputsWithBtn
-          mode="bonusAbs"
-          character={character}
-          setPopupInfo={setPopupInfo}
-          abilitiesBlock={abilitiesBlock}
-          setAbilitiesBlock={setAbilitiesBlock}
-        />
-      </div>
+      {character.queryBonusAbsTitle() != "" && (
+        <div id="bonusAbs" className="abilities-input lined-inputs">
+          <label className="subtitle-label">
+            {`${character.queryBonusAbsTitle()} (${character.queryBonusAbsRemaining()})`}
+          </label>
+          <LinedInputsWithBtn
+            mode="bonusAbs"
+            character={character}
+            setPopupInfo={setPopupInfo}
+            abilitiesBlock={abilitiesBlock}
+            setAbilitiesBlock={setAbilitiesBlock}
+            numLines={10}
+          />
+        </div>
+      )}
     </div>
   );
 }

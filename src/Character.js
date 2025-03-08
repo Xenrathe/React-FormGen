@@ -36,7 +36,7 @@ export class Character {
     this.jobBonus = jobBonus; //a string representing BONUS STAT from job
     this.jobTalents = jobTalents; //an array of strings
     this.jobSpells = jobSpells; //an array of objects {"Acid Arrow": "Level 1"}
-    this.jobBonusAbs = jobBonusAbs;
+    this.jobBonusAbs = jobBonusAbs; //an array of strings
     this.feats = feats; //an array of objects {"Linguist": "Champion"}.
     this.familiarAbs = familiarAbs; //an array of strings
 
@@ -281,6 +281,48 @@ export class Character {
     });
   }
 
+  //in core, only Bard, Fighter, and Rogue should be calling this
+  getBonusAbs() {
+    let owned = [];
+    let potential = [];
+
+    // only show levels currently available for level
+    potential = Object.entries(jobs[this.job].bonusAbilitySet)
+      .filter(
+        ([level, _]) =>
+          level !== "Name" && Number(level.substring(6)) <= this.level
+      )
+      .flatMap(([level, ability]) =>
+        Object.entries(ability).map(([abilityName, abilityData]) => ({
+          [abilityName]: {
+            ...abilityData,
+            Level: parseInt(level.replace("Level ", ""), 10),
+          },
+        }))
+      );
+
+    this.jobBonusAbs.forEach((ability) => {
+      const index = potential.findIndex((ab) => ability in ab);
+      if (index !== -1) {
+        // remove from potential because already owned
+        owned.push(potential[index]);
+        potential.splice(index, 1);
+      }
+    });
+
+    console.log(this.jobBonusAbs);
+
+    return { owned, potential };
+  }
+
+  //in core, only wizard should be calling for this
+  getCantrips() {
+    const list = Object.entries(jobs[this.job].spellList).filter(
+      ([level, _]) => level == "Level 0"
+    )[0][1];
+    return list;
+  }
+
   //type can be "general" or "racial" or "ac" (animal companion)
   //this gives STAND ALONE (or ANIMAL COMPANION) feats only, separated into { owned, potential }
   getFeats(type) {
@@ -316,14 +358,11 @@ export class Character {
   }
 
   //in core, only wizard should be calling for this
-  getCantrips(){
-    const list = Object.entries(jobs[this.job].spellList).filter(([level, _]) => level == "Level 0")[0][1];
-    return list;
-  }
-
-  //in core, only wizard should be calling for this
-  getUtilitySpells(){
-    const utilityObject = "Utility" in jobs[this.job].spellList ? jobs[this.job].spellList["Utility"] : null;
+  getUtilitySpells() {
+    const utilityObject =
+      "Utility" in jobs[this.job].spellList
+        ? jobs[this.job].spellList["Utility"]
+        : null;
     const list = Object.entries(utilityObject).flatMap(([level, spells]) =>
       Object.entries(spells).map(([spellName, spellData]) => ({
         [spellName]: {
@@ -365,22 +404,37 @@ export class Character {
           Heal: { ...jobs[this.job].spellList["Level 0"].Heal, Level: 0 },
         });
       } else {
-        owned.push({ Cantrips: { Type: "Ranged", Frequency: "At-will", Action: "Standard",Level: 0 } });
+        owned.push({
+          Cantrips: {
+            Type: "Ranged",
+            Frequency: "At-will",
+            Action: "Standard",
+            Level: 0,
+          },
+        });
       }
     }
 
     //Wizard can always take the generic 'Utility Spell'
     if (this.job == "Wizard") {
-      const ownedUtility = this.jobSpells.find((element) => Object.keys(element)[0] == "Utility Spell");
-      const utilitySpellLevel = ownedUtility ? Number(Object.values(ownedUtility)[0].substring(5)) : 0;
-      owned.push({ "Utility Spell": { Level: utilitySpellLevel, 
-          "Effect": "Take a spell-slot to allow using the following utility spells:",
-          "Level 1": "Disguise Self; Feather Fall; Hold Portal", 
+      const ownedUtility = this.jobSpells.find(
+        (element) => Object.keys(element)[0] == "Utility Spell"
+      );
+      const utilitySpellLevel = ownedUtility
+        ? Number(Object.values(ownedUtility)[0].substring(5))
+        : 0;
+      owned.push({
+        "Utility Spell": {
+          Level: utilitySpellLevel,
+          Effect:
+            "Take a spell-slot to allow using the following utility spells:",
+          "Level 1": "Disguise Self; Feather Fall; Hold Portal",
           "Level 3": "Levitate; Message; Speak with Item",
           "Level 5": "Water Breathing",
           "Level 7": "Scrying",
-          "Level 9": "Upgrades only"
-        } });
+          "Level 9": "Upgrades only",
+        },
+      });
     }
 
     //Wizard's talent-based counter-magic
@@ -459,7 +513,7 @@ export class Character {
   }
 
   //returns an array [totalPointsMax, maxPerBG]
-  queryMaxBackground() {
+  queryBackgroundMax() {
     let maxTotal = 8;
     let maxPer = 5;
 
@@ -467,6 +521,29 @@ export class Character {
     // something else?
 
     return [maxTotal, maxPer];
+  }
+
+  queryBonusAbsTitle() {
+    const bonusAbilitySetTitle =
+      "bonusAbilitySet" in jobs[this.job]
+        ? jobs[this.job].bonusAbilitySet.Name
+        : "";
+
+    return bonusAbilitySetTitle;
+  }
+
+  #queryBonusAbsMax() {
+    const maxBonusAbs =
+      "bonusAbilitySetTotal" in jobs[this.job]
+        ? jobs[this.job].bonusAbilitySetTotal[this.level - 1]
+        : 0;
+    return maxBonusAbs;
+  }
+
+  queryBonusAbsRemaining() {
+    const maxBonusAbs = this.#queryBonusAbsMax();
+    const currentBonusAbs = this.jobBonusAbs.length;
+    return maxBonusAbs - currentBonusAbs;
   }
 
   //Returns the total number of slots
@@ -491,7 +568,7 @@ export class Character {
     return spellSlots;
   }
 
-  querySpellLevelMinimum(){
+  querySpellLevelMinimum() {
     return this.querySpellLevelMaximums().findIndex((num) => num > 0) * 2 + 1;
   }
 

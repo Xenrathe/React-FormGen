@@ -111,8 +111,8 @@
       },
       "Roll With It": {
         "Type": "Momentum power",
+        "Action": "Interrupt",
         "Frequency": "At-Will (once per round)",
-        "Interrupt action": "Requires momentum",
         "Trigger": "A melee attack that targets AC hits you.",
         "Effect": "You take half damage from that attack.",
         "Adventurer": "The power also triggers on an attack against PD.",
@@ -122,7 +122,7 @@
       "Sure Cut": {
         "Type": "Melee attack",
         "Frequency": "At-Will",
-        "Special": "You must have momentum and be able to deal your Sneak Attack damage to the target if you hit.",
+        "Trigger": "You must have momentum and be able to deal your Sneak Attack damage to the target if you hit.",
         "Target": "One enemy",
         "Attack": "Dexterity + Level vs. AC",
         "Hit": "WEAPON + Dexterity damage.",
@@ -132,7 +132,7 @@
       "Tumbling Strike": {
         "Type": "Melee attack",
         "Frequency": "At-Will",
-        "Always": "You gain a +5 bonus to all disengage checks you attempt this turn. You can also move to engage an enemy, make this attack against it, and then use a quick action to attempt to disengage from it (the quick action disengage lets you move again if you succeed).",
+        "Special": "You gain a +5 bonus to all disengage checks you attempt this turn. You can also move to engage an enemy, make this attack against it, and then use a quick action to attempt to disengage from it (the quick action disengage lets you move again if you succeed).",
         "Attack": "Dexterity + Level vs. AC",
         "Hit": "WEAPON + Dexterity damage.",
         "Miss": "Damage equal to your level."
@@ -152,6 +152,7 @@
       },
       "Deflection": {
         "Type": "Momentum power",
+        "Action": "Interrupt",
         "Frequency": "At-Will (once per round)",
         "Trigger": "A melee attack misses you.",
         "Effect": "The attack hits a different enemy you are engaged with instead, but deals only half damage.",
@@ -162,14 +163,10 @@
       "Slick Feint": {
         "Type": "Melee attack",
         "Frequency": "At-Will",
-        "First Target": "One enemy engaged with you",
-        "Attack": "Charisma + Level vs. MD",
-        "Hit": "The target is dazed until the end of your next turn, and you can make an improved attack against a second target.",
-        "Miss (First Target)": "Your attack action is over; the feint was a screw-up.",
-        "Second Target": "A different enemy from the first target that is engaged with you",
-        "Attack (Second Target)": "Dexterity + Level +2 vs. AC",
-        "Hit (Second Target)": "WEAPON + Dexterity damage.",
-        "Miss (Second Target)": "Damage equal to your level."
+        "Target": "Two different enemies engaged with you",
+        "Attack": "Charisma + Level vs. MD (1st target); Dexterity + Level +2 vs. AC (2nd target)",
+        "Hit": "The target is dazed until the end of your next turn, and you can make an improved attack against a second target, which deals WEAPON + DEX damage on a hit",
+        "Miss": "Your attack action is over; the feint was a screw-up (1st target); Damage equal to your level (2nd target)"
       },
       "Thief’s Strike": {
         "Special": "This is a bonus 3rd-level power for rogues with the Thievery talent. Other rogues can choose it if they like.",
@@ -184,12 +181,13 @@
     "Level 5": {
       "Harmless Misdirection": {
         "Type": "Momentum power",
+        "Action": "Interrupt",
         "Frequency": "At-Will (once per round)",
         "Trigger": "You miss with a melee attack while an ally is engaged with the target.",
         "Effect": "You can pop free from the target, and the target can’t attack you during its next turn as long as your ally remains engaged with it."
       },
       "Spiky Bastard": {
-        "Type": "Quick action",
+        "Action": "Quick",
         "Frequency": "Daily",
         "Effect": "You go all-out to hurt anyone who tries to get a piece of you. For the rest of the battle, while you’re conscious, using at least one bladed weapon, and are not staggered or stunned, you deal 10 damage to each enemy that makes a melee attack against you and rolls a natural odd attack roll. The damage hits the enemy before their attack damages you.",
         "Champion": "Spiky bastard damage now applies when you are staggered, though obviously not while you are unconscious.",
@@ -197,6 +195,7 @@
       },
       "Swift Dodge": {
         "Type": "Momentum power",
+        "Action": "Interrupt",
         "Frequency": "At-Will (once per round)",
         "Trigger": "You are hit by an attack against AC.",
         "Effect": "The attacker must reroll the attack.",
@@ -216,6 +215,7 @@
       },
       "Swift Riposte": {
         "Type": "Momentum power",
+        "Action": "Interrupt",
         "Frequency": "At-Will (once per round)",
         "Trigger": "An enemy targets you with a melee attack.",
         "Effect": "You can make a basic attack against your attacker. If your natural attack roll equals or beats your attacker’s roll, resolve your basic attack against that enemy first. If your attack roll is lower, your attack has no effect, regardless of whether it hits or misses.",
@@ -227,12 +227,14 @@
     "Level 9": {
       "Death’s Twin": {
         "Type": "Momentum power",
+        "Action": "Standard",
         "Frequency": "At-Will",
         "Effect": "As a standard action, you can make two basic attacks at any point during your turn, each against a different target. You only regain momentum if your second attack hits.",
         "Epic": "If your attack against your first death’s twin target is a natural 18+, you can make your second basic attack against that same target."
       },
       "True Targeting": {
         "Type": "Momentum power",
+        "Action": "Free or Interrupt",
         "Frequency": "At-Will",
         "Trigger": "An invisible or otherwise hidden enemy attacks you, or you use this as a free action when attacking an invisible or hidden enemy.",
         "Effect": "The attacker’s invisibility isn’t going to work on you. It might work against your allies, but you see through it and can tell where the creature is well enough to target it normally or be aware of its imminent attack.",

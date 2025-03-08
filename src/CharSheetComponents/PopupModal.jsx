@@ -76,6 +76,25 @@ function alterTalents(talentName, isAdding, abilitiesBlock, setAbilitiesBlock) {
   setAbilitiesBlock({ ...abilitiesBlock, talents: newTalentArray });
 }
 
+function alterBonusAbs(
+  abilityName,
+  isAdding,
+  abilitiesBlock,
+  setAbilitiesBlock
+) {
+  let newBonusAbArray = [];
+  if (isAdding) {
+    newBonusAbArray.push(...abilitiesBlock.bonusAbs);
+    newBonusAbArray.push(abilityName);
+  } else {
+    newBonusAbArray = abilitiesBlock.talents.filter(
+      (ability) => ability != abilityName
+    );
+  }
+
+  setAbilitiesBlock({ ...abilitiesBlock, bonusAbs: newBonusAbArray });
+}
+
 // please note that this spell NEVER fully removes a spell - but only reduces its level
 function alterSpells(
   character,
@@ -86,9 +105,9 @@ function alterSpells(
   setAbilitiesBlock
 ) {
   let newSpellArray = [];
-  const minimumLevel = spellName == "Utility Spell" ? 0 : character.querySpellLevelMinimum();
+  const minimumLevel =
+    spellName == "Utility Spell" ? 0 : character.querySpellLevelMinimum();
   let newLevel = isAdding ? spellLevel : Math.max(minimumLevel, spellLevel - 2); // the spellLevel - 2 works because this function will never be called at default / min level
-
 
   newSpellArray = abilitiesBlock.spells.filter(
     (spell) => Object.keys(spell)[0] != spellName
@@ -122,13 +141,17 @@ function getSingleItemDescription(popupInfo) {
         {popupInfo.singleItem.Type}; {popupInfo.singleItem.Frequency};{" "}
         {"Sustain" in popupInfo.singleItem
           ? `${popupInfo.singleItem.Sustain} to cast/sustain`
-          : `${popupInfo.singleItem?.Action ?? "Standard"} action to cast`}
+          : `${popupInfo.singleItem?.Action ?? "Standard"} action to ${
+              popupInfo.mode == "spells" ? "cast" : "use"
+            }`}
         <br />
         <br />
       </span>
     ) : null;
 
   const spellCategories = [
+    "Triggering Roll",
+    "Trigger",
     "Target",
     "Attack",
     "Effect",
@@ -240,7 +263,13 @@ function addableItemInfo(
     tier = Object.values(item)[0].Type;
   }
 
-  const spellLevel = popupInfo.mode == "spells" ? Math.max(Object.values(item)[0].Level, character.querySpellLevelMinimum()) : "";
+  const spellLevel =
+    popupInfo.mode == "spells"
+      ? Math.max(
+          Object.values(item)[0].Level,
+          character.querySpellLevelMinimum()
+        )
+      : "";
 
   let text = "";
   if (popupInfo.mode == "general" || popupInfo.mode == "Animal Companion") {
@@ -249,7 +278,7 @@ function addableItemInfo(
     text = Object.values(item)[0].Base;
   } else if (popupInfo.mode == "Familiar") {
     text = Object.values(item)[0];
-  } else if (popupInfo.mode == "spells") {
+  } else if (popupInfo.mode == "spells" || popupInfo.mode == "bonusAbs") {
     const itemValues = Object.values(item)[0];
     if ("Effect" in itemValues) {
       text = itemValues.Effect;
@@ -263,6 +292,18 @@ function addableItemInfo(
 
     if (`Level ${spellLevel}` in itemValues) {
       text += `\n\n(Level ${spellLevel}: ${itemValues[`Level ${spellLevel}`]})`;
+    }
+
+    if ("Triggering Roll" in itemValues) {
+      text = `[${itemValues["Triggering Roll"]}] ${text}`;
+    }
+
+    if ("Trigger" in itemValues) {
+      text = `[${itemValues["Trigger"]}] ${text}`;
+    }
+
+    if ("Special" in itemValues) {
+      text += `\n\n(${itemValues["Special"]})`;
     }
   }
 
@@ -286,13 +327,29 @@ function addableItemInfo(
       alterFamiliarAbs(name, true, abilitiesBlock, setAbilitiesBlock);
   } else if (popupInfo.mode == "spells") {
     onClickFn = () =>
-      alterSpells(character, name, spellLevel, true, abilitiesBlock, setAbilitiesBlock);
+      alterSpells(
+        character,
+        name,
+        spellLevel,
+        true,
+        abilitiesBlock,
+        setAbilitiesBlock
+      );
+  } else if (popupInfo.mode == "bonusAbs") {
+    onClickFn = () =>
+      alterBonusAbs(name, true, abilitiesBlock, setAbilitiesBlock);
   }
 
   return [name, tier, text, onClickFn];
 }
 
-function popupModalList(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock){
+function popupModalList(
+  popupInfo,
+  setPopupInfo,
+  character,
+  abilitiesBlock,
+  setAbilitiesBlock
+) {
   return (
     <div
       id="popupMod"
@@ -361,12 +418,18 @@ function popupModalList(popupInfo, setPopupInfo, character, abilitiesBlock, setA
   );
 }
 
-function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock) {
+function popupModalSingleItem(
+  popupInfo,
+  setPopupInfo,
+  character,
+  abilitiesBlock,
+  setAbilitiesBlock
+) {
   console.log(popupInfo);
   // used to set CSS class for width of popup
   let infoLength = Object.values(popupInfo.singleItem)
-  .map((value) => value.length)
-  .reduce((sum, length) => sum + length, 0);
+    .map((value) => value.length)
+    .reduce((sum, length) => sum + length, 0);
   infoLength = popupInfo.title == "Cantrips" ? 3000 : infoLength; //special case for cantrips
 
   // this code is necessary to know how to add/subtract multiple tiers at once
@@ -382,13 +445,20 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
   });
 
   // these variables are used to determine spell level button clickability as well as default spell-level
-  let ownedSpellLevel = abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == popupInfo.title)?.[popupInfo.title].substring(6) ?? -1;
-  ownedSpellLevel = popupInfo.mode == "Utility" ? abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == "Utility Spell")?.["Utility Spell"].substring(6) ?? 0 : ownedSpellLevel;
+  let ownedSpellLevel =
+    abilitiesBlock.spells
+      .find((spell) => Object.keys(spell)[0] == popupInfo.title)
+      ?.[popupInfo.title].substring(6) ?? -1;
+  ownedSpellLevel =
+    popupInfo.mode == "Utility"
+      ? abilitiesBlock.spells
+          .find((spell) => Object.keys(spell)[0] == "Utility Spell")
+          ?.["Utility Spell"].substring(6) ?? 0
+      : ownedSpellLevel;
 
   ownedSpellLevel = Number(ownedSpellLevel);
   const maxSpellLevel =
-    character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 +
-    1;
+    character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 + 1;
 
   return (
     <div
@@ -408,11 +478,18 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
       </button>
       <span className="title">{popupInfo.title}</span>
       {getSingleItemDescription(popupInfo)}
-      {popupInfo.title == "Cantrips" ? popupModalCantripListing(character) : null}
-      {popupInfo.title == "Utility Spell" ? popupModalUtilitySpellListing(character, abilitiesBlock, setPopupInfo) : null}
+      {popupInfo.title == "Cantrips"
+        ? popupModalCantripListing(character)
+        : null}
+      {popupInfo.title == "Utility Spell"
+        ? popupModalUtilitySpellListing(character, abilitiesBlock, setPopupInfo)
+        : null}
       <span className="single-selectables" id="spell-levels">
         {Object.keys(popupInfo.singleItem)
-          .filter((itemKey) => itemKey.length > 5 && itemKey.substring(0, 5) == "Level")
+          .filter(
+            (itemKey) =>
+              itemKey.length > 5 && itemKey.substring(0, 5) == "Level"
+          )
           .map((itemKey) => {
             const spellLevel = Number(itemKey.substring(5));
             const hasLevel = ownedSpellLevel >= spellLevel;
@@ -425,7 +502,14 @@ function popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock
               >
                 <button
                   onClick={() =>
-                    alterSpells(character, popupInfo.title, spellLevel, !hasLevel, abilitiesBlock, setAbilitiesBlock)
+                    alterSpells(
+                      character,
+                      popupInfo.title,
+                      spellLevel,
+                      !hasLevel,
+                      abilitiesBlock,
+                      setAbilitiesBlock
+                    )
                   }
                   className={`alterBtn ${btnVisible ? "visible" : "hidden"} ${
                     hasLevel ? "remove" : "add"
@@ -493,8 +577,7 @@ function popupModalCantripListing(character) {
 
   return (
     <span className="single-selectables" id="cantrips">
-      {Object.keys(cantripList)
-      .map((itemKey) => {
+      {Object.keys(cantripList).map((itemKey) => {
         const description = cantripList[itemKey].Effect;
 
         return (
@@ -504,42 +587,54 @@ function popupModalCantripListing(character) {
         );
       })}
     </span>
-  )
+  );
 }
 
-function popupModalUtilitySpellListing(character, abilitiesBlock, setPopupInfo) {
+function popupModalUtilitySpellListing(
+  character,
+  abilitiesBlock,
+  setPopupInfo
+) {
   const utilityList = character.getUtilitySpells();
 
-  let utilitySpellLevel = abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == "Utility Spell")?.["Utility Spell"].substring(6) ?? 0;
+  let utilitySpellLevel =
+    abilitiesBlock.spells
+      .find((spell) => Object.keys(spell)[0] == "Utility Spell")
+      ?.["Utility Spell"].substring(6) ?? 0;
 
   return (
     <span className="single-selectables" id="utility-spells">
-        {utilityList.map((utilSpell) => {
-          const spellLevel = Number(Object.values(utilSpell)[0].Level);
-          const title = Object.keys(utilSpell)[0];
-          const hasLevel = utilitySpellLevel >= spellLevel;
+      {utilityList.map((utilSpell) => {
+        const spellLevel = Number(Object.values(utilSpell)[0].Level);
+        const title = Object.keys(utilSpell)[0];
+        const hasLevel = utilitySpellLevel >= spellLevel;
 
-          //console.log(utilSpell);
+        //console.log(utilSpell);
 
-          return (
-            <span
-              key={`${title}`}
-              className={`selectable ${hasLevel && "owned"}`}
+        return (
+          <span
+            key={`${title}`}
+            className={`selectable ${hasLevel && "owned"}`}
+          >
+            <button
+              onClick={() =>
+                setPopupInfo({
+                  title: title,
+                  singleItem: utilSpell[title],
+                  list: null,
+                  mode: "Utility",
+                })
+              }
+              className="alterBtn visible add"
             >
-              <button
-                onClick={() =>
-                  setPopupInfo({ title: title, singleItem: utilSpell[title], list: null, mode: "Utility" })
-                }
-                className="alterBtn visible add"
-              >
-                <span className="text">?</span>
-              </button>
-              <strong>{`${title} (Lvl: ${spellLevel})`}</strong>
-            </span>
-          );
-        })}
-      </span>
-  )
+              <span className="text">?</span>
+            </button>
+            <strong>{`${title} (Lvl: ${spellLevel})`}</strong>
+          </span>
+        );
+      })}
+    </span>
+  );
 }
 
 // Popup box when users clicks [i] or [+] button
@@ -553,9 +648,21 @@ function PopupModal({
   setAbilitiesBlock,
 }) {
   if (popupInfo.list != null) {
-    return popupModalList(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock);
+    return popupModalList(
+      popupInfo,
+      setPopupInfo,
+      character,
+      abilitiesBlock,
+      setAbilitiesBlock
+    );
   } else if (popupInfo.singleItem != null) {
-    return popupModalSingleItem(popupInfo, setPopupInfo, character, abilitiesBlock, setAbilitiesBlock);
+    return popupModalSingleItem(
+      popupInfo,
+      setPopupInfo,
+      character,
+      abilitiesBlock,
+      setAbilitiesBlock
+    );
   } else {
     return <div id="popupMod" className="hidden"></div>;
   }

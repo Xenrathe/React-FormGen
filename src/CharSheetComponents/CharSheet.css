@@ -60,11 +60,16 @@
   width: 50px;
 }
 
-#statblock,
+#statblock {
+  display: flex;
+  justify-content: space-between;
+}
+
 #narrativeblock,
 #abilitiesblock {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 15px;
 }
 
 #abilityscores {
@@ -238,8 +243,6 @@
 
 #narrativeblock {
   padding-top: 15px;
-  justify-content: center;
-  gap: 15px;
 }
 
 #narrativeblock #one-unique-thing,
@@ -349,13 +352,13 @@
   flex-direction: column;
 }
 
-#popupMod .addable-items, 
+#popupMod .addable-items,
 #popupMod #feats.single-selectables,
-#popupMod #cantrips.single-selectables{
+#popupMod #cantrips.single-selectables {
   gap: 10px;
 }
 
-#popupMod #utility-spells.single-selectables{
+#popupMod #utility-spells.single-selectables {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 5px;
@@ -369,7 +372,7 @@
   margin-top: 10px;
 }
 
-#popupMod #utility-spells.single-selectables .selectable{
+#popupMod #utility-spells.single-selectables .selectable {
   max-width: 28%;
 }
 
