@@ -531,6 +531,7 @@ const jobs = {
       [0, 0, 0, 0, 9], // Level 10
     ],
     spellList: sorcererAbilities["Spells"],
+    familiarAbilities: wizardAbilities["Familiar Abilities"], //yes this is supposed to be wizardAbilities
   },
   Wizard: {
     abilityBonus: ["int", "wis"],

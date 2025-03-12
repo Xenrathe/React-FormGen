@@ -56,7 +56,7 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
     const maxPerBg = character.queryBackgroundMax()[1];
     const newBackgrounds = {};
 
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 8; i++) {
       const key = document.getElementById(`background-input-${i}`)?.value;
       let value =
         parseInt(
@@ -95,6 +95,18 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
 
     return maxBGs[0] - sum;
   }
+
+  const handleItems = () => {
+    const newItems = [];
+
+    for (let i = 1; i <= 8; i++) {
+      const item = document.getElementById(`item-input-${i}`)?.value;
+      newItems.push(item);
+    }
+
+    console.log(newItems);
+    setNarrativeBlock({ ...narrativeBlock, items: newItems });
+  };
 
   function generateLinedInput(
     numLines,
@@ -177,6 +189,17 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
           narrativeBlock.backgrounds,
           handleBackgrounds,
           true
+        )}
+      </div>
+      <div id="items" className="narrative-input lined-inputs">
+        <label className="title">Items</label>
+        {generateLinedInput(
+          9,
+          "item-input",
+          "",
+          narrativeBlock.items,
+          handleItems,
+          false
         )}
       </div>
     </div>

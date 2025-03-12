@@ -76,7 +76,7 @@
     "Mimic": "One battle per day, you gain the use of the racial power (without feats) of one nearby ally.",
     "Poisonous": "Once per battle, when you hit an enemy engaged with you, you can add 5 ongoing poison damage per tier to the damage roll.",
     "Scout": "Once per day, your familiar can separate itself from you and make a reconnaissance run of an area or location. Roll an easy skill check for the environment to get your familiar to scout unseen.",
-    "Tough": "You gain a +1 save bonus. Tough counts as two familiar abilities.",
+    "Tough": "You gain a +1 save bonus. Tough counts as two familiar abilities and cannot be a permanent ability for sorcerer familiars.",
     "Talkative": "Your familiar can talk like a person (but the GM speaks for the familiar more than you do)."
   },
   "Spells": {

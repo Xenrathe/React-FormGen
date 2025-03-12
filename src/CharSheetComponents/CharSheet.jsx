@@ -36,6 +36,7 @@ function CharSheet() {
     oneUniqueThing: "",
     iconRelationships: [],
     backgrounds: {},
+    items: [],
   });
 
   const [abilitiesBlock, setAbilitiesBlock] = useState({
@@ -43,7 +44,7 @@ function CharSheet() {
     spells: [],
     bonusAbs: [],
     feats: [],
-    familiarAbs: []
+    familiarAbs: [],
   });
   // END INDIVIDUAL COMPONENT DATA SETS //
 
@@ -69,7 +70,8 @@ function CharSheet() {
       { melee: basicsBlock.melee, ranged: basicsBlock.ranged },
       narrativeBlock.oneUniqueThing,
       narrativeBlock.iconRelationships,
-      narrativeBlock.backgrounds
+      narrativeBlock.backgrounds,
+      narrativeBlock.items
     )
   );
 
@@ -94,7 +96,8 @@ function CharSheet() {
       { melee: basicsBlock.melee, ranged: basicsBlock.ranged },
       narrativeBlock.oneUniqueThing,
       narrativeBlock.iconRelationships,
-      narrativeBlock.backgrounds
+      narrativeBlock.backgrounds,
+      narrativeBlock.items
     );
 
     // Update oldJob and oldRace only if they have changed

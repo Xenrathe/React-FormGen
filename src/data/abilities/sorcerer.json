@@ -67,7 +67,7 @@
       "Champion": "When you gather power and your chaotic benefit increases your defenses, you can choose one nearby ally to gain the same defense bonus.",
       "Epic": "One battle per day, you can choose to gain resist demon attack 16+ instead of resist energy 12+ from your Metallic Protector Heritage talent."
     },
-    "Sorcerer’s Familiar": {
+    "Sorcerer's Familiar": {
       "Type": "Optional",
       "Base": "You have a familiar much like a wizard’s familiar, but more changeable. Unlike the wizard, you don’t choose two abilities for your familiar. Instead you choose one permanent ability that suits your familiar’s nature; the only limitation is that you can’t choose tough as the permanent ability. Each time you get a full heal-up, randomly determine two other abilities your familiar will possess until your next full heal-up.",
       "Adventurer": "Your familiar gains another randomly changing ability.",

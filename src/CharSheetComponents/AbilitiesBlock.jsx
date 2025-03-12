@@ -309,13 +309,16 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
     }
   });
 
-  const hasError = tooManyTalents || tooManyFeats || tooManySpells; //used to add an error class to div
+  const tooManyFamiliarAbs = character.queryFamiliarAbilitiesRemaining() < 0;
+
+  const hasError =
+    tooManyTalents || tooManyFeats || tooManySpells || tooManyFamiliarAbs; //used to add an error class to div
 
   //for rangers animal companion or wizard's familiar, adds an extra block to add feats/abilities
   let animalsBlock = "";
   character.getTalents().owned.forEach((talent) => {
     const name = Object.keys(talent)[0];
-    if (name == "Wizard's Familiar") {
+    if (name == "Wizard's Familiar" || name == "Sorcerer's Familiar") {
       animalsBlock = "Familiar";
     } else if (name.substring(0, 2) == "AC") {
       animalsBlock = "Animal Companion";
@@ -353,7 +356,12 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           setAbilitiesBlock={setAbilitiesBlock}
         />
       </div>
-      <div id="talents" className="abilities-input lined-inputs">
+      <div
+        id="talents"
+        className={`abilities-input lined-inputs ${
+          tooManyTalents ? "input-error" : ""
+        }`}
+      >
         <label className="subtitle-label">
           Talents
           {getAbilitiesRemainingString(
@@ -373,7 +381,12 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         />
       </div>
       {animalsBlock && (
-        <div id="pets" className="abilities-input lined-inputs">
+        <div
+          id="pets"
+          className={`abilities-input lined-inputs ${
+            tooManyFamiliarAbs ? "input-error" : ""
+          }`}
+        >
           <label className="subtitle-label">
             {animalsBlock}
             {character.queryFamiliarAbilitiesRemaining() == 0
@@ -391,7 +404,12 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         </div>
       )}
       {character.querySpellsMax() != 0 && (
-        <div id="spells" className="abilities-input lined-inputs">
+        <div
+          id="spells"
+          className={`abilities-input lined-inputs ${
+            tooManySpells ? "input-error" : ""
+          }`}
+        >
           <label className="subtitle-label">
             Spells{" "}
             {(() => {

@@ -23,7 +23,8 @@ export class Character {
     weaponType,
     oneUniqueThing,
     iconRelationships,
-    backgrounds
+    backgrounds,
+    items
   ) {
     this.abilityScoresBase = abilityScoresBase; //{str, con, dex, int, wis, cha}
     this.name = name; //a string
@@ -48,6 +49,7 @@ export class Character {
     this.oneUniqueThing = oneUniqueThing; //a longer string
     this.iconRelationships = iconRelationships; //just strings but eventually an array of objects, like [{'archmage', 1}, {'lich', -2}]
     this.backgrounds = backgrounds; //an array of objects, like [{'street thief', 4}, {'magician', 2}]
+    this.items = items; //an array of user-inputted strings "Longsword +1"
 
     this.abilityScores = this.calculateAbilityScores(); //object with key-value, like ["Str"] = 12
     this.abilityModifiers = this.calculateAbilityModifiers(); //must be after calculateAbilityScores(), object same as above
@@ -119,7 +121,10 @@ export class Character {
     }
 
     //if player removes familiar as a talent, it also removes associated information
-    if (!this.jobTalents.includes("Wizard's Familiar")) {
+    if (
+      !this.jobTalents.includes("Wizard's Familiar") &&
+      !this.jobTalents.includes("Sorcerer's Familiar")
+    ) {
       this.familiarAbs = [];
     }
 
@@ -598,13 +603,27 @@ export class Character {
   }
 
   #queryFamiliarAbsMax() {
-    if (!this.jobTalents.includes("Wizard's Familiar")) {
+    //order matters in these control statements. Epic must be before Adventurer
+    if (
+      !this.jobTalents.includes("Wizard's Familiar") &&
+      !this.jobTalents.includes("Sorcerer's Familiar")
+    ) {
       return 0;
-    } else if (this.feats.some((feat) => feat["Wizard's Familiar"] == "Epic")) {
-      //THIS MUST BE BEFORE ADVENTURER!
+    } else if (
+      this.feats.some((feat) => feat["Sorcerer's Familiar"] == "Epic")
+    ) {
+      return 5;
+    } else if (
+      this.feats.some(
+        (feat) =>
+          feat["Wizard's Familiar"] == "Epic" ||
+          feat["Sorcerer's Familiar"] == "Adventurer"
+      )
+    ) {
       return 4;
     } else if (
-      this.feats.some((feat) => feat["Wizard's Familiar"] == "Adventurer")
+      this.feats.some((feat) => feat["Wizard's Familiar"] == "Adventurer") ||
+      this.jobTalents.includes("Sorcerer's Familiar")
     ) {
       return 3;
     } else {
