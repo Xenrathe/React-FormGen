@@ -274,6 +274,10 @@
   height: 216px;
 }
 
+#narrativeblock #items .lined-input {
+  width: 140px;
+}
+
 #abilitiesblock .abilities-input {
   min-width: 180px;
   margin-top: 10px;
