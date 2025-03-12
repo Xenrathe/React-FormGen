@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Character } from "../Character.js";
 import NarrativeBlock from "./NarrativeBlock.jsx";
 import AbilitiesBlock from "./AbilitiesBlock.jsx";
+import Navbar from "./Navbar.jsx";
 
 function CharSheet() {
   // INDIVIDUAL COMPONENT DATA SETS //
@@ -129,24 +130,31 @@ function CharSheet() {
 
   // ACTUAL DOM STUFF
   return (
-    <div className="charsheet">
-      <BasicsBlock basicsData={basicsBlock} setBasicsData={setBasicsBlock} />
-      <StatBlock
-        character={character}
-        statBlock={statBlock}
-        setStatBlock={setStatBlock}
+    <>
+      <Navbar 
+      onSave={() => console.log("Save clicked!")}
+      onLoad={() => console.log("Load clicked!")}
+      onPrint={() => window.print()}
       />
-      <NarrativeBlock
-        character={character}
-        narrativeBlock={narrativeBlock}
-        setNarrativeBlock={setNarrativeBlock}
-      />
-      <AbilitiesBlock
-        character={character}
-        abilitiesBlock={abilitiesBlock}
-        setAbilitiesBlock={setAbilitiesBlock}
-      />
-    </div>
+      <div className="charsheet">
+        <BasicsBlock basicsData={basicsBlock} setBasicsData={setBasicsBlock} />
+        <StatBlock
+          character={character}
+          statBlock={statBlock}
+          setStatBlock={setStatBlock}
+        />
+        <NarrativeBlock
+          character={character}
+          narrativeBlock={narrativeBlock}
+          setNarrativeBlock={setNarrativeBlock}
+        />
+        <AbilitiesBlock
+          character={character}
+          abilitiesBlock={abilitiesBlock}
+          setAbilitiesBlock={setAbilitiesBlock}
+        />
+      </div>
+    </>
   );
 }
 

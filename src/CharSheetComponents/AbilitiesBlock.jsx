@@ -233,7 +233,7 @@ function LinedInputsWithBtn({
         <span className="lined-input">
           {title + highestTierLetter + spellLevelAddon}
         </span>
-        <div className="buttons">
+        <div className="buttons no-print">
           {item ? (
             removable && (
               <button

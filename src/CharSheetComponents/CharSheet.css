@@ -1,8 +1,7 @@
 .input-group {
   border: 1px black solid;
-  padding: 10px;
+  padding: 7px;
   margin-bottom: 20px;
-  width: 875px;
   position: relative;
 }
 
@@ -22,6 +21,14 @@
   top: -9px;
   left: 20px;
   background-color: white;
+}
+
+#one-unique-thing .subtitle-label {
+  background: linear-gradient(180deg, rgba(255,255,255,1) 30%, rgb(245, 245, 245) 100%);
+}
+
+#one-unique-thing:hover .subtitle-label {
+  background: linear-gradient(180deg, rgba(255,255,255,1) 30%, rgb(235, 235, 235) 100%);
 }
 
 .input-error {
@@ -46,9 +53,10 @@
 }
 
 .input-set label {
-  width: 95px;
+  min-width: 90px;
   font-weight: bold;
   font-size: 18px;
+  text-align: center;
 }
 
 #basics input,
@@ -68,8 +76,7 @@
 #narrativeblock,
 #abilitiesblock {
   display: flex;
-  justify-content: center;
-  gap: 15px;
+  justify-content: space-evenly;
 }
 
 #abilityscores {
@@ -250,6 +257,10 @@
   position: relative;
 }
 
+#narrativeblock #one-unique-thing {
+  padding: 0px;
+}
+
 #narrativeblock .narrative-input {
   box-sizing: border-box;
   height: 216px;
@@ -265,6 +276,7 @@
   line-height: 1.5;
   overflow: hidden;
   resize: none;
+  width: 180px;
 }
 
 #icon-relationships {
@@ -275,7 +287,7 @@
 }
 
 #narrativeblock #items .lined-input {
-  width: 140px;
+  width: 130px;
 }
 
 #abilitiesblock .abilities-input {

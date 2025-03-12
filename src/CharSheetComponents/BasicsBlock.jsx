@@ -181,7 +181,7 @@ function BasicsBlock({ basicsData, setBasicsData }) {
       </div>
       <div id="weapons-armor">
         <div id="weapons-div" className="input-set">
-          <label>WEAPONS</label>
+          <label>WEAPON</label>
           <select
             name="melee"
             id="melee"

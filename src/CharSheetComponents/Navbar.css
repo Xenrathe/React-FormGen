@@ -1,0 +1,41 @@
+.navbar {
+  display: flex;
+  min-width: 100%;
+  box-sizing: border-box;
+  padding: 5px 3%;
+  margin-bottom: 5px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(224, 224, 224);
+  border: solid 1px rgb(128, 128, 128);
+}
+
+.navbar #nav-title {
+  font-weight: bold;
+  font-size: 15px;
+  width: 90px;
+}
+
+.navbar div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.navbar button {
+  width: 140px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.navbar .checkbox-container {
+  font-size: 15px;
+}
+
+.navbar input[type="checkbox"] {
+  margin: 0px 9px;
+  transform: scale(2); 
+}

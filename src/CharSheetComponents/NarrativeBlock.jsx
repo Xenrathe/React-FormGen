@@ -104,7 +104,6 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
       newItems.push(item);
     }
 
-    console.log(newItems);
     setNarrativeBlock({ ...narrativeBlock, items: newItems });
   };
 
@@ -147,7 +146,7 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
 
   return (
     <div id="narrativeblock" className="input-group">
-      <div className="title-label">Narrative</div>
+      <div className="title-label">Narrative & Items</div>
       <div id="one-unique-thing" className="narrative-input">
         <label className="subtitle-label">One Unique Thing</label>
         <textarea

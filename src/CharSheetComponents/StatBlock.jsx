@@ -14,7 +14,7 @@ function StatBlock({ character, statBlock, setStatBlock }) {
       <div className="title-label">Stats</div>
       <div id="abilityscores">
         <div className="titles abrow">
-          <strong>Abilities</strong>
+          <strong></strong>
           <label htmlFor="str">STR</label>
           <label htmlFor="con">CON</label>
           <label htmlFor="dex">DEX</label>
@@ -74,7 +74,7 @@ function StatBlock({ character, statBlock, setStatBlock }) {
           />
         </div>
         <div id="scores-adj" className="abrow">
-          <strong>Adjusted</strong>
+          <strong>Adj.</strong>
           <span>{character.abilityScores.str}</span>
           <span>{character.abilityScores.con}</span>
           <span>{character.abilityScores.dex}</span>
@@ -83,7 +83,7 @@ function StatBlock({ character, statBlock, setStatBlock }) {
           <span>{character.abilityScores.cha}</span>
         </div>
         <div id="modifiers" className="abrow">
-          <strong>Modifier</strong>
+          <strong>Mods</strong>
           <span>{character.abilityModifiers.str}</span>
           <span>{character.abilityModifiers.con}</span>
           <span>{character.abilityModifiers.dex}</span>
