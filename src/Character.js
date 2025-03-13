@@ -592,9 +592,25 @@ export class Character {
     const hasTieredTalents = "Adventurer" in jobs[this.job].talentProgression;
 
     if (hasTieredTalents) {
-      const advTalentsRemain = maxTalents[0] - currentTalentCounts[0];
-      const champTalentsRemain = maxTalents[1] - currentTalentCounts[1];
-      const epicTalentsRemain = maxTalents[2] - currentTalentCounts[2];
+      let advTalentsRemain = maxTalents[0] - currentTalentCounts[0];
+      let champTalentsRemain = maxTalents[1] - currentTalentCounts[1];
+      let epicTalentsRemain = maxTalents[2] - currentTalentCounts[2];
+
+      // excess adv talents will try to borrow from remaining champ (which may also end up trying to borrow from epic)
+      if (advTalentsRemain < 0 && champTalentsRemain > 0) {
+        champTalentsRemain += advTalentsRemain;
+        advTalentsRemain = 0;
+      }
+      else if (advTalentsRemain < 0 && epicTalentsRemain > 0) {
+        champTalentsRemain += advTalentsRemain;
+        advTalentsRemain = 0;
+      }
+
+      // excess champ talents will try to borrow from remaining epic talents
+      if (champTalentsRemain < 0 && epicTalentsRemain > 0) {
+        epicTalentsRemain += champTalentsRemain;
+        champTalentsRemain = 0;
+      }
 
       return [advTalentsRemain, champTalentsRemain, epicTalentsRemain];
     } else {

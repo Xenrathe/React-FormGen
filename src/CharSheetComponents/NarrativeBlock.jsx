@@ -125,7 +125,7 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
             id={`${idBase}-` + i}
             className="lined-input"
             placeholder={i == 1 ? placeholder : ""}
-            value={includeNumber ? (Object.keys(dataObject)[i - 1] || "") : dataObject[i - 1]}
+            value={includeNumber ? (Object.keys(dataObject)[i - 1] || "") : dataObject[i - 1] ?? ""}
             onChange={onChangeFn}
           />
           {includeNumber && (

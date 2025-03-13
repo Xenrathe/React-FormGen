@@ -1,10 +1,12 @@
 # To-do List
 
+- Print Ability Info adds extra pages with all feat / spell / talent / etc info
+- responsive layout (tablet, mobile breakpoints)
 - Scrollbar maintain formatting
+- popupModal add/list needs to be better formatted for differing screen sizes
 - SpellInfo dynamically updates depending on level (big change in dataset, I think?)
 - AbilitiesBlock sub-blocks borrows space from other sub-blocks to maintain formatting
 - Alter character data based on feats, talents, etc (is a slog)
-- ItemsBlock (basic / write-in) OR put block into Narrative?
 - Avatar upload / chooser somewhere
 - Icon relationship modal / pop-up using image
 - SorcererFamiliar has permanent / random button

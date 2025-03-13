@@ -14,10 +14,10 @@ function CharSheet() {
     level: 1,
     race: "Dark Elf",
     oldRace: "Dark Elf",
-    raceBonus: "Dex",
+    raceBonus: "dex",
     job: "Barbarian",
     oldJob: "Barbarian",
-    jobBonus: "Con",
+    jobBonus: "con",
     melee: "1H Small",
     ranged: "Thrown Small",
     armor: "Light",
@@ -128,12 +128,55 @@ function CharSheet() {
   }, [basicsBlock, statBlock, narrativeBlock, abilitiesBlock]);
   // END SYNTHESIS INTO CHARACTER OBJECT //
 
+  // CHARACTER SAVING / LOADING //
+  function saveCharacterToFile() {
+    const characterData = JSON.stringify({basicsBlock, statBlock, narrativeBlock, abilitiesBlock});
+    const blob = new Blob([characterData], { type: "application/json" });
+    const fileName = basicsBlock.name.trim() ? `${basicsBlock.name}-L${basicsBlock.level}` : "AHeroHasNoName";
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${fileName}.13a`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function loadCharacterFromFile() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".13a"; 
+
+    input.onchange = (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const parsedData = JSON.parse(e.target.result);
+          setBasicsBlock(parsedData.basicsBlock);
+          setStatBlock(parsedData.statBlock);
+          setNarrativeBlock(parsedData.narrativeBlock);
+          setAbilitiesBlock(parsedData.abilitiesBlock);
+          alert("Character loaded!");
+        } catch (error) {
+          alert("Failed to load character: Please load a valid .13a character file.");
+        }
+      };
+      reader.readAsText(file);
+    };
+    
+    input.click();
+  }
+
+  // END CHARACTER SAVE / LOAD //
+
   // ACTUAL DOM STUFF
   return (
     <>
       <Navbar 
-      onSave={() => console.log("Save clicked!")}
-      onLoad={() => console.log("Load clicked!")}
+      onSave={() => saveCharacterToFile()}
+      onLoad={() => loadCharacterFromFile()}
       onPrint={() => window.print()}
       />
       <div className="charsheet">
