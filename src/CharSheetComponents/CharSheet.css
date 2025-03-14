@@ -315,14 +315,14 @@
 }
 
 #popupMod.wide {
-  width: 630px;
-  max-width: 90%;
+  width: 620px;
+  max-width: 90vw;
 }
 
 #popupMod.widest {
   width: 900px;
-  max-width: 95%;
-  max-height: 95%;
+  max-width: 95vw;
+  max-height: 95vh;
   overflow-y: scroll;
 }
 
@@ -362,13 +362,16 @@
   font-size: 14px;
 }
 
-#popupMod .single-selectables,
-#popupMod .addable-items {
+#popupMod .single-selectables {
   display: flex;
   flex-direction: column;
 }
 
-#popupMod .addable-items,
+#popupMod .addable-items {
+  display: grid;
+  overflow-y: hidden;
+}
+
 #popupMod #feats.single-selectables,
 #popupMod #cantrips.single-selectables {
   gap: 10px;
@@ -392,10 +395,12 @@
   max-width: 28%;
 }
 
-#popupMod.widest .addable-items,
 #popupMod.wide .addable-items {
-  flex-direction: row;
-  flex-wrap: wrap;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+#popupMod.widest .addable-items {
+  grid-template-columns: repeat(4, 1fr);
 }
 
 #popupMod .single-selectables .selectable,
@@ -423,8 +428,6 @@
 }
 
 #popupMod.widest .addable-items .addable-item {
-  width: 200px;
-  height: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.5em;

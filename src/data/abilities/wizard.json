@@ -19,7 +19,7 @@
     },
     "Utility Spell": {
       "Type": "Default",
-      "Base": "When you choose spells during a full heal-up, instead of taking a standard spell, you can choose to give up a spell slot to memorize the utility spell at the same level. When you take the utility spell, you gain access to a range of useful non-combat spells of the level you memorized it or below. You cast each utility spell at the level of the spell slot you gave up for it. You can give up multiple spell slots to take utility spell multiple times.\n\nChoose from among the following utility spells:\n\n1st level: disguise self, feather fall, hold portal\nLevel 3: arcane eye, levitate, message, speak with item\nLevel 5: wall of stone, water breathing\nLevel 7: scrying",
+      "Base": "When you choose spells during a full heal-up, instead of taking a standard spell, you can choose to give up a spell slot to memorize the utility spell at the same level. When you take the utility spell, you gain access to a range of useful non-combat spells of the level you memorized it or below. You cast each utility spell at the level of the spell slot you gave up for it. You can give up multiple spell slots to take utility spell multiple times.",
       "Adventurer": "Each utility spell you take lets you cast two spells from the available options instead of one.",
       "Champion": "As above, but you can cast three utility spells instead of one."
     },
