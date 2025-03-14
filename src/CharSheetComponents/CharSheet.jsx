@@ -6,6 +6,7 @@ import { Character } from "../Character.js";
 import NarrativeBlock from "./NarrativeBlock.jsx";
 import AbilitiesBlock from "./AbilitiesBlock.jsx";
 import Navbar from "./Navbar.jsx";
+import AbilitySheets from "./AbilitySheets.jsx";
 
 function CharSheet() {
   // INDIVIDUAL COMPONENT DATA SETS //
@@ -130,9 +131,16 @@ function CharSheet() {
 
   // CHARACTER SAVING / LOADING //
   function saveCharacterToFile() {
-    const characterData = JSON.stringify({basicsBlock, statBlock, narrativeBlock, abilitiesBlock});
+    const characterData = JSON.stringify({
+      basicsBlock,
+      statBlock,
+      narrativeBlock,
+      abilitiesBlock,
+    });
     const blob = new Blob([characterData], { type: "application/json" });
-    const fileName = basicsBlock.name.trim() ? `${basicsBlock.name}-L${basicsBlock.level}` : "AHeroHasNoName";
+    const fileName = basicsBlock.name.trim()
+      ? `${basicsBlock.name}-L${basicsBlock.level}`
+      : "AHeroHasNoName";
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = `${fileName}.13a`;
@@ -144,7 +152,7 @@ function CharSheet() {
   function loadCharacterFromFile() {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".13a"; 
+    input.accept = ".13a";
 
     input.onchange = (event) => {
       const file = event.target.files[0];
@@ -160,12 +168,14 @@ function CharSheet() {
           setAbilitiesBlock(parsedData.abilitiesBlock);
           alert("Character loaded!");
         } catch (error) {
-          alert("Failed to load character: Please load a valid .13a character file.");
+          alert(
+            "Failed to load character: Please load a valid .13a character file."
+          );
         }
       };
       reader.readAsText(file);
     };
-    
+
     input.click();
   }
 
@@ -174,10 +184,10 @@ function CharSheet() {
   // ACTUAL DOM STUFF
   return (
     <>
-      <Navbar 
-      onSave={() => saveCharacterToFile()}
-      onLoad={() => loadCharacterFromFile()}
-      onPrint={() => window.print()}
+      <Navbar
+        onSave={() => saveCharacterToFile()}
+        onLoad={() => loadCharacterFromFile()}
+        onPrint={() => window.print()}
       />
       <div className="charsheet">
         <BasicsBlock basicsData={basicsBlock} setBasicsData={setBasicsBlock} />
@@ -196,6 +206,9 @@ function CharSheet() {
           abilitiesBlock={abilitiesBlock}
           setAbilitiesBlock={setAbilitiesBlock}
         />
+      </div>
+      <div className="ability-sheets">
+        <AbilitySheets abilitiesBlock={abilitiesBlock} character={character} />
       </div>
     </>
   );
