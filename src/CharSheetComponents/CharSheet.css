@@ -218,9 +218,23 @@
 }
 
 @media print {
+  #abilitiesblock {
+    gap: 5px;
+  }
+
+  #abilitiesblock .abilities-input {
+    min-width: 160px !important;
+    padding: 10px 0px 10px 5px !important;
+  }
+
   .single-line-w-btn {
     justify-content: center !important;
-    width: 150px;
+    width: 145px !important;
+  }
+
+  .single-line-w-btn span {
+    width: 145px !important;
+    max-width: 145px !important;
   }
 }
 
@@ -309,17 +323,6 @@
   min-width: 180px;
   margin-top: 10px;
   padding: 10px 5px 10px 10px;
-}
-
-@media print {
-  #abilitiesblock {
-    gap: 5px;
-  }
-
-  #abilitiesblock .abilities-input {
-    min-width: 170px;
-    padding: 10px 0px 10px 5px;
-  }
 }
 
 #popupMod.visible {
@@ -538,16 +541,18 @@
 
 @media print {
   #ability-sheets.include-in-printing {
-    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    margin: 3in auto;
   }
 }
 
 #ability-sheets {
-  width: 100%;
-  max-width: 8in;
-  height: auto;
-  margin: 3in auto;
-  /*display: none;*/
+  width: 7.5in;
+  max-width: 7.5in;
+  height: 1px;
+  visibility: hidden;
+  overflow-y: hidden;
 }
 
 .sheet-category {
@@ -555,6 +560,8 @@
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  width: 7.5in;
+  max-width: 7.5in;
 }
 
 .sheet-category .sheet-title {
@@ -563,7 +570,7 @@
 }
 
 .sheet-category .cards {
-  width: 8in;
+  width: 7.5in;
   display: block;
   position: relative;
   align-items: stretch;

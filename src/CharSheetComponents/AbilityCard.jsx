@@ -192,8 +192,8 @@ function AbilityCard({
   const feats = Object.keys(abilityInfo.singleItem).filter(
     (tier) => tier == "Adventurer" || tier == "Champion" || tier == "Epic"
   );
-  const hasAdv = feats.includes["Adventurer"];
-  const hasChamp = feats.includes["Champion"];
+  const hasAdv = feats.includes("Adventurer");
+  const hasChamp = feats.includes("Champion");
 
   // these variables are used to determine spell level button clickability as well as default spell-level
   let ownedSpellLevel =

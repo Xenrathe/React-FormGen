@@ -1,6 +1,7 @@
 # To-do List
 
-- Print Ability Info adds extra pages with all feat / spell / talent / etc info
+- UtilitySpell abilityCard / printAbilityInfo
+- clean up printing / don't break cards in half?
 - responsive layout (tablet, mobile breakpoints)
 - Scrollbar maintain formatting
 - SpellInfo dynamically updates depending on level (big change in dataset, I think?)

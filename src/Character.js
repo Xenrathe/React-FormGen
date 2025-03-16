@@ -314,9 +314,7 @@ export class Character {
   #getOptions(type, sourceData, ownedThings, filterFn = () => true) {
     let owned = [];
     let potential = [];
-
-    console.log(type);
-    console.log(sourceData);
+    
     // Extract potential options from the provided source
     if (type === "bonusAbs" || type === "spells") {
       potential = Object.entries(sourceData)

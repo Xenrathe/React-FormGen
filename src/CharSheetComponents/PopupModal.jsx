@@ -30,6 +30,7 @@ function alterFeats(
   abilitiesBlock,
   setAbilitiesBlock
 ) {
+  console.log(`AF: hasAdv ${hasAdv}; hasChamp ${hasChamp}`);
   let newFeatArray = [];
   if (isAdding) {
     //remove all feats of the given name
