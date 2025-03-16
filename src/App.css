@@ -14,7 +14,8 @@
     margin: 0.5in;
   }
 
-  body, html {
+  body,
+  html {
     width: 100%;
     max-width: 8in;
     height: auto;
@@ -23,6 +24,7 @@
 
   .no-print {
     display: none !important;
+    width: 0px;
   }
 }
 

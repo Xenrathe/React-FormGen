@@ -92,7 +92,7 @@ function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
 }
 
 //returns [dataForLines, dataToAdd] based on which mode / dataset is desired
-function getDataSets(mode, character) {
+export function getDataSets(mode, character) {
   let dataOnLines = [];
   let dataForAdd = [];
 
@@ -316,11 +316,10 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
 
   //for rangers animal companion or wizard's familiar, adds an extra block to add feats/abilities
   let animalsBlock = "";
-  character.getTalents().owned.forEach((talent) => {
-    const name = Object.keys(talent)[0];
-    if (name == "Wizard's Familiar" || name == "Sorcerer's Familiar") {
+  abilitiesBlock.talents.forEach((talent) => {
+    if (talent.endsWith("Familiar")) {
       animalsBlock = "Familiar";
-    } else if (name.substring(0, 2) == "AC") {
+    } else if (talent.startsWith("AC")) {
       animalsBlock = "Animal Companion";
     }
   });

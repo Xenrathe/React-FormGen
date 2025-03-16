@@ -600,8 +600,7 @@ export class Character {
       if (advTalentsRemain < 0 && champTalentsRemain > 0) {
         champTalentsRemain += advTalentsRemain;
         advTalentsRemain = 0;
-      }
-      else if (advTalentsRemain < 0 && epicTalentsRemain > 0) {
+      } else if (advTalentsRemain < 0 && epicTalentsRemain > 0) {
         champTalentsRemain += advTalentsRemain;
         advTalentsRemain = 0;
       }

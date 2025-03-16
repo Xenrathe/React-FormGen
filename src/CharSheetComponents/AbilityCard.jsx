@@ -172,7 +172,7 @@ function AbilityCard({
   abilitiesBlock,
   setAbilitiesBlock,
   alterFeats,
-  alterSpells
+  alterSpells,
 }) {
   // if infoOnly is true, then all buttons will be HIDDEN; only owned feats and spell-levels will be shown
   // it's used for the AbilitySheet component, which is several pages of printable info
@@ -182,11 +182,16 @@ function AbilityCard({
   let infoLength = Object.values(abilityInfo.singleItem)
     .map((value) => value.length)
     .reduce((sum, length) => sum + length, 0);
-  infoLength = abilityInfo.mode == "spells" && abilityInfo.title == "Cantrips" ? 3000 : infoLength; //special case for cantrips
+  infoLength =
+    abilityInfo.mode == "spells" && abilityInfo.title == "Cantrips"
+      ? 3000
+      : infoLength; //special case for cantrips
 
   // this code is necessary to know how to add/subtract multiple tiers at once
   // most abilities have all three tiers... but some don't (or skip a tier).
-  const feats = Object.keys(abilityInfo.singleItem).filter((tier) => tier == "Adventurer" || tier == "Champion" || tier == "Epic");
+  const feats = Object.keys(abilityInfo.singleItem).filter(
+    (tier) => tier == "Adventurer" || tier == "Champion" || tier == "Epic"
+  );
   const hasAdv = feats.includes["Adventurer"];
   const hasChamp = feats.includes["Champion"];
 
@@ -206,23 +211,26 @@ function AbilityCard({
   const maxSpellLevel =
     character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 + 1;
 
-  const spellLevels = Object.keys(abilityInfo.singleItem).filter((itemKey) => itemKey.length > 5 && itemKey.substring(0, 5) == "Level");
+  const spellLevels = Object.keys(abilityInfo.singleItem).filter(
+    (itemKey) => itemKey.length > 5 && itemKey.substring(0, 5) == "Level"
+  );
   return (
     <div
-      id="popupMod"
-      className={`visible
-          ${infoLength > 1000 && infoLength <= 2000 ? " wide" : ""}
-          ${infoLength > 2000 ? " widest" : ""}
-          `}
+      id={infoOnly ? "" : "popupMod"}
+      className={`ability-card visible${
+        infoLength > 1000 && infoLength <= 2000 ? " wide" : ""
+      }${infoLength > 2000 ? " widest" : ""}`}
     >
-      {!infoOnly && <button
-        className="close-btn"
-        onClick={() =>
-          setPopupInfo({ title: "", singleItem: null, list: null })
-        }
-      >
-        ✖
-      </button>}
+      {!infoOnly && (
+        <button
+          className="close-btn"
+          onClick={() =>
+            setPopupInfo({ title: "", singleItem: null, list: null })
+          }
+        >
+          ✖
+        </button>
+      )}
       <span className="title">{abilityInfo.title}</span>
       {getSingleItemDescription(abilityInfo)}
       {abilityInfo.mode == "spells" && abilityInfo.title == "Cantrips"
@@ -231,12 +239,13 @@ function AbilityCard({
       {abilityInfo.mode == "spells" && abilityInfo.title == "Utility Spell"
         ? popupModalUtilitySpellListing(character, abilitiesBlock, setPopupInfo)
         : null}
-      {spellLevels.length > 0 && <span className="single-selectables" id="spell-levels">
-        {
-          spellLevels.map((itemKey) => {
+      {spellLevels.length > 0 && (
+        <span className="single-selectables" id="spell-levels">
+          {spellLevels.map((itemKey) => {
             const spellLevel = Number(itemKey.substring(5));
             const hasLevel = ownedSpellLevel >= spellLevel;
-            const btnVisible = !infoOnly && (hasLevel || spellLevel <= maxSpellLevel);
+            const btnVisible =
+              !infoOnly && (hasLevel || spellLevel <= maxSpellLevel);
 
             // only show KNOWN spell-levels in infoOnly mode
             if (hasLevel || !infoOnly) {
@@ -245,35 +254,47 @@ function AbilityCard({
                   key={`${abilityInfo.title}-${itemKey}`}
                   className={`selectable ${hasLevel && "owned"}`}
                 >
-                  {btnVisible && <button
-                    onClick={() =>
-                      alterSpells(
-                        character,
-                        abilityInfo.title,
-                        spellLevel,
-                        !hasLevel,
-                        abilitiesBlock,
-                        setAbilitiesBlock
-                      )
-                    }
-                    className={`alterBtn ${hasLevel ? "remove" : "add"} ${abilityInfo.mode == "Utility" ? "utility" : ""}`}
-                    disabled={abilityInfo.mode == "Utility"}
-                  >
-                    <span className={`text${hasLevel ? " minus" : ""}`}>{`${hasLevel ? "-" : "+"}`}</span>
-                  </button>}
+                  {btnVisible && (
+                    <button
+                      onClick={() =>
+                        alterSpells(
+                          character,
+                          abilityInfo.title,
+                          spellLevel,
+                          !hasLevel,
+                          abilitiesBlock,
+                          setAbilitiesBlock
+                        )
+                      }
+                      className={`alterBtn ${hasLevel ? "remove" : "add"} ${
+                        abilityInfo.mode == "Utility" ? "utility" : ""
+                      }`}
+                      disabled={abilityInfo.mode == "Utility"}
+                    >
+                      <span className={`text${hasLevel ? " minus" : ""}`}>{`${
+                        hasLevel ? "-" : "+"
+                      }`}</span>
+                    </button>
+                  )}
                   <strong>{itemKey}</strong> - {abilityInfo.singleItem[itemKey]}
                 </span>
               );
             } else {
               return "";
-            }  
+            }
           })}
-      </span>}
-      {feats.length > 0 && <span className="single-selectables" id="feats">
-        {feats.map((tier) => {
+        </span>
+      )}
+      {feats.length > 0 && (
+        <span className="single-selectables" id="feats">
+          {feats.map((tier) => {
             const hasFeat = character.queryFeatIsOwned(abilityInfo.title, tier);
-            const btnVisible = !infoOnly && (hasFeat || (!(character.level < 8 && tier == "Epic") && !(character.level < 5 && tier == "Champion")));
-            
+            const btnVisible =
+              !infoOnly &&
+              (hasFeat ||
+                (!(character.level < 8 && tier == "Epic") &&
+                  !(character.level < 5 && tier == "Champion")));
+
             // only show KNOWN feats in infoOnly mode
             if (hasFeat || !infoOnly) {
               return (
@@ -281,24 +302,26 @@ function AbilityCard({
                   key={`${abilityInfo.title}-${tier}`}
                   className={`selectable ${hasFeat && "owned"}`}
                 >
-                  {btnVisible && <button
-                    onClick={() =>
-                      alterFeats(
-                        abilityInfo.title,
-                        tier,
-                        !hasFeat, // add or remove
-                        hasAdv,
-                        hasChamp,
-                        abilitiesBlock,
-                        setAbilitiesBlock
-                      )
-                    }
-                    className={`alterBtn ${hasFeat ? "remove" : "add"}`}
-                  >
-                    <span className={`text${hasFeat ? " minus" : ""}`}>{`${
-                      hasFeat ? "-" : "+"
-                    }`}</span>
-                  </button>}
+                  {btnVisible && (
+                    <button
+                      onClick={() =>
+                        alterFeats(
+                          abilityInfo.title,
+                          tier,
+                          !hasFeat, // add or remove
+                          hasAdv,
+                          hasChamp,
+                          abilitiesBlock,
+                          setAbilitiesBlock
+                        )
+                      }
+                      className={`alterBtn ${hasFeat ? "remove" : "add"}`}
+                    >
+                      <span className={`text${hasFeat ? " minus" : ""}`}>{`${
+                        hasFeat ? "-" : "+"
+                      }`}</span>
+                    </button>
+                  )}
                   <strong>{tier}</strong> - {abilityInfo.singleItem[tier]}
                 </span>
               );
@@ -306,7 +329,8 @@ function AbilityCard({
               return "";
             }
           })}
-      </span>}
+        </span>
+      )}
     </div>
   );
 }

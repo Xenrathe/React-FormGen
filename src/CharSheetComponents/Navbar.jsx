@@ -1,6 +1,17 @@
 import { useState } from "react";
 import "./Navbar.css";
 
+function handleExtraInfoChkBox(event, setExtraInfo) {
+  setExtraInfo((prev) => !prev);
+  const abilitySheets = document.querySelector("#ability-sheets");
+  console.log(event.target.checked);
+  if (event.target.checked) {
+    abilitySheets.classList.add("include-in-printing");
+  } else {
+    abilitySheets.classList.remove("include-in-printing");
+  }
+}
+
 export default function Navbar({ onSave, onLoad, onPrint }) {
   const [extraInfo, setExtraInfo] = useState(false);
 
@@ -13,12 +24,12 @@ export default function Navbar({ onSave, onLoad, onPrint }) {
       </div>
       <div id="print">
         <button onClick={onPrint}>Print</button>
-      
+
         <label className="checkbox-container">
-          <input 
-            type="checkbox" 
+          <input
+            type="checkbox"
             checked={extraInfo}
-            onChange={() => setExtraInfo((prev) => !prev)} 
+            onChange={(event) => handleExtraInfoChkBox(event, setExtraInfo)}
           />
           Print Ability Info
         </label>

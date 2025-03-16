@@ -207,9 +207,11 @@ function CharSheet() {
           setAbilitiesBlock={setAbilitiesBlock}
         />
       </div>
-      <div className="ability-sheets">
-        <AbilitySheets abilitiesBlock={abilitiesBlock} character={character} />
-      </div>
+      <AbilitySheets
+        abilitiesBlock={abilitiesBlock}
+        basicsBlock={basicsBlock}
+        character={character}
+      />
     </>
   );
 }
