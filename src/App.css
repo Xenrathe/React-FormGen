@@ -54,3 +54,10 @@ select:hover,
 textarea:hover {
   background-color: rgb(235, 235, 235);
 }
+
+.invisible {
+  visibility: hidden;
+  min-height: 1px;
+  max-height: 1px;
+  margin: 0px;
+}

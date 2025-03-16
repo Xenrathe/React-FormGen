@@ -5,6 +5,7 @@ import Packery from "packery";
 import { useEffect, useRef } from "react";
 
 function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
+  const bonusAbTitle = "bonusAbilitySet" in jobs[character.job] ? jobs[character.job].bonusAbilitySet.Name : "bonusAbs";
   const sheetInfo = {
     "Class Features, Racial, and Gen. Feats": {
       data: getDataSets("general", character)[0],
@@ -14,52 +15,41 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
       data: getDataSets("talents", character)[0],
       mode: "talents",
     },
-  };
-
-  if ("spellList" in jobs[character.job]) {
-    sheetInfo.Spells = {
-      data: getDataSets("spells", character)[0],
+    Spells: {
+      data: "spellList" in jobs[character.job] ? getDataSets("spells", character)[0] : [],
       mode: "spells",
-    };
-  }
-
-  if ("bonusAbilitySet" in jobs[character.job]) {
-    sheetInfo[`${jobs[character.job].bonusAbilitySet.Name}`] = {
-      data: getDataSets("bonusAbs", character)[0],
+    },
+    [bonusAbTitle]: {
+      data: "bonusAbilitySet" in jobs[character.job] ? getDataSets("bonusAbs", character)[0] : [],
       mode: "bonusAbs",
-    };
-  }
-
-  if (abilitiesBlock.talents.find((talent) => talent.endsWith("Familiar"))) {
-    sheetInfo["Familiar Skills"] = {
-      data: getDataSets("Familiar", character)[0],
+    },
+    ["Familiar Skills"]: {
+      data: abilitiesBlock.talents.find((talent) => talent.endsWith("Familiar")) ? getDataSets("Familiar", character)[0] : [],
       mode: "Familiar",
-    };
-  }
-
-  if (abilitiesBlock.talents.find((talent) => talent.startsWith("AC"))) {
-    sheetInfo["Animal Companion Feats"] = {
-      data: getDataSets("Animal Companion", character)[0],
+    },
+    ["Animal Companion Feats"]: {
+      data: abilitiesBlock.talents.find((talent) => talent.startsWith("AC")) ? getDataSets("Animal Companion", character)[0] : [],
       mode: "Animal Companion",
-    };
-  }
+    }
+  };
 
   const packeryRefs = useRef([]);
 
   useEffect(() => {
-    packeryRefs.current.forEach((ref) => {
-      if (ref) {
-        const packeryInstance = new Packery(ref, {
+    const cardsContainers = document.querySelectorAll(".cards");
+  
+    cardsContainers.forEach((container) => {
+      if (container) {
+        const packeryInstance = new Packery(container, {
           itemSelector: ".ability-card",
           gutter: 10,
           percentPosition: true,
         });
-
-        // Delay to allow React to complete updates
+  
         setTimeout(() => {
           packeryInstance.reloadItems();
           packeryInstance.layout();
-        }, 100);
+        }, 50);
       }
     });
   }, [abilitiesBlock, basicsBlock.race, basicsBlock.job]); // Re-run when abilities change
@@ -69,7 +59,7 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
       {Object.entries(sheetInfo).map(([title, values], index) => {
         if (values.data.length > 0) {
           return (
-            <div id={title} className="sheet-category" key={`absheet-${title}`}>
+            <div id={values.mode} className="sheet-category" key={`absheet-${values.mode}`}>
               <div className="sheet-title">{title}</div>
               <div
                 className="cards"
@@ -99,7 +89,17 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
             </div>
           );
         } else {
-          return null;
+          //for packery to correctly initialize, we still need this empty div, we'll just keep it hidden
+          return (
+          <div id={values.mode} className="sheet-category invisible" key={`absheet-${values.mode}`}>
+            <div className="sheet-title">{title}</div>
+            <div
+              className="cards invisible"
+              ref={(el) => (packeryRefs.current[index] = el)}
+            >;
+            </div>
+          </div>
+          )
         }
       })}
     </div>

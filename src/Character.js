@@ -315,6 +315,8 @@ export class Character {
     let owned = [];
     let potential = [];
 
+    console.log(type);
+    console.log(sourceData);
     // Extract potential options from the provided source
     if (type === "bonusAbs" || type === "spells") {
       potential = Object.entries(sourceData)
@@ -454,11 +456,8 @@ export class Character {
 
   //this gives familiar abilities, separated into { owned, potential }
   getFamiliarAbs() {
-    return this.#getOptions(
-      "familiarAbs",
-      jobs[this.job].familiarAbilities,
-      this.familiarAbs
-    );
+    const familiarDataSet = "familiarAbilities" in jobs[this.job] ? this.#getOptions("familiarAbs", jobs[this.job].familiarAbilities, this.familiarAbs) : {owned: [], potential: []};
+    return familiarDataSet
   }
 
   //returns an array [totalPointsMax, maxPerBG]

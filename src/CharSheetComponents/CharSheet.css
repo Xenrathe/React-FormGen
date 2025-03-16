@@ -386,7 +386,7 @@
   font-size: 14px;
 }
 
-#popupMod .single-selectables {
+.ability-card .single-selectables {
   display: flex;
   flex-direction: column;
 }
