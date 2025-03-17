@@ -430,7 +430,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
             setPopupInfo={setPopupInfo}
             abilitiesBlock={abilitiesBlock}
             setAbilitiesBlock={setAbilitiesBlock}
-            numLines={Math.max(10, character.querySpellsMax())}
+            numLines={Math.max(10, Math.max(character.querySpellsMax(), character.querySpellsOwnedCount()))}
           />
         </div>
       )}

@@ -41,7 +41,7 @@ export class Character {
     this.feats = feats; //an array of objects {"Linguist": "Champion"}.
     this.familiarAbs = familiarAbs; //an array of strings
 
-    this.#trimFeatsAndAbilities(); //removes feats, talents, spells, etc incompatible with job and race
+    this.#trimFeatsAndAbilities(); //removes feats, talents, spells, etc incompatible with job, race, and new level
 
     this.armorType = armorType; //a string, "None", "Light", or "Heavy"
     this.hasShield = hasShield == "Shield"; //boolean
@@ -118,7 +118,21 @@ export class Character {
       });
 
       this.oldJob = this.job;
-    }
+    } /*else {
+      let newSpellList = [];
+      this.jobSpells.forEach((spell) => {
+        const name = Object.keys(spell)[0];
+        const spellLevel = Number(Object.values(spell)[0].substr(-1));
+        
+        if (spellLevel > this.level) {
+          this.feats = this.feats.filter((feat) => Object.keys(feat)[0] !== name)
+        } else {
+          newSpellList.push(spell);
+        }
+      })
+
+      this.jobSpells = newSpellList;
+    }*/
 
     //if player removes familiar as a talent, it also removes associated information
     if (
@@ -296,10 +310,11 @@ export class Character {
 
   //in core, only wizard should be calling for this
   getUtilitySpells() {
-    const utilityObject =
-      "Utility" in jobs[this.job].spellList
-        ? jobs[this.job].spellList["Utility"]
-        : null;
+    if (!("spellList" in jobs[this.job]) || !("Utility" in jobs[this.job].spellList)) {
+      return [];
+    }
+
+    const utilityObject = jobs[this.job].spellList["Utility"];
     const list = Object.entries(utilityObject).flatMap(([level, spells]) =>
       Object.entries(spells).map(([spellName, spellData]) => ({
         [spellName]: {
@@ -314,18 +329,21 @@ export class Character {
   #getOptions(type, sourceData, ownedThings, filterFn = () => true) {
     let owned = [];
     let potential = [];
-    
+
     // Extract potential options from the provided source
     if (type === "bonusAbs" || type === "spells") {
+      const abilityNames = new Set(ownedThings.map((entry) => typeof entry == "object" ? Object.keys(entry)[0] : entry));
+
       potential = Object.entries(sourceData)
-        .filter(([level, _]) => filterFn(level))
-        .flatMap(([level, abilities]) =>
-          Object.entries(abilities).map(([name, data]) => ({
-            [name]: {
-              ...data,
-              Level: parseInt(level.replace("Level ", ""), 10),
-            },
-          }))
+        .flatMap(([level, abilities]) => 
+          Object.entries(abilities)
+            .filter(([name, _]) => filterFn(level) || abilityNames.has(name))
+            .map(([name, data]) => ({
+              [name]: {
+                ...data,
+                Level: parseInt(level.replace("Level ", ""), 10),
+              },
+            }))
         );
     } else {
       potential = Object.entries(sourceData)
@@ -375,7 +393,7 @@ export class Character {
           });
         }
       }
-    }
+    }    
 
     // Determine owned items and remove them from potential
     ownedThings.forEach((item) => {
@@ -514,12 +532,31 @@ export class Character {
     return spellSlots;
   }
 
+  querySpellsOwnedCount() {
+    if (!"spellList" in jobs[this.job]) {
+      return 0;
+    }
+
+    let spellCount = 0;
+    if ("Utility" in jobs[this.job].spellList && !this.jobSpells.some((spell) => Object.keys(spell)[0] == "Utility Spell")) {
+      spellCount++;
+    }
+
+    if ("Level 0" in jobs[this.job].spellList) {
+      spellCount++;
+    }
+
+    spellCount += this.jobSpells.length;
+
+    return spellCount;
+  }
+
   querySpellLevelMinimum() {
     return this.querySpellLevelMaximums().findIndex((num) => num > 0) * 2 + 1;
   }
 
   querySpellLevelMaximums() {
-    if ("spellProgression" in jobs[this.job]) {
+    if ("spellProgression" in jobs[this.job] && this.level > 0) {
       return jobs[this.job].spellProgression[this.level - 1];
     } else {
       return [0, 0, 0, 0, 0];

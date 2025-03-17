@@ -6,6 +6,9 @@ import { useEffect, useRef } from "react";
 
 function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
   const bonusAbTitle = "bonusAbilitySet" in jobs[character.job] ? jobs[character.job].bonusAbilitySet.Name : "bonusAbs";
+  const utilityList = character.getUtilitySpells();
+  const utilitySpellLevel = abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == "Utility Spell")?.["Utility Spell"].substring(6) ?? 0;
+
   const sheetInfo = {
     "Class Features, Racial, and Gen. Feats": {
       data: getDataSets("general", character)[0],
@@ -15,14 +18,6 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
       data: getDataSets("talents", character)[0],
       mode: "talents",
     },
-    Spells: {
-      data: "spellList" in jobs[character.job] ? getDataSets("spells", character)[0] : [],
-      mode: "spells",
-    },
-    [bonusAbTitle]: {
-      data: "bonusAbilitySet" in jobs[character.job] ? getDataSets("bonusAbs", character)[0] : [],
-      mode: "bonusAbs",
-    },
     ["Familiar Skills"]: {
       data: abilitiesBlock.talents.find((talent) => talent.endsWith("Familiar")) ? getDataSets("Familiar", character)[0] : [],
       mode: "Familiar",
@@ -30,7 +25,19 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
     ["Animal Companion Feats"]: {
       data: abilitiesBlock.talents.find((talent) => talent.startsWith("AC")) ? getDataSets("Animal Companion", character)[0] : [],
       mode: "Animal Companion",
-    }
+    },
+    Spells: {
+      data: "spellList" in jobs[character.job] ? getDataSets("spells", character)[0] : [],
+      mode: "spells",
+    },
+    [`Utility Spells (L${utilitySpellLevel} Slot)`]: {
+      data: utilityList.filter((utilSpell) => utilitySpellLevel >= Number(Object.values(utilSpell)[0].Level)),
+      mode: "Utility",
+    },
+    [bonusAbTitle]: {
+      data: "bonusAbilitySet" in jobs[character.job] ? getDataSets("bonusAbs", character)[0] : [],
+      mode: "bonusAbs",
+    },
   };
 
   const packeryRefs = useRef([]);

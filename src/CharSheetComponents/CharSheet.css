@@ -21,6 +21,11 @@
   top: -9px;
   left: 20px;
   background-color: white;
+  max-height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 170px;
 }
 
 #one-unique-thing .subtitle-label {
@@ -565,7 +570,7 @@
 }
 
 .sheet-category .sheet-title {
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
 }
 

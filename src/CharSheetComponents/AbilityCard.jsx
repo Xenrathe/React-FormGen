@@ -137,8 +137,6 @@ function popupModalUtilitySpellListing(
         const title = Object.keys(utilSpell)[0];
         const hasLevel = utilitySpellLevel >= spellLevel;
 
-        //console.log(utilSpell);
-
         return (
           <span
             key={`${title}`}
@@ -214,7 +212,8 @@ function AbilityCard({
   const spellLevels = Object.keys(abilityInfo.singleItem).filter(
     (itemKey) => itemKey.length > 5 && itemKey.substring(0, 5) == "Level"
   );
-  return (
+
+  return ((!infoOnly || abilityInfo.title != "Utility Spell") && 
     <div
       id={infoOnly ? "" : "popupMod"}
       className={`ability-card visible${

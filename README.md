@@ -1,6 +1,5 @@
 # To-do List
 
-- UtilitySpell abilityCard / printAbilityInfo
 - clean up printing / don't break cards in half?
 - responsive layout (tablet, mobile breakpoints)
 - Scrollbar maintain formatting
