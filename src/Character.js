@@ -615,7 +615,7 @@ export class Character {
       ];
 
       if (this.jobTalents.includes("Spellsinger")) {
-        spellMaxCounts[spellMaxCounts.findIndex((num) => num > 0)] += 1;
+        spellMaxCounts[spellMaxCounts.findLastIndex((num) => num > 0)] += 1;
       }
 
       return spellMaxCounts;
