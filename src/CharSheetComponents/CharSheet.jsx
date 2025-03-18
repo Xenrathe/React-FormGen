@@ -130,6 +130,7 @@ function CharSheet() {
     }
 
     setCharacter(updatedCharacter);
+
   }, [basicsBlock, statBlock, narrativeBlock, abilitiesBlock]);
   // END SYNTHESIS INTO CHARACTER OBJECT //
 

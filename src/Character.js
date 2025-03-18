@@ -522,12 +522,29 @@ export class Character {
   //returns an array [totalPointsMax, maxPerBG]
   queryBackgroundMax() {
     let maxTotal = 8;
-    let maxPer = 5;
+    let maxDefault = 5;
+    let maxExceptions = [];
 
-    // further backgrounding feat?
-    // something else?
+    //adjustments for Bard's Loremaster and Mythkenner
+    if (this.bonusOptions.some((option) => (Object.keys(option)[0] == "Loremaster" || Object.keys(option)[0] == "Mythkenner") && Object.values(option)[0] == "B")) {
+      maxTotal += 2;
+      maxExceptions.push(6);
+    }
 
-    return [maxTotal, maxPer];
+    //adjustments for Further Backgrounding
+    this.feats.filter((feat) => Object.keys(feat)[0] == "Further Backgrounding").forEach((feat) => {
+      const tier = Object.values(feat)[0];
+      if (tier == "Adventurer") {
+        maxTotal += 2;
+      } else if (tier == "Champion") {
+        maxTotal += 3;
+      } else if (tier == "Epic") {
+        maxTotal += 2;
+        maxExceptions.push(7);
+      }
+    })
+
+    return [maxTotal, maxDefault, maxExceptions];
   }
 
   queryBonusAbsTitle() {
