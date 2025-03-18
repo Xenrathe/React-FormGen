@@ -1,4 +1,15 @@
 function getSingleItemDescription(popupInfo) {
+  const exclusionAdd =
+  "Exclusive" in popupInfo.singleItem ? (
+    <strong className="exclusionadd" key="exclusionadd">
+      (Exclusive with{" "}
+      {Array.isArray(popupInfo.singleItem.Exclusive)
+        ? popupInfo.singleItem.Exclusive.join("; ")
+        : popupInfo.singleItem.Exclusive})
+      <br />
+    </strong>
+  ) : null;
+
   const baseCategories = ["Base"];
   const baseDescription = baseCategories
     .filter((category) => category in popupInfo.singleItem)
@@ -77,25 +88,13 @@ function getSingleItemDescription(popupInfo) {
     ) : null;
   });
 
-  const exclusionAdd =
-    "Exclusive" in popupInfo.singleItem ? (
-      <strong key="exclusionadd">
-        Exclusive with{" "}
-        {Array.isArray(popupInfo.singleItem.Exclusive)
-          ? popupInfo.singleItem.Exclusive.join("; ")
-          : popupInfo.singleItem.Exclusive}
-        <br />
-        <br />
-      </strong>
-    ) : null;
-
   return (
     <span className="description">
+      {exclusionAdd}
       {baseDescription}
       {spellBase}
       {spellAdditions}
       {standardAdditions}
-      {exclusionAdd}
     </span>
   );
 }
