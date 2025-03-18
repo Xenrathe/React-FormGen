@@ -47,6 +47,7 @@ function CharSheet() {
     bonusAbs: [],
     feats: [],
     familiarAbs: [],
+    bonusOptions: [],
   });
   // END INDIVIDUAL COMPONENT DATA SETS //
 
@@ -67,6 +68,7 @@ function CharSheet() {
       abilitiesBlock.bonusAbs, //e.g. Bard's battle cries
       abilitiesBlock.feats,
       abilitiesBlock.familiarAbs,
+      abilitiesBlock.bonusOptions, //e.g. choosing two options in Bard's mythkenner
       basicsBlock.armor,
       basicsBlock.shield,
       { melee: basicsBlock.melee, ranged: basicsBlock.ranged },
@@ -93,6 +95,7 @@ function CharSheet() {
       abilitiesBlock.bonusAbs, // e.g. Bard's battle cries
       abilitiesBlock.feats,
       abilitiesBlock.familiarAbs,
+      abilitiesBlock.bonusOptions, //e.g. choosing two options in Bard's mythkenner
       basicsBlock.armor,
       basicsBlock.shield,
       { melee: basicsBlock.melee, ranged: basicsBlock.ranged },
@@ -118,6 +121,7 @@ function CharSheet() {
       bonusAbs: updatedCharacter.jobBonusAbs,
       feats: updatedCharacter.feats,
       familiarAbs: updatedCharacter.familiarAbs,
+      bonusOptions: updatedCharacter.bonusOptions,
     };
 
     // without this, we may end up in an infinite loop

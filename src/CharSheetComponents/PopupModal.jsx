@@ -19,6 +19,35 @@ function alterFamiliarAbs(
   setAbilitiesBlock({ ...abilitiesBlock, familiarAbs: newFamiliarAbArray });
 }
 
+function alterBonusOptions(
+  talentName,
+  bonusKey, // 'A' or 'B' or 'C'
+  isAdding, // add or remove
+  bonusMaxCount,
+  abilitiesBlock,
+  setAbilitiesBlock
+) {
+  let newOptionArray = [];
+  if (isAdding) {
+    newOptionArray.push(...abilitiesBlock.bonusOptions);
+    const currentCount = newOptionArray.filter(
+      (bonusOp) => Object.keys(bonusOp)[0] == talentName
+    ).length;
+
+    if (currentCount < bonusMaxCount) {
+      newOptionArray.push({ [talentName]: bonusKey });
+    }
+  } else {
+    newOptionArray = abilitiesBlock.bonusOptions.filter(
+      (bonusOp) =>
+        Object.keys(bonusOp)[0] != talentName ||
+        Object.values(bonusOp)[0] != bonusKey
+    );
+  }
+
+  setAbilitiesBlock({ ...abilitiesBlock, bonusOptions: newOptionArray });
+}
+
 //add or remove a feat WITHIN another feat/ability
 //not for STAND ALONE feats or abilities
 function alterFeats(
@@ -30,7 +59,6 @@ function alterFeats(
   abilitiesBlock,
   setAbilitiesBlock
 ) {
-  console.log(`AF: hasAdv ${hasAdv}; hasChamp ${hasChamp}`);
   let newFeatArray = [];
   if (isAdding) {
     //remove all feats of the given name
@@ -182,6 +210,13 @@ function addableItemInfo(
     text = Object.values(Object.values(item)[0]);
   } else if (popupInfo.mode == "talents") {
     text = Object.values(item)[0].Base;
+    if ("Options" in Object.values(item)[0]) {
+      Object.entries(Object.values(item)[0].Options)
+        .filter(([key, _]) => key != "Count")
+        .forEach(([key, val]) => {
+          text += ` (${key}) ${val}`;
+        });
+    }
   } else if (popupInfo.mode == "Familiar") {
     text = Object.values(item)[0];
   } else if (popupInfo.mode == "spells" || popupInfo.mode == "bonusAbs") {
@@ -343,15 +378,18 @@ function PopupModal({
       setAbilitiesBlock
     );
   } else if (popupInfo.singleItem != null) {
-    return <AbilityCard
-    abilityInfo={popupInfo}
-    setPopupInfo={setPopupInfo}
-    character={character}
-    abilitiesBlock={abilitiesBlock}
-    setAbilitiesBlock={setAbilitiesBlock}
-    alterFeats={alterFeats}
-    alterSpells={alterSpells}
-    />
+    return (
+      <AbilityCard
+        abilityInfo={popupInfo}
+        setPopupInfo={setPopupInfo}
+        character={character}
+        abilitiesBlock={abilitiesBlock}
+        setAbilitiesBlock={setAbilitiesBlock}
+        alterFeats={alterFeats}
+        alterSpells={alterSpells}
+        alterBonusOptions={alterBonusOptions}
+      />
+    );
   } else {
     return <div id="popupMod" className="hidden"></div>;
   }

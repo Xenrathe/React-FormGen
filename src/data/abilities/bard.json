@@ -35,12 +35,24 @@
     "Loremaster": {
       "Type": "Optional",
       "Exclusive": "Mythkenner",
-      "Base": "Choose two of the following three bonuses:\n 1) Your bardic skills and magic are now based on your Intelligence rather than Charisma.\n 2) Take two additional points of backgrounds. You can use these additional points to raise a background that has something to do with history, bardic lore, or magical knowledge up to the usually impossible rating of +6.\n 3) Take a single point of relationship with an icon. Add the point to a relationship you already have up to your normal maximum, or start a new one—positive, conflicted, or negative."
+      "Base": "Choose two of the following three bonuses:",
+      "Options": {
+        "Count": 2,
+        "A": "Your bardic skills and magic are now based on your Intelligence rather than Charisma.",
+        "B": "Take two additional points of backgrounds. You can use these additional points to raise a background that has something to do with history, bardic lore, or magical knowledge up to the usually impossible rating of +6.",
+        "C": "Take a single point of relationship with an icon. Add the point to a relationship you already have up to your normal maximum, or start a new one—positive, conflicted, or negative."
+      }
     },
     "Mythkenner": {
       "Type": "Optional",
       "Exclusive": "Loremaster",
-      "Base": "Choose two of the following three bonuses:\n 1) Your bardic skills and magic are now based on your Wisdom rather than Charisma.\n 2) Take two additional points of backgrounds; you can use these additional points to raise a background that has something to do with religion, mythology, or history up to the usually impossible rating of +6.\n 3) Take a single point of relationship with an icon. Add the point to a relationship you already have up to your normal maximum, or start a new one—positive, conflicted, or negative."
+      "Base": "Choose two of the following three bonuses: ",
+      "Options": {
+        "Count": 2,
+        "A": "Your bardic skills and magic are now based on your Wisdom rather than Charisma.",
+        "B": "Take two additional points of backgrounds; you can use these additional points to raise a background that has something to do with religion, mythology, or history up to the usually impossible rating of +6.",
+        "C": "Take a single point of relationship with an icon. Add the point to a relationship you already have up to your normal maximum, or start a new one—positive, conflicted, or negative."
+      }
     },
     "Songmaster": {
       "Type": "Optional",

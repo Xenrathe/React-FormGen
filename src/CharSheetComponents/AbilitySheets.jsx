@@ -5,9 +5,15 @@ import Packery from "packery";
 import { useEffect, useRef } from "react";
 
 function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
-  const bonusAbTitle = "bonusAbilitySet" in jobs[character.job] ? jobs[character.job].bonusAbilitySet.Name : "bonusAbs";
+  const bonusAbTitle =
+    "bonusAbilitySet" in jobs[character.job]
+      ? jobs[character.job].bonusAbilitySet.Name
+      : "bonusAbs";
   const utilityList = character.getUtilitySpells();
-  const utilitySpellLevel = abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == "Utility Spell")?.["Utility Spell"].substring(6) ?? 0;
+  const utilitySpellLevel =
+    abilitiesBlock.spells
+      .find((spell) => Object.keys(spell)[0] == "Utility Spell")
+      ?.["Utility Spell"].substring(6) ?? 0;
 
   const sheetInfo = {
     "Class Features, Racial, and Gen. Feats": {
@@ -19,23 +25,36 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
       mode: "talents",
     },
     ["Familiar Skills"]: {
-      data: abilitiesBlock.talents.find((talent) => talent.endsWith("Familiar")) ? getDataSets("Familiar", character)[0] : [],
+      data: abilitiesBlock.talents.find((talent) => talent.endsWith("Familiar"))
+        ? getDataSets("Familiar", character)[0]
+        : [],
       mode: "Familiar",
     },
     ["Animal Companion Feats"]: {
-      data: abilitiesBlock.talents.find((talent) => talent.startsWith("AC")) ? getDataSets("Animal Companion", character)[0] : [],
+      data: abilitiesBlock.talents.find((talent) => talent.startsWith("AC"))
+        ? getDataSets("Animal Companion", character)[0]
+        : [],
       mode: "Animal Companion",
     },
     Spells: {
-      data: "spellList" in jobs[character.job] ? getDataSets("spells", character)[0] : [],
+      data:
+        "spellList" in jobs[character.job]
+          ? getDataSets("spells", character)[0]
+          : [],
       mode: "spells",
     },
     [`Utility Spells (L${utilitySpellLevel} Slot)`]: {
-      data: utilityList.filter((utilSpell) => utilitySpellLevel >= Number(Object.values(utilSpell)[0].Level)),
+      data: utilityList.filter(
+        (utilSpell) =>
+          utilitySpellLevel >= Number(Object.values(utilSpell)[0].Level)
+      ),
       mode: "Utility",
     },
     [bonusAbTitle]: {
-      data: "bonusAbilitySet" in jobs[character.job] ? getDataSets("bonusAbs", character)[0] : [],
+      data:
+        "bonusAbilitySet" in jobs[character.job]
+          ? getDataSets("bonusAbs", character)[0]
+          : [],
       mode: "bonusAbs",
     },
   };
@@ -44,7 +63,7 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
 
   useEffect(() => {
     const cardsContainers = document.querySelectorAll(".cards");
-  
+
     cardsContainers.forEach((container) => {
       if (container) {
         const packeryInstance = new Packery(container, {
@@ -52,7 +71,7 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
           gutter: 10,
           percentPosition: true,
         });
-  
+
         setTimeout(() => {
           packeryInstance.reloadItems();
           packeryInstance.layout();
@@ -66,7 +85,11 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
       {Object.entries(sheetInfo).map(([title, values], index) => {
         if (values.data.length > 0) {
           return (
-            <div id={values.mode} className="sheet-category" key={`absheet-${values.mode}`}>
+            <div
+              id={values.mode}
+              className="sheet-category"
+              key={`absheet-${values.mode}`}
+            >
               <div className="sheet-title">{title}</div>
               <div
                 className="cards"
@@ -89,6 +112,7 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
                       setAbilitiesBlock={null}
                       alterFeats={null}
                       alterSpells={null}
+                      alterBonusOptions={null}
                     />
                   );
                 })}
@@ -98,15 +122,20 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
         } else {
           //for packery to correctly initialize, we still need this empty div, we'll just keep it hidden
           return (
-          <div id={values.mode} className="sheet-category invisible" key={`absheet-${values.mode}`}>
-            <div className="sheet-title">{title}</div>
             <div
-              className="cards invisible"
-              ref={(el) => (packeryRefs.current[index] = el)}
-            >;
+              id={values.mode}
+              className="sheet-category invisible"
+              key={`absheet-${values.mode}`}
+            >
+              <div className="sheet-title">{title}</div>
+              <div
+                className="cards invisible"
+                ref={(el) => (packeryRefs.current[index] = el)}
+              >
+                ;
+              </div>
             </div>
-          </div>
-          )
+          );
         }
       })}
     </div>

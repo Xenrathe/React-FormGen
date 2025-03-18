@@ -18,6 +18,7 @@ export class Character {
     jobBonusAbs,
     feats,
     familiarAbs,
+    bonusOptions,
     armorType,
     hasShield,
     weaponType,
@@ -40,6 +41,7 @@ export class Character {
     this.jobBonusAbs = jobBonusAbs; //an array of strings
     this.feats = feats; //an array of objects {"Linguist": "Champion"}.
     this.familiarAbs = familiarAbs; //an array of strings
+    this.bonusOptions = bonusOptions; //an array of objects {"Mythkenner": ["A", "B"]}
 
     this.#trimFeatsAndAbilities(); //removes feats, talents, spells, etc incompatible with job, race, and new level
 
@@ -101,6 +103,7 @@ export class Character {
       this.jobSpells = [];
       this.jobBonusAbs = [];
       this.familiarAbs = [];
+      this.bonusOptions = [];
 
       //clear all feats that are NOT general or racial
       const racialPowersNames = Object.keys(
@@ -141,6 +144,11 @@ export class Character {
     ) {
       this.familiarAbs = [];
     }
+
+    //if player removes a talent that has bonus options, it also removes associated information
+    this.bonusOptions = this.bonusOptions.filter((bonusOp) =>
+      this.jobTalents.includes(Object.keys(bonusOp)[0])
+    );
 
     //if player removes any of the "AC" (animal companion) talents, will also remove associated feats
     if (
@@ -196,7 +204,13 @@ export class Character {
       this.abilityModifiers.dex,
     ]);
 
-    return basePD + bonusMod + this.level;
+    const SHFeatTiers = this.feats
+      .filter((feat) => Object.keys(feat)[0] == "Strongheart")
+      .map((SHFeatObj) => Object.values(SHFeatObj)[0]);
+
+    const featBonus = SHFeatTiers.includes("Champion") ? 1 : 0;
+
+    return basePD + bonusMod + featBonus + this.level;
   }
 
   calculateMD() {
@@ -231,9 +245,25 @@ export class Character {
   }
 
   calculateRecoveryDice() {
-    const uses = jobs[this.job].recoveries[0];
-    const diceSize = jobs[this.job].recoveries[1];
+    let uses = jobs[this.job].recoveries[0];
+    let diceSize = jobs[this.job].recoveries[1];
     const plusSign = this.abilityModifiers.con >= 0 ? "+" : "";
+
+    if (this.jobTalents.includes("Strongheart")) {
+      const SHFeatTiers = this.feats
+        .filter((feat) => Object.keys(feat)[0] == "Strongheart")
+        .map((SHFeatObj) => Object.values(SHFeatObj)[0]);
+
+      if (SHFeatTiers.includes("Adventurer")) {
+        uses += 1;
+      }
+
+      if (SHFeatTiers.includes("Epic")) {
+        uses += 1;
+      }
+
+      diceSize = 12;
+    }
 
     return [
       uses,
@@ -310,7 +340,10 @@ export class Character {
 
   //in core, only wizard should be calling for this
   getUtilitySpells() {
-    if (!("spellList" in jobs[this.job]) || !("Utility" in jobs[this.job].spellList)) {
+    if (
+      !("spellList" in jobs[this.job]) ||
+      !("Utility" in jobs[this.job].spellList)
+    ) {
       return [];
     }
 
@@ -332,19 +365,22 @@ export class Character {
 
     // Extract potential options from the provided source
     if (type === "bonusAbs" || type === "spells") {
-      const abilityNames = new Set(ownedThings.map((entry) => typeof entry == "object" ? Object.keys(entry)[0] : entry));
+      const abilityNames = new Set(
+        ownedThings.map((entry) =>
+          typeof entry == "object" ? Object.keys(entry)[0] : entry
+        )
+      );
 
-      potential = Object.entries(sourceData)
-        .flatMap(([level, abilities]) => 
-          Object.entries(abilities)
-            .filter(([name, _]) => filterFn(level) || abilityNames.has(name))
-            .map(([name, data]) => ({
-              [name]: {
-                ...data,
-                Level: parseInt(level.replace("Level ", ""), 10),
-              },
-            }))
-        );
+      potential = Object.entries(sourceData).flatMap(([level, abilities]) =>
+        Object.entries(abilities)
+          .filter(([name, _]) => filterFn(level) || abilityNames.has(name))
+          .map(([name, data]) => ({
+            [name]: {
+              ...data,
+              Level: parseInt(level.replace("Level ", ""), 10),
+            },
+          }))
+      );
     } else {
       potential = Object.entries(sourceData)
         .filter(([_, tiers]) => filterFn(tiers))
@@ -393,7 +429,7 @@ export class Character {
           });
         }
       }
-    }    
+    }
 
     // Determine owned items and remove them from potential
     ownedThings.forEach((item) => {
@@ -472,8 +508,15 @@ export class Character {
 
   //this gives familiar abilities, separated into { owned, potential }
   getFamiliarAbs() {
-    const familiarDataSet = "familiarAbilities" in jobs[this.job] ? this.#getOptions("familiarAbs", jobs[this.job].familiarAbilities, this.familiarAbs) : {owned: [], potential: []};
-    return familiarDataSet
+    const familiarDataSet =
+      "familiarAbilities" in jobs[this.job]
+        ? this.#getOptions(
+            "familiarAbs",
+            jobs[this.job].familiarAbilities,
+            this.familiarAbs
+          )
+        : { owned: [], potential: [] };
+    return familiarDataSet;
   }
 
   //returns an array [totalPointsMax, maxPerBG]
@@ -497,10 +540,15 @@ export class Character {
   }
 
   #queryBonusAbsMax() {
-    const maxBonusAbs =
+    let maxBonusAbs =
       "bonusAbilitySetTotal" in jobs[this.job]
         ? jobs[this.job].bonusAbilitySetTotal[this.level - 1]
         : 0;
+
+    if (this.jobTalents.includes("Battle Skald")) {
+      maxBonusAbs += 1;
+    }
+
     return maxBonusAbs;
   }
 
@@ -511,14 +559,16 @@ export class Character {
   }
 
   //Returns the total number of slots
+  //Is this redundant with querySpellsOwnedCount? it might be.
   querySpellsMax() {
     if (!("spellProgression" in jobs[this.job])) {
       return 0;
     }
 
-    let spellSlots = jobs[this.job].spellProgression[
-      Math.max(0, this.level - 1)
-    ].reduce((sum, current) => sum + current, 0);
+    let spellSlots = this.querySpellLevelMaximums().reduce(
+      (sum, current) => sum + current,
+      0
+    );
 
     if (this.job == "Wizard") {
       spellSlots += 2; //for Utility and Cantrip
@@ -538,7 +588,10 @@ export class Character {
     }
 
     let spellCount = 0;
-    if ("Utility" in jobs[this.job].spellList && !this.jobSpells.some((spell) => Object.keys(spell)[0] == "Utility Spell")) {
+    if (
+      "Utility" in jobs[this.job].spellList &&
+      !this.jobSpells.some((spell) => Object.keys(spell)[0] == "Utility Spell")
+    ) {
       spellCount++;
     }
 
@@ -556,8 +609,16 @@ export class Character {
   }
 
   querySpellLevelMaximums() {
-    if ("spellProgression" in jobs[this.job] && this.level > 0) {
-      return jobs[this.job].spellProgression[this.level - 1];
+    if ("spellProgression" in jobs[this.job]) {
+      let spellMaxCounts = [
+        ...jobs[this.job].spellProgression[Math.max(0, this.level - 1)],
+      ];
+
+      if (this.jobTalents.includes("Spellsinger")) {
+        spellMaxCounts[spellMaxCounts.findIndex((num) => num > 0)] += 1;
+      }
+
+      return spellMaxCounts;
     } else {
       return [0, 0, 0, 0, 0];
     }
