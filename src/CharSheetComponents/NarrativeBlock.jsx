@@ -9,54 +9,63 @@ function getBackgroundPointsRemaining(backgrounds, character) {
   return maxBGs[0] - sum;
 }
 
-function handleBackgrounds(character, narrativeBlock, setNarrativeBlock) {
+export function handleBackgrounds(
+  character,
+  narrativeBlock,
+  setNarrativeBlock
+) {
   let [, maxDefault, maxExceptions] = character.queryBackgroundMax();
-    // this sort is necessary in the situation in which, say, [7, 6] are in maxexceptions
-    // if the user inputs a '6' value, we want to remove the '6' not the '7'
-    maxExceptions = maxExceptions.sort((a, b) => a.num - b.num);
-    const newBackgrounds = {};
+  // this sort is necessary in the situation in which, say, [7, 6] are in maxexceptions
+  // if the user inputs a '6' value, we want to remove the '6' not the '7'
+  maxExceptions = maxExceptions.sort((a, b) => a.num - b.num);
+  const newBackgrounds = {};
 
-    // go through ALL backgrounds
-    // because of the nature of 'maxExceptions', every background input needs to be aware of the others
-    for (let i = 1; i <= 8; i++) {
-      const key = document.getElementById(`background-input-${i}`)?.value;
-      let value =
-        parseInt(
-          document.getElementById(`background-input-num-${i}`)?.value,
-          10
-        ) || 0;
+  // go through ALL backgrounds
+  // because of the nature of 'maxExceptions', every background input needs to be aware of the others
+  for (let i = 1; i <= 8; i++) {
+    const key = document.getElementById(`background-input-${i}`)?.value;
+    let value =
+      parseInt(
+        document.getElementById(`background-input-num-${i}`)?.value,
+        10
+      ) || 0;
 
-      if (value < 0) {
-        value = 1;
-      } else if (value > maxDefault) {
-        const exceptionIndex = maxExceptions.findIndex((num) => num >= value);
-        if (exceptionIndex != -1) {
-          maxExceptions.splice(exceptionIndex, 1);
-        } else if (maxExceptions.length > 0) {
-          value = maxExceptions[maxExceptions.length - 1];
-          maxExceptions.pop();
-        } else {
-          value = maxDefault;
-        }
-      }
-
-      if (key) {
-        newBackgrounds[key] = value;
+    if (value < 0) {
+      value = 1;
+    } else if (value > maxDefault) {
+      const exceptionIndex = maxExceptions.findIndex((num) => num >= value);
+      if (exceptionIndex != -1) {
+        maxExceptions.splice(exceptionIndex, 1);
+      } else if (maxExceptions.length > 0) {
+        value = maxExceptions[maxExceptions.length - 1];
+        maxExceptions.pop();
+      } else {
+        value = maxDefault;
       }
     }
 
+    if (key) {
+      newBackgrounds[key] = value;
+    }
+  }
+
+  //necessary to avoid an infinite loop
+  if (
+    JSON.stringify(newBackgrounds) !==
+    JSON.stringify(narrativeBlock.backgrounds)
+  ) {
     setNarrativeBlock({ ...narrativeBlock, backgrounds: newBackgrounds });
+  }
 
-    const backgroundsDiv = document.getElementById("backgrounds");
-    if (getBackgroundPointsRemaining(newBackgrounds, character) < 0) {
-      backgroundsDiv.classList.add("input-error");
-    } else {
-      backgroundsDiv.classList.remove("input-error");
-    }
+  const backgroundsDiv = document.getElementById("backgrounds");
+  if (getBackgroundPointsRemaining(newBackgrounds, character) < 0) {
+    backgroundsDiv.classList.add("input-error");
+  } else {
+    backgroundsDiv.classList.remove("input-error");
+  }
 }
 
 function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
-
   const handleIconRelations = () => {
     const newRelations = {};
 
@@ -139,7 +148,11 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
             id={`${idBase}-` + i}
             className="lined-input"
             placeholder={i == 1 ? placeholder : ""}
-            value={includeNumber ? (Object.keys(dataObject)[i - 1] || "") : dataObject[i - 1] ?? ""}
+            value={
+              includeNumber
+                ? Object.keys(dataObject)[i - 1] || ""
+                : dataObject[i - 1] ?? ""
+            }
             onChange={onChangeFn}
           />
           {includeNumber && (
@@ -193,7 +206,8 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
       <div id="backgrounds" className="narrative-input lined-inputs">
         <label className="title">
           Backgrounds (
-          {getBackgroundPointsRemaining(narrativeBlock.backgrounds, character)} pts)
+          {getBackgroundPointsRemaining(narrativeBlock.backgrounds, character)}{" "}
+          pts)
         </label>
         {generateLinedInput(
           8,

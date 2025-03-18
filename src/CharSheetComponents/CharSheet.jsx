@@ -4,6 +4,7 @@ import "./CharSheet.css";
 import { useState, useEffect } from "react";
 import { Character } from "../Character.js";
 import NarrativeBlock from "./NarrativeBlock.jsx";
+import { handleBackgrounds } from "./NarrativeBlock.jsx";
 import AbilitiesBlock from "./AbilitiesBlock.jsx";
 import Navbar from "./Navbar.jsx";
 import AbilitySheets from "./AbilitySheets.jsx";
@@ -130,7 +131,7 @@ function CharSheet() {
     }
 
     setCharacter(updatedCharacter);
-
+    handleBackgrounds(updatedCharacter, narrativeBlock, setNarrativeBlock);
   }, [basicsBlock, statBlock, narrativeBlock, abilitiesBlock]);
   // END SYNTHESIS INTO CHARACTER OBJECT //
 
