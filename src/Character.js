@@ -174,11 +174,25 @@ export class Character {
       9: 20,
       10: 24,
     };
+    const baseHP = jobs[this.job].baseHP;
+
+    //'toughness' feat bonus
+    let bonusHP = 0;
+    console.log(Object.keys(this.feats));
+    if (this.feats.some((feat) => Object.keys(feat)[0] == "Toughness")) {
+      if (this.level >= 8) {
+        bonusHP = baseHP * 2;
+      } else if (this.level >= 5) {
+        bonusHP = baseHP;
+      } else {
+        bonusHP = Math.floor(baseHP / 2);
+      }
+    }
 
     //(base value + con mod) * level multiplier
     return (
-      (jobs[this.job].baseHP + this.abilityModifiers.con) *
-      levelToMultiplierMap[this.level]
+      (baseHP + this.abilityModifiers.con) * levelToMultiplierMap[this.level] +
+      bonusHP
     );
   }
 
@@ -519,32 +533,68 @@ export class Character {
     return familiarDataSet;
   }
 
-  //returns an array [totalPointsMax, maxPerBG]
+  //returns an array [totalPointsMax, maxPerBG, maxExceptions]
   queryBackgroundMax() {
     let maxTotal = 8;
     let maxDefault = 5;
     let maxExceptions = [];
 
     //adjustments for Bard's Loremaster and Mythkenner
-    if (this.bonusOptions.some((option) => (Object.keys(option)[0] == "Loremaster" || Object.keys(option)[0] == "Mythkenner") && Object.values(option)[0] == "B")) {
+    if (
+      this.bonusOptions.some(
+        (option) =>
+          (Object.keys(option)[0] == "Loremaster" ||
+            Object.keys(option)[0] == "Mythkenner") &&
+          Object.values(option)[0] == "B"
+      )
+    ) {
       maxTotal += 2;
       maxExceptions.push(6);
     }
 
     //adjustments for Further Backgrounding
-    this.feats.filter((feat) => Object.keys(feat)[0] == "Further Backgrounding").forEach((feat) => {
-      const tier = Object.values(feat)[0];
-      if (tier == "Adventurer") {
-        maxTotal += 2;
-      } else if (tier == "Champion") {
-        maxTotal += 3;
-      } else if (tier == "Epic") {
-        maxTotal += 2;
-        maxExceptions.push(7);
-      }
-    })
+    this.feats
+      .filter((feat) => Object.keys(feat)[0] == "Further Backgrounding")
+      .forEach((feat) => {
+        const tier = Object.values(feat)[0];
+        if (tier == "Adventurer") {
+          maxTotal += 2;
+        } else if (tier == "Champion") {
+          maxTotal += 3;
+        } else if (tier == "Epic") {
+          maxTotal += 2;
+          maxExceptions.push(7);
+        }
+      });
 
     return [maxTotal, maxDefault, maxExceptions];
+  }
+
+  // returns an array [totalPointsMax, maxPerIcon]
+  queryIconRelationshipsMax() {
+    let totalPointsMax = 3;
+    let maxPerIcon = 3;
+
+    if (this.level >= 8) {
+      totalPointsMax = 5;
+      maxPerIcon = 4;
+    } else if (this.level >= 5) {
+      totalPointsMax = 4;
+    }
+
+    //adjustments from Bard talents
+    if (
+      this.bonusOptions.some(
+        (option) =>
+          (Object.keys(option)[0] == "Loremaster" ||
+            Object.keys(option)[0] == "Mythkenner") &&
+          Object.values(option)[0] == "C"
+      )
+    ) {
+      totalPointsMax += 1;
+    }
+
+    return [totalPointsMax, maxPerIcon];
   }
 
   queryBonusAbsTitle() {

@@ -1,7 +1,8 @@
 # To-do List
 
-- choosing / displaying of options (for ability such Mythkenner)
-- access to other spell-lists
+- toughness feat alters max HP
+- mythkenner and loremaster options alter icon relationships
+- access to other spell-lists for certain talents
 - responsive layout (tablet, mobile breakpoints)
 - SpellInfo dynamically updates depending on level (big change in dataset, I think?)
 - AbilitiesBlock sub-blocks borrows space from other sub-blocks to maintain formatting

@@ -75,16 +75,12 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
         parseInt(document.getElementById(`icon-input-num-${i}`)?.value, 10) ||
         0;
 
-      let maxPoints = 3;
-
-      if (character.level >= 8) {
-        maxPoints = 4;
-      }
+      const maxPerIcon = character.queryIconRelationshipsMax()[1];
 
       if (value < 0) {
         value = 1;
-      } else if (value > maxPoints) {
-        value = maxPoints;
+      } else if (value > maxPerIcon) {
+        value = maxPerIcon;
       }
 
       if (key) {
@@ -103,20 +99,14 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
   };
 
   function getRelationshipPointsRemaining(iconRelationships) {
-    let maxPoints = 3;
-
-    if (character.level >= 8) {
-      maxPoints = 5;
-    } else if (character.level >= 5) {
-      maxPoints = 4;
-    }
+    const totalPoints = character.queryIconRelationshipsMax()[0];
 
     let sum = 0;
     Object.values(iconRelationships).forEach((value) => {
       sum += Math.abs(value);
     });
 
-    return maxPoints - sum;
+    return totalPoints - sum;
   }
 
   const handleItems = () => {
