@@ -263,6 +263,7 @@ export class Character {
     let diceSize = jobs[this.job].recoveries[1];
     const plusSign = this.abilityModifiers.con >= 0 ? "+" : "";
 
+    // Adjustments for Barbarian
     if (this.jobTalents.includes("Strongheart")) {
       const SHFeatTiers = this.feats
         .filter((feat) => Object.keys(feat)[0] == "Strongheart")
@@ -279,6 +280,20 @@ export class Character {
       diceSize = 12;
     }
 
+    //Adjustments for Fighter
+    if (this.feats.some((feat) => Object.keys(feat)[0] == "Extra Tough")) {
+      uses += 1;
+    }
+    if (
+      this.feats.some(
+        (feat) =>
+          Object.keys(feat)[0] == "Tough as Iron" &&
+          Object.values(feat)[0] == "Champion"
+      )
+    ) {
+      uses += 2;
+    }
+
     return [
       uses,
       `${this.level}d${diceSize}${plusSign}${this.abilityModifiers.con}`,
@@ -291,14 +306,24 @@ export class Character {
 
     //get weapon from jobs data
     const weaponStringSplit = this.weaponType[attackType].split(" "); //e.g. ["1H", "Small"]
-    const weaponData =
+    let weaponData =
       jobs[this.job][attackType][weaponStringSplit[0]][weaponStringSplit[1]]; //{ATK: #, DMG: #}
 
     //get highest mod in case of multiple abilities
     let highestMod = this.#getHighestMod(jobs[this.job][attackType].Ability);
 
     //roll-string
-    const rollMod = highestMod + this.level + weaponData.ATK;
+    let rollMod = highestMod + this.level + weaponData.ATK;
+
+    //adjustments for Cleric
+    if (
+      this.jobTalents.includes("Strength") &&
+      weaponStringSplit[1].endsWith("Heavy") &&
+      attackType == "melee"
+    ) {
+      rollMod += 2;
+    }
+
     const rollAbModPlusOrMinus = rollMod >= 0 ? "+" : "";
     atkArray.push(`${rollAbModPlusOrMinus + rollMod} vs AC`);
 
@@ -310,14 +335,38 @@ export class Character {
       highestMod *= 2;
     }
 
+    //adjustments for fighter
+    let dmgDiceBonus = 0;
+    if (
+      this.jobTalents.includes("Deadeye Archer") &&
+      attackType == "ranged" &&
+      weaponStringSplit[0] != "Thrown" &&
+      (weaponData.DMG == 8 || weaponData.DMG == 6)
+    ) {
+      dmgDiceBonus = 2;
+    }
+
     const dmgAbModPlusOrMinus = highestMod >= 0 ? "+" : "";
     atkArray.push(
-      `${this.level}d${weaponData.DMG}${dmgAbModPlusOrMinus + highestMod}`
+      `${this.level}d${weaponData.DMG + dmgDiceBonus}${
+        dmgAbModPlusOrMinus + highestMod
+      }`
     );
 
     //miss-string
-    const missDmg =
+    let missDmg =
       jobs[this.job][attackType]["Miss"] == "Level" ? this.level : 0;
+
+    //adjustments for fighter
+    if (
+      this.jobTalents.includes("Deadeye Archer") &&
+      attackType == "ranged" &&
+      weaponStringSplit[0] != "Thrown" &&
+      (weaponData.DMG == 8 || weaponData.DMG == 6)
+    ) {
+      missDmg = this.level;
+    }
+
     atkArray.push(missDmg);
 
     return atkArray;
@@ -552,6 +601,11 @@ export class Character {
       maxExceptions.push(6);
     }
 
+    //adjustments for Cleric's Domain of Knowledge
+    if (this.jobTalents.includes("Knowledge/Lore")) {
+      maxTotal += 4;
+    }
+
     //adjustments for Further Backgrounding
     this.feats
       .filter((feat) => Object.keys(feat)[0] == "Further Backgrounding")
@@ -592,6 +646,15 @@ export class Character {
       )
     ) {
       totalPointsMax += 1;
+    }
+
+    //adjustments from Cleric talents
+    if (this.jobTalents.includes("Love/Beauty")) {
+      totalPointsMax += 1;
+
+      if (this.feats.some((feat) => Object.keys(feat)[0] == "Love/Beauty")) {
+        totalPointsMax += 1;
+      }
     }
 
     return [totalPointsMax, maxPerIcon];

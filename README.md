@@ -1,7 +1,6 @@
 # To-do List
 
-- toughness feat alters max HP
-- mythkenner and loremaster options alter icon relationships
+- dropdown box for icon relationships? / cleric talent
 - access to other spell-lists for certain talents
 - responsive layout (tablet, mobile breakpoints)
 - SpellInfo dynamically updates depending on level (big change in dataset, I think?)
