@@ -11,7 +11,7 @@
           "AC": 16,
           "PD (or MD)": 14,
           "MD (or PD)": 10,
-          "HP": "20 (10)"
+          "HP": "20"
         },
         {
           "Level": 1,
@@ -20,7 +20,7 @@
           "AC": 17,
           "PD (or MD)": 15,
           "MD (or PD)": 11,
-          "HP": "27 (13)"
+          "HP": "27"
         },
         {
           "Level": 2,
@@ -29,7 +29,7 @@
           "AC": 18,
           "PD (or MD)": 16,
           "MD (or PD)": 12,
-          "HP": "36 (18)"
+          "HP": "36"
         },
         {
           "Level": 3,
@@ -38,7 +38,7 @@
           "AC": 19,
           "PD (or MD)": 17,
           "MD (or PD)": 13,
-          "HP": "45 (22)"
+          "HP": "45"
         },
         {
           "Level": 4,
@@ -47,7 +47,7 @@
           "AC": 21,
           "PD (or MD)": 19,
           "MD (or PD)": 15,
-          "HP": "54 (27)"
+          "HP": "54"
         },
         {
           "Level": 5,
@@ -56,7 +56,7 @@
           "AC": 22,
           "PD (or MD)": 20,
           "MD (or PD)": 16,
-          "HP": "72 (36)"
+          "HP": "72"
         },
         {
           "Level": 6,
@@ -65,7 +65,7 @@
           "AC": 23,
           "PD (or MD)": 21,
           "MD (or PD)": 17,
-          "HP": "90 (45)"
+          "HP": "90"
         },
         {
           "Level": 7,
@@ -74,7 +74,7 @@
           "AC": 25,
           "PD (or MD)": 23,
           "MD (or PD)": 19,
-          "HP": "108 (54)"
+          "HP": "108"
         },
         {
           "Level": 8,
@@ -83,7 +83,7 @@
           "AC": 26,
           "PD (or MD)": 24,
           "MD (or PD)": 20,
-          "HP": "144 (72)"
+          "HP": "144"
         },
         {
           "Level": 9,
@@ -92,7 +92,7 @@
           "AC": 27,
           "PD (or MD)": 25,
           "MD (or PD)": 21,
-          "HP": "180 (90)"
+          "HP": "180"
         },
         {
           "Level": 10,
@@ -101,7 +101,7 @@
           "AC": 28,
           "PD (or MD)": 26,
           "MD (or PD)": 22,
-          "HP": "216 (108)"
+          "HP": "216"
         }
       ]
     },
@@ -175,6 +175,21 @@
       "Champion": "If you fight with two one-handed melee weapons, whenever an enemy makes a melee attack against you and rolls a natural 1, you can make an opportunity attack against that foe as a free action.",
       "Epic": "One battle per day, increase the damage you deal with missed attacks to triple your level instead of double your level."
     },
+    "Ranger's Pet": {
+      "Type": "Optional",
+      "Base": "You have a small animal or beast that accompanies you on your adventures. It behaves similarly to the Wizard's familiar.",
+      "Adventurer": "Your pet gains a third ability.",
+      "Champion": "Your pet gains a fourth ability.",
+      "Epic": "Your pet gains a fifth ability.",
+      "Exclusive": [
+        "AC - Bear / Giant Badger / Wolverine",
+        "AC - Boar / Spiky Lizard",
+        "AC - Big Cat",
+        "AC - Bird",
+        "AC - Venomous Beast",
+        "AC - Wolf / Big Dog / Hyena"
+      ]
+    },
     "AC - Bear / Giant Badger / Wolverine": {
       "Base": "You have a devoted animal companion who fights alongside you like a member of your adventuring party.\n\nAdd two recoveries to your total recoveries. You can use a recovery on yourself or your animal companion.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on the animal type. Your animal companion gets a move action and a standard action, but not a quick action.",
       "Acts": "After ranger",
@@ -185,7 +200,8 @@
         "AC - Big Cat",
         "AC - Bird",
         "AC - Venomous Beast",
-        "AC - Wolf / Big Dog / Hyena"
+        "AC - Wolf / Big Dog / Hyena",
+        "Ranger's Pet"
       ]
     },
     "AC - Boar / Spiky Lizard": {
@@ -197,7 +213,8 @@
         "AC - Big Cat",
         "AC - Bird",
         "AC - Venomous Beast",
-        "AC - Wolf / Big Dog / Hyena"
+        "AC - Wolf / Big Dog / Hyena",
+        "Ranger's Pet"
       ]
     },
     "AC - Bird": {
@@ -209,7 +226,8 @@
         "AC - Boar / Spiky Lizard",
         "AC - Bird",
         "AC - Venomous Beast",
-        "AC - Wolf / Big Dog / Hyena"
+        "AC - Wolf / Big Dog / Hyena",
+        "Ranger's Pet"
       ]
     },
     "AC - Big Cat": {
@@ -221,7 +239,8 @@
         "AC - Boar / Spiky Lizard",
         "AC - Bird",
         "AC - Venomous Beast",
-        "AC - Wolf / Big Dog / Hyena"
+        "AC - Wolf / Big Dog / Hyena",
+        "Ranger's Pet"
       ]
     },
     "AC - Venomous Beast": {
@@ -235,7 +254,8 @@
         "AC - Boar / Spiky Lizard",
         "AC - Big Cat",
         "AC - Bird",
-        "AC - Wolf / Big Dog / Hyena"
+        "AC - Wolf / Big Dog / Hyena",
+        "Ranger's Pet"
       ]
     },
     "AC - Wolf / Big Dog / Hyena": {
@@ -247,7 +267,8 @@
         "AC - Boar / Spiky Lizard",
         "AC - Big Cat",
         "AC - Bird",
-        "AC - Venomous Beast"
+        "AC - Venomous Beast",
+        "Ranger's Pet"
       ]
     }
   },

@@ -317,7 +317,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
   //for rangers animal companion or wizard's familiar, adds an extra block to add feats/abilities
   let animalsBlock = "";
   abilitiesBlock.talents.forEach((talent) => {
-    if (talent.endsWith("Familiar")) {
+    if (talent.endsWith("Familiar") || talent.endsWith("Pet")) {
       animalsBlock = "Familiar";
     } else if (talent.startsWith("AC")) {
       animalsBlock = "Animal Companion";

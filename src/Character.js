@@ -140,7 +140,8 @@ export class Character {
     //if player removes familiar as a talent, it also removes associated information
     if (
       !this.jobTalents.includes("Wizard's Familiar") &&
-      !this.jobTalents.includes("Sorcerer's Familiar")
+      !this.jobTalents.includes("Sorcerer's Familiar") &&
+      !this.jobTalents.includes("Ranger's Pet")
     ) {
       this.familiarAbs = [];
     }
@@ -178,7 +179,6 @@ export class Character {
 
     //'toughness' feat bonus
     let bonusHP = 0;
-    console.log(Object.keys(this.feats));
     if (this.feats.some((feat) => Object.keys(feat)[0] == "Toughness")) {
       if (this.level >= 8) {
         bonusHP = baseHP * 2;
@@ -338,6 +338,11 @@ export class Character {
       )
     ) {
       uses += 1;
+    }
+
+    //Adjustments for Ranger
+    if (this.jobTalents.some((talent) => talent.startsWith("AC - "))){
+      uses += 2;
     }
 
     return [
@@ -884,7 +889,8 @@ export class Character {
 
       return counts;
     } else {
-      return this.jobTalents.length;
+      const AnimalAdjustment = this.jobTalents.some((talent) => talent.startsWith("AC - ")) ? 1 : 0;
+      return this.jobTalents.length + AnimalAdjustment;
     }
   }
 
@@ -925,24 +931,27 @@ export class Character {
   #queryFamiliarAbsMax() {
     //order matters in these control statements. Epic must be before Adventurer
     if (
-      !this.jobTalents.includes("Wizard's Familiar") &&
-      !this.jobTalents.includes("Sorcerer's Familiar")
+      !this.jobTalents.some((talent) => talent.endsWith("Familiar")) &&
+      !this.jobTalents.includes("Ranger's Pet")
     ) {
+      
       return 0;
     } else if (
-      this.feats.some((feat) => feat["Sorcerer's Familiar"] == "Epic")
+      this.feats.some((feat) => feat["Sorcerer's Familiar"] == "Epic" || feat["Ranger's Pet"] == "Epic")
     ) {
       return 5;
     } else if (
       this.feats.some(
         (feat) =>
           feat["Wizard's Familiar"] == "Epic" ||
-          feat["Sorcerer's Familiar"] == "Adventurer"
+          feat["Sorcerer's Familiar"] == "Adventurer" ||
+          feat["Ranger's Pet"] == "Champion"
       )
     ) {
       return 4;
     } else if (
       this.feats.some((feat) => feat["Wizard's Familiar"] == "Adventurer") ||
+      this.feats.some((feat) => feat["Ranger's Pet"] == "Adventurer") ||
       this.jobTalents.includes("Sorcerer's Familiar")
     ) {
       return 3;

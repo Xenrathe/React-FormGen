@@ -25,7 +25,7 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
       mode: "talents",
     },
     ["Familiar Skills"]: {
-      data: abilitiesBlock.talents.find((talent) => talent.endsWith("Familiar"))
+      data: abilitiesBlock.talents.some((talent) => talent.endsWith("Familiar") || talent == "Ranger's Pet")
         ? getDataSets("Familiar", character)[0]
         : [],
       mode: "Familiar",

@@ -406,6 +406,7 @@ const jobs = {
       )
     ),
     ACFeats: rangerAbilities["AC Feats"],
+    familiarAbilities: wizardAbilities["Familiar Abilities"],
   },
   Rogue: {
     abilityBonus: ["dex", "cha"],
