@@ -1,5 +1,110 @@
 {
   "Talents": {
+    "Animal Companion": {
+      "Type": "Default",
+      "Base": "The optional Animal Companion talents take up two ranger class talents.\n\nYour animal companion acts on your initiative turn, either immediately before or after you, depending on animal type.\n\nYour animal companion gets a move action and a standard action, but not a quick action.\n\nIf you have powers that care about the 'first time you attack an enemy,' an attack by your animal companion counts as your attack.\n\nTaking an Animal Companion talent adds two recoveries to your total. Your animal companion can be healed like an ally. If it gets healed without you being healed, it uses one of your recoveries. When you use a recovery while next to your animal companion (including being engaged with the same enemy), your animal companion is also healed using a free recovery.\n\nYour animal companion is 1 level lower than you, with stats taken from the following table:",
+      "Table": [
+        {
+          "Level": 0,
+          "ATK": "+5 vs. AC",
+          "DMG": "1d8",
+          "AC": 16,
+          "PD (or MD)": 14,
+          "MD (or PD)": 10,
+          "HP": "20 (10)"
+        },
+        {
+          "Level": 1,
+          "ATK": "+6 vs. AC",
+          "DMG": "1d10",
+          "AC": 17,
+          "PD (or MD)": 15,
+          "MD (or PD)": 11,
+          "HP": "27 (13)"
+        },
+        {
+          "Level": 2,
+          "ATK": "+7 vs. AC",
+          "DMG": "2d6",
+          "AC": 18,
+          "PD (or MD)": 16,
+          "MD (or PD)": 12,
+          "HP": "36 (18)"
+        },
+        {
+          "Level": 3,
+          "ATK": "+9 vs. AC",
+          "DMG": "3d6",
+          "AC": 19,
+          "PD (or MD)": 17,
+          "MD (or PD)": 13,
+          "HP": "45 (22)"
+        },
+        {
+          "Level": 4,
+          "ATK": "+10 vs. AC",
+          "DMG": "4d6",
+          "AC": 21,
+          "PD (or MD)": 19,
+          "MD (or PD)": 15,
+          "HP": "54 (27)"
+        },
+        {
+          "Level": 5,
+          "ATK": "+11 vs. AC",
+          "DMG": "5d6",
+          "AC": 22,
+          "PD (or MD)": 20,
+          "MD (or PD)": 16,
+          "HP": "72 (36)"
+        },
+        {
+          "Level": 6,
+          "ATK": "+13 vs. AC",
+          "DMG": "6d6",
+          "AC": 23,
+          "PD (or MD)": 21,
+          "MD (or PD)": 17,
+          "HP": "90 (45)"
+        },
+        {
+          "Level": 7,
+          "ATK": "+14 vs. AC",
+          "DMG": "7d6",
+          "AC": 25,
+          "PD (or MD)": 23,
+          "MD (or PD)": 19,
+          "HP": "108 (54)"
+        },
+        {
+          "Level": 8,
+          "ATK": "+15 vs. AC",
+          "DMG": "8d6",
+          "AC": 26,
+          "PD (or MD)": 24,
+          "MD (or PD)": 20,
+          "HP": "144 (72)"
+        },
+        {
+          "Level": 9,
+          "ATK": "+17 vs. AC",
+          "DMG": "9d6",
+          "AC": 27,
+          "PD (or MD)": 25,
+          "MD (or PD)": 21,
+          "HP": "180 (90)"
+        },
+        {
+          "Level": 10,
+          "ATK": "+18 vs. AC",
+          "DMG": "10d6",
+          "AC": 28,
+          "PD (or MD)": 26,
+          "MD (or PD)": 22,
+          "HP": "216 (108)"
+        }
+      ]
+    },
     "Archery": {
       "Type": "Optional",
       "Base": "Once per battle, reroll one of your missed ranged attacks.",

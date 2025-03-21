@@ -206,7 +206,13 @@ export class Character {
       this.abilityModifiers.wis,
     ]);
 
-    return baseAC + shieldBonus + bonusMod + this.level;
+    //adjust for Paladin
+    let talentMod = 0;
+    if (this.jobTalents.includes("Bastion")) {
+      talentMod += 1;
+    }
+
+    return baseAC + shieldBonus + bonusMod + talentMod + this.level;
   }
 
   calculatePD() {
@@ -218,11 +224,28 @@ export class Character {
       this.abilityModifiers.dex,
     ]);
 
-    const SHFeatTiers = this.feats
-      .filter((feat) => Object.keys(feat)[0] == "Strongheart")
-      .map((SHFeatObj) => Object.values(SHFeatObj)[0]);
+    let featBonus = 0;
+    //Barbarian adjustments
+    if (
+      this.feats.some(
+        (feat) =>
+          Object.keys(feat)[0] == "Strongheart" &&
+          Object.values(feat)[0] == "Champion"
+      )
+    ) {
+      featBonus += 1;
+    }
 
-    const featBonus = SHFeatTiers.includes("Champion") ? 1 : 0;
+    // Paladin adjustments
+    if (
+      this.feats.some(
+        (feat) =>
+          Object.keys(feat)[0] == "Implacable" &&
+          Object.values(feat)[0] == "Epic"
+      )
+    ) {
+      featBonus += 1;
+    }
 
     return basePD + bonusMod + featBonus + this.level;
   }
@@ -236,7 +259,19 @@ export class Character {
       this.abilityModifiers.cha,
     ]);
 
-    return baseMD + bonusMod + this.level;
+    let featBonus = 0;
+    // Paladin adjustments
+    if (
+      this.feats.some(
+        (feat) =>
+          Object.keys(feat)[0] == "Implacable" &&
+          Object.values(feat)[0] == "Epic"
+      )
+    ) {
+      featBonus += 1;
+    }
+
+    return baseMD + bonusMod + featBonus + this.level;
   }
 
   calculateAbilityModifiers() {
@@ -292,6 +327,17 @@ export class Character {
       )
     ) {
       uses += 2;
+    }
+
+    //Adjustments for Paladin
+    if (
+      this.feats.some(
+        (feat) =>
+          Object.keys(feat)[0] == "Bastion" &&
+          Object.values(feat)[0] == "Adventurer"
+      )
+    ) {
+      uses += 1;
     }
 
     return [
@@ -516,6 +562,21 @@ export class Character {
       }
     });
 
+    //Special removal for Paladin talents
+    if (type == "talents") {
+      if (this.level < 8) {
+        potential = potential.filter(
+          (talent) => !Object.keys(talent)[0].endsWith("(E)")
+        );
+      }
+
+      if (this.level < 5) {
+        potential = potential.filter(
+          (talent) => !Object.keys(talent)[0].endsWith("(C)")
+        );
+      }
+    }
+
     return { owned, potential };
   }
 
@@ -655,6 +716,25 @@ export class Character {
       if (this.feats.some((feat) => Object.keys(feat)[0] == "Love/Beauty")) {
         totalPointsMax += 1;
       }
+    }
+
+    //adjustments from Paladin talents
+    if (
+      this.feats.some(
+        (feat) =>
+          Object.keys(feat)[0] == "Path of Universal Righteous Endeavor" &&
+          Object.values(feat)[0] == "Epic"
+      )
+    ) {
+      totalPointsMax += 1;
+    } else if (
+      this.feats.some(
+        (feat) =>
+          Object.keys(feat)[0] == "Way of Evil Bastards" &&
+          Object.values(feat)[0] == "Epic"
+      )
+    ) {
+      totalPointsMax += 1;
     }
 
     return [totalPointsMax, maxPerIcon];

@@ -1,14 +1,15 @@
 function getSingleItemDescription(popupInfo) {
   const exclusionAdd =
-  "Exclusive" in popupInfo.singleItem ? (
-    <strong className="exclusionadd" key="exclusionadd">
-      (Exclusive with{" "}
-      {Array.isArray(popupInfo.singleItem.Exclusive)
-        ? popupInfo.singleItem.Exclusive.join("; ")
-        : popupInfo.singleItem.Exclusive})
-      <br />
-    </strong>
-  ) : null;
+    "Exclusive" in popupInfo.singleItem ? (
+      <strong className="exclusionadd" key="exclusionadd">
+        (Exclusive with{" "}
+        {Array.isArray(popupInfo.singleItem.Exclusive)
+          ? popupInfo.singleItem.Exclusive.join("; ")
+          : popupInfo.singleItem.Exclusive}
+        )
+        <br />
+      </strong>
+    ) : null;
 
   const baseCategories = ["Base"];
   const baseDescription = baseCategories
@@ -26,6 +27,27 @@ function getSingleItemDescription(popupInfo) {
           ))}
       </span>
     ));
+
+  const tableAddition = popupInfo.singleItem.Table ? (
+    <table border="1">
+      <thead>
+        <tr>
+          {Object.keys(popupInfo.singleItem.Table[0]).map((header) => (
+            <th key={header}>{header}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {popupInfo.singleItem.Table.map((row, rowIndex) => (
+          <tr key={rowIndex}>
+            {Object.values(row).map((value, colIndex) => (
+              <td key={colIndex}>{value}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : null;
 
   const spellBase =
     "Frequency" in popupInfo.singleItem ? (
@@ -92,6 +114,7 @@ function getSingleItemDescription(popupInfo) {
     <span className="description">
       {exclusionAdd}
       {baseDescription}
+      {tableAddition}
       {spellBase}
       {spellAdditions}
       {standardAdditions}
@@ -180,10 +203,15 @@ function AbilityCard({
   let infoLength = Object.values(abilityInfo.singleItem)
     .map((value) => value.length)
     .reduce((sum, length) => sum + length, 0);
+
   infoLength =
     abilityInfo.mode == "spells" && abilityInfo.title == "Cantrips"
       ? 3000
       : infoLength; //special case for cantrips
+
+  infoLength = Object.keys(abilityInfo.singleItem).includes("Table")
+    ? 1500
+    : infoLength;
 
   // this code is necessary to know how to add/subtract multiple tiers at once
   // most abilities have all three tiers... but some don't (or skip a tier).

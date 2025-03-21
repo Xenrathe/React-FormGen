@@ -21,7 +21,17 @@
       "Champion": "You can now cast the cleric class feature heal spell twice per day.",
       "Epic": "Choose two cleric spells instead of one."
     },
-    "Divine Domain": {
+    "Divine Domain (A)": {
+      "Type": "Optional",
+      "Base": "Choose one of the domains listed in the cleric’s class talent list. You gain all the domain’s advantages, including the ability to use the domain’s invocation once per day. If the domain you choose is designed to help cleric spells and attacks, reinterpret the talent to help your paladin powers. You can use the domain’s feats if you wish; reinterpret them similarly if necessary.",
+      "Special": "You can choose Divine Domain a second time, if you wish, at 5th level or at 8th level."
+    },
+    "Divine Domain (C)": {
+      "Type": "Optional",
+      "Base": "Choose one of the domains listed in the cleric’s class talent list. You gain all the domain’s advantages, including the ability to use the domain’s invocation once per day. If the domain you choose is designed to help cleric spells and attacks, reinterpret the talent to help your paladin powers. You can use the domain’s feats if you wish; reinterpret them similarly if necessary.",
+      "Special": "You can choose Divine Domain a second time, if you wish, at 5th level or at 8th level."
+    },
+    "Divine Domain (E)": {
       "Type": "Optional",
       "Base": "Choose one of the domains listed in the cleric’s class talent list. You gain all the domain’s advantages, including the ability to use the domain’s invocation once per day. If the domain you choose is designed to help cleric spells and attacks, reinterpret the talent to help your paladin powers. You can use the domain’s feats if you wish; reinterpret them similarly if necessary.",
       "Special": "You can choose Divine Domain a second time, if you wish, at 5th level or at 8th level."
