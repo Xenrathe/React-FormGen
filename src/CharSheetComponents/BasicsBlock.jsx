@@ -24,7 +24,7 @@ function BasicsBlock({ basicsData, setBasicsData }) {
 
   //removes shield if swapping to 2Her
   const handleMeleeChange = (event) => {
-    if (event.target.value.startsWith("2H")) {
+    if (event.target.value.startsWith("2H") || event.target.value.startsWith("DW")) {
       setBasicsData({
         ...basicsData,
         melee: event.target.value,
@@ -197,6 +197,15 @@ function BasicsBlock({ basicsData, setBasicsData }) {
             <option key="1H Heavy" value="1H Heavy">
               1H Heavy
             </option>
+            <option key="DW Small" value="DW Small">
+              DW Small
+            </option>
+            <option key="DW Light" value="DW Light">
+              DW Light
+            </option>
+            <option key="DW Heavy" value="DW Heavy">
+              DW Heavy
+            </option>
             <option key="2H Small" value="2H Small">
               2H Small
             </option>
@@ -262,7 +271,7 @@ function BasicsBlock({ basicsData, setBasicsData }) {
             name="shield"
             id="shield"
             value={basicsData.shield}
-            disabled={basicsData.melee.startsWith("2H")}
+            disabled={basicsData.melee.startsWith("2H") || basicsData.melee.startsWith("DW")}
             onChange={(e) => {
               setBasicsData({
                 ...basicsData,

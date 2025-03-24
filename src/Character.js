@@ -357,13 +357,14 @@ export class Character {
 
     //get weapon from jobs data
     const weaponStringSplit = this.weaponType[attackType].split(" "); //e.g. ["1H", "Small"]
+    //Note that DW (Dual Wield) uses 1H stats - but will get some adjustments for certain talents or feats
     let weaponData =
-      jobs[this.job][attackType][weaponStringSplit[0]][weaponStringSplit[1]]; //{ATK: #, DMG: #}
+      jobs[this.job][attackType][weaponStringSplit[0] == "DW" ? "1H" : weaponStringSplit[0]][weaponStringSplit[1]]; //{ATK: #, DMG: #}
 
     //get highest mod in case of multiple abilities
     let highestMod = this.#getHighestMod(jobs[this.job][attackType].Ability);
 
-    //roll-string
+    // ATK ROLL STRING
     let rollMod = highestMod + this.level + weaponData.ATK;
 
     //adjustments for Cleric
@@ -375,10 +376,16 @@ export class Character {
       rollMod += 2;
     }
 
+    //adjustments for Ranger
+    if (this.jobTalents.includes("Two-Weapon Mastery") && weaponStringSplit[0].startsWith("DW")) {
+      rollMod += 1;
+    }
+
     const rollAbModPlusOrMinus = rollMod >= 0 ? "+" : "";
     atkArray.push(`${rollAbModPlusOrMinus + rollMod} vs AC`);
+    // END ATK ROLL STRING
 
-    //dmg-string
+    // DAMAGE STRING
     //ability modifier gets multiplied at higher levels
     if (this.level >= 8) {
       highestMod *= 3;
@@ -397,14 +404,25 @@ export class Character {
       dmgDiceBonus = 2;
     }
 
+    //adjustments for ranger
+    let alternateDmg = "";
+    if (this.jobTalents.includes("Double Melee Attack") && weaponStringSplit[0].startsWith("DW")) {
+      alternateDmg = `(${weaponData.DMG - 2})`
+    }
+    if (this.jobTalents.includes("Double Ranged Attack") && attackType == "ranged") {
+      alternateDmg = `(${weaponData.DMG - 2})`
+    }
+
     const dmgAbModPlusOrMinus = highestMod >= 0 ? "+" : "";
     atkArray.push(
-      `${this.level}d${weaponData.DMG + dmgDiceBonus}${
+      `${this.level}d${weaponData.DMG + dmgDiceBonus + alternateDmg}${
         dmgAbModPlusOrMinus + highestMod
       }`
     );
+    // END DAMAGE STRING
 
-    //miss-string
+
+    // MISS DAMAGE
     let missDmg =
       jobs[this.job][attackType]["Miss"] == "Level" ? this.level : 0;
 
@@ -418,7 +436,14 @@ export class Character {
       missDmg = this.level;
     }
 
+    //adjustments for ranger
+    //this bonus is for 'adventurer' feat, which must always be taken first, hence why I don't bother checking tier
+    if (weaponStringSplit[0].startsWith("DW") && this.feats.some((feat) => Object.keys(feat)[0] == "Two-Weapon Mastery")) {
+      missDmg += this.level;
+    }
+
     atkArray.push(missDmg);
+    // END MISS DAMAGE
 
     return atkArray;
   }
@@ -670,6 +695,11 @@ export class Character {
     //adjustments for Cleric's Domain of Knowledge
     if (this.jobTalents.includes("Knowledge/Lore")) {
       maxTotal += 4;
+    }
+
+    //adjustments for Ranger's Tracking
+    if (this.jobTalents.includes("Tracker")) {
+      maxTotal += 5;
     }
 
     //adjustments for Further Backgrounding

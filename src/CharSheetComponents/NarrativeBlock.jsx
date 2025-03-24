@@ -48,6 +48,11 @@ export function handleBackgrounds(
       newBackgrounds[key] = value;
     }
   }
+  
+  //Special exception for Ranger talent
+  if (character.jobTalents.includes("Tracker")) {
+    newBackgrounds["Tracker"] = 5;
+  }
 
   //necessary to avoid an infinite loop
   if (
