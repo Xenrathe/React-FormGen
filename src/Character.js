@@ -271,6 +271,12 @@ export class Character {
       featBonus += 1;
     }
 
+    // Rogue adjustments
+    // since this feat is adventurer tier, no need to check for tier
+    if (this.feats.some((feat) => Object.keys(feat)[0] == "Cunning")) {
+      featBonus += 1;
+    }
+
     return baseMD + bonusMod + featBonus + this.level;
   }
 
@@ -570,6 +576,17 @@ export class Character {
       }
     }
 
+    // Special additions
+    if (type === "bonusAbs") {
+      if (this.feats.some((feat) => Object.keys(feat)[0] == "Thievery")) {
+        owned.push({"Thief's Strike": {...jobs["Rogue"].bonusAbilitySet["Level 3"]["Thief's Strike"], Level: 1}});
+        const index = potential.findIndex((f) => "Thief's Strike" in f);
+        if (index !== -1) {
+          potential.splice(index, 1);
+        }
+      }
+    }
+    
     // Determine owned items and remove them from potential
     ownedThings.forEach((item) => {
       const itemName =
@@ -699,6 +716,14 @@ export class Character {
 
     //adjustments for Ranger's Tracking
     if (this.jobTalents.includes("Tracker")) {
+      maxTotal += 5;
+    }
+
+    //adjustments for Rogue's Cunning
+    if (this.jobTalents.includes("Cunning")) {
+      maxTotal += 2;
+    }
+    if (this.jobTalents.includes("Thievery")) {
       maxTotal += 5;
     }
 

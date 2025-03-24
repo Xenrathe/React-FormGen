@@ -6,7 +6,33 @@
     },
     "Sneak Attack": {
       "Type": "Default",
-      "Base": "Once per round when you make a rogue melee weapon attack against an enemy engaged with one or more of your allies, you can deal extra damage if your attack hits. Rogue Level Extra Damage: 1 +1d4, 2 +1d6, 4 +2d6, 6 +3d6, 8 +5d6, 10 +7d6.",
+      "Base": "Once per round when you make a rogue melee weapon attack against an enemy engaged with one or more of your allies, you can deal extra damage if your attack hits.",
+      "Table": [
+        {
+          "Level": 1,
+          "Extra Damage": "+1d4"
+        },
+        {
+          "Level": 2,
+          "Extra Damage": "+1d6"
+        },
+        {
+          "Level": 4,
+          "Extra Damage": "+2d6"
+        },
+        {
+          "Level": 6,
+          "Extra Damage": "+3d6"
+        },
+        {
+          "Level": 8,
+          "Extra Damage": "+5d6"
+        },
+        {
+          "Level": 10,
+          "Extra Damage": "+7d6"
+        }
+      ],
       "Adventurer": "Your Sneak Attack feature also works the first round of combat against enemies with a lower initiative than you.",
       "Champion": "Your Sneak Attack feature also works against enemies who are confused, dazed, stunned, vulnerable to your attack, or weakened.",
       "Epic": "Once per battle when you miss with an attack that would have allowed you to deal Sneak Attack damage, replace the normal miss damage with your full Sneak Attack damage."
@@ -27,7 +53,33 @@
     },
     "Improved Sneak Attack": {
       "Type": "Optional",
-      "Base": "Your Sneak Attack damage is better than other rogues. Use the following Sneak Attack bonus damage progression instead. Rogue Level Extra Damage: 1 +1d6, 2 +1d8, 4 +2d8, 6 +3d8, 8 +5d8, 10 +7d8.",
+      "Base": "Your Sneak Attack damage is better than other rogues. Use the following Sneak Attack bonus damage progression instead.",
+      "Table": [
+        {
+          "Level": 1,
+          "Extra Damage": "+1d6"
+        },
+        {
+          "Level": 2,
+          "Extra Damage": "+1d8"
+        },
+        {
+          "Level": 4,
+          "Extra Damage": "+2d8"
+        },
+        {
+          "Level": 6,
+          "Extra Damage": "+3d8"
+        },
+        {
+          "Level": 8,
+          "Extra Damage": "+5d8"
+        },
+        {
+          "Level": 10,
+          "Extra Damage": "+7d8"
+        }
+      ],
       "Adventurer": "Once per day as a free action, you can add your Sneak Attack damage to any hit against one target that would not otherwise have qualified for the damage.",
       "Champion": "Once per day, roll d20s for your Sneak Attack damage instead of d8s.",
       "Epic": "One battle per day, ignore the limitation that you can use Sneak Attack damage only once per round."
@@ -168,7 +220,7 @@
         "Hit": "The target is dazed until the end of your next turn, and you can make an improved attack against a second target, which deals WEAPON + DEX damage on a hit",
         "Miss": "Your attack action is over; the feint was a screw-up (1st target); Damage equal to your level (2nd target)"
       },
-      "Thief’s Strike": {
+      "Thief's Strike": {
         "Special": "This is a bonus 3rd-level power for rogues with the Thievery talent. Other rogues can choose it if they like.",
         "Type": "Melee attack",
         "Frequency": "At-Will",

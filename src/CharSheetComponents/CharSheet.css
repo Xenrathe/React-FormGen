@@ -339,6 +339,8 @@
   padding: 20px;
   width: 300px;
   max-width: 90%;
+  max-height: 95vh;
+  overflow-y: auto;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   z-index: 1000;
@@ -354,15 +356,13 @@
 }
 
 #popupMod.wide {
-  width: 620px;
+  width: 640px;
   max-width: 90vw;
 }
 
 #popupMod.widest {
   width: 900px;
   max-width: 95vw;
-  max-height: 95vh;
-  overflow-y: scroll;
 }
 
 #popupMod.hidden {
@@ -411,6 +411,7 @@
 #popupMod .addable-items {
   display: grid;
   overflow-y: hidden;
+  
 }
 
 #popupMod #feats.single-selectables,
@@ -457,7 +458,6 @@
 }
 
 #popupMod.wide .addable-items .addable-item {
-  width: 300px;
   height: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -615,9 +615,8 @@
 }
 
 .ability-card table {
-  width: 100%;
   border-collapse: collapse;
-  margin: 20px 0;
+  margin: 0px auto;
   font-size: 1rem;
   text-align: left;
 }

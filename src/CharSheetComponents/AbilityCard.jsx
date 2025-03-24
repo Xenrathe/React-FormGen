@@ -204,14 +204,17 @@ function AbilityCard({
     .map((value) => value.length)
     .reduce((sum, length) => sum + length, 0);
 
+  if (Object.keys(abilityInfo.singleItem).includes("Table")) {
+    console.log()
+    if (Object.keys(abilityInfo.singleItem.Table[0]).length > 5) {
+      infoLength = 1500;
+    }
+  }
+
   infoLength =
     abilityInfo.mode == "spells" && abilityInfo.title == "Cantrips"
       ? 3000
-      : infoLength; //special case for cantrips
-
-  infoLength = Object.keys(abilityInfo.singleItem).includes("Table")
-    ? 1500
-    : infoLength;
+      : infoLength;
 
   // this code is necessary to know how to add/subtract multiple tiers at once
   // most abilities have all three tiers... but some don't (or skip a tier).
