@@ -565,16 +565,20 @@ export class Character {
           }))
       );
 
-      potential.unshift({
-        "Utility Spell": {
-          Level: 1,
-          Effect: "Take a spell-slot to allow using the following utility spells:",
-          "Level 3": "Levitate; Message; Speak with Item",
-          "Level 5": "Water Breathing",
-          "Level 7": "Scrying",
-          "Level 9": "Upgrades only",
-        },
-      });
+      // utility spell can be added multiple times, if it's available
+      if ("Utility Spell" in jobs[this.job].features) {
+        potential.unshift({
+          "Utility Spell": {
+            Level: 1,
+            Effect:
+              "Take a spell-slot to allow using the following utility spells:",
+            "Level 3": "Levitate; Message; Speak with Item",
+            "Level 5": "Water Breathing",
+            "Level 7": "Scrying",
+            "Level 9": "Upgrades only",
+          },
+        });
+      }
     } else {
       potential = Object.entries(sourceData)
         .filter(([_, tiers]) => filterFn(tiers))
