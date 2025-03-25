@@ -1,7 +1,7 @@
 import races from "../data/races";
 import jobs from "../data/jobs";
 import PopupModal from "./PopupModal.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //returns a string e.g. "(Feats Remain: 1 A, 2 C, 2 E)" ; returns "" if no Feats remain
 function getAbilitiesRemainingString(
@@ -38,7 +38,7 @@ function getAbilitiesRemainingString(
 }
 
 //remove stand-alone feats, spells, etc
-function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
+function removeAbility(mode, name, spellLevel, abilitiesBlock, setAbilitiesBlock) {
   if (mode == "general" || mode == "Animal Companion") {
     const newFeatArray = abilitiesBlock.feats.filter(
       (feat) => Object.keys(feat)[0] != name
@@ -63,13 +63,28 @@ function removeAbility(mode, name, abilitiesBlock, setAbilitiesBlock) {
     );
     setAbilitiesBlock({ ...abilitiesBlock, familiarAbs: newFamiliarAbArray });
   } else if (mode == "spells") {
-    const newSpellArray = abilitiesBlock.spells.filter(
-      (spell) => Object.keys(spell)[0] != name
-    );
-    //and also remove associated feats
-    const newFeatArray = abilitiesBlock.feats.filter(
-      (feat) => Object.keys(feat)[0] != name
-    );
+    let newSpellArray = [];
+    let newFeatArray = [];
+    if (name !== "Utility Spell") {
+      newSpellArray = abilitiesBlock.spells.filter(
+        (spell) => Object.keys(spell)[0] != name
+      );
+      //and also remove associated feats
+      newFeatArray = abilitiesBlock.feats.filter(
+        (feat) => Object.keys(feat)[0] != name
+      );
+    } else {
+      const utilitySpellIndex = abilitiesBlock.spells.findIndex(
+        (spell) =>
+          Object.keys(spell)[0] == name &&
+          Number(Object.values(spell)[0].substring(6)) == spellLevel
+      );
+  
+      newSpellArray = abilitiesBlock.spells.filter(
+        (_, index) => index !== utilitySpellIndex
+      );
+    }
+
     setAbilitiesBlock({
       ...abilitiesBlock,
       feats: newFeatArray,
@@ -205,8 +220,8 @@ function LinedInputsWithBtn({
     }
 
     //spell-level addon
-    const spellLevelAddon =
-      mode == "spells" && obj != "" ? `(${obj.Level})` : "";
+    const spellLevel = mode == "spells" && obj != "" ? obj.Level : 0;
+    const spellLevelAddon = spellLevel != 0 ? `(${spellLevel})` : "";
 
     let addTitle = "Add";
     if (!item) {
@@ -238,7 +253,7 @@ function LinedInputsWithBtn({
             removable && (
               <button
                 onClick={() =>
-                  removeAbility(mode, title, abilitiesBlock, setAbilitiesBlock)
+                  removeAbility(mode, title, spellLevel, abilitiesBlock, setAbilitiesBlock)
                 }
               >
                 x

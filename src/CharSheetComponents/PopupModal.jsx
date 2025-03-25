@@ -126,39 +126,61 @@ function alterBonusAbs(
   setAbilitiesBlock({ ...abilitiesBlock, bonusAbs: newBonusAbArray });
 }
 
-// please note that this spell doesn't fully remove a spell - but only reduces its level
-// EXCEPT when reducing UtilitySpell to Level 0 - that fully removes spell
+// this function is used for 1) adding the spell or 2) altering a spell's spell-level
+// NOT used for removing the spell entirely
 function alterSpells(
   character,
   spellName,
   spellLevel,
-  isAdding,
+  isAddingNewSpell,
   abilitiesBlock,
-  setAbilitiesBlock
+  setAbilitiesBlock,
+  setPopupInfo
 ) {
-  let newSpellArray = [];
-  const minimumLevel =
-    spellName == "Utility Spell" ? 0 : character.querySpellLevelMinimum();
-  let newLevel = isAdding ? spellLevel : Math.max(minimumLevel, spellLevel - 2); // the spellLevel - 2 works because this function will never be called at default / min level
+  let newSpellArray = [...abilitiesBlock.spells];
+  const minimumLevel = character.querySpellLevelMinimum();
+  const currentSpellLevel = isAddingNewSpell ? 0 : Number(Object.values(abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == spellName))[0].substring(6));
+
+  // the spellLevel - 2 works because this function will never be called at default / min level
+  const newLevel = spellLevel > currentSpellLevel ? spellLevel : Math.max(minimumLevel, spellLevel - 2); 
 
   if (spellName != "Utility Spell") {
-    newSpellArray = abilitiesBlock.spells.filter(
+    newSpellArray = newSpellArray.filter(
       (spell) => Object.keys(spell)[0] != spellName
     );
-  } else {
-    const utilitySpellIndex = abilitiesBlock.spells.findIndex(
+  } else if (!isAddingNewSpell) {
+    //because there can be multiple utility spells, only find ONE of matching spell level
+    const utilitySpellIndex = newSpellArray.findIndex(
       (spell) =>
         Object.keys(spell)[0] == spellName &&
-        Number(Object.values(spell)[0].substr(-1)) == spellLevel
+        Number(Object.values(spell)[0].substring(6)) == currentSpellLevel
     );
 
-    newSpellArray = abilitiesBlock.spells.filter(
+    newSpellArray = newSpellArray.filter(
       (_, index) => index !== utilitySpellIndex
     );
   }
 
   if (newLevel != 0) {
     newSpellArray.push({ [spellName]: `Level ${newLevel}` });
+
+    if (setPopupInfo) {
+      setPopupInfo((prev) => {
+        if (
+          prev.singleItem &&
+          prev.title === spellName
+        ) {
+          return {
+            ...prev,
+            singleItem: {
+              ...prev.singleItem,
+              Level: newLevel,
+            },
+          };
+        }
+        return prev;
+      });
+    }
   }
 
   setAbilitiesBlock({ ...abilitiesBlock, spells: newSpellArray });

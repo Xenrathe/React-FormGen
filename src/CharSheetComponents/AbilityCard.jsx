@@ -142,15 +142,10 @@ function popupModalCantripListing(character) {
 
 function popupModalUtilitySpellListing(
   character,
-  abilitiesBlock,
+  utilitySpellLevel,
   setPopupInfo
 ) {
   const utilityList = character.getUtilitySpells();
-
-  let utilitySpellLevel =
-    abilitiesBlock.spells
-      .find((spell) => Object.keys(spell)[0] == "Utility Spell")
-      ?.["Utility Spell"].substring(6) ?? 0;
 
   return (
     <span className="single-selectables" id="utility-spells">
@@ -168,7 +163,7 @@ function popupModalUtilitySpellListing(
               onClick={() =>
                 setPopupInfo({
                   title: title,
-                  singleItem: utilSpell[title],
+                  singleItem: {...utilSpell[title], Level: utilitySpellLevel},
                   list: null,
                   mode: "Utility",
                 })
@@ -199,6 +194,7 @@ function AbilityCard({
   // it's used for the AbilitySheet component, which is several pages of printable info
   const infoOnly = setPopupInfo == null;
 
+  console.log(abilityInfo.singleItem);
   // used to set CSS class for width of popup
   let infoLength = Object.values(abilityInfo.singleItem)
     .map((value) => value.length)
@@ -224,21 +220,9 @@ function AbilityCard({
   const hasChamp = feats.includes("Champion");
 
   // these variables are used to determine spell level button clickability as well as default spell-level
-  let ownedSpellLevel =
-    abilitiesBlock.spells
-      .find((spell) => Object.keys(spell)[0] == abilityInfo.title)
-      ?.[abilityInfo.title].substring(6) ?? -1;
-  ownedSpellLevel =
-    abilityInfo.mode == "Utility"
-      ? abilitiesBlock.spells
-          .find((spell) => Object.keys(spell)[0] == "Utility Spell")
-          ?.["Utility Spell"].substring(6) ?? 0
-      : ownedSpellLevel;
-
-  ownedSpellLevel = Number(ownedSpellLevel);
+  const ownedSpellLevel = abilityInfo.singleItem?.Level ?? -1;
   const maxSpellLevel =
     character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 + 1;
-
   const spellLevels = Object.keys(abilityInfo.singleItem).filter(
     (itemKey) => itemKey.length > 5 && itemKey.substring(0, 5) == "Level"
   );
@@ -275,7 +259,7 @@ function AbilityCard({
         {abilityInfo.mode == "spells" && abilityInfo.title == "Utility Spell"
           ? popupModalUtilitySpellListing(
               character,
-              abilitiesBlock,
+              ownedSpellLevel,
               setPopupInfo
             )
           : null}
@@ -301,9 +285,10 @@ function AbilityCard({
                             character,
                             abilityInfo.title,
                             spellLevel,
-                            !hasLevel,
+                            false,
                             abilitiesBlock,
-                            setAbilitiesBlock
+                            setAbilitiesBlock,
+                            setPopupInfo
                           )
                         }
                         className={`alterBtn ${hasLevel ? "remove" : "add"} ${

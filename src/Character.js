@@ -568,9 +568,7 @@ export class Character {
       potential.unshift({
         "Utility Spell": {
           Level: 1,
-          Effect:
-            "Take a spell-slot to allow using the following utility spells:",
-          "Level 1": "Disguise Self; Feather Fall; Hold Portal",
+          Effect: "Take a spell-slot to allow using the following utility spells:",
           "Level 3": "Levitate; Message; Speak with Item",
           "Level 5": "Water Breathing",
           "Level 7": "Scrying",
@@ -598,26 +596,6 @@ export class Character {
             Level: 0,
           },
         });
-
-        /*
-        const ownedUtility = this.jobSpells.find(
-          (spell) => Object.keys(spell)[0] === "Utility Spell"
-        );
-        const utilitySpellLevel = ownedUtility
-          ? Number(Object.values(ownedUtility)[0].substring(5))
-          : 0;
-        owned.push({
-          "Utility Spell": {
-            Level: utilitySpellLevel,
-            Effect:
-              "Take a spell-slot to allow using the following utility spells:",
-            "Level 1": "Disguise Self; Feather Fall; Hold Portal",
-            "Level 3": "Levitate; Message; Speak with Item",
-            "Level 5": "Water Breathing",
-            "Level 7": "Scrying",
-            "Level 9": "Upgrades only",
-          },
-        });*/
 
         if (this.jobTalents.includes("High Arcana")) {
           owned.push({
@@ -653,7 +631,9 @@ export class Character {
       const index = potential.findIndex((f) => itemName in f);
       if (index !== -1) {
         if (type === "spells") {
-          let spellItem = potential[index];
+          // because there's potentially duplicate spell entries (utility spell)
+          // we need to make a deep copy
+          const spellItem = JSON.parse(JSON.stringify(potential[index]));
           spellItem[itemName].Level = parseInt(
             Object.values(item)[0].replace("Level ", ""),
             10
