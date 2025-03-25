@@ -131,7 +131,8 @@ function alterBonusAbs(
 function alterSpells(
   character,
   spellName,
-  spellLevel,
+  spellLevelTarget,
+  currentSpellLevel,
   isAddingNewSpell,
   abilitiesBlock,
   setAbilitiesBlock,
@@ -139,10 +140,12 @@ function alterSpells(
 ) {
   let newSpellArray = [...abilitiesBlock.spells];
   const minimumLevel = character.querySpellLevelMinimum();
-  const currentSpellLevel = isAddingNewSpell ? 0 : Number(Object.values(abilitiesBlock.spells.find((spell) => Object.keys(spell)[0] == spellName))[0].substring(6));
 
   // the spellLevel - 2 works because this function will never be called at default / min level
-  const newLevel = spellLevel > currentSpellLevel ? spellLevel : Math.max(minimumLevel, spellLevel - 2); 
+  const newLevel =
+    spellLevelTarget > currentSpellLevel
+      ? spellLevelTarget
+      : Math.max(minimumLevel, spellLevelTarget - 2);
 
   if (spellName != "Utility Spell") {
     newSpellArray = newSpellArray.filter(
@@ -166,10 +169,7 @@ function alterSpells(
 
     if (setPopupInfo) {
       setPopupInfo((prev) => {
-        if (
-          prev.singleItem &&
-          prev.title === spellName
-        ) {
+        if (prev.singleItem && prev.title === spellName) {
           return {
             ...prev,
             singleItem: {
@@ -305,6 +305,7 @@ function addableItemInfo(
         character,
         name,
         spellLevel,
+        0,
         true,
         abilitiesBlock,
         setAbilitiesBlock

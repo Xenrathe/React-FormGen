@@ -4,7 +4,6 @@ import "./Navbar.css";
 function handleExtraInfoChkBox(event, setExtraInfo) {
   setExtraInfo((prev) => !prev);
   const abilitySheets = document.querySelector("#ability-sheets");
-  console.log(event.target.checked);
   if (event.target.checked) {
     abilitySheets.classList.add("include-in-printing");
   } else {

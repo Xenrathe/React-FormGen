@@ -563,8 +563,8 @@
 #ability-sheets {
   width: 7.5in;
   max-width: 7.5in;
-  height: 1px;
-  visibility: hidden;
+  /*height: 1px;
+  visibility: hidden;*/
   overflow-y: hidden;
 }
 

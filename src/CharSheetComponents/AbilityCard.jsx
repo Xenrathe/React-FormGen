@@ -163,7 +163,7 @@ function popupModalUtilitySpellListing(
               onClick={() =>
                 setPopupInfo({
                   title: title,
-                  singleItem: {...utilSpell[title], Level: utilitySpellLevel},
+                  singleItem: { ...utilSpell[title], Level: utilitySpellLevel },
                   list: null,
                   mode: "Utility",
                 })
@@ -172,7 +172,7 @@ function popupModalUtilitySpellListing(
             >
               <span className="text">?</span>
             </button>
-            <strong>{`${title} (Lvl: ${spellLevel})`}</strong>
+            <strong>{`${title} (L${spellLevel})`}</strong>
           </span>
         );
       })}
@@ -194,7 +194,6 @@ function AbilityCard({
   // it's used for the AbilitySheet component, which is several pages of printable info
   const infoOnly = setPopupInfo == null;
 
-  console.log(abilityInfo.singleItem);
   // used to set CSS class for width of popup
   let infoLength = Object.values(abilityInfo.singleItem)
     .map((value) => value.length)
@@ -251,7 +250,10 @@ function AbilityCard({
             ✖
           </button>
         )}
-        <span className="title">{abilityInfo.title}</span>
+        <span className="title">
+          {abilityInfo.title}
+          {ownedSpellLevel > 0 ? ` (L${ownedSpellLevel})` : ""}
+        </span>
         {getSingleItemDescription(abilityInfo)}
         {abilityInfo.mode == "spells" && abilityInfo.title == "Cantrips"
           ? popupModalCantripListing(character)
@@ -285,6 +287,7 @@ function AbilityCard({
                             character,
                             abilityInfo.title,
                             spellLevel,
+                            abilityInfo.singleItem.Level,
                             false,
                             abilitiesBlock,
                             setAbilitiesBlock,

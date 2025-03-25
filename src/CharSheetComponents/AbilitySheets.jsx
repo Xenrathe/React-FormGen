@@ -10,10 +10,12 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
       ? jobs[character.job].bonusAbilitySet.Name
       : "bonusAbs";
   const utilityList = character.getUtilitySpells();
-  const utilitySpellLevel =
-    abilitiesBlock.spells
-      .find((spell) => Object.keys(spell)[0] == "Utility Spell")
-      ?.["Utility Spell"].substring(6) ?? 0;
+  const utilitySpellLevel = Math.max(
+    0,
+    ...abilitiesBlock.spells
+      .filter((spell) => Object.keys(spell)[0] === "Utility Spell")
+      .map((spell) => Number(Object.values(spell)[0].substring(6)))
+  );
 
   const sheetInfo = {
     "Class Features, Racial, and Gen. Feats": {
@@ -25,7 +27,9 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
       mode: "talents",
     },
     ["Familiar Skills"]: {
-      data: abilitiesBlock.talents.some((talent) => talent.endsWith("Familiar") || talent == "Ranger's Pet")
+      data: abilitiesBlock.talents.some(
+        (talent) => talent.endsWith("Familiar") || talent == "Ranger's Pet"
+      )
         ? getDataSets("Familiar", character)[0]
         : [],
       mode: "Familiar",
@@ -102,19 +106,26 @@ function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
                     singleItem: Object.values(ability)[0],
                     mode: values.mode,
                   };
-                  return (
-                    <AbilityCard
-                      key={`ABCard: ${abilityInfo.title}`}
-                      abilityInfo={abilityInfo}
-                      setPopupInfo={null}
-                      character={character}
-                      abilitiesBlock={abilitiesBlock}
-                      setAbilitiesBlock={null}
-                      alterFeats={null}
-                      alterSpells={null}
-                      alterBonusOptions={null}
-                    />
-                  );
+                  if (
+                    abilityInfo.mode != "spells" ||
+                    abilityInfo.title != "Utility Spell"
+                  ) {
+                    return (
+                      <AbilityCard
+                        key={`ABCard: ${abilityInfo.title}`}
+                        abilityInfo={abilityInfo}
+                        setPopupInfo={null}
+                        character={character}
+                        abilitiesBlock={abilitiesBlock}
+                        setAbilitiesBlock={null}
+                        alterFeats={null}
+                        alterSpells={null}
+                        alterBonusOptions={null}
+                      />
+                    );
+                  } else {
+                    return "";
+                  }
                 })}
               </div>
             </div>
