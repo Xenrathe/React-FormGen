@@ -411,7 +411,6 @@
 #popupMod .addable-items {
   display: grid;
   overflow-y: hidden;
-  
 }
 
 #popupMod #feats.single-selectables,
@@ -597,7 +596,6 @@
 #ability-sheets .ability-card {
   box-sizing: border-box;
   width: calc(50% - 10px);
-  max-height: 10in;
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1.5em;

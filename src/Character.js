@@ -212,6 +212,11 @@ export class Character {
       talentMod += 1;
     }
 
+    //adjust for Sorcerer
+    if (this.jobTalents.includes("Spell Fist")) {
+      talentMod += 2;
+    }
+
     return baseAC + shieldBonus + bonusMod + talentMod + this.level;
   }
 
@@ -347,8 +352,17 @@ export class Character {
     }
 
     //Adjustments for Ranger
-    if (this.jobTalents.some((talent) => talent.startsWith("AC - "))){
+    if (this.jobTalents.some((talent) => talent.startsWith("AC - "))) {
       uses += 2;
+    }
+
+    //Adjustments for Sorcerer
+    if (
+      this.feats.some(
+        (feat) => Object.keys(feat)[0] == "Undead Remnant Heritage"
+      )
+    ) {
+      uses -= 1;
     }
 
     return [
@@ -365,7 +379,9 @@ export class Character {
     const weaponStringSplit = this.weaponType[attackType].split(" "); //e.g. ["1H", "Small"]
     //Note that DW (Dual Wield) uses 1H stats - but will get some adjustments for certain talents or feats
     let weaponData =
-      jobs[this.job][attackType][weaponStringSplit[0] == "DW" ? "1H" : weaponStringSplit[0]][weaponStringSplit[1]]; //{ATK: #, DMG: #}
+      jobs[this.job][attackType][
+        weaponStringSplit[0] == "DW" ? "1H" : weaponStringSplit[0]
+      ][weaponStringSplit[1]]; //{ATK: #, DMG: #}
 
     //get highest mod in case of multiple abilities
     let highestMod = this.#getHighestMod(jobs[this.job][attackType].Ability);
@@ -383,7 +399,21 @@ export class Character {
     }
 
     //adjustments for Ranger
-    if (this.jobTalents.includes("Two-Weapon Mastery") && weaponStringSplit[0].startsWith("DW")) {
+    if (
+      this.jobTalents.includes("Two-Weapon Mastery") &&
+      weaponStringSplit[0].startsWith("DW")
+    ) {
+      rollMod += 1;
+    }
+
+    //adjustments for Sorcerer
+    if (
+      this.feats.some(
+        (feat) =>
+          Object.keys(feat)[0] == "Undead Remnant Heritage" &&
+          Object.values(feat)[0] == "Epic"
+      )
+    ) {
       rollMod += 1;
     }
 
@@ -412,11 +442,17 @@ export class Character {
 
     //adjustments for ranger
     let alternateDmg = "";
-    if (this.jobTalents.includes("Double Melee Attack") && weaponStringSplit[0].startsWith("DW")) {
-      alternateDmg = `(${weaponData.DMG - 2})`
+    if (
+      this.jobTalents.includes("Double Melee Attack") &&
+      weaponStringSplit[0].startsWith("DW")
+    ) {
+      alternateDmg = `(${weaponData.DMG - 2})`;
     }
-    if (this.jobTalents.includes("Double Ranged Attack") && attackType == "ranged") {
-      alternateDmg = `(${weaponData.DMG - 2})`
+    if (
+      this.jobTalents.includes("Double Ranged Attack") &&
+      attackType == "ranged"
+    ) {
+      alternateDmg = `(${weaponData.DMG - 2})`;
     }
 
     const dmgAbModPlusOrMinus = highestMod >= 0 ? "+" : "";
@@ -426,7 +462,6 @@ export class Character {
       }`
     );
     // END DAMAGE STRING
-
 
     // MISS DAMAGE
     let missDmg =
@@ -444,7 +479,10 @@ export class Character {
 
     //adjustments for ranger
     //this bonus is for 'adventurer' feat, which must always be taken first, hence why I don't bother checking tier
-    if (weaponStringSplit[0].startsWith("DW") && this.feats.some((feat) => Object.keys(feat)[0] == "Two-Weapon Mastery")) {
+    if (
+      weaponStringSplit[0].startsWith("DW") &&
+      this.feats.some((feat) => Object.keys(feat)[0] == "Two-Weapon Mastery")
+    ) {
       missDmg += this.level;
     }
 
@@ -526,6 +564,19 @@ export class Character {
             },
           }))
       );
+
+      potential.unshift({
+        "Utility Spell": {
+          Level: 1,
+          Effect:
+            "Take a spell-slot to allow using the following utility spells:",
+          "Level 1": "Disguise Self; Feather Fall; Hold Portal",
+          "Level 3": "Levitate; Message; Speak with Item",
+          "Level 5": "Water Breathing",
+          "Level 7": "Scrying",
+          "Level 9": "Upgrades only",
+        },
+      });
     } else {
       potential = Object.entries(sourceData)
         .filter(([_, tiers]) => filterFn(tiers))
@@ -548,6 +599,7 @@ export class Character {
           },
         });
 
+        /*
         const ownedUtility = this.jobSpells.find(
           (spell) => Object.keys(spell)[0] === "Utility Spell"
         );
@@ -565,7 +617,7 @@ export class Character {
             "Level 7": "Scrying",
             "Level 9": "Upgrades only",
           },
-        });
+        });*/
 
         if (this.jobTalents.includes("High Arcana")) {
           owned.push({
@@ -579,14 +631,19 @@ export class Character {
     // Special additions
     if (type === "bonusAbs") {
       if (this.feats.some((feat) => Object.keys(feat)[0] == "Thievery")) {
-        owned.push({"Thief's Strike": {...jobs["Rogue"].bonusAbilitySet["Level 3"]["Thief's Strike"], Level: 1}});
+        owned.push({
+          "Thief's Strike": {
+            ...jobs["Rogue"].bonusAbilitySet["Level 3"]["Thief's Strike"],
+            Level: 1,
+          },
+        });
         const index = potential.findIndex((f) => "Thief's Strike" in f);
         if (index !== -1) {
           potential.splice(index, 1);
         }
       }
     }
-    
+
     // Determine owned items and remove them from potential
     ownedThings.forEach((item) => {
       const itemName =
@@ -605,7 +662,11 @@ export class Character {
         } else {
           owned.push(potential[index]);
         }
-        potential.splice(index, 1);
+
+        //Utility spell can be taken multiple times
+        if (itemName != "Utility Spell") {
+          potential.splice(index, 1);
+        }
       }
     });
 
@@ -719,12 +780,17 @@ export class Character {
       maxTotal += 5;
     }
 
-    //adjustments for Rogue's Cunning
+    //adjustments for Rogue
     if (this.jobTalents.includes("Cunning")) {
       maxTotal += 2;
     }
     if (this.jobTalents.includes("Thievery")) {
       maxTotal += 5;
+    }
+
+    //adjustments for Sorcerer
+    if (this.jobTalents.includes("Arcane Heritage")) {
+      maxTotal += 2;
     }
 
     //adjustments for Further Backgrounding
@@ -795,6 +861,16 @@ export class Character {
       )
     ) {
       totalPointsMax += 1;
+    }
+
+    //adjustments from Sorcerer talents
+    if (this.jobTalents.includes("Blood Link")) {
+      totalPointsMax += 1;
+
+      // don't need to check tier because there's only one choice
+      if (this.feats.some((feat) => Object.keys(feat)[0] == "Blood Link")) {
+        totalPointsMax += 1;
+      }
     }
 
     return [totalPointsMax, maxPerIcon];
@@ -944,7 +1020,11 @@ export class Character {
 
       return counts;
     } else {
-      const AnimalAdjustment = this.jobTalents.some((talent) => talent.startsWith("AC - ")) ? 1 : 0;
+      const AnimalAdjustment = this.jobTalents.some((talent) =>
+        talent.startsWith("AC - ")
+      )
+        ? 1
+        : 0;
       return this.jobTalents.length + AnimalAdjustment;
     }
   }
@@ -989,10 +1069,13 @@ export class Character {
       !this.jobTalents.some((talent) => talent.endsWith("Familiar")) &&
       !this.jobTalents.includes("Ranger's Pet")
     ) {
-      
       return 0;
     } else if (
-      this.feats.some((feat) => feat["Sorcerer's Familiar"] == "Epic" || feat["Ranger's Pet"] == "Epic")
+      this.feats.some(
+        (feat) =>
+          feat["Sorcerer's Familiar"] == "Epic" ||
+          feat["Ranger's Pet"] == "Epic"
+      )
     ) {
       return 5;
     } else if (
@@ -1016,7 +1099,10 @@ export class Character {
   }
 
   #queryFamiliarAbsCurrent() {
-    return this.familiarAbs.length;
+    //tough counts as 2
+    return (
+      this.familiarAbs.length + (this.familiarAbs.includes("Tough") ? 1 : 0)
+    );
   }
 
   queryFamiliarAbilitiesRemaining() {

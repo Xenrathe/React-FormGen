@@ -1,5 +1,59 @@
 {
   "Talents": {
+    "Gather Power": {
+      "Type": "Default",
+      "Base": "Once initiative has been rolled and a battle is underway, a sorcerer can spend a standard action to gather magical power, preparing themselves for casting a double-strength spell with their next standard action. Gathering power is loud and very noticeable, but it does not itself count as casting a spell; you can gather power without taking opportunity attacks.\n\nIn addition, because you spend your standard action to gather power, you generate a small magical benefit. Like many of your powers, this benefit is chaotic rather than perfectly reliable, so you must make a random check to see what benefit you get. Roll a d6 and consult the appropriate table below. If you get a benefit that deals damage to enemies, you can choose the type of damage (cold, fire, lightning, or thunder).\n\nAfter you have gathered power, you can use your next standard action to cast an empowered sorcerer spell. Empowered sorcerer spells deal double the damage of a normal sorcerer spell. This means that you double the damage results of the hit or a miss from the single spell. Non-attack spells generally don’t improve when cast empowered; use empowered casting for attacks.\n\nIf you do not or are not able to use your next standard action to cast a sorcerer attack spell, you lose the power you’ve gathered. You can use another standard action to gather power again, but the spell you eventually cast will still only do double damage.\n\nYou can spend your move actions and quick actions any way you like after you gather power and before casting your next empowered spell. Yes, once a battle has started it’s possible to perform the magical firefight trick of gathering power while hiding to the side of the cave entrance, then jumping into the cave opening on your next turn and blasting with the empowered spell.\n\nBreath weapon spells add an extra wrinkle. Of course you can gather power the first time you cast a breath weapon spell in a battle. Later in the fight it’s a question of whether you gathered power the turn before a breath weapon spell roll goes your way. You can be all ready with gathered power but roll too low to use the breath weapon spell, forcing you to cast a different spell with the gathered power.\n\nIf you’ve gathered power for a spell that deals ongoing damage, the ongoing damage is doubled the first time it is dealt, but not on subsequent rounds, if any.",
+      "Table": [
+        {
+          "Tier": "Adventurer (1–4)",
+          "Roll (d6)": "1-2",
+          "Effect": "You gain a +1 bonus to AC until the start of your next turn."
+        },
+        {
+          "Tier": "Adventurer (1–4)",
+          "Roll (d6)": "3-4",
+          "Effect": "Deal damage equal to your level to all nearby staggered enemies."
+        },
+        {
+          "Tier": "Adventurer (1–4)",
+          "Roll (d6)": "5-6",
+          "Effect": "Deal damage equal to your level to one nearby enemy."
+        },
+        {
+          "Tier": "Champion (5–7)",
+          "Roll (d6)": "1-2",
+          "Effect": "You gain a +1 bonus to AC and Physical Defense until the start of your next turn."
+        },
+        {
+          "Tier": "Champion (5–7)",
+          "Roll (d6)": "3-4",
+          "Effect": "Deal damage equal to your level + your Charisma modifier to all nearby staggered enemies."
+        },
+        {
+          "Tier": "Champion (5–7)",
+          "Roll (d6)": "5-6",
+          "Effect": "Deal damage equal to your level + your Charisma modifier to one nearby enemy."
+        },
+        {
+          "Tier": "Epic (8–10)",
+          "Roll (d6)": "1-2",
+          "Effect": "You gain a +1 bonus to all defenses until the start of your next turn."
+        },
+        {
+          "Tier": "Epic (8–10)",
+          "Roll (d6)": "3-4",
+          "Effect": "Deal damage equal to your level + twice your Charisma modifier to all nearby staggered enemies."
+        },
+        {
+          "Tier": "Epic (8–10)",
+          "Roll (d6)": "5-6",
+          "Effect": "Deal damage equal to your level + twice your Charisma modifier to one nearby enemy."
+        }
+      ],
+      "Adventurer": "Once per battle, you can choose the chaotic benefit you want instead of rolling for it.",
+      "Champion": "Once per battle when the escalation die is 4+, you can gather power as a quick action.",
+      "Epic": "When you gather power, if the escalation die is 2+, you can roll two chaotic benefits. Unlike most effects, the benefits stack if you roll the same result twice."
+    },
     "Access to Wizardry": {
       "Type": "Default",
       "Base": "Starting at Level 3, you can take a wizard spell in place of a sorcerer spell. The wizard spell must be two levels lower than the sorcerer spell."
@@ -19,14 +73,25 @@
     },
     "Random Energy": {
       "Type": "Default",
-      "Base": "Some sorcerer spells deal damage of a random type. If it matters for the situation, use a d4 to determine which type of damage the spell deals.\n\n1 - Cold\n2 - Fire\n3 - Lightning\n4 - Thunder"
-    },
-    "Gather Power": {
-      "Type": "Default",
-      "Base": "Once initiative has been rolled and a battle is underway, a sorcerer can spend a standard action to gather magical power, preparing themselves for casting a double-strength spell with their next standard action. Gathering power is loud and very noticeable, but it does not itself count as casting a spell; you can gather power without taking opportunity attacks.\n\nIn addition, because you spend your standard action to gather power, you generate a small magical benefit. Like many of your powers, this benefit is chaotic rather than perfectly reliable, so you must make a random check to see what benefit you get. Roll a d6 and consult the appropriate table below.\n\nIf you get a benefit that deals damage to enemies, you can choose the type of damage (cold, fire, lightning, or thunder).\n\nChaotic Benefit, Adventurer Tier (levels 1–4): Roll (d6)\tEffect\n1-2\tYou gain a +1 bonus to AC until the start of your next turn.\n3-4\tDeal damage equal to your level to all nearby staggered enemies.\n5-6\tDeal damage equal to your level to one nearby enemy.\n\nChaotic Benefit, Champion Tier (levels 5–7): Roll (d6)\tEffect\n1-2\tYou gain a +1 bonus to AC and Physical Defense until the start of your next turn.\n3-4\tDeal damage equal to your level + your Charisma modifier to all nearby staggered enemies.\n5-6\tDeal damage equal to your level + your Charisma modifier to one nearby enemy.\n\nChaotic Benefit, Epic Tier (levels 8–10): Roll (d6)\tEffect\n1-2\tYou gain a +1 bonus to all defenses until the start of your next turn.\n3-4\tDeal damage equal to your level + twice your Charisma modifier to all nearby staggered enemies.\n5-6\tDeal damage equal to your level + twice your Charisma modifier to one nearby enemy.\n\nAfter you have gathered power, you can use your next standard action to cast an empowered sorcerer spell. Empowered sorcerer spells deal double the damage of a normal sorcerer spell. This means that you double the damage results of the hit or a miss from the single spell. Non-attack spells generally don’t improve when cast empowered; use empowered casting for attacks.\n\nIf you do not or are not able to use your next standard action to cast a sorcerer attack spell, you lose the power you’ve gathered. You can use another standard action to gather power again, but the spell you eventually cast will still only do double damage.\n\nYou can spend your move actions and quick actions any way you like after you gather power and before casting your next empowered spell. Yes, once a battle has started it’s possible to perform the magical firefight trick of gathering power while hiding to the side of the cave entrance, then jumping into the cave opening on your next turn and blasting with the empowered spell.\n\nBreath weapon spells add an extra wrinkle. Of course you can gather power the first time you cast a breath weapon spell in a battle. Later in the fight it’s a question of whether you gathered power the turn before a breath weapon spell roll goes your way. You can be all ready with gathered power but roll too low to use the breath weapon spell, forcing you to cast a different spell with the gathered power.\n\nIf you’ve gathered power for a spell that deals ongoing damage, the ongoing damage is doubled the first time it is dealt, but not on subsequent rounds, if any.",
-      "Adventurer": "Once per battle, you can choose the chaotic benefit you want instead of rolling for it.",
-      "Champion": "Once per battle when the escalation die is 4+, you can gather power as a quick action.",
-      "Epic": "When you gather power, if the escalation die is 2+, you can roll two chaotic benefits. Unlike most effects, the benefits stack if you roll the same result twice."
+      "Base": "Some sorcerer spells deal damage of a random type. If it matters for the situation, use a d4 to determine which type of damage the spell deals.",
+      "Table": [
+        {
+          "Roll (d4)": "1",
+          "Energy Type": "Cold"
+        },
+        {
+          "Roll (d4)": "2",
+          "Energy Type": "Fire"
+        },
+        {
+          "Roll (d4)": "3",
+          "Energy Type": "Lightning"
+        },
+        {
+          "Roll (d4)": "4",
+          "Energy Type": "Thunder"
+        }
+      ]
     },
     "Arcane Heritage": {
       "Type": "Optional",
@@ -48,7 +113,21 @@
     },
     "Fey Heritage": {
       "Type": "Optional",
-      "Base": "One battle per day, when you roll initiative, you can choose to invoke your Fey Heritage and gain the racial power of one the elven races in addition to your own racial power. Roll on the table below. If you roll your own race’s power, you gain the half-elf’s surprising racial power instead.\n\nRoll (d6)\tRacial Power\n1-2\tCruel (drow)\n3-4\tHighblood teleport (high elf)\n5-6\tElven grace (wood elf)",
+      "Base": "One battle per day, when you roll initiative, you can choose to invoke your Fey Heritage and gain the racial power of one the elven races in addition to your own racial power. Roll on the table below. If you roll your own race’s power, you gain the half-elf’s surprising racial power instead.",
+      "Table": [
+        {
+          "Roll (d6)": "1-2",
+          "Racial Power": "Cruel (drow)"
+        },
+        {
+          "Roll (d6)": "3-4",
+          "Racial Power": "Highblood teleport (high elf)"
+        },
+        {
+          "Roll (d6)": "5-6",
+          "Racial Power": "Elven grace (wood elf)"
+        }
+      ],
       "Adventurer": "You can now invoke your Fey Heritage talent in two battles each day.",
       "Champion": "You gain a +2 attack bonus against elves and monsters in the elven sphere of influence (including the Drider, Storm Giant, and Medusa).",
       "Epic": "Once per battle when the escalation die reaches 6+, as a free action, you can gain an elf racial power that you have not already used in this battle."

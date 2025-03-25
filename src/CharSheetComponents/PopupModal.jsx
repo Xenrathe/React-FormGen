@@ -140,11 +140,22 @@ function alterSpells(
   const minimumLevel =
     spellName == "Utility Spell" ? 0 : character.querySpellLevelMinimum();
   let newLevel = isAdding ? spellLevel : Math.max(minimumLevel, spellLevel - 2); // the spellLevel - 2 works because this function will never be called at default / min level
-  console.log(`minLevel: ${minimumLevel}; newLevel: ${newLevel}`);
 
-  newSpellArray = abilitiesBlock.spells.filter(
-    (spell) => Object.keys(spell)[0] != spellName
-  );
+  if (spellName != "Utility Spell") {
+    newSpellArray = abilitiesBlock.spells.filter(
+      (spell) => Object.keys(spell)[0] != spellName
+    );
+  } else {
+    const utilitySpellIndex = abilitiesBlock.spells.findIndex(
+      (spell) =>
+        Object.keys(spell)[0] == spellName &&
+        Number(Object.values(spell)[0].substr(-1)) == spellLevel
+    );
+
+    newSpellArray = abilitiesBlock.spells.filter(
+      (_, index) => index !== utilitySpellIndex
+    );
+  }
 
   if (newLevel != 0) {
     newSpellArray.push({ [spellName]: `Level ${newLevel}` });

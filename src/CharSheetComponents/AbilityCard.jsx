@@ -205,7 +205,6 @@ function AbilityCard({
     .reduce((sum, length) => sum + length, 0);
 
   if (Object.keys(abilityInfo.singleItem).includes("Table")) {
-    console.log()
     if (Object.keys(abilityInfo.singleItem.Table[0]).length > 5) {
       infoLength = 1500;
     }

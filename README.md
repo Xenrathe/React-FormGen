@@ -2,6 +2,7 @@
 
 - dropdown box for icon relationships? / cleric talent
 - access to other spell-lists for certain talents
+- access to wizardry
 - selection for paladin's divine domain
 - responsive layout (tablet, mobile breakpoints)
 - SpellInfo dynamically updates depending on level (big change in dataset, I think?)
