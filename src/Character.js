@@ -396,9 +396,9 @@ export class Character {
 
     //adjustments for Cleric
     if (
-      this.jobTalents.includes("Strength") &&
+      this.jobTalents.includes("D: Strength") &&
       weaponStringSplit[1].endsWith("Heavy") &&
-      attackType == "melee"
+      attackType == "melee" && weaponData.ATK < 0
     ) {
       rollMod += 2;
     }
@@ -793,7 +793,7 @@ export class Character {
     }
 
     //adjustments for Cleric's Domain of Knowledge
-    if (this.jobTalents.includes("Knowledge/Lore")) {
+    if (this.jobTalents.includes("D: Knowledge/Lore")) {
       maxTotal += 4;
     }
 
@@ -858,10 +858,10 @@ export class Character {
     }
 
     //adjustments from Cleric talents
-    if (this.jobTalents.includes("Love/Beauty")) {
+    if (this.jobTalents.includes("D: Love/Beauty")) {
       totalPointsMax += 1;
 
-      if (this.feats.some((feat) => Object.keys(feat)[0] == "Love/Beauty")) {
+      if (this.feats.some((feat) => Object.keys(feat)[0] == "D: Love/Beauty")) {
         totalPointsMax += 1;
       }
     }

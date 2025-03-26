@@ -138,6 +138,11 @@ export function getDataSets(mode, character) {
         dataOnLines.push({ [title]: obj, removable: false });
       });
 
+      //special addition for paladin
+      if (character.jobTalents.filter((talent) => talent.startsWith("Divine Domain")).length > 0) {
+        dataOnLines.push({"Invocation": jobs["Cleric"].features.Invocation});
+      }
+
       const racialFeatInfo = character.getFeats("racial");
       dataForAdd.push(...racialFeatInfo.potential);
       processOwnedAbs(racialFeatInfo, () => true);
