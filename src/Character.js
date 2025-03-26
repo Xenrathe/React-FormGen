@@ -929,6 +929,14 @@ export class Character {
   //Returns the total number of slots
   //Is this redundant with querySpellsOwnedCount? it might be.
   querySpellsMax() {
+    //Special talent values
+    if (this.jobTalents.includes("Cleric Training")){
+      if (this.feats.some((feat) => Object.keys(feat) == "Cleric Training" && Object.values(feat)[0] == "Epic")) {
+        return 2;
+      } else {
+        return 1;
+      }
+    }
     if (!("spellProgression" in jobs[this.job])) {
       return 0;
     }
@@ -951,19 +959,15 @@ export class Character {
   }
 
   querySpellsOwnedCount() {
-    if (!"spellList" in jobs[this.job]) {
-      return 0;
-    }
-
     let spellCount = 0;
     if (
-      "Utility" in jobs[this.job].spellList &&
+      "Utility" in jobs[this.job]?.spellList &&
       !this.jobSpells.some((spell) => Object.keys(spell)[0] == "Utility Spell")
     ) {
       spellCount++;
     }
 
-    if ("Level 0" in jobs[this.job].spellList) {
+    if ("Level 0" in jobs[this.job]?.spellList) {
       spellCount++;
     }
 
@@ -988,7 +992,18 @@ export class Character {
 
       return spellMaxCounts;
     } else {
-      return [0, 0, 0, 0, 0];
+      let defaultCase = [0, 0, 0, 0, 0]
+
+      //special case for paladin
+      if (this.jobTalents.includes("Cleric Training")){
+        if (this.feats.some((feat) => Object.keys(feat) == "Cleric Training" && Object.values(feat)[0] == "Epic")) {
+          defaultCase[Math.floor((this.level - 1) / 2)] = 2;
+        } else {
+          defaultCase[Math.floor((this.level - 1) / 2)] = 1;
+        }
+      }
+
+      return defaultCase;
     }
   }
 

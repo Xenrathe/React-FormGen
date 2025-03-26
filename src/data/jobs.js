@@ -334,6 +334,7 @@ const jobs = {
         ([_, value]) => value.Type === "Default"
       )
     ),
+    spellList: clericAbilities["Spells"],
     talentChoices: Object.fromEntries(
       Object.entries(paladinAbilities["Talents"]).filter(
         ([_, value]) => value.Type !== "Default"

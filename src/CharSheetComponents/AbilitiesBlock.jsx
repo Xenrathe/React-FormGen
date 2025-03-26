@@ -422,7 +422,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           />
         </div>
       )}
-      {character.querySpellsMax() != 0 && (
+      {(character.querySpellsMax() != 0 || character.jobSpells.length > 0) && (
         <div
           id="spells"
           className={`abilities-input lined-inputs ${
