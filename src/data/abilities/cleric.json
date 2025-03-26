@@ -20,7 +20,7 @@
       "Type": "Default",
       "Base": "Clerics can cast their spells as rituals."
     },
-    "Healing": {
+    "D: Healing": {
       "Type": "Optional",
       "Base": "When you cast a spell that lets you or an ally heal using a recovery, the target also adds hit points equal to double your level to the recovery.",
       "Invocation": "This battle, you gain an additional use of the heal spell. The first heal spell you cast after using this invocation allows the target to heal using a free recovery instead of spending a recovery.",
@@ -28,7 +28,7 @@
       "Champion": "The invocation of healing gives you two additional uses of heal this battle instead of only one.",
       "Epic": "Increase the additional hit points the target heals to triple your level."
     },
-    "Justice/Vengeance": {
+    "D: Justice/Vengeance": {
       "Type": "Optional",
       "Base": "Once per turn when an enemy scores a critical hit against you or a nearby ally, or drops you or a nearby ally to 0 hp or below, you gain an attack-reroll blessing. An ally with this blessing can use it to reroll an attack as a free action this battle.",
       "Invocation": "This battle, add double your level to the miss damage of your attacks and the attacks of your nearby allies.",
@@ -36,7 +36,7 @@
       "Champion": "When you gain an attack-reroll blessing to distribute, you gain two blessings to distribute instead.",
       "Epic": "Attack rolls from your reroll blessings gain a +4 bonus."
     },
-    "Knowledge/Lore": {
+    "D: Knowledge/Lore": {
       "Type": "Optional",
       "Base": "You gain 4 additional background points that must be used somehow in relation to knowledge or lore.",
       "Invocation": "You must use this invocation during your first round of a battle. Roll a d6; as a free action after the escalation die equals the number you rolled, allow one ally to reroll an attack roll with a +2 bonus.",
@@ -44,7 +44,7 @@
       "Champion": "You now roll a d4 for the invocation, not a d6.",
       "Epic": "You gain a different positive relationship point each day with a random icon."
     },
-    "Life/Death": {
+    "D: Life/Death": {
       "Type": "Optional",
       "Base": "You and your nearby allies gain a +1 bonus to death saves.",
       "Invocation": "This battle, you and your allies can add the escalation die to a single save. You and your allies do not die from hit point damage when your negative hit points equal half your normal hit points.",
@@ -52,19 +52,19 @@
       "Champion": "Each battle, the first time an ally near you becomes staggered, that ally immediately heals hit points equal to twice your level.",
       "Epic": "Your first use of the resurrection spell is free, and doesn’t count against your total."
     },
-    "Love/Beauty": {
+    "D: Love/Beauty": {
       "Type": "Optional",
       "Base": "Once per level, you can generate a one-point conflicted relationship with a heroic or ambiguous icon you do not already have a relationship with.",
       "Invocation": "As a free action, at a dramatic moment, you or an ally can roll for one icon relationship that might affect the battle.",
       "Champion": "You gain two points in the relationship instead."
     },
-    "Protection/Community": {
+    "D: Protection/Community": {
       "Type": "Optional",
       "Base": "Once per battle, you can affect two additional allies when you cast a spell for broad effect.",
       "Invocation": "This battle, critical hits against you and your nearby allies deal normal damage instead of critical damage.",
       "Adventurer": "Whenever you target one or more allies with a spell, one ally can roll a save against a save ends effect."
     },
-    "Strength": {
+    "D: Strength": {
       "Type": "Optional",
       "Base": "You can wield heavy/martial weapons without an attack penalty.",
       "Invocation": "This battle, you and your nearby allies deal triple damage instead of double damage on critical hits with melee attacks.",
@@ -72,7 +72,7 @@
       "Champion": "You can use d8s instead of d4s for the bonus damage dice.",
       "Epic": "Once per day, you can use d20s instead of d8s for the bonus damage dice."
     },
-    "Sun/Anti-Undead": {
+    "D: Sun/Anti-Undead": {
       "Type": "Optional",
       "Base": "Every attack you make deals holy damage instead of other types unless you choose otherwise.",
       "Invocation": "When you cast a daily cleric spell this battle, roll a d6. If you roll less than or equal to the escalation die, regain the daily spell after the battle.",
@@ -80,14 +80,14 @@
       "Champion": "You gain a +2 bonus to all defenses against undead.",
       "Epic": "The invocation also affects your allies’ daily spells."
     },
-    "Trickery/Illusion": {
+    "D: Trickery/Illusion": {
       "Type": "Optional",
       "Base": "Once per battle, as a quick action when engaged, roll a d20. The result becomes the natural result of a nearby ally or enemy's d20 roll.",
       "Invocation": "This battle, attacks against you by enemies that moved to engage you miss on natural odd rolls.",
       "Champion": "Your trick die can be used for any d20 roll, not just an attack.",
       "Epic": "You get another trick die roll to use each battle the first time the escalation die reaches 3+."
     },
-    "War/Leadership": {
+    "D: War/Leadership": {
       "Type": "Optional",
       "Base": "Once per turn when you make a melee attack against an enemy, hit or miss, your allies gain a +1 attack bonus against that enemy until your next turn.",
       "Invocation": "Increase the escalation die by 1.",

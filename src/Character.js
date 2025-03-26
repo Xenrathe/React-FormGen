@@ -36,12 +36,12 @@ export class Character {
     this.job = job; //a string
     this.oldJob = oldJob;
     this.jobBonus = jobBonus; //a string representing BONUS STAT from job
-    this.jobTalents = jobTalents; //an array of strings
-    this.jobSpells = jobSpells; //an array of objects {"Acid Arrow": "Level 1"}
-    this.jobBonusAbs = jobBonusAbs; //an array of strings
-    this.feats = feats; //an array of objects {"Linguist": "Champion"}.
-    this.familiarAbs = familiarAbs; //an array of strings
-    this.bonusOptions = bonusOptions; //an array of objects {"Mythkenner": ["A", "B"]}
+    this.jobTalents = [...jobTalents]; //an array of strings
+    this.jobSpells = jobSpells.map((spell) => ({ ...spell })); //an array of objects {"Acid Arrow": "Level 1"}
+    this.jobBonusAbs = [...jobBonusAbs]; //an array of strings
+    this.feats = feats.map((f) => ({ ...f })); //an array of objects {"Linguist": "Champion"}
+    this.familiarAbs = [...familiarAbs]; //an array of strings
+    this.bonusOptions = bonusOptions.map((opt) => ({ ...opt })); //an array of objects {"Mythkenner": ["A", "B"]}
 
     this.#trimFeatsAndAbilities(); //removes feats, talents, spells, etc incompatible with job, race, and new level
 
@@ -121,21 +121,7 @@ export class Character {
       });
 
       this.oldJob = this.job;
-    } /*else {
-      let newSpellList = [];
-      this.jobSpells.forEach((spell) => {
-        const name = Object.keys(spell)[0];
-        const spellLevel = Number(Object.values(spell)[0].substr(-1));
-        
-        if (spellLevel > this.level) {
-          this.feats = this.feats.filter((feat) => Object.keys(feat)[0] !== name)
-        } else {
-          newSpellList.push(spell);
-        }
-      })
-
-      this.jobSpells = newSpellList;
-    }*/
+    }
 
     //if player removes familiar as a talent, it also removes associated information
     if (
@@ -159,6 +145,25 @@ export class Character {
       Object.keys(jobs["Ranger"].ACFeats).forEach((title) => {
         this.removeFeat(title, "Adventurer");
       });
+    }
+
+    //if player removes any of the 'divine domain' talents, may also remove an associated domain
+    if (this.job == "Paladin") {
+      const maxDomains = this.jobTalents.filter((talent) =>
+        talent.startsWith("Divine Domain")
+      ).length;
+      const ownedDomains = this.jobTalents.filter((talent) =>
+        talent.startsWith("D: ")
+      ).length;
+
+      for (let i = 0; i < ownedDomains - maxDomains; i++) {
+        const talentIndex = this.jobTalents.findLastIndex((talent) =>
+          talent.startsWith("D: ")
+        );
+        const talentName = this.jobTalents[talentIndex];
+        this.removeFeat(talentName, "Adventurer");
+        this.jobTalents.splice(talentIndex);
+      }
     }
   }
 
@@ -587,7 +592,8 @@ export class Character {
         }));
     }
 
-    // Special cases for Spells
+    // Special additions for spells
+    // wizard's cantrip and counter-magic, cleric's heal
     if (type === "spells") {
       if (this.job === "Cleric" && sourceData["Level 0"]?.Heal) {
         owned.push({ Heal: { ...sourceData["Level 0"].Heal, Level: 0 } });
@@ -610,7 +616,8 @@ export class Character {
       }
     }
 
-    // Special additions
+    // Special additions for bonus abs
+    // Rogue's thief strike
     if (type === "bonusAbs") {
       if (this.feats.some((feat) => Object.keys(feat)[0] == "Thievery")) {
         owned.push({
@@ -624,6 +631,27 @@ export class Character {
           potential.splice(index, 1);
         }
       }
+    }
+
+    // Special additions for talents
+    // Paladin's divine domains
+    const maxDomains = this.jobTalents.filter((talent) =>
+      talent.startsWith("Divine Domain")
+    ).length;
+    const ownedDomains = this.jobTalents.filter((talent) =>
+      talent.startsWith("D: ")
+    ).length;
+
+    if (type === "talents" && maxDomains > 0 && maxDomains == ownedDomains) {
+      this.jobTalents.forEach((talent) => {
+        if (talent.startsWith("D: ")) {
+          potential.push({
+            [talent]: {
+              ...jobs["Cleric"].talentChoices[talent],
+            },
+          });
+        }
+      });
     }
 
     // Determine owned items and remove them from potential
@@ -715,11 +743,21 @@ export class Character {
 
   //this gives talents, separated into { owned, potential }
   getTalents() {
-    return this.#getOptions(
-      "talents",
-      jobs[this.job].talentChoices,
-      this.jobTalents
-    );
+    let talentChoices = jobs[this.job].talentChoices;
+
+    const ownedDomains = this.jobTalents.filter((talent) =>
+      talent.startsWith("D: ")
+    ).length;
+    const maxDomains = this.jobTalents.filter((talent) =>
+      talent.startsWith("Divine Domain")
+    ).length;
+
+    //special addition for paladin divine domain
+    if (maxDomains > ownedDomains) {
+      talentChoices = { ...talentChoices, ...jobs["Cleric"].talentChoices };
+    }
+
+    return this.#getOptions("talents", talentChoices, this.jobTalents);
   }
 
   //this gives familiar abilities, separated into { owned, potential }
@@ -901,7 +939,7 @@ export class Character {
     );
 
     if (this.job == "Wizard") {
-      spellSlots += 2; //for Utility and Cantrip
+      spellSlots += 1; //for cantrip
       if (this.jobTalents.includes("High Arcana")) {
         spellSlots += 1;
       }
@@ -986,7 +1024,12 @@ export class Character {
     } else {
       const maxTalents = jobs[this.job].talentProgression[this.level - 1];
 
-      return maxTalents;
+      //adjustments for paladin's divine domain
+      const maxDomains = this.jobTalents.filter((talent) =>
+        talent.startsWith("Divine Domain")
+      ).length;
+
+      return maxTalents + maxDomains;
     }
   }
 
