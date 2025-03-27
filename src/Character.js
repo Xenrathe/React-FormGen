@@ -595,7 +595,7 @@ export class Character {
     // Special additions for spells
     // wizard's cantrip and counter-magic, cleric's heal
     if (type === "spells") {
-      if (this.job === "Cleric" && sourceData["Level 0"]?.Heal) {
+      if (this.job === "Cleric" || this.feats.some((feat) => Object.keys(feat)[0] == "Cleric Training" && Object.values(feat)[0] == "Champion")) {
         owned.push({ Heal: { ...sourceData["Level 0"].Heal, Level: 0 } });
       } else if (this.job === "Wizard") {
         owned.push({
