@@ -219,9 +219,12 @@ function AbilityCard({
   const hasChamp = feats.includes("Champion");
 
   // these variables are used to determine spell level button clickability as well as default spell-level
-  const ownedSpellLevel = abilityInfo.singleItem?.Level ?? -1;
+  const SLPenalty = abilityInfo.singleItem?.SLPenalty ?? 0;
+  const trueSLSlot = SLPenalty != 0 ? `@L${abilityInfo.singleItem?.Level} slot` : "";
+  console.log(trueSLSlot);
+  const ownedSpellLevel = abilityInfo.singleItem?.Level + SLPenalty ?? -1;
   const maxSpellLevel =
-    character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 + 1;
+    character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 + 1 + SLPenalty;
   const spellLevels = Object.keys(abilityInfo.singleItem).filter(
     (itemKey) => itemKey.length > 5 && itemKey.substring(0, 5) == "Level"
   );
@@ -252,7 +255,7 @@ function AbilityCard({
         )}
         <span className="title">
           {abilityInfo.title}
-          {ownedSpellLevel > 0 ? ` (L${ownedSpellLevel})` : ""}
+          {ownedSpellLevel > 0 ? ` (L${ownedSpellLevel}${trueSLSlot})` : ""}
         </span>
         {getSingleItemDescription(abilityInfo)}
         {abilityInfo.mode == "spells" && abilityInfo.title == "Cantrips"
@@ -286,8 +289,8 @@ function AbilityCard({
                           alterSpells(
                             character,
                             abilityInfo.title,
-                            spellLevel,
-                            abilityInfo.singleItem.Level,
+                            spellLevel - SLPenalty,
+                            ownedSpellLevel - SLPenalty,
                             false,
                             abilitiesBlock,
                             setAbilitiesBlock,

@@ -450,6 +450,14 @@
   border: solid 1px rgb(139, 139, 139);
   padding: 4px;
 }
+/*Barbarian (Red), Bard (Blue), Cleric (White), Fighter (Green), Paladin (Yellow), Ranger (Brown), Rogue (Purple), Sorcerer (Orange), and Wizard (Black)*/
+#popupMod .addable-items .addable-item.Cleric {
+  border: dashed 1px #bccae7;
+}
+
+#popupMod .addable-items .addable-item.Wizard {
+  border: dashed 1px #0d1974;
+}
 
 #popupMod .single-selectables .selectable.owned {
   border-color: red;

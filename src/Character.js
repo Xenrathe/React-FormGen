@@ -570,6 +570,25 @@ export class Character {
           }))
       );
 
+      //'Access to Wizardry' for sorcerer additions
+      if (Object.keys(jobs[this.job].features).includes("Access to Wizardry")) {
+        const wizardAdditions = Object.entries(jobs["Wizard"].spellList).flatMap(([level, abilities]) => {
+          const adjustedLevel = `Level ${Number(level.substring(6)) + 2}`;
+          return Object.entries(abilities)
+            .filter(([name, _]) => level != "Level 0" && (filterFn(adjustedLevel) || abilityNames.has(name)))
+            .map(([name, data]) => ({
+              [name]: {
+                ...data,
+                Level: parseInt(adjustedLevel.replace("Level ", ""), 10),
+                Source: "Wizard",
+                SLPenalty: -2
+              },
+            }))
+        });
+
+        potential.push(...wizardAdditions);
+      }
+
       // utility spell can be added multiple times, if it's available
       if ("Utility Spell" in jobs[this.job].features) {
         potential.unshift({
@@ -754,7 +773,14 @@ export class Character {
 
     //special addition for paladin divine domain
     if (maxDomains > ownedDomains) {
-      talentChoices = { ...talentChoices, ...jobs["Cleric"].talentChoices };
+      const clericDomainTalents = Object.fromEntries(
+        Object.entries(jobs["Cleric"].talentChoices).map(([name, data]) => [
+          name,
+          { ...data, Source: "Cleric" },
+        ])
+      );
+    
+      talentChoices = { ...talentChoices, ...clericDomainTalents };
     }
 
     return this.#getOptions("talents", talentChoices, this.jobTalents);

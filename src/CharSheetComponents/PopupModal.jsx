@@ -373,7 +373,7 @@ function popupModalList(
               : buttonText;
 
           return (
-            <span key={`${name}`} className={`addable-item`}>
+            <span key={`${name}`} className={`addable-item${"Level" in item[name] ? ` SL${item[name].Level}` : ""}${"Source" in item[name] ? ` ${item[name].Source}` : ""}`}>
               <button
                 onClick={() => {
                   onClickFn();
