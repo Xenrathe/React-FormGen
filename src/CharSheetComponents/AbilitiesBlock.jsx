@@ -244,7 +244,7 @@ function LinedInputsWithBtn({
         mode == "bonusAbs" &&
         "bonusAbilitySet" in jobs[character.job]
       ) {
-        addTitle = `Add ${jobs[character.job].bonusAbilitySet.Name}`;
+        addTitle = `Add ${character.queryBonusAbsTitle()}`;
       }
     }
 

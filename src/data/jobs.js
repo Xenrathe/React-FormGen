@@ -134,9 +134,10 @@ const jobs = {
       [0, 0, 0, 4, 3], // Level 9
       [0, 0, 0, 0, 7], // Level 10
     ],
-    spellList: bardAbilities["Spells"],
+    spellList: flattenData(bardAbilities["Spells"]),
     bonusAbilitySetTotal: [2, 2, 3, 3, 3, 4, 4, 5, 5, 6],
-    bonusAbilitySet: bardAbilities["Bonus"],
+    bonusAbilitySet: flattenData(bardAbilities["Bonus"]),
+    bonusAbilityName: bardAbilities.Bonus.Name,
   },
   Cleric: {
     abilityBonus: ["str", "wis"],
@@ -204,7 +205,7 @@ const jobs = {
       [0, 0, 0, 2, 6], // Level 9
       [0, 0, 0, 1, 8], // Level 10
     ],
-    spellList: clericAbilities["Spells"],
+    spellList: flattenData(clericAbilities["Spells"]),
   },
   Fighter: {
     abilityBonus: ["str", "con"],
@@ -272,7 +273,8 @@ const jobs = {
       )
     ),
     bonusAbilitySetTotal: [3, 4, 4, 5, 5, 6, 6, 7, 7, 8],
-    bonusAbilitySet: fighterAbilities["Bonus"],
+    bonusAbilitySet: flattenData(fighterAbilities["Bonus"]),
+    bonusAbilityName: fighterAbilities.Bonus.Name,
   },
   Paladin: {
     abilityBonus: ["str", "cha"],
@@ -334,7 +336,7 @@ const jobs = {
         ([_, value]) => value.Type === "Default"
       )
     ),
-    spellList: clericAbilities["Spells"],
+    spellList: flattenData(clericAbilities["Spells"]),
     talentChoices: Object.fromEntries(
       Object.entries(paladinAbilities["Talents"]).filter(
         ([_, value]) => value.Type !== "Default"
@@ -464,7 +466,8 @@ const jobs = {
       )
     ),
     bonusAbilitySetTotal: [4, 5, 5, 6, 6, 7, 7, 8, 8, 9],
-    bonusAbilitySet: rogueAbilities["Bonus"],
+    bonusAbilitySet: flattenData(rogueAbilities["Bonus"]),
+    bonusAbilityName: rogueAbilities.Bonus.Name,
   },
   Sorcerer: {
     abilityBonus: ["cha", "con"],
@@ -532,7 +535,7 @@ const jobs = {
       [0, 0, 0, 3, 6], // Level 9
       [0, 0, 0, 0, 9], // Level 10
     ],
-    spellList: sorcererAbilities["Spells"],
+    spellList: flattenData(sorcererAbilities["Spells"]),
     familiarAbilities: wizardAbilities["Familiar Abilities"], //yes this is supposed to be wizardAbilities
   },
   Wizard: {
@@ -601,9 +604,30 @@ const jobs = {
       [0, 0, 1, 5, 6], // Level 9
       [0, 0, 0, 3, 9], // Level 10
     ],
-    spellList: wizardAbilities["Spells"],
+    spellList: flattenData(wizardAbilities["Spells"]),
     familiarAbilities: wizardAbilities["Familiar Abilities"],
   },
 };
+
+function flattenData(dataSource) {
+  const flattenedData = Object.entries(dataSource).filter(([key, v]) => key != 'Name').reduce(
+    (acc, [level, abilities]) => {
+      Object.entries(abilities).forEach(([abilityName, data]) => {
+        if (level === "Utility") {
+          Object.entries(data).forEach(([utilityLevel, utilityData]) => {
+            acc["Utility"] = acc["Utility"] || {};
+            acc["Utility"][utilityLevel] = { ...utilityData, Level: Number(abilityName.substring(6)), baseLevel: Number(abilityName.substring(6)) };
+          });
+        } else {
+          acc[abilityName] = { ...data, baseLevel: Number(level.substring(6)) };
+        }
+      });
+      return acc;
+    },
+    {}
+  );
+
+  return flattenedData;
+}
 
 export default jobs;
