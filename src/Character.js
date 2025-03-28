@@ -184,7 +184,7 @@ export class Character {
 
     //'toughness' feat bonus
     let bonusHP = 0;
-    if (this.feats.some((feat) => Object.keys(feat)[0] == "Toughness")) {
+    if (this.queryFeatHighestTier("Toughness")) {
       if (this.level >= 8) {
         bonusHP = baseHP * 2;
       } else if (this.level >= 5) {
@@ -236,26 +236,10 @@ export class Character {
 
     let featBonus = 0;
     //Barbarian adjustments
-    if (
-      this.feats.some(
-        (feat) =>
-          Object.keys(feat)[0] == "Strongheart" &&
-          Object.values(feat)[0] == "Champion"
-      )
-    ) {
-      featBonus += 1;
-    }
+    if (this.queryFeatIsOwned("Strongheart", "Champion")) featBonus += 1;
 
     // Paladin adjustments
-    if (
-      this.feats.some(
-        (feat) =>
-          Object.keys(feat)[0] == "Implacable" &&
-          Object.values(feat)[0] == "Epic"
-      )
-    ) {
-      featBonus += 1;
-    }
+    if (this.queryFeatIsOwned("Implacable", "Epic")) featBonus += 1;
 
     return basePD + bonusMod + featBonus + this.level;
   }
@@ -271,21 +255,10 @@ export class Character {
 
     let featBonus = 0;
     // Paladin adjustments
-    if (
-      this.feats.some(
-        (feat) =>
-          Object.keys(feat)[0] == "Implacable" &&
-          Object.values(feat)[0] == "Epic"
-      )
-    ) {
-      featBonus += 1;
-    }
+    if (this.queryFeatIsOwned("Implacable", "Epic")) featBonus += 1;
 
     // Rogue adjustments
-    // since this feat is adventurer tier, no need to check for tier
-    if (this.feats.some((feat) => Object.keys(feat)[0] == "Cunning")) {
-      featBonus += 1;
-    }
+    if (this.queryFeatHighestTier("Cunning")) featBonus += 1;
 
     return baseMD + bonusMod + featBonus + this.level;
   }
@@ -316,59 +289,26 @@ export class Character {
 
     // Adjustments for Barbarian
     if (this.jobTalents.includes("Strongheart")) {
-      const SHFeatTiers = this.feats
-        .filter((feat) => Object.keys(feat)[0] == "Strongheart")
-        .map((SHFeatObj) => Object.values(SHFeatObj)[0]);
+      const SHHighestTier = this.queryFeatHighestTier("Strongheart");
 
-      if (SHFeatTiers.includes("Adventurer")) {
-        uses += 1;
-      }
-
-      if (SHFeatTiers.includes("Epic")) {
-        uses += 1;
-      }
+      if (SHHighestTier == "Adventurer") uses += 1;
+      else if (SHHighestTier == "Epic") uses += 2;
 
       diceSize = 12;
     }
 
     //Adjustments for Fighter
-    if (this.feats.some((feat) => Object.keys(feat)[0] == "Extra Tough")) {
-      uses += 1;
-    }
-    if (
-      this.feats.some(
-        (feat) =>
-          Object.keys(feat)[0] == "Tough as Iron" &&
-          Object.values(feat)[0] == "Champion"
-      )
-    ) {
-      uses += 2;
-    }
+    if (this.queryFeatHighestTier("Extra Tough")) uses += 1;
+    if (this.queryFeatIsOwned("Tough as Iron", "Champion")) uses += 2;
 
     //Adjustments for Paladin
-    if (
-      this.feats.some(
-        (feat) =>
-          Object.keys(feat)[0] == "Bastion" &&
-          Object.values(feat)[0] == "Adventurer"
-      )
-    ) {
-      uses += 1;
-    }
+    if (this.queryFeatIsOwned("Bastion", "Adventurer")) uses += 1;
 
     //Adjustments for Ranger
-    if (this.jobTalents.some((talent) => talent.startsWith("AC - "))) {
-      uses += 2;
-    }
+    if (this.jobTalents.some((talent) => talent.startsWith("AC - "))) uses += 2;
 
     //Adjustments for Sorcerer
-    if (
-      this.feats.some(
-        (feat) => Object.keys(feat)[0] == "Undead Remnant Heritage"
-      )
-    ) {
-      uses -= 1;
-    }
+    if (this.queryFeatHighestTier("Undead Remnant Heritage")) uses -= 1;
 
     return [
       uses,
@@ -413,15 +353,7 @@ export class Character {
     }
 
     //adjustments for Sorcerer
-    if (
-      this.feats.some(
-        (feat) =>
-          Object.keys(feat)[0] == "Undead Remnant Heritage" &&
-          Object.values(feat)[0] == "Epic"
-      )
-    ) {
-      rollMod += 1;
-    }
+    if (this.queryFeatIsOwned("Undead Remnant Heritage", "Epic")) rollMod += 1;
 
     const rollAbModPlusOrMinus = rollMod >= 0 ? "+" : "";
     atkArray.push(`${rollAbModPlusOrMinus + rollMod} vs AC`);
@@ -487,8 +419,8 @@ export class Character {
     //this bonus is for 'adventurer' feat, which must always be taken first, hence why I don't bother checking tier
     if (
       weaponStringSplit[0].startsWith("DW") &&
-      this.feats.some((feat) => Object.keys(feat)[0] == "Two-Weapon Mastery")
-    ) {
+      this.queryFeatHighestTier("Two-Weapon Mastery"))
+    {
       missDmg += this.level;
     }
 
