@@ -455,6 +455,10 @@
   border: dashed 1px #bccae7;
 }
 
+#popupMod .addable-items .addable-item.Sorcerer {
+  border: dashed 1px orange;
+}
+
 #popupMod .addable-items .addable-item.Wizard {
   border: dashed 1px #0d1974;
 }

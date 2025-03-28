@@ -1,6 +1,7 @@
 # To-do List
 
 - dropdown box for icon relationships? / cleric talent
+- removal of spells from dropping ranger talents
 - access to other spell-lists for certain talents
 - responsive layout (tablet, mobile breakpoints)
 - SpellInfo dynamically updates depending on level (big change in dataset, I think?)

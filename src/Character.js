@@ -398,7 +398,8 @@ export class Character {
     if (
       this.jobTalents.includes("D: Strength") &&
       weaponStringSplit[1].endsWith("Heavy") &&
-      attackType == "melee" && weaponData.ATK < 0
+      attackType == "melee" &&
+      weaponData.ATK < 0
     ) {
       rollMod += 2;
     }
@@ -572,18 +573,24 @@ export class Character {
 
       //'Access to Wizardry' for sorcerer additions
       if (Object.keys(jobs[this.job].features).includes("Access to Wizardry")) {
-        const wizardAdditions = Object.entries(jobs["Wizard"].spellList).flatMap(([level, abilities]) => {
+        const wizardAdditions = Object.entries(
+          jobs["Wizard"].spellList
+        ).flatMap(([level, abilities]) => {
           const adjustedLevel = `Level ${Number(level.substring(6)) + 2}`;
           return Object.entries(abilities)
-            .filter(([name, _]) => level != "Level 0" && (filterFn(adjustedLevel) || abilityNames.has(name)))
+            .filter(
+              ([name, _]) =>
+                level != "Level 0" &&
+                (filterFn(adjustedLevel) || abilityNames.has(name))
+            )
             .map(([name, data]) => ({
               [name]: {
                 ...data,
                 Level: parseInt(adjustedLevel.replace("Level ", ""), 10),
                 Source: "Wizard",
-                SLPenalty: -2
+                SLPenalty: -2,
               },
-            }))
+            }));
         });
 
         potential.push(...wizardAdditions);
@@ -613,8 +620,16 @@ export class Character {
 
     // Special additions for spells
     // wizard's cantrip and counter-magic, cleric's heal
+    // Owned spells for Ranger talents
     if (type === "spells") {
-      if (this.job === "Cleric" || this.feats.some((feat) => Object.keys(feat)[0] == "Cleric Training" && Object.values(feat)[0] == "Champion")) {
+      if (
+        this.job === "Cleric" ||
+        this.feats.some(
+          (feat) =>
+            Object.keys(feat)[0] == "Cleric Training" &&
+            Object.values(feat)[0] == "Champion"
+        )
+      ) {
         owned.push({ Heal: { ...sourceData["Level 0"].Heal, Level: 0 } });
       } else if (this.job === "Wizard") {
         owned.push({
@@ -633,6 +648,46 @@ export class Character {
           });
         }
       }
+
+      const talentJobPairs = [
+        { "Fey Queen's Enchantments": "Sorcerer" },
+        { "Ranger ex Cathedral": "Cleric" },
+      ];
+      talentJobPairs.forEach((pair) => {
+        const [name, source] = Object.entries(pair)[0];
+        const ownedSpells = this.#querySpellsByClass()[source];
+        const hasEpicFeat = this.feats.some(
+          (feat) =>
+            Object.keys(feat)[0] == name && Object.values(feat)[0] == "Epic"
+        );
+        const maxSpellsFromSource = hasEpicFeat ? 2 : 1;
+
+        //We only need to include this special addition if there's no slots.
+        if (
+          this.jobTalents.includes(name) &&
+          ownedSpells.length == maxSpellsFromSource
+        ) {
+          // Flatten all spells into a single { spellName: data } object
+          const flattenedSpells = Object.entries(jobs[source].spellList).reduce(
+            (acc, [level, spells]) => {
+              Object.entries(spells).forEach(([spellName, data]) => {
+                acc[spellName] = { ...data, Level: this.level };
+              });
+              return acc;
+            },
+            {}
+          );
+
+          // Grab just the ones the character owns
+          const ownedSpellData = ownedSpells
+            .filter((spellName) => flattenedSpells[spellName])
+            .map((spellName) => ({
+              [spellName]: flattenedSpells[spellName],
+            }));
+
+          owned.push(...ownedSpellData);
+        }
+      });
     }
 
     // Special additions for bonus abs
@@ -749,9 +804,67 @@ export class Character {
 
   //this gives spells, separated into { owned, potential }
   getSpells() {
+    let spellList = jobs[this.job]?.spellList ?? {};
+
+    // this stuff only works for certain ranger talents
+    let talentJobPairs = [
+      { "Fey Queen's Enchantments": "Sorcerer" },
+      { "Ranger ex Cathedral": "Cleric" },
+    ];
+
+    talentJobPairs.forEach((pair) => {
+      const [talent, source] = Object.entries(pair)[0];
+      const hasEpicFeat = this.feats.some(
+        (feat) =>
+          Object.keys(feat)[0] == talent && Object.values(feat)[0] == "Epic"
+      );
+      const maxSpellsFromSource = hasEpicFeat ? 2 : 1;
+
+      if (
+        this.jobTalents.includes(talent) &&
+        this.#querySpellsByClass()[source].length < maxSpellsFromSource
+      ) {
+        let acceptableFreq = ["Daily", "Recharge"];
+        if (
+          this.feats.some(
+            (feat) =>
+              Object.keys(feat)[0] == talent &&
+              Object.values(feat)[0] == "Champion"
+          )
+        ) {
+          acceptableFreq.push("At-Will");
+        }
+
+        const filteredSpells = {};
+        Object.entries(jobs[source].spellList).forEach(([level, spells]) => {
+          const filteredLevelSpells = Object.entries(spells)
+            .filter(([_, data]) =>
+              acceptableFreq.some((freq) =>
+                data.Frequency?.toLowerCase().startsWith(freq.toLowerCase())
+              )
+            )
+            .reduce((acc, [name, data]) => {
+              acc[name] = { ...data, Source: source };
+              return acc;
+            }, {});
+
+          if (Object.keys(filteredLevelSpells).length > 0) {
+            filteredSpells[level] = filteredLevelSpells;
+          }
+        });
+
+        Object.entries(filteredSpells).forEach(([level, spells]) => {
+          if (!spellList[level]) {
+            spellList[level] = {};
+          }
+          Object.assign(spellList[level], spells);
+        });
+      }
+    });
+
     return this.#getOptions(
       "spells",
-      jobs[this.job].spellList,
+      spellList,
       this.jobSpells,
       (level) =>
         level !== "Utility" &&
@@ -779,7 +892,7 @@ export class Character {
           { ...data, Source: "Cleric" },
         ])
       );
-    
+
       talentChoices = { ...talentChoices, ...clericDomainTalents };
     }
 
@@ -952,21 +1065,34 @@ export class Character {
     return maxBonusAbs - currentBonusAbs;
   }
 
+  //used for talents that can use spells from other classes
+  //returns an object {"Cleric": ["Heal", "Blessing"], "Sorcerer": [], etc}
+  #querySpellsByClass() {
+    let ownedSpells = {};
+    Object.keys(jobs).forEach((job) => {
+      if ("spellList" in jobs[job]) {
+        ownedSpells[job] = [];
+        let spellNames = [];
+        Object.values(jobs[job].spellList).forEach((level) => {
+          spellNames.push(...Object.keys(level));
+        });
+
+        this.jobSpells.forEach((spell) => {
+          const name = Object.keys(spell)[0];
+          if (spellNames.includes(name)) {
+            ownedSpells[job].push(name);
+          }
+        });
+      }
+    });
+
+    console.log(ownedSpells);
+    return ownedSpells;
+  }
+
   //Returns the total number of slots
   //Is this redundant with querySpellsOwnedCount? it might be.
   querySpellsMax() {
-    //Special talent values
-    if (this.jobTalents.includes("Cleric Training")){
-      if (this.feats.some((feat) => Object.keys(feat) == "Cleric Training" && Object.values(feat)[0] == "Epic")) {
-        return 2;
-      } else {
-        return 1;
-      }
-    }
-    if (!("spellProgression" in jobs[this.job])) {
-      return 0;
-    }
-
     let spellSlots = this.querySpellLevelMaximums().reduce(
       (sum, current) => sum + current,
       0
@@ -986,14 +1112,15 @@ export class Character {
 
   querySpellsOwnedCount() {
     let spellCount = 0;
+    const spellList = jobs[this.job]?.spellList ?? {};
     if (
-      "Utility" in jobs[this.job]?.spellList &&
+      "Utility" in spellList &&
       !this.jobSpells.some((spell) => Object.keys(spell)[0] == "Utility Spell")
     ) {
       spellCount++;
     }
 
-    if ("Level 0" in jobs[this.job]?.spellList) {
+    if ("Level 0" in spellList) {
       spellCount++;
     }
 
@@ -1018,16 +1145,29 @@ export class Character {
 
       return spellMaxCounts;
     } else {
-      let defaultCase = [0, 0, 0, 0, 0]
+      let defaultCase = [0, 0, 0, 0, 0];
 
-      //special case for paladin
-      if (this.jobTalents.includes("Cleric Training")){
-        if (this.feats.some((feat) => Object.keys(feat) == "Cleric Training" && Object.values(feat)[0] == "Epic")) {
-          defaultCase[Math.floor((this.level - 1) / 2)] = 2;
-        } else {
-          defaultCase[Math.floor((this.level - 1) / 2)] = 1;
+      //special cases for paladin and ranger
+      // must follow the case where base talent gives 1 slot and epic feat gives 2
+      const specialCaseTalents = [
+        "Cleric Training",
+        "Fey Queen's Enchantments",
+        "Ranger ex Cathedral",
+      ];
+      specialCaseTalents.forEach((SCT) => {
+        if (this.jobTalents.includes(SCT)) {
+          if (
+            this.feats.some(
+              (feat) =>
+                Object.keys(feat) == SCT && Object.values(feat)[0] == "Epic"
+            )
+          ) {
+            defaultCase[Math.floor((this.level - 1) / 2)] += 2;
+          } else {
+            defaultCase[Math.floor((this.level - 1) / 2)] += 1;
+          }
         }
-      }
+      });
 
       return defaultCase;
     }
