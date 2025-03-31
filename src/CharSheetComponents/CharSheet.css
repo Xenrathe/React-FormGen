@@ -212,6 +212,10 @@
   margin-bottom: 2px;
 }
 
+.lined-inputs .lined-input.error {
+  color: red;
+}
+
 .single-line-w-btn {
   display: flex;
   justify-content: space-between;

@@ -38,7 +38,13 @@ function getAbilitiesRemainingString(
 }
 
 //remove stand-alone feats, spells, etc
-function removeAbility(mode, name, spellLevel, abilitiesBlock, setAbilitiesBlock) {
+function removeAbility(
+  mode,
+  name,
+  spellLevel,
+  abilitiesBlock,
+  setAbilitiesBlock
+) {
   if (mode == "general" || mode == "Animal Companion") {
     const newFeatArray = abilitiesBlock.feats.filter(
       (feat) => Object.keys(feat)[0] != name
@@ -79,7 +85,7 @@ function removeAbility(mode, name, spellLevel, abilitiesBlock, setAbilitiesBlock
           Object.keys(spell)[0] == name &&
           Number(Object.values(spell)[0].substring(6)) == spellLevel
       );
-  
+
       newSpellArray = abilitiesBlock.spells.filter(
         (_, index) => index !== utilitySpellIndex
       );
@@ -139,8 +145,12 @@ export function getDataSets(mode, character) {
       });
 
       //special addition for paladin
-      if (character.jobTalents.filter((talent) => talent.startsWith("Divine Domain")).length > 0) {
-        dataOnLines.push({"Invocation": jobs["Cleric"].features.Invocation});
+      if (
+        character.jobTalents.filter((talent) =>
+          talent.startsWith("Divine Domain")
+        ).length > 0
+      ) {
+        dataOnLines.push({ Invocation: jobs["Cleric"].features.Invocation });
       }
 
       const racialFeatInfo = character.getFeats("racial");
@@ -213,6 +223,12 @@ function LinedInputsWithBtn({
     const removable = item ? item.removable : false;
     const title = item ? Object.keys(item)[0] : "";
 
+    let hasError = false;
+    if (mode == "spells") {
+      const spellsWithError = character.querySpellsHaveError();
+      hasError = spellsWithError.includes(title);
+    }
+
     // tier letter addon
     let highestTier = character.queryFeatHighestTier(title);
     let highestTierLetter = highestTier ? `(${highestTier.charAt(0)})` : "";
@@ -250,7 +266,7 @@ function LinedInputsWithBtn({
 
     lines.push(
       <div key={`k-${mode}-${i}`} className="single-line-w-btn">
-        <span className="lined-input">
+        <span className={`lined-input${hasError ? " error" : ""}`}>
           {title + highestTierLetter + spellLevelAddon}
         </span>
         <div className="buttons no-print">
@@ -258,7 +274,13 @@ function LinedInputsWithBtn({
             removable && (
               <button
                 onClick={() =>
-                  removeAbility(mode, title, spellLevel, abilitiesBlock, setAbilitiesBlock)
+                  removeAbility(
+                    mode,
+                    title,
+                    spellLevel,
+                    abilitiesBlock,
+                    setAbilitiesBlock
+                  )
                 }
               >
                 x
@@ -322,17 +344,12 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
     }
   });
 
-  let tooManySpells = false;
-  character.querySpellLevelsRemaining().forEach((spellNum) => {
-    if (spellNum < 0) {
-      tooManySpells = true;
-    }
-  });
+  const hasSpellError = character.querySpellsHaveError().length > 0;
 
   const tooManyFamiliarAbs = character.queryFamiliarAbilitiesRemaining() < 0;
 
   const hasError =
-    tooManyTalents || tooManyFeats || tooManySpells || tooManyFamiliarAbs; //used to add an error class to div
+    tooManyTalents || tooManyFeats || hasSpellError || tooManyFamiliarAbs; //used to add an error class to div
 
   //for rangers animal companion or wizard's familiar, adds an extra block to add feats/abilities
   let animalsBlock = "";
@@ -426,7 +443,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         <div
           id="spells"
           className={`abilities-input lined-inputs ${
-            tooManySpells ? "input-error" : ""
+            hasSpellError ? "input-error" : ""
           }`}
         >
           <label className="subtitle-label">
@@ -450,7 +467,13 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
             setPopupInfo={setPopupInfo}
             abilitiesBlock={abilitiesBlock}
             setAbilitiesBlock={setAbilitiesBlock}
-            numLines={Math.max(10, Math.max(character.querySpellsMax(), character.querySpellsOwnedCount()))}
+            numLines={Math.max(
+              10,
+              Math.max(
+                character.querySpellsMax(),
+                character.querySpellsOwnedCount()
+              )
+            )}
           />
         </div>
       )}

@@ -419,8 +419,8 @@ export class Character {
     //this bonus is for 'adventurer' feat, which must always be taken first, hence why I don't bother checking tier
     if (
       weaponStringSplit[0].startsWith("DW") &&
-      this.queryFeatHighestTier("Two-Weapon Mastery"))
-    {
+      this.queryFeatHighestTier("Two-Weapon Mastery")
+    ) {
       missDmg += this.level;
     }
 
@@ -453,27 +453,34 @@ export class Character {
 
   //in core, only wizard should be calling for this
   getCantrips() {
-    const list = Object.fromEntries(Object.entries(jobs[this.job].spellList).filter(
-      ([_, data]) => data.baseLevel == 0
-    ));
+    const list = Object.fromEntries(
+      Object.entries(jobs[this.job].spellList).filter(
+        ([_, data]) => data.baseLevel == 0
+      )
+    );
 
     return list;
   }
 
   //in core, only wizard should be calling for this
   getUtilitySpells() {
-    if (!("spellList" in jobs[this.job]) || !("Utility" in jobs[this.job].spellList)) return [];
-  
-    const list = Object.entries(jobs[this.job].spellList.Utility)
-      .map(([name, data]) => ({ [name]: data }));
-  
+    if (
+      !("spellList" in jobs[this.job]) ||
+      !("Utility" in jobs[this.job].spellList)
+    )
+      return [];
+
+    const list = Object.entries(jobs[this.job].spellList.Utility).map(
+      ([name, data]) => ({ [name]: data })
+    );
+
     return list;
   }
 
   #getOptions(type, sourceData, ownedThings, filterFn = () => true) {
     let owned = [];
     let potential = [];
-  
+
     // owned spells are added into potential no matter what
     // this prevents issues with things like a player having a level 9 spell but then lowering their level to 7
     // without checking this, that level 9 spell would not be displayed
@@ -482,7 +489,7 @@ export class Character {
         typeof entry == "object" ? Object.keys(entry)[0] : entry
       )
     );
-  
+
     if (type === "familiarAbs") {
       potential = Object.entries(sourceData)
         .filter(([_, tiers]) => filterFn(tiers))
@@ -501,26 +508,27 @@ export class Character {
     }
 
     // special additions from various talents and features
-    if (type == "spells"){
+    if (type == "spells") {
       if (Object.keys(jobs[this.job].features).includes("Access to Wizardry")) {
-        const wizardAdditions = Object.entries(jobs["Wizard"].spellList)
-          .flatMap(([name, data]) => {
-            const adjustedLevel = data.baseLevel + 2;
-            return data.baseLevel !== 0 &&
-              (this.level >= adjustedLevel || abilityNames.has(name))
-              ? [
-                  {
-                    [name]: {
-                      ...data,
-                      Level: adjustedLevel,
-                      Source: "Wizard",
-                      SLPenalty: -2,
-                    },
+        const wizardAdditions = Object.entries(
+          jobs["Wizard"].spellList
+        ).flatMap(([name, data]) => {
+          const adjustedLevel = data.baseLevel + 2;
+          return data.baseLevel !== 0 &&
+            (this.level >= adjustedLevel || abilityNames.has(name))
+            ? [
+                {
+                  [name]: {
+                    ...data,
+                    Level: adjustedLevel,
+                    Source: "Wizard",
+                    SLPenalty: -2,
                   },
-                ]
-              : [];
-          });
-  
+                },
+              ]
+            : [];
+        });
+
         potential.push(...wizardAdditions);
       }
 
@@ -535,38 +543,75 @@ export class Character {
           const source = pair[talent];
           const maxSpells = this.queryFeatIsOwned(talent, "Epic") ? 2 : 1;
           const ownedSpellCount = this.#querySpellsByClass()[source].length;
-      
+
           let acceptableFreq = ["Daily", "Recha"]; // use first 5 characters only!
           if (this.queryFeatIsOwned(talent, "Champion")) {
             acceptableFreq.push("At-Wi"); //first 5 characters again!
           }
-    
+
           let filteredSpells = Object.entries(jobs[source].spellList)
-            .filter(([name, data]) => abilityNames.has(name) || (this.jobTalents.includes(talent) && filterFn(data) && acceptableFreq.includes(data.Frequency?.substring(0, 5)) && ownedSpellCount < maxSpells))
+            .filter(
+              ([name, data]) =>
+                abilityNames.has(name) ||
+                (this.jobTalents.includes(talent) &&
+                  filterFn(data) &&
+                  acceptableFreq.includes(data.Frequency?.substring(0, 5)) &&
+                  ownedSpellCount < maxSpells)
+            )
             .flatMap(([spellName, data]) => {
-              return [{[spellName]: {...data, Level: (this.level % 2 == 0 ? this.level - 1 : this.level), Source: source}}]});
-            
-          potential.push(...filteredSpells)
-          }
-        );
+              return [
+                {
+                  [spellName]: {
+                    ...data,
+                    Level: this.level % 2 == 0 ? this.level - 1 : this.level,
+                    Source: source,
+                  },
+                },
+              ];
+            });
+
+          potential.push(...filteredSpells);
+        });
       }
 
       //Bard's Jack of Spells additions
       if (this.job == "Bard") {
-        const options = this.bonusOptions.filter((bo) => Object.keys(bo)[0] == "Jack of Spells").map((bo) => Object.values(bo)[0]);
+        const options = this.bonusOptions
+          .filter((bo) => Object.keys(bo)[0] == "Jack of Spells")
+          .map((bo) => Object.values(bo)[0]);
         const potentialSources = ["Cleric", "Sorcerer", "Wizard"];
-        const validSources = options ? options.map((option) => jobs["Bard"].talentChoices["Jack of Spells"]["Options"][option]) : [];
+        const validSources = options
+          ? options.map(
+              (option) =>
+                jobs["Bard"].talentChoices["Jack of Spells"]["Options"][option]
+            )
+          : [];
 
         potentialSources.forEach((source) => {
           const ownedSpellCount = this.#querySpellsByClass()[source].length;
 
           let filteredSpells = Object.entries(jobs[source].spellList)
-          .filter(([name, data]) => abilityNames.has(name) || (filterFn(data) && validSources.includes(source) && ownedSpellCount < 1))
-          .flatMap(([spellName, data]) => {
-            return [{[spellName]: {...data, Level: (this.level % 2 == 0 ? this.level - 1 : this.level), Source: source}}]});
-          
-          potential.push(...filteredSpells)
-        })
+            .filter(
+              ([name, data]) =>
+                abilityNames.has(name) ||
+                (filterFn(data) &&
+                  validSources.includes(source) &&
+                  ownedSpellCount < 1)
+            )
+            .flatMap(([spellName, data]) => {
+              return [
+                {
+                  [spellName]: {
+                    ...data,
+                    Level: this.level % 2 == 0 ? this.level - 1 : this.level,
+                    Source: source,
+                  },
+                },
+              ];
+            });
+
+          potential.push(...filteredSpells);
+        });
       }
 
       // Utility spell can be added multiple times, if it's available
@@ -574,8 +619,7 @@ export class Character {
         potential.unshift({
           "Utility Spell": {
             Level: 1,
-            Effect:
-              "Take a spell-slot to allow using utility spells",
+            Effect: "Take a spell-slot to allow using utility spells",
             "Level 3": "Levitate; Message; Speak with Item",
             "Level 5": "Water Breathing",
             "Level 7": "Scrying",
@@ -585,7 +629,10 @@ export class Character {
       }
 
       // Cleric(or Paladin) + Wizard special additions
-      if (this.job === "Cleric" || this.queryFeatIsOwned("Cleric Training", "Champion")) {
+      if (
+        this.job === "Cleric" ||
+        this.queryFeatIsOwned("Cleric Training", "Champion")
+      ) {
         owned.push({ Heal: { ...jobs["Cleric"].spellList.Heal, Level: 0 } });
       } else if (this.job === "Wizard") {
         owned.push({
@@ -604,7 +651,6 @@ export class Character {
           });
         }
       }
-
     }
 
     // Special additions for bonus abs
@@ -635,11 +681,13 @@ export class Character {
 
     if (type === "talents" && maxDomains > 0) {
       const clericDomainTalents = Object.entries(jobs["Cleric"].talentChoices)
-        .filter(([name, _]) => abilityNames.has(name) || (maxDomains > ownedDomains))
+        .filter(
+          ([name, _]) => abilityNames.has(name) || maxDomains > ownedDomains
+        )
         .map(([name, data]) => ({
           [name]: { ...data, Source: "Cleric" },
         }));
-      
+
       potential.push(...clericDomainTalents);
     }
 
@@ -686,10 +734,6 @@ export class Character {
       }
     }
 
-    if (type == "spells") {
-      //console.log(JSON.parse(JSON.stringify(potential)));
-    }
-
     return { owned, potential };
   }
 
@@ -729,7 +773,10 @@ export class Character {
       "spells",
       spellList,
       this.jobSpells,
-      (data) => data.baseLevel !== "Utility" && data.baseLevel !== 0 && data.baseLevel <= this.level
+      (data) =>
+        data.baseLevel !== "Utility" &&
+        data.baseLevel !== 0 &&
+        data.baseLevel <= this.level
     );
   }
 
@@ -822,8 +869,7 @@ export class Character {
   }
 
   queryBonusAbsTitle() {
-
-    return jobs[this.job]?.bonusAbilityName ?? "";;
+    return jobs[this.job]?.bonusAbilityName ?? "";
   }
 
   #queryBonusAbsMax() {
@@ -857,8 +903,18 @@ export class Character {
     ) {
       return 0;
     } else if (sorcPetFeat == "Epic" || rangPetFeat == "Epic") return 5;
-    else if (wizPetFeat == "Epic" || sorcPetFeat == "Adventurer" || rangPetFeat == "Champion") return 4;
-    else if (wizPetFeat == "Adventurer" || rangPetFeat == "Adventurer" || this.jobTalents.includes("Sorcerer's Familiar")) return 3;
+    else if (
+      wizPetFeat == "Epic" ||
+      sorcPetFeat == "Adventurer" ||
+      rangPetFeat == "Champion"
+    )
+      return 4;
+    else if (
+      wizPetFeat == "Adventurer" ||
+      rangPetFeat == "Adventurer" ||
+      this.jobTalents.includes("Sorcerer's Familiar")
+    )
+      return 3;
     else return 2;
   }
 
@@ -1018,25 +1074,103 @@ export class Character {
   //used for talents that can use spells from other classes
   //returns an object {"Cleric": ["Heal", "Blessing"], "Sorcerer": [], etc}
   #querySpellsByClass() {
-  let ownedSpells = {};
+    let ownedSpells = {};
 
-  Object.keys(jobs).forEach((job) => {
-    if ("spellList" in jobs[job]) {
-      ownedSpells[job] = [];
+    Object.keys(jobs).forEach((job) => {
+      if ("spellList" in jobs[job]) {
+        ownedSpells[job] = [];
 
-      Object.keys(jobs[job].spellList).forEach((spellName) => {
-        this.jobSpells.forEach((spell) => {
-          const name = Object.keys(spell)[0];
-          if (name === spellName) {
-            ownedSpells[job].push(name);
-          }
+        Object.keys(jobs[job].spellList).forEach((spellName) => {
+          this.jobSpells.forEach((spell) => {
+            const name = Object.keys(spell)[0];
+            if (name === spellName) {
+              ownedSpells[job].push(name);
+            }
+          });
         });
-      });
-    }
-  });
+      }
+    });
 
-  return ownedSpells;
-}
+    return ownedSpells;
+  }
+
+  //returns an array of strings of spell-names that are in error
+  querySpellsHaveError() {
+    let errorSpells = [];
+
+    // standard errors (too many at a given spellLevel)
+    // this will also cover spells at too high or too low of a level
+    const spellLevelMax = this.querySpellLevelMaximums();
+    spellLevelMax.forEach((maxCount, index) => {
+      const slotLevel = index * 2 + 1;
+      let ownedSLCount = 0;
+      this.jobSpells.forEach((spell) => {
+        const spellLevel = Number(Object.values(spell)[0].substring(6));
+        if (spellLevel == slotLevel) {
+          ownedSLCount += 1;
+          if (ownedSLCount > maxCount) errorSpells.push(Object.keys(spell)[0]);
+        }
+      });
+    });
+
+    // class-based errors
+    // only necessary for Ranger and Bard's cross-job spell talents
+    const ownedJobSpells = this.#querySpellsByClass();
+    let maxAllowedSpells = { Bard: 0, Cleric: 0, Sorcerer: 0, Wizard: 0 };
+    if (this.job in maxAllowedSpells) maxAllowedSpells[this.job] = 100;
+
+    //paladin increase
+    if (this.jobTalents.includes("Cleric Training")) {
+      maxAllowedSpells["Cleric"] = 100;
+    }
+
+    const rangerTalents = [
+      { "Fey Queen's Enchantments": "Sorcerer" },
+      { "Ranger ex Cathedral": "Cleric" },
+    ];
+    rangerTalents.forEach((RT) => {
+      const talentName = Object.keys(RT)[0];
+      const source = Object.values(RT)[0];
+
+      if (this.jobTalents.includes(talentName)) {
+        const highestTier = this.queryFeatHighestTier(talentName);
+        if (highestTier == "Epic") {
+          maxAllowedSpells[source] += 2;
+        } else {
+          maxAllowedSpells[source] += 1;
+        }
+      }
+    });
+
+    // Bard additions
+    const options = this.bonusOptions
+      .filter((bo) => Object.keys(bo)[0] == "Jack of Spells")
+      .map((bo) => Object.values(bo)[0]);
+    const validSources = options
+      ? options.map(
+          (option) =>
+            jobs["Bard"].talentChoices["Jack of Spells"]["Options"][option]
+        )
+      : [];
+    validSources.forEach((vSource) => (maxAllowedSpells[vSource] += 1));
+
+    Object.keys(maxAllowedSpells).forEach((source) => {
+      let ownedSourceCount = 0;
+      const ownedSpellsForThisSource = ownedJobSpells[source];
+      if (ownedSpellsForThisSource.length > maxAllowedSpells[source]) {
+        this.jobSpells.forEach((spell) => {
+          const spellName = Object.keys(spell)[0];
+          if (ownedSpellsForThisSource.includes(spellName))
+            ownedSourceCount += 1;
+
+          if (ownedSourceCount > maxAllowedSpells[source])
+            errorSpells.push(spellName);
+        });
+      }
+    });
+
+    return errorSpells;
+  }
 
   //Returns the total number of slots
   //Is this redundant with querySpellsOwnedCount? it might be.
@@ -1058,6 +1192,7 @@ export class Character {
     return spellSlots;
   }
 
+  //returns a single number - used for adding lines in the spells block of AbilityBlock
   querySpellsOwnedCount() {
     let spellCount = this.jobSpells.length;
 
@@ -1069,10 +1204,13 @@ export class Character {
     return spellCount;
   }
 
+  //returns a single number - used for automatically leveling new spells to min
+  //also used to restrict spell level reductions
   querySpellLevelMinimum() {
     return this.querySpellLevelMaximums().findIndex((num) => num > 0) * 2 + 1;
   }
 
+  //returns an array [a, b, c, d, e] of the MAXIMUM spell count for each level (1, 3, 5, 7, 9)
   querySpellLevelMaximums() {
     let spellMaxCounts = [0, 0, 0, 0, 0];
     if ("spellProgression" in jobs[this.job]) {
@@ -1083,7 +1221,6 @@ export class Character {
       if (this.jobTalents.includes("Spellsinger")) {
         spellMaxCounts[spellMaxCounts.findLastIndex((num) => num > 0)] += 1;
       }
-
     }
 
     //special cases for paladin and ranger
@@ -1118,6 +1255,7 @@ export class Character {
     return spellMaxCounts;
   }
 
+  //returns an array [a, b, c, d, e] of the CURRENT spell count for each level (1, 3, 5, 7, 9)
   #querySpellLevelCurrentCounts() {
     let spellCounts = [0, 0, 0, 0, 0];
 
@@ -1129,6 +1267,7 @@ export class Character {
     return spellCounts;
   }
 
+  //returns an array [a, b, c, d, e] of the MAXIMUM - CURRENT spell count for each level (1, 3, 5, 7, 9)
   querySpellLevelsRemaining() {
     return this.querySpellLevelMaximums().map(
       (item, index) => item - this.#querySpellLevelCurrentCounts()[index]
@@ -1149,10 +1288,10 @@ export class Character {
     }
 
     const subOptions = Object.entries(abilityInfo.singleItem?.Options ?? {})
-    .filter(([key, _]) => key !== "Count")
-    .map(([key, value]) => ({ [key]: value }));
+      .filter(([key, _]) => key !== "Count")
+      .map(([key, value]) => ({ [key]: value }));
 
-    return [numChoices, subOptions]
+    return [numChoices, subOptions];
   }
 
   // for most jobs, returns a single number
