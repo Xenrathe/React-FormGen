@@ -30,7 +30,13 @@
       "Base": "Choose another spell-casting character class. You can choose one spell from the spell list (but not the talent list) of that class, of your own level or lower, as an extra spell you know how to cast.",
       "Adventurer": "You can use your Charisma as the ability score that provides the spell’s attack bonus and damage bonus (if any). Other ability score references remain unchanged.\n\nIf the spell is a wizard spell, you also gain three cantrips of your choice from the wizard. You can cast them like a wizard who lacks the Cantrip Mastery talent.\n\nIf you choose a spell from the sorcerer class, you also gain the sorcerer’s dancing lights class feature.",
       "Champion": "Choose a second spell-casting class. Choose another spell from that class as well.",
-      "Epic": "Choose a third spell-casting class. Gain a spell from that class also."
+      "Epic": "Choose a third spell-casting class. Gain a spell from that class also.",
+      "Options" : {
+        "Count": 1,
+        "A": "Cleric",
+        "B": "Sorcerer",
+        "C": "Wizard"
+      }
     },
     "Loremaster": {
       "Type": "Optional",

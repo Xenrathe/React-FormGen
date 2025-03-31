@@ -2,6 +2,7 @@
 
 - dropdown box for icon relationships? / cleric talent
 - access to other spell-lists for certain talents
+- spell count error checks on a class-by-class basis
 - responsive layout (tablet, mobile breakpoints)
 - SpellInfo dynamically updates depending on level (big change in dataset, I think?)
 - AbilitiesBlock sub-blocks borrows space from other sub-blocks to maintain formatting

@@ -231,11 +231,7 @@ function AbilityCard({
     (itemKey) => itemKey.length > 5 && itemKey.substring(0, 5) == "Level"
   );
 
-  const bonusOptions = Object.entries(abilityInfo.singleItem?.Options ?? {})
-    .filter(([key, _]) => key !== "Count")
-    .map(([key, value]) => ({ [key]: value }));
-
-  const bonusCount = abilityInfo.singleItem?.Options?.Count ?? 0;
+  const [subOptionChoices, subOptions] = character.querySubOptions(abilityInfo);
 
   return (
     (!infoOnly || abilityInfo.title != "Utility Spell") && (
@@ -319,6 +315,53 @@ function AbilityCard({
             })}
           </span>
         )}
+        {subOptions.length > 0 && (
+          <span className="single-selectables" id="sub-options">
+            {subOptions.map((bonusOption) => {
+              const key = Object.keys(bonusOption)[0];
+              const val = Object.values(bonusOption)[0];
+
+              const hasBonus = character.bonusOptions.some(
+                (option) => option[abilityInfo.title] === key
+              );
+
+              const btnVisible = !infoOnly;
+
+              // only show CHOSEN bonus options in infoOnly mode
+              if (hasBonus || !infoOnly) {
+                return (
+                  <span
+                    key={`${abilityInfo.title}-${key}`}
+                    className={`selectable ${hasBonus && "owned"}`}
+                  >
+                    {btnVisible && (
+                      <button
+                        onClick={() =>
+                          alterBonusOptions(
+                            abilityInfo.title,
+                            key,
+                            !hasBonus, // add or remove
+                            subOptionChoices,
+                            abilitiesBlock,
+                            setAbilitiesBlock
+                          )
+                        }
+                        className={`alterBtn ${hasBonus ? "remove" : "add"}`}
+                      >
+                        <span className={`text${hasBonus ? " minus" : ""}`}>{`${
+                          hasBonus ? "-" : "+"
+                        }`}</span>
+                      </button>
+                    )}
+                    {val}
+                  </span>
+                );
+              } else {
+                return "";
+              }
+            })}
+          </span>
+        )}
         {feats.length > 0 && (
           <span className="single-selectables" id="feats">
             {feats.map((tier) => {
@@ -360,53 +403,6 @@ function AbilityCard({
                       </button>
                     )}
                     <strong>{tier}</strong> - {abilityInfo.singleItem[tier]}
-                  </span>
-                );
-              } else {
-                return "";
-              }
-            })}
-          </span>
-        )}
-        {bonusOptions.length > 0 && (
-          <span className="single-selectables" id="bonus-options">
-            {bonusOptions.map((bonusOption) => {
-              const key = Object.keys(bonusOption)[0];
-              const val = Object.values(bonusOption)[0];
-
-              const hasBonus = character.bonusOptions.some(
-                (option) => option[abilityInfo.title] === key
-              );
-
-              const btnVisible = !infoOnly;
-
-              // only show CHOSEN bonus options in infoOnly mode
-              if (hasBonus || !infoOnly) {
-                return (
-                  <span
-                    key={`${abilityInfo.title}-${key}`}
-                    className={`selectable ${hasBonus && "owned"}`}
-                  >
-                    {btnVisible && (
-                      <button
-                        onClick={() =>
-                          alterBonusOptions(
-                            abilityInfo.title,
-                            key,
-                            !hasBonus, // add or remove
-                            bonusCount,
-                            abilitiesBlock,
-                            setAbilitiesBlock
-                          )
-                        }
-                        className={`alterBtn ${hasBonus ? "remove" : "add"}`}
-                      >
-                        <span className={`text${hasBonus ? " minus" : ""}`}>{`${
-                          hasBonus ? "-" : "+"
-                        }`}</span>
-                      </button>
-                    )}
-                    {val}
                   </span>
                 );
               } else {

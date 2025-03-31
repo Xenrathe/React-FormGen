@@ -41,7 +41,7 @@ export class Character {
     this.jobBonusAbs = [...jobBonusAbs]; //an array of strings
     this.feats = feats.map((f) => ({ ...f })); //an array of objects {"Linguist": "Champion"}
     this.familiarAbs = [...familiarAbs]; //an array of strings
-    this.bonusOptions = bonusOptions.map((opt) => ({ ...opt })); //an array of objects {"Mythkenner": ["A", "B"]}
+    this.bonusOptions = bonusOptions.map((opt) => ({ ...opt })); //an array of objects ["Mythkenner": "A", "Mythkenner": "B"]
 
     this.#trimFeatsAndAbilities(); //removes feats, talents, spells, etc incompatible with job, race, and new level
 
@@ -499,7 +499,7 @@ export class Character {
           },
         }));
     }
-  
+
     // special additions from various talents and features
     if (type == "spells"){
       if (Object.keys(jobs[this.job].features).includes("Access to Wizardry")) {
@@ -525,29 +525,49 @@ export class Character {
       }
 
       // Ranger spell additions
-      let talentJobPairs = [
-        { "Fey Queen's Enchantments": "Sorcerer" },
-        { "Ranger ex Cathedral": "Cleric" },
-      ];
-      talentJobPairs.forEach((pair) => {
-        const talent = Object.keys(pair)[0];
-        const source = pair[talent];
-        const maxSpells = this.queryFeatIsOwned(talent, "Epic") ? 2 : 1;
-        const ownedSpells = this.#querySpellsByClass()[source].length;
+      if (this.job == "Ranger") {
+        let talentJobPairs = [
+          { "Fey Queen's Enchantments": "Sorcerer" },
+          { "Ranger ex Cathedral": "Cleric" },
+        ];
+        talentJobPairs.forEach((pair) => {
+          const talent = Object.keys(pair)[0];
+          const source = pair[talent];
+          const maxSpells = this.queryFeatIsOwned(talent, "Epic") ? 2 : 1;
+          const ownedSpellCount = this.#querySpellsByClass()[source].length;
+      
+          let acceptableFreq = ["Daily", "Recha"]; // use first 5 characters only!
+          if (this.queryFeatIsOwned(talent, "Champion")) {
+            acceptableFreq.push("At-Wi"); //first 5 characters again!
+          }
     
-        let acceptableFreq = ["Daily", "Recha"]; // use first 5 characters only!
-        if (this.queryFeatIsOwned(talent, "Champion")) {
-          acceptableFreq.push("At-Wi"); //first 5 characters again!
-        }
-  
-        let filteredSpells = Object.entries(jobs[source].spellList)
-          .filter(([name, data]) => abilityNames.has(name) || (this.jobTalents.includes(talent) && filterFn(data) && acceptableFreq.includes(data.Frequency?.substring(0, 5)) && ownedSpells < maxSpells))
-          .flatMap(([spellName, data]) => {
-            return [{[spellName]: {...data, Level: this.level, Source: source}}]});
-          
-        potential.push(...filteredSpells)
+          let filteredSpells = Object.entries(jobs[source].spellList)
+            .filter(([name, data]) => abilityNames.has(name) || (this.jobTalents.includes(talent) && filterFn(data) && acceptableFreq.includes(data.Frequency?.substring(0, 5)) && ownedSpellCount < maxSpells))
+            .flatMap(([spellName, data]) => {
+              return [{[spellName]: {...data, Level: (this.level % 2 == 0 ? this.level - 1 : this.level), Source: source}}]});
+            
+          potential.push(...filteredSpells)
+          }
+        );
       }
-      );
+
+      //Bard's Jack of Spells additions
+      if (this.job == "Bard") {
+        const options = this.bonusOptions.filter((bo) => Object.keys(bo)[0] == "Jack of Spells").map((bo) => Object.values(bo)[0]);
+        const potentialSources = ["Cleric", "Sorcerer", "Wizard"];
+        const validSources = options ? options.map((option) => jobs["Bard"].talentChoices["Jack of Spells"]["Options"][option]) : [];
+
+        potentialSources.forEach((source) => {
+          const ownedSpellCount = this.#querySpellsByClass()[source].length;
+
+          let filteredSpells = Object.entries(jobs[source].spellList)
+          .filter(([name, data]) => abilityNames.has(name) || (filterFn(data) && validSources.includes(source) && ownedSpellCount < 1))
+          .flatMap(([spellName, data]) => {
+            return [{[spellName]: {...data, Level: (this.level % 2 == 0 ? this.level - 1 : this.level), Source: source}}]});
+          
+          potential.push(...filteredSpells)
+        })
+      }
 
       // Utility spell can be added multiple times, if it's available
       if ("Utility Spell" in jobs[this.job].features) {
@@ -564,6 +584,7 @@ export class Character {
         });
       }
 
+      // Cleric(or Paladin) + Wizard special additions
       if (this.job === "Cleric" || this.queryFeatIsOwned("Cleric Training", "Champion")) {
         owned.push({ Heal: { ...jobs["Cleric"].spellList.Heal, Level: 0 } });
       } else if (this.job === "Wizard") {
@@ -584,51 +605,6 @@ export class Character {
         }
       }
 
-    }
-
-    // Special additions for spells
-    // wizard's cantrip and counter-magic, cleric's heal
-    // Owned spells for Ranger talents
-    if (type === "spells") {
-      /*const talentJobPairs = [
-        { "Fey Queen's Enchantments": "Sorcerer" },
-        { "Ranger ex Cathedral": "Cleric" },
-      ];
-      talentJobPairs.forEach((pair) => {
-        const [name, source] = Object.entries(pair)[0];
-        const ownedSpells = this.#querySpellsByClass()[source];
-        const hasEpicFeat = this.feats.some(
-          (feat) =>
-            Object.keys(feat)[0] == name && Object.values(feat)[0] == "Epic"
-        );
-        const maxSpellsFromSource = hasEpicFeat ? 2 : 1;
-
-        //We only need to include this special addition if there's no slots.
-        if (
-          this.jobTalents.includes(name) &&
-          ownedSpells.length == maxSpellsFromSource
-        ) {
-          // Flatten all spells into a single { spellName: data } object
-          const flattenedSpells = Object.entries(jobs[source].spellList).reduce(
-            (acc, [level, spells]) => {
-              Object.entries(spells).forEach(([spellName, data]) => {
-                acc[spellName] = { ...data, Level: this.level };
-              });
-              return acc;
-            },
-            {}
-          );
-
-          // Grab just the ones the character owns
-          const ownedSpellData = ownedSpells
-            .filter((spellName) => flattenedSpells[spellName])
-            .map((spellName) => ({
-              [spellName]: flattenedSpells[spellName],
-            }));
-
-          owned.push(...ownedSpellData);
-        }
-      });*/
     }
 
     // Special additions for bonus abs
@@ -688,7 +664,7 @@ export class Character {
           owned.push(potential[index]);
         }
 
-        //Utility spell can be taken multiple times
+        //Utility spell can be taken multiple time
         if (itemName != "Utility Spell") {
           potential.splice(index, 1);
         }
@@ -708,6 +684,10 @@ export class Character {
           (talent) => !Object.keys(talent)[0].endsWith("(C)")
         );
       }
+    }
+
+    if (type == "spells") {
+      //console.log(JSON.parse(JSON.stringify(potential)));
     }
 
     return { owned, potential };
@@ -774,6 +754,17 @@ export class Character {
     return familiarDataSet;
   }
 
+  //gives number of Animal Companion feats; used for expanding animal companion box in case user really wants to load up on AC feats
+  queryACFeatsCount() {
+    let count = 0;
+    if ("ACFeats" in jobs[this.job]) {
+      count = this.feats.filter((ownedFeat) =>
+        Object.keys(jobs[this.job].ACFeats).includes(Object.keys(ownedFeat)[0])
+      ).length;
+    }
+    return count;
+  }
+
   //returns an array [totalPointsMax, maxPerBG, maxExceptions]
   queryBackgroundMax() {
     let maxTotal = 8;
@@ -830,6 +821,147 @@ export class Character {
     return [maxTotal, maxDefault, maxExceptions];
   }
 
+  queryBonusAbsTitle() {
+
+    return jobs[this.job]?.bonusAbilityName ?? "";;
+  }
+
+  #queryBonusAbsMax() {
+    let maxBonusAbs =
+      "bonusAbilitySetTotal" in jobs[this.job]
+        ? jobs[this.job].bonusAbilitySetTotal[this.level - 1]
+        : 0;
+
+    if (this.jobTalents.includes("Battle Skald")) {
+      maxBonusAbs += 1;
+    }
+
+    return maxBonusAbs;
+  }
+
+  queryBonusAbsRemaining() {
+    const maxBonusAbs = this.#queryBonusAbsMax();
+    const currentBonusAbs = this.jobBonusAbs.length;
+    return maxBonusAbs - currentBonusAbs;
+  }
+
+  #queryFamiliarAbsMax() {
+    //order matters in these control statements. Epic must be before Adventurer
+    const sorcPetFeat = this.queryFeatHighestTier("Sorcerer's Familiar");
+    const rangPetFeat = this.queryFeatHighestTier("Ranger's Pet");
+    const wizPetFeat = this.queryFeatHighestTier("Wizard's Familiar");
+
+    if (
+      !this.jobTalents.some((talent) => talent.endsWith("Familiar")) &&
+      !this.jobTalents.includes("Ranger's Pet")
+    ) {
+      return 0;
+    } else if (sorcPetFeat == "Epic" || rangPetFeat == "Epic") return 5;
+    else if (wizPetFeat == "Epic" || sorcPetFeat == "Adventurer" || rangPetFeat == "Champion") return 4;
+    else if (wizPetFeat == "Adventurer" || rangPetFeat == "Adventurer" || this.jobTalents.includes("Sorcerer's Familiar")) return 3;
+    else return 2;
+  }
+
+  #queryFamiliarAbsCurrent() {
+    //tough counts as 2
+    return (
+      this.familiarAbs.length + (this.familiarAbs.includes("Tough") ? 1 : 0)
+    );
+  }
+
+  queryFamiliarAbilitiesRemaining() {
+    return this.#queryFamiliarAbsMax() - this.#queryFamiliarAbsCurrent();
+  }
+
+  // 1A - 2A - 3A - 4A (levels 1-4)
+  // 1C - 2C - 3C (levels 5-7)
+  // 1E - 2E - 3E (levels 8-10)
+  // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
+  #queryFeatsMax() {
+    let maxAdv = this.level > 4 ? 4 : this.level;
+    maxAdv = this.race == "Human" ? maxAdv + 1 : maxAdv;
+
+    // clamped between 0 and 3
+    const maxChamp = Math.min(3, Math.max(this.level - 4, 0));
+
+    // clamped between 0 and 3
+    const maxEpic = Math.min(3, Math.max(this.level - 7, 0));
+
+    return { Adventurer: maxAdv, Champion: maxChamp, Epic: maxEpic };
+  }
+
+  // this.feats must be in correct data structure (see constructor above)
+  // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
+  #queryFeatsCurrentCounts() {
+    let counts = { Adventurer: 0, Champion: 0, Epic: 0 };
+
+    this.feats.forEach((feat) => {
+      const tier = Object.values(feat)[0];
+      counts[tier] += 1;
+    });
+
+    return counts;
+  }
+
+  //returns an array [adv #, champ #, epic #]
+  queryFeatsRemaining() {
+    const currentFeatCounts = this.#queryFeatsCurrentCounts();
+    const maxFeats = this.#queryFeatsMax();
+    const advFeatsRemain = maxFeats.Adventurer - currentFeatCounts.Adventurer;
+    const champFeatsRemain = maxFeats.Champion - currentFeatCounts.Champion;
+    const epicFeatsRemain = maxFeats.Epic - currentFeatCounts.Epic;
+
+    return [advFeatsRemain, champFeatsRemain, epicFeatsRemain];
+  }
+
+  //returns true or false
+  queryFeatIsOwned(featName, featTier) {
+    const highestFeatTier = this.queryFeatHighestTier(featName);
+
+    // does not have feat at all
+    if (!highestFeatTier) {
+      return false;
+    }
+
+    if (highestFeatTier == "Epic") {
+      return true;
+    } else if (highestFeatTier == "Champion" && featTier != "Epic") {
+      return true;
+    } else if (highestFeatTier == "Adventurer" && featTier == "Adventurer") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //returns highest tier (e.g. "Epic") of feat owned
+  //returns false if not owned
+  queryFeatHighestTier(featName) {
+    // search through this.feats to see if feat is owned
+    let owned = [];
+    this.feats.forEach((feat) => {
+      if (Object.keys(feat)[0] == featName) {
+        owned.push(feat);
+      }
+    });
+
+    if (owned.length == 0) {
+      return false;
+    }
+
+    const tiers = ["Adventurer", "Champion", "Epic"];
+    let highestIndex = 0;
+
+    owned.forEach((feat) => {
+      const tierIndex = tiers.indexOf(Object.values(feat)[0]);
+      if (tierIndex >= highestIndex) {
+        highestIndex = tierIndex;
+      }
+    });
+
+    return tiers[highestIndex];
+  }
+
   // returns an array [totalPointsMax, maxPerIcon]
   queryIconRelationshipsMax() {
     let totalPointsMax = 3;
@@ -881,30 +1013,6 @@ export class Character {
     }
 
     return [totalPointsMax, maxPerIcon];
-  }
-
-  queryBonusAbsTitle() {
-
-    return jobs[this.job]?.bonusAbilityName ?? "";;
-  }
-
-  #queryBonusAbsMax() {
-    let maxBonusAbs =
-      "bonusAbilitySetTotal" in jobs[this.job]
-        ? jobs[this.job].bonusAbilitySetTotal[this.level - 1]
-        : 0;
-
-    if (this.jobTalents.includes("Battle Skald")) {
-      maxBonusAbs += 1;
-    }
-
-    return maxBonusAbs;
-  }
-
-  queryBonusAbsRemaining() {
-    const maxBonusAbs = this.#queryBonusAbsMax();
-    const currentBonusAbs = this.jobBonusAbs.length;
-    return maxBonusAbs - currentBonusAbs;
   }
 
   //used for talents that can use spells from other classes
@@ -966,8 +1074,9 @@ export class Character {
   }
 
   querySpellLevelMaximums() {
+    let spellMaxCounts = [0, 0, 0, 0, 0];
     if ("spellProgression" in jobs[this.job]) {
-      let spellMaxCounts = [
+      spellMaxCounts = [
         ...jobs[this.job].spellProgression[Math.max(0, this.level - 1)],
       ];
 
@@ -975,29 +1084,38 @@ export class Character {
         spellMaxCounts[spellMaxCounts.findLastIndex((num) => num > 0)] += 1;
       }
 
-      return spellMaxCounts;
-    } else {
-      let defaultCase = [0, 0, 0, 0, 0];
-
-      //special cases for paladin and ranger
-      // must follow the case where base talent gives 1 slot and epic feat gives 2
-      const specialCaseTalents = [
-        "Cleric Training",
-        "Fey Queen's Enchantments",
-        "Ranger ex Cathedral",
-      ];
-      specialCaseTalents.forEach((SCT) => {
-        if (this.jobTalents.includes(SCT)) {
-          if (this.queryFeatIsOwned(SCT, "Epic")) {
-            defaultCase[Math.floor((this.level - 1) / 2)] += 2;
-          } else {
-            defaultCase[Math.floor((this.level - 1) / 2)] += 1;
-          }
-        }
-      });
-
-      return defaultCase;
     }
+
+    //special cases for paladin and ranger
+    // must follow the case where base talent gives 1 slot and epic feat gives 2
+    const specialCaseTalents = [
+      "Cleric Training",
+      "Fey Queen's Enchantments",
+      "Ranger ex Cathedral",
+    ];
+    specialCaseTalents.forEach((SCT) => {
+      if (this.jobTalents.includes(SCT)) {
+        if (this.queryFeatIsOwned(SCT, "Epic")) {
+          spellMaxCounts[Math.floor((this.level - 1) / 2)] += 2;
+        } else {
+          spellMaxCounts[Math.floor((this.level - 1) / 2)] += 1;
+        }
+      }
+    });
+
+    //special case for bard's jack of spells
+    if (this.jobTalents.includes("Jack of Spells")) {
+      const highestJackTier = this.queryFeatHighestTier("Jack of Spells");
+      if (highestJackTier == "Epic") {
+        spellMaxCounts[Math.floor((this.level - 1) / 2)] += 3;
+      } else if (highestJackTier == "Champion") {
+        spellMaxCounts[Math.floor((this.level - 1) / 2)] += 2;
+      } else {
+        spellMaxCounts[Math.floor((this.level - 1) / 2)] += 1;
+      }
+    }
+
+    return spellMaxCounts;
   }
 
   #querySpellLevelCurrentCounts() {
@@ -1015,6 +1133,26 @@ export class Character {
     return this.querySpellLevelMaximums().map(
       (item, index) => item - this.#querySpellLevelCurrentCounts()[index]
     );
+  }
+
+  //returns an array [numChoices, subOptions]
+  // where suboptions is itself an array filled with objects
+  querySubOptions(abilityInfo) {
+    let numChoices = abilityInfo.singleItem?.Options?.Count ?? 0;
+
+    // for Bard's Jack of Spells
+    const jackHighestTier = this.queryFeatHighestTier("Jack of Spells");
+    if (jackHighestTier == "Epic") {
+      numChoices = 3;
+    } else if (jackHighestTier == "Champion") {
+      numChoices = 2;
+    }
+
+    const subOptions = Object.entries(abilityInfo.singleItem?.Options ?? {})
+    .filter(([key, _]) => key !== "Count")
+    .map(([key, value]) => ({ [key]: value }));
+
+    return [numChoices, subOptions]
   }
 
   // for most jobs, returns a single number
@@ -1096,133 +1234,5 @@ export class Character {
     } else {
       return [maxTalents - currentTalentCounts];
     }
-  }
-
-  #queryFamiliarAbsMax() {
-    //order matters in these control statements. Epic must be before Adventurer
-    const sorcPetFeat = this.queryFeatHighestTier("Sorcerer's Familiar");
-    const rangPetFeat = this.queryFeatHighestTier("Ranger's Pet");
-    const wizPetFeat = this.queryFeatHighestTier("Wizard's Familiar");
-
-    if (
-      !this.jobTalents.some((talent) => talent.endsWith("Familiar")) &&
-      !this.jobTalents.includes("Ranger's Pet")
-    ) {
-      return 0;
-    } else if (sorcPetFeat == "Epic" || rangPetFeat == "Epic") return 5;
-    else if (wizPetFeat == "Epic" || sorcPetFeat == "Adventurer" || rangPetFeat == "Champion") return 4;
-    else if (wizPetFeat == "Adventurer" || rangPetFeat == "Adventurer" || this.jobTalents.includes("Sorcerer's Familiar")) return 3;
-    else return 2;
-  }
-
-  #queryFamiliarAbsCurrent() {
-    //tough counts as 2
-    return (
-      this.familiarAbs.length + (this.familiarAbs.includes("Tough") ? 1 : 0)
-    );
-  }
-
-  queryFamiliarAbilitiesRemaining() {
-    return this.#queryFamiliarAbsMax() - this.#queryFamiliarAbsCurrent();
-  }
-
-  // 1A - 2A - 3A - 4A (levels 1-4)
-  // 1C - 2C - 3C (levels 5-7)
-  // 1E - 2E - 3E (levels 8-10)
-  // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
-  #queryFeatsMax() {
-    let maxAdv = this.level > 4 ? 4 : this.level;
-    maxAdv = this.race == "Human" ? maxAdv + 1 : maxAdv;
-
-    // clamped between 0 and 3
-    const maxChamp = Math.min(3, Math.max(this.level - 4, 0));
-
-    // clamped between 0 and 3
-    const maxEpic = Math.min(3, Math.max(this.level - 7, 0));
-
-    return { Adventurer: maxAdv, Champion: maxChamp, Epic: maxEpic };
-  }
-
-  // this.feats must be in correct data structure (see constructor above)
-  // returns an object {"Adventurer": #, "Champion": #, "Epic": #}
-  #queryFeatsCurrentCounts() {
-    let counts = { Adventurer: 0, Champion: 0, Epic: 0 };
-
-    this.feats.forEach((feat) => {
-      const tier = Object.values(feat)[0];
-      counts[tier] += 1;
-    });
-
-    return counts;
-  }
-
-  //returns an array [adv #, champ #, epic #]
-  queryFeatsRemaining() {
-    const currentFeatCounts = this.#queryFeatsCurrentCounts();
-    const maxFeats = this.#queryFeatsMax();
-    const advFeatsRemain = maxFeats.Adventurer - currentFeatCounts.Adventurer;
-    const champFeatsRemain = maxFeats.Champion - currentFeatCounts.Champion;
-    const epicFeatsRemain = maxFeats.Epic - currentFeatCounts.Epic;
-
-    return [advFeatsRemain, champFeatsRemain, epicFeatsRemain];
-  }
-
-  //gives number of Animal Companion feats; used for expanding animal companion box in case user really wants to load up on AC feats
-  queryACFeatsCount() {
-    let count = 0;
-    if ("ACFeats" in jobs[this.job]) {
-      count = this.feats.filter((ownedFeat) =>
-        Object.keys(jobs[this.job].ACFeats).includes(Object.keys(ownedFeat)[0])
-      ).length;
-    }
-    return count;
-  }
-
-  //returns true or false
-  queryFeatIsOwned(featName, featTier) {
-    const highestFeatTier = this.queryFeatHighestTier(featName);
-
-    // does not have feat at all
-    if (!highestFeatTier) {
-      return false;
-    }
-
-    if (highestFeatTier == "Epic") {
-      return true;
-    } else if (highestFeatTier == "Champion" && featTier != "Epic") {
-      return true;
-    } else if (highestFeatTier == "Adventurer" && featTier == "Adventurer") {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  //returns highest tier (e.g. "Epic") of feat owned
-  //returns false if not owned
-  queryFeatHighestTier(featName) {
-    // search through this.feats to see if feat is owned
-    let owned = [];
-    this.feats.forEach((feat) => {
-      if (Object.keys(feat)[0] == featName) {
-        owned.push(feat);
-      }
-    });
-
-    if (owned.length == 0) {
-      return false;
-    }
-
-    const tiers = ["Adventurer", "Champion", "Epic"];
-    let highestIndex = 0;
-
-    owned.forEach((feat) => {
-      const tierIndex = tiers.indexOf(Object.values(feat)[0]);
-      if (tierIndex >= highestIndex) {
-        highestIndex = tierIndex;
-      }
-    });
-
-    return tiers[highestIndex];
   }
 }
