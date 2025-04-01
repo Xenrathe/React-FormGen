@@ -133,8 +133,9 @@ export class Character {
     }
 
     //if player removes a talent that has bonus options, it also removes associated information
+    //needs a special addition for Bard's Jack of Spells Wizard choice's cantrips, which have a different key name
     this.bonusOptions = this.bonusOptions.filter((bonusOp) =>
-      this.jobTalents.includes(Object.keys(bonusOp)[0])
+      this.jobTalents.includes(Object.keys(bonusOp)[0]) || (Object.keys(bonusOp)[0] == "Cantrips" && this.jobTalents.includes("Jack of Spells"))
     );
 
     //if player removes any of the "AC" (animal companion) talents, will also remove associated feats
@@ -452,6 +453,7 @@ export class Character {
   }
 
   //in core, only wizard should be calling for this
+  // bard's jack of spells cantrips are called elsewhere, as subOptions
   getCantrips() {
     const list = Object.fromEntries(
       Object.entries(jobs[this.job].spellList).filter(
@@ -628,13 +630,13 @@ export class Character {
         });
       }
 
-      // Cleric(or Paladin) + Wizard special additions
+      // Cleric(or Paladin) + Wizard(or Bard) special additions
       if (
         this.job === "Cleric" ||
         this.queryFeatIsOwned("Cleric Training", "Champion")
       ) {
         owned.push({ Heal: { ...jobs["Cleric"].spellList.Heal, Level: 0 } });
-      } else if (this.job === "Wizard") {
+      } else if (this.job === "Wizard"){
         owned.push({
           Cantrips: {
             Type: "Ranged",
@@ -650,6 +652,16 @@ export class Character {
               jobs["Wizard"].talentChoices["High Arcana"]["Counter-magic"],
           });
         }
+      } else if (this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")) {
+        owned.push({
+          Cantrips: {
+            Type: "Ranged",
+            Frequency: "At-will",
+            Action: "Standard.",
+            Extra: "Choose 3 Cantrips:",
+            Level: 0,
+          },
+        });
       }
     }
 
@@ -1187,6 +1199,8 @@ export class Character {
       }
     } else if (this.job == "Cleric") {
       spellSlots += 1; //for the Heal cantrip
+    } else if (this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")) {
+      spellSlots += 1; //for cantrip
     }
 
     return spellSlots;
@@ -1197,7 +1211,7 @@ export class Character {
     let spellCount = this.jobSpells.length;
 
     // addition for heal and cantrip
-    if (this.job == "Wizard" || this.job == "Cleric") {
+    if (this.job == "Wizard" || this.job == "Cleric" || this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")) {
       spellCount++;
     }
 
@@ -1285,6 +1299,17 @@ export class Character {
       numChoices = 3;
     } else if (jackHighestTier == "Champion") {
       numChoices = 2;
+    }
+
+    // for Bard's Jack of Spells (Wizard) Cantrips
+    if (abilityInfo.title == "Cantrips" && abilityInfo.mode == "spells" && this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")) {
+      numChoices = 3;
+
+      const subOptions = 
+        Object.entries(jobs["Wizard"].spellList).filter(
+          ([_, data]) => data.baseLevel == 0).map(([key, value]) => ({ [key]: value.Effect }));
+
+      return [numChoices, subOptions]
     }
 
     const subOptions = Object.entries(abilityInfo.singleItem?.Options ?? {})

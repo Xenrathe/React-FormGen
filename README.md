@@ -1,6 +1,5 @@
 # To-do List
 
-- finish Bard's Jack of Spells to include Wizard cantrips and Sorcerer spell
 - dropdown box for icon relationships? / cleric talent
 - responsive layout (tablet, mobile breakpoints)
 - additional error checking (not enough bonus options chosen, error on all things with feats when feat counts off, etc)

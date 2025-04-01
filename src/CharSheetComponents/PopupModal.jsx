@@ -21,7 +21,7 @@ function alterFamiliarAbs(
 
 function alterBonusOptions(
   talentName,
-  bonusKey, // 'A' or 'B' or 'C'
+  bonusKey,
   isAdding, // add or remove
   bonusMaxCount,
   abilitiesBlock,
@@ -379,7 +379,7 @@ function popupModalList(
             source = "Source" in item[name] ? ` ${item[name].Source}` : "";
           }
           return (
-            <span key={`${name}`} className={`addable-item${SL}${source}`}>
+            <span key={`${source}-${name}`} className={`addable-item${SL}${source}`}>
               <button
                 onClick={() => {
                   onClickFn();

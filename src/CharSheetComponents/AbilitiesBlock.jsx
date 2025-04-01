@@ -144,13 +144,27 @@ export function getDataSets(mode, character) {
         dataOnLines.push({ [title]: obj, removable: false });
       });
 
-      //special addition for paladin
+      //special addition for paladin's divine domain
       if (
         character.jobTalents.filter((talent) =>
           talent.startsWith("Divine Domain")
         ).length > 0
       ) {
         dataOnLines.push({ Invocation: jobs["Cleric"].features.Invocation });
+      }
+
+      //special addition for bard's jack of spells
+      if (character.jobTalents.includes("Jack of Spells")) {
+        const jackOfSpellsOptions = character.bonusOptions.filter((bo) => Object.keys(bo) == "Jack of Spells");
+        jackOfSpellsOptions.forEach((option) => {
+          const optionVal = Object.values(option)[0];
+          //A = Cleric, B = Sorcerer, C = Wizard
+          if (optionVal == "B") {
+            dataOnLines.push({ "Dancing Lights": jobs["Sorcerer"].features["Dancing Lights"]});
+          } else if (optionVal == "C") {
+            dataOnLines.push({ Cantrips: jobs["Wizard"].features.Cantrips});
+          }
+        })
       }
 
       const racialFeatInfo = character.getFeats("racial");

@@ -60,6 +60,7 @@ function getSingleItemDescription(popupInfo) {
             }`}
         <br />
         <br />
+        {popupInfo.singleItem?.Extra ?? ""}
       </span>
     ) : null;
 
@@ -93,10 +94,6 @@ function getSingleItemDescription(popupInfo) {
       </span>
     ) : null;
   });
-
-  /*if (spellAdditions.length > 1) {
-    spellAdditions.push(<br key="spell-addition-break" />);
-  }*/
 
   const additionCategories = ["Invocation", "Advantage", "Acts"];
   const standardAdditions = additionCategories.map((category) => {
@@ -353,7 +350,7 @@ function AbilityCard({
                         }`}</span>
                       </button>
                     )}
-                    {val}
+                    <strong>{key}: </strong>{val}
                   </span>
                 );
               } else {
