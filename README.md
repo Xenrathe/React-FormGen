@@ -1,6 +1,5 @@
 # To-do List
 
-- finish Bard's Jack of Spells to include Wizard cantrips and Sorcerer spell
 - dropdown box for icon relationships? / cleric talent
 - responsive layout (tablet, mobile breakpoints)
 - SpellInfo dynamically updates depending on level (big change in dataset, I think?)
