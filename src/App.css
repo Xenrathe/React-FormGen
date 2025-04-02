@@ -33,7 +33,31 @@ body {
   align-items: start;
   justify-content: center;
   font-family: "Roboto";
-  margin-top: 15px;
+  margin: 15px 0px 0px 0px;
+}
+
+@media screen and (max-width: 750px) {
+  body,
+  html {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  body,
+  #root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #root {
+    width: 96vw;
+    max-width: 96vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    margin: 0;
+  }
 }
 
 input[type="number"]::-webkit-inner-spin-button,

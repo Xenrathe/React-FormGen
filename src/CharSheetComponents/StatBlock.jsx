@@ -92,21 +92,6 @@ function StatBlock({ character, statBlock, setStatBlock }) {
           <span>{character.abilityModifiers.cha}</span>
         </div>
       </div>
-      <div id="defenses">
-        <strong>Defenses</strong>
-        <div id="AC">
-          <label htmlFor="AC">AC</label>
-          <span>{character.AC}</span>
-        </div>
-        <div id="PD">
-          <label htmlFor="PD">PD</label>
-          <span>{character.PD}</span>
-        </div>
-        <div id="MD">
-          <label htmlFor="MD">MD</label>
-          <span>{character.MD}</span>
-        </div>
-      </div>
       <div id="attacks">
         <div className="titles atkrow">
           <strong>ATK</strong>
@@ -127,6 +112,21 @@ function StatBlock({ character, statBlock, setStatBlock }) {
           <strong>Miss</strong>
           <span>{character.meleeAtk[2]}</span>
           <span>{character.rangedAtk[2]}</span>
+        </div>
+      </div>
+      <div id="defenses">
+        <strong>Defenses</strong>
+        <div id="AC">
+          <label htmlFor="AC">AC</label>
+          <span>{character.AC}</span>
+        </div>
+        <div id="PD">
+          <label htmlFor="PD">PD</label>
+          <span>{character.PD}</span>
+        </div>
+        <div id="MD">
+          <label htmlFor="MD">MD</label>
+          <span>{character.MD}</span>
         </div>
       </div>
       <div id="hitpoints">
