@@ -5,10 +5,7 @@ import Packery from "packery";
 import { useEffect, useRef } from "react";
 
 function AbilitySheets({ abilitiesBlock, basicsBlock, character }) {
-  const bonusAbTitle =
-    "bonusAbilitySet" in jobs[character.job]
-      ? jobs[character.job].bonusAbilitySet.Name
-      : "bonusAbs";
+  const bonusAbTitle = jobs[character.job]?.bonusAbilityName ?? "bonusAbs";
   const utilityList = character.getUtilitySpells();
   const utilitySpellLevel = Math.max(
     0,

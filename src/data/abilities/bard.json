@@ -210,7 +210,7 @@
         "Champion": "The target of the spell doesn’t have to be nearby, just in line of sight.",
         "Epic": "On a hit, the confusion effect is now save ends."
       },
-      "Charm Person": {
+      "Charm Person ": {
         "Type": "Ranged",
         "Action": "Standard",
         "Frequency": "Daily",

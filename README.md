@@ -1,7 +1,9 @@
 # To-do List
 
+- heritage of the sword modifications
+- bonusAbs error checking
+- remove autofill highlighting
 - dropdown box for icon relationships? / cleric talent
-- responsive layout (tablet, mobile breakpoints)
 - additional error checking (not enough bonus options chosen, error on all things with feats when feat counts off, etc)
 - SpellInfo dynamically updates depending on level (big change in dataset, I think?)
 - AbilitiesBlock sub-blocks borrows space from other sub-blocks to maintain formatting

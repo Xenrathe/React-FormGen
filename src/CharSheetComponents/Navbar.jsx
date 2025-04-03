@@ -16,10 +16,10 @@ function handleExtraInfoChkBox(event, setExtraInfo) {
 
 export default function Navbar({ onSave, onLoad, onPrint }) {
   const [extraInfo, setExtraInfo] = useState(false);
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 750);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 700);
 
   useEffect(() => {
-    const handleResize = () => setIsSmallScreen(window.innerWidth <= 750);
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 700);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -39,7 +39,7 @@ export default function Navbar({ onSave, onLoad, onPrint }) {
           {isSmallScreen ? (
             <img src={loadIcon} alt="Load" width="35" height="35" />
           ) : (
-            "Save To File"
+            "Load From File"
           )}
         </button>
       </div>
@@ -58,7 +58,7 @@ export default function Navbar({ onSave, onLoad, onPrint }) {
             checked={extraInfo}
             onChange={(event) => handleExtraInfoChkBox(event, setExtraInfo)}
           />
-          Print Ability Info
+          {isSmallScreen ? <span>Ability<br></br>Info</span> : (<span>Print Ability Info</span>)}
         </label>
       </div>
     </nav>

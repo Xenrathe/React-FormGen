@@ -332,8 +332,12 @@ export class Character {
     //get highest mod in case of multiple abilities
     let highestMod = this.#getHighestMod(jobs[this.job][attackType].Ability);
 
+    //get armor and shield adjustments
+    const shieldAdjustment = this.hasShield ? jobs[this.job].armor.Shield.ATK : 0;
+    const armorAdjustment = jobs[this.job].armor[this.armorType].ATK;
+
     // ATK ROLL STRING
-    let rollMod = highestMod + this.level + weaponData.ATK;
+    let rollMod = highestMod + this.level + shieldAdjustment + armorAdjustment + weaponData.ATK;
 
     //adjustments for Cleric
     if (

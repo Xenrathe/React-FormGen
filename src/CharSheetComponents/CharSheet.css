@@ -1,4 +1,4 @@
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 850px) {
   .charsheet {
     max-width: 96vw;
   }
@@ -54,7 +54,7 @@
   border: solid 1px red !important;
 }
 
-@media screen and (min-width: 751px) {
+@media not print and (min-width: 851px) {
   #basics {
     display: grid;
     grid-template-columns: 0.8fr 1.1fr 1.1fr;
@@ -82,7 +82,7 @@
   }
 }
 
-@media screen and (min-width: 551px) and (max-width: 750px) {
+@media screen and (min-width: 551px) and (max-width: 850px) {
   #basics {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -118,6 +118,11 @@
     justify-content: center;
     gap: 2px;
   }
+
+  #basics .input-set {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
 }
 
 #name-level,
@@ -132,7 +137,7 @@
   display: flex;
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 800px) {
   .input-set {
     justify-content: start;
   }
@@ -155,7 +160,7 @@
   width: 105px;
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 800px) {
   #name-div input,
   #level-div input {
     width: 162px;
@@ -171,7 +176,7 @@
   justify-content: space-between;
 }
 
-@media screen and (min-width: 551px) and (max-width: 750px) {
+@media screen and (min-width: 551px) and (max-width: 800px) {
   #statblock {
     display: flex;
     flex-wrap: wrap;
@@ -200,7 +205,7 @@
   }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (min-width: 451px) and (max-width: 550px) {
   #statblock {
     display: flex;
     flex-wrap: wrap;
@@ -228,6 +233,37 @@
   }
 }
 
+@media screen and (max-width: 450px) {
+  #statblock {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  #statblock #abilityscores {
+    flex: 0 0 100%;
+    order: 1;
+  }
+
+  #statblock #hitpoints {
+    flex: 0 0 25%;
+    order: 4;
+  }
+
+  #statblock #attacks {
+    flex: 0 0 100%;
+    order: 2;
+    display: grid;
+    justify-content: center;
+  }
+
+  #statblock #defenses {
+    flex: 0 0 15%;
+    order: 3;
+  }
+}
+
 #narrativeblock,
 #abilitiesblock {
   display: flex;
@@ -240,7 +276,7 @@
   grid-template-columns: 290px;
 }
 
-@media screen and (min-width: 551px) and (max-width: 750px) {
+@media screen and (min-width: 551px) and (max-width: 800px) {
   #abilityscores,
   #attacks {
     display: grid;
@@ -448,23 +484,51 @@
   padding-top: 15px;
 }
 
-@media screen and (max-width: 750px) {
-  #narrativeblock {
+@media screen and (min-width: 451px) and (max-width: 800px) {
+  #narrativeblock, #abilitiesblock {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 216px;
     gap: 5px;
   }
 
-  #one-unique-thing,
-  #backgrounds {
+  #narrativeblock {
+    grid-template-rows: 216px;
+  }
+
+  #narrativeblock > :nth-child(2),
+  #narrativeblock > :nth-child(4) {
+    justify-self: end;
+  }
+
+  #abilitiesblock > :nth-child(3),
+  #abilitiesblock > :nth-child(5) {
     justify-self: end;
   }
 
   .narrative-input {
-    flex: 0 0 50%;
     max-width: 180px;
     width: 180px;
+  }
+
+  .abilities-input {
+    max-width: 195px;
+    width: 195px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  #narrativeblock {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 216px;
+    gap: 5px;
+  }
+
+  .narrative-input {
+    flex: 0 0 100%;
+    max-width: 180px;
+    width: 180px;
+    justify-self: center;
   }
 }
 
@@ -583,10 +647,6 @@
   width: 100%;
   margin-top: -13px;
   margin-bottom: 10px;
-}
-
-.ability-card #sub-options {
-  text-align: center;
 }
 
 .ability-card .single-selectables {
