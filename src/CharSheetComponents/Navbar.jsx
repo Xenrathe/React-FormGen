@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Navbar.css";
+import saveIcon from "../assets/download.svg";
+import loadIcon from "../assets/open.svg";
+import printIcon from "../assets/printer.svg";
 
 function handleExtraInfoChkBox(event, setExtraInfo) {
   setExtraInfo((prev) => !prev);
@@ -13,16 +16,41 @@ function handleExtraInfoChkBox(event, setExtraInfo) {
 
 export default function Navbar({ onSave, onLoad, onPrint }) {
   const [extraInfo, setExtraInfo] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 750);
+
+  useEffect(() => {
+    const handleResize = () => setIsSmallScreen(window.innerWidth <= 750);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <nav className="navbar no-print">
       <span id="nav-title">13th Age CharGen</span>
       <div id="save-load">
-        <button onClick={onSave}>Save To File</button>
-        <button onClick={onLoad}>Load From File</button>
+        <button onClick={onSave}>
+          {isSmallScreen ? (
+            <img src={saveIcon} alt="Save" width="35" height="35" />
+          ) : (
+            "Save To File"
+          )}
+        </button>
+        <button onClick={onLoad}>
+          {isSmallScreen ? (
+            <img src={loadIcon} alt="Load" width="35" height="35" />
+          ) : (
+            "Save To File"
+          )}
+        </button>
       </div>
       <div id="print">
-        <button onClick={onPrint}>Print</button>
+        <button onClick={onPrint}>
+          {isSmallScreen ? (
+            <img src={printIcon} alt="Load" width="35" height="35" />
+          ) : (
+            "Print"
+          )}
+        </button>
 
         <label className="checkbox-container">
           <input

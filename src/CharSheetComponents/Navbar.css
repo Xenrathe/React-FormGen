@@ -1,6 +1,7 @@
 .navbar {
   display: flex;
   min-width: 100%;
+  max-width: 100vw;
   box-sizing: border-box;
   padding: 5px 3%;
   margin-bottom: 5px;
@@ -22,6 +23,26 @@
   gap: 5px;
 }
 
+@media screen and (max-width: 750px) {
+  .navbar {
+    display: flex;
+    min-width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+    padding: 5px 3%;
+    margin-bottom: 5px;
+    justify-content: start;
+    align-items: center;
+    background-color: rgb(224, 224, 224);
+    border: solid 1px rgb(128, 128, 128);
+  }
+
+  .navbar #nav-title {
+    font-size: 12px;
+    width: 70px;
+  }
+}
+
 .navbar button {
   width: 140px;
   height: 40px;
@@ -31,11 +52,22 @@
   font-size: 15px;
 }
 
+@media screen and (max-width: 750px) {
+  .navbar button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+}
+
 .navbar .checkbox-container {
   font-size: 15px;
 }
 
 .navbar input[type="checkbox"] {
   margin: 0px 9px;
-  transform: scale(2); 
+  transform: scale(2);
 }
