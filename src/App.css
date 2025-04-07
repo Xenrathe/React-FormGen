@@ -21,6 +21,7 @@
     height: auto;
     margin: 0 auto;
     overflow-x: visible;
+    color: #213547;
   }
 
   .no-print {
@@ -79,6 +80,21 @@ input[type="number"]:hover,
 select:hover,
 textarea:hover {
   background-color: rgb(235, 235, 235);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  input,
+  select,
+  textarea {
+    background-color: rgb(20, 20, 20);
+  }
+
+  input[type="text"]:hover,
+  input[type="number"]:hover,
+  select:hover,
+  textarea:hover {
+    background-color: rgb(45, 45, 45);
+  }
 }
 
 .invisible {

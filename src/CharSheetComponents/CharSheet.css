@@ -11,6 +11,12 @@
   position: relative;
 }
 
+@media screen and (prefers-color-scheme: dark) {
+  .input-group {
+    border: 1px rgb(255, 255, 255) solid;
+  }
+}
+
 .input-group .title-label {
   font-size: 20px;
   font-weight: bold;
@@ -48,6 +54,25 @@
     rgba(255, 255, 255, 1) 30%,
     rgb(235, 235, 235) 100%
   );
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  .input-group {
+    border: 1px rgb(255, 255, 255) solid;
+  }
+
+  .input-group .title-label,
+  .input-group .subtitle-label {
+    background-color: #242424;
+  }
+
+  #one-unique-thing .subtitle-label {
+    background: linear-gradient(180deg, #242424 30%, rgb(20, 20, 20) 100%);
+  }
+
+  #one-unique-thing:hover .subtitle-label {
+    background: linear-gradient(180deg, #242424 30%, rgb(45, 45, 45) 100%);
+  }
 }
 
 .input-error {
@@ -331,6 +356,16 @@
   border: 1px rgb(92, 92, 92) dotted;
 }
 
+@media screen and (prefers-color-scheme: dark) {
+  #scores span,
+  #modifiers span,
+  #defenses span,
+  #attacks span,
+  #hitpoints span {
+    border: 1px rgb(163, 163, 163) dotted;
+  }
+}
+
 #defenses {
   display: grid;
   flex-direction: column;
@@ -380,6 +415,12 @@
   border: 1px solid rgb(182, 182, 182);
 }
 
+@media screen and (prefers-color-scheme: dark) {
+  .lined-inputs {
+    border: 1px solid rgb(133, 133, 133);
+  }
+}
+
 .lined-inputs .title {
   font-weight: bold;
   font-size: 14px;
@@ -406,6 +447,14 @@
   margin-bottom: 2px;
 }
 
+@media screen and (prefers-color-scheme: dark) {
+  .lined-inputs .lined-input {
+    background-color: #242424;
+    border: 1px rgb(220, 220, 220);
+    border-style: none none solid none;
+  }
+}
+
 .lined-inputs .lined-input.error {
   color: red;
 }
@@ -418,6 +467,12 @@
   margin-bottom: 2px;
   width: 170px;
   height: 25px;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  .single-line-w-btn {
+    background-color: #242424;
+  }
 }
 
 @media print {
@@ -476,6 +531,17 @@
   color: white;
 }
 
+@media screen and (prefers-color-scheme: dark) {
+  .single-line-w-btn button {
+    border: 1px solid rgb(255, 255, 255);
+  }
+
+  .single-line-w-btn button:hover {
+    background-color: rgb(210, 210, 210);
+    color: rgb(0, 0, 0);
+  }
+}
+
 .single-line-w-btn button:focus {
   outline: none;
 }
@@ -485,7 +551,8 @@
 }
 
 @media screen and (min-width: 451px) and (max-width: 800px) {
-  #narrativeblock, #abilitiesblock {
+  #narrativeblock,
+  #abilitiesblock {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 5px;
@@ -592,6 +659,14 @@
   z-index: 1000;
 }
 
+@media screen and (prefers-color-scheme: dark) {
+  #popupMod.visible {
+    background: #242424;
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+}
+
 #popupMod .title,
 .ability-card .title {
   text-align: center;
@@ -634,6 +709,20 @@
   display: block;
   font-size: 1rem;
   color: #333;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  #popupMod .close-btn {
+    color: #b4b4b4;
+  }
+
+  #popupMod .close-btn:hover {
+    color: white;
+  }
+
+  #popupMod .description {
+    color: #ebebeb;
+  }
 }
 
 #popupMod.widest .description {
@@ -696,6 +785,14 @@
   border: solid 1px rgb(139, 139, 139);
   padding: 4px;
 }
+
+@media screen and (prefers-color-scheme: dark) {
+  #popupMod .single-selectables .selectable,
+  #popupMod .addable-items .addable-item {
+    border: solid 1px rgb(187, 187, 187);
+  }
+}
+
 /*Barbarian (Red), Bard (Blue), Cleric (White), Fighter (Green), Paladin (Yellow), Ranger (Brown), Rogue (Purple), Sorcerer (Orange), and Wizard (Black)*/
 #popupMod .addable-items .addable-item.Cleric {
   border: dashed 1px #bccae7;
@@ -804,6 +901,19 @@
   background-color: rgba(196, 170, 167, 0.664);
   color: rgb(119, 39, 39);
   opacity: 1;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  #popupMod .alterBtn:not(:disabled):not(.utility).add:hover {
+    background-color: rgba(65, 77, 67, 0.664);
+    color: rgb(131, 226, 72);
+  }
+
+  #popupMod .alterBtn.remove:not(.utility):hover,
+  #popupMod .alterBtn:not(.utility)[disabled] {
+    background-color: rgba(77, 66, 65, 0.664);
+    color: rgb(241, 15, 15);
+  }
 }
 
 #popupMod .selectable .hidden {
