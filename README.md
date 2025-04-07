@@ -4,7 +4,7 @@
 
 ![Screenshot of a completed character](https://github.com/Xenrathe/React-FormGen/blob/main/XenratheBard.png?raw=true)
 
-The 13th Age CharGen is a form for creating or storing a character (i.e. a 'character sheet') for the table-top RPG 13th age. Unlike most character sheets, it has access to the underlying data, allowing players access to skill and ability information right there in the form itself, as opposed to having to refer to another source (book, wiki) for that information. Additionally, it can be printed with all the ability info attached, allowing for a nice little packet for players to bring to the table, with all their information in one place!
+The 13th Age CharGen is a form for creating or storing a character (i.e. a 'character sheet') for the table-top RPG 13th age. Unlike most character sheets, it has access to the underlying data, allowing players to view skill and ability information in the form itself, as opposed to referring to another source (book, wiki). Additionally, the form can be printed with all the ability info attached, allowing for a nice little packet for players to bring to the table, with all their information in one place!
 
 13th Age CharGen is active on GitHub pages: (???)
 
@@ -27,6 +27,16 @@ The 13th Age CharGen is a form for creating or storing a character (i.e. a 'char
 
 ![Screenshot of printed abilities](https://github.com/Xenrathe/React-FormGen/blob/main/PrintScreen.png?raw=true)
 
+### To-do List Before Deployment
+
+- mobile scrolling while modal is up, esp full-screen (e.g. gather power)
+- spell-level, feat, etc blue / highlight selection is off
+- decrease font-size for popupModal w/ addons (spell selector)
+- dark mode version of CSS
+- make x, +, i buttons a little bigger and spread out
+- "file can't be downloaded securely" 
+
+
 ### Future To-do List
 
 - improved icon relations (dropdown for hostile / neutral / favorable?) or an image pop-up selector; integrate w/ icon-based talents
@@ -36,6 +46,9 @@ The 13th Age CharGen is a form for creating or storing a character (i.e. a 'char
 - clean up printing / don't break cards in half?
 - SorcererFamiliar has permanent / random button
 - Magical item info (a button to include bonuses from item types, e.g. +2 on weapon is included in ATK roll)
+- Include other classes and their ability info?
+- Update for second edition?
+- A guided step-by-step character creator process (see Lancer's COMP/CON app)?
 
 ### Design Brief
 
