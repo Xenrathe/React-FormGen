@@ -338,6 +338,7 @@ export class Character {
 
     // ATK ROLL STRING
     let rollMod = highestMod + this.level + shieldAdjustment + armorAdjustment + weaponData.ATK;
+    let hasAtkPenalty = weaponData.ATK < 0;
 
     //adjustments for Cleric
     if (
@@ -347,6 +348,7 @@ export class Character {
       weaponData.ATK < 0
     ) {
       rollMod += 2;
+      hasAtkPenalty = false;
     }
 
     //adjustments for Ranger
@@ -360,6 +362,13 @@ export class Character {
     //adjustments for Sorcerer
     if (this.queryFeatIsOwned("Undead Remnant Heritage", "Epic")) rollMod += 1;
 
+    //adjustments for heritage of the sword
+    // removes ATK penalty, if it exists
+    // Otherwise damage gets increased (added in the code below)
+    if (this.queryFeatIsOwned("Heritage of the Sword", "Adventurer") && attackType == "melee" && (weaponData.DMG == 6 || weaponData.DMG == 8) && hasAtkPenalty) {
+      rollMod -= weaponData.ATK;
+    }
+
     const rollAbModPlusOrMinus = rollMod >= 0 ? "+" : "";
     atkArray.push(`${rollAbModPlusOrMinus + rollMod} vs AC`);
     // END ATK ROLL STRING
@@ -372,15 +381,20 @@ export class Character {
       highestMod *= 2;
     }
 
-    //adjustments for fighter
+    //adjustments for Heritage of the Sword
     let dmgDiceBonus = 0;
+    if (this.queryFeatIsOwned("Heritage of the Sword", "Adventurer") && !hasAtkPenalty && attackType == "melee" && (weaponData.DMG == 6 || weaponData.DMG == 8)) {
+      dmgDiceBonus = 2;
+    }
+
+    //adjustments for fighter
     if (
       this.jobTalents.includes("Deadeye Archer") &&
       attackType == "ranged" &&
       weaponStringSplit[0] != "Thrown" &&
       (weaponData.DMG == 8 || weaponData.DMG == 6)
     ) {
-      dmgDiceBonus = 2;
+      dmgDiceBonus += 2;
     }
 
     //adjustments for ranger
@@ -389,7 +403,7 @@ export class Character {
       this.jobTalents.includes("Double Melee Attack") &&
       weaponStringSplit[0].startsWith("DW")
     ) {
-      alternateDmg = `(${weaponData.DMG - 2})`;
+      alternateDmg = `(${weaponData.DMG + dmgDiceBonus - 2})`;
     }
     if (
       this.jobTalents.includes("Double Ranged Attack") &&

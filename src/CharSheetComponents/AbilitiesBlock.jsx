@@ -32,8 +32,19 @@ function getAbilitiesRemainingString(
     returnString += ")";
 
     return returnString;
-  } else if (typeOfAbility == "Talents") {
-    return `(${title}${abilitiesRemainingArray[0]})`;
+  } else if (typeOfAbility == "Spells") {
+    const spellText = character
+      .querySpellLevelsRemaining()
+      .map((spellCount, index) => {
+        if (spellCount === 0) return "";
+        return `L${index * 2 + 1}: ${spellCount}`;
+      })
+      .filter(Boolean) // this removes empty strings...
+      .join(" "); // ...so we can join with spaces
+
+    return spellText ? `(${spellText})` : "";
+  }else {
+    return abilitiesRemainingArray[0] != 0 ? `(${title}${abilitiesRemainingArray[0]})` : "";
   }
 }
 
@@ -359,11 +370,11 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
   });
 
   const hasSpellError = character.querySpellsHaveError().length > 0;
-
   const tooManyFamiliarAbs = character.queryFamiliarAbilitiesRemaining() < 0;
+  const tooManyBonusAbs = character.queryBonusAbsRemaining() < 0;
 
   const hasError =
-    tooManyTalents || tooManyFeats || hasSpellError || tooManyFamiliarAbs; //used to add an error class to div
+    tooManyTalents || tooManyFeats || hasSpellError || tooManyFamiliarAbs || tooManyBonusAbs; //used to add an error class to div
 
   //for rangers animal companion or wizard's familiar, adds an extra block to add feats/abilities
   let animalsBlock = "";
@@ -413,7 +424,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         }`}
       >
         <label className="subtitle-label">
-          Talents
+          Talents{" "}
           {getAbilitiesRemainingString(
             character,
             "Talents",
@@ -438,10 +449,13 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           }`}
         >
           <label className="subtitle-label">
-            {animalsBlock}
-            {character.queryFamiliarAbilitiesRemaining() == 0
-              ? ""
-              : ` (${character.queryFamiliarAbilitiesRemaining()})`}
+            {`${animalsBlock} `}
+            {getAbilitiesRemainingString(
+            character,
+            "animalsBlock",
+            false,
+            [character.queryFamiliarAbilitiesRemaining()],
+            )}
           </label>
           <LinedInputsWithBtn
             mode={animalsBlock}
@@ -462,18 +476,12 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         >
           <label className="subtitle-label">
             Spells{" "}
-            {(() => {
-              const spellText = character
-                .querySpellLevelsRemaining()
-                .map((spellCount, index) => {
-                  if (spellCount === 0) return "";
-                  return `L${index * 2 + 1}: ${spellCount}`;
-                })
-                .filter(Boolean) // this removes empty strings...
-                .join(" "); // ...so we can join with spaces
-
-              return spellText ? `(${spellText})` : "";
-            })()}
+            {getAbilitiesRemainingString(
+            character,
+            "Spells",
+            false,
+            null,
+          )}
           </label>
           <LinedInputsWithBtn
             mode="spells"
@@ -492,9 +500,15 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         </div>
       )}
       {character.queryBonusAbsTitle() != "" && (
-        <div id="bonusAbs" className="abilities-input lined-inputs">
+        <div id="bonusAbs" className={`abilities-input lined-inputs ${tooManyBonusAbs ? "input-error" : ""}`}>
           <label className="subtitle-label">
-            {`${character.queryBonusAbsTitle()} (${character.queryBonusAbsRemaining()})`}
+          {`${character.queryBonusAbsTitle()} `}
+          {getAbilitiesRemainingString(
+            character,
+            "BonusAbs",
+            false,
+            [character.queryBonusAbsRemaining()],
+          )}
           </label>
           <LinedInputsWithBtn
             mode="bonusAbs"

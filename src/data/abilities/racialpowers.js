@@ -5,7 +5,7 @@ const racialPowersAndFeats = {
       "Champion": "Once per day, you can instead use cruel to deal 5 ongoing damage per level against an enemy you miss or that you roll a natural odd attack against."
     },
     "Heritage of the Sword" : {
-      "Adventurer" : "If you can already use swords that deal d6 and d8 damage without attack penalties, you gain a +2 damage bonus with them. (This bonus doesn't increase miss damage.) Otherwise, if your class would ordinarily have an attack penalty with such swords, you can now use them without penalties."
+      "Adventurer" : "If you can already use swords that deal d6 and d8 damage without attack penalties, you gain a +2 hit damage bonus with them. Otherwise, if your class would ordinarily have an attack penalty with such swords, you can now use them without penalties. (This CharGen assumes your weapon is a sword)."
     }
   },
   "Dwarf": {
@@ -32,7 +32,7 @@ const racialPowersAndFeats = {
       "Champion": "You gain an additional use of surprising each battle, but you can only use it to affect a nearby ally's d20 roll."
     },
     "Heritage of the Sword" : {
-      "Adventurer" : "If you can already use swords that deal d6 and d8 damage without attack penalties, you gain a +2 damage bonus with them. (This bonus doesn't increase miss damage.) Otherwise, if your class would ordinarily have an attack penalty with such swords, you can now use them without penalties."
+      "Adventurer" : "If you can already use swords that deal d6 and d8 damage without attack penalties, you gain a +2 hit damage bonus with them. Otherwise, if your class would ordinarily have an attack penalty with such swords, you can now use them without penalties. (This CharGen assumes your weapon is a sword)."
     }
   },
   "Halfling": {
@@ -56,7 +56,7 @@ const racialPowersAndFeats = {
       "Champion": "Deal damage equal to twice your level to one enemy engaged with you before or after you teleport."
     },
     "Heritage of the Sword" : {
-      "Adventurer" : "If you can already use swords that deal d6 and d8 damage without attack penalties, you gain a +2 damage bonus with them. (This bonus doesn't increase miss damage.) Otherwise, if your class would ordinarily have an attack penalty with such swords, you can now use them without penalties."
+      "Adventurer" : "If you can already use swords that deal d6 and d8 damage without attack penalties, you gain a +2 hit damage bonus with them. Otherwise, if your class would ordinarily have an attack penalty with such swords, you can now use them without penalties. (This CharGen assumes your weapon is a sword)."
     }
   },
   "Human": {
@@ -74,7 +74,7 @@ const racialPowersAndFeats = {
       "Champion": "Once per day, start a battle rolling a d4 for elven grace instead of a d6."
     },
     "Heritage of the Sword" : {
-      "Adventurer" : "If you can already use swords that deal d6 and d8 damage without attack penalties, you gain a +2 damage bonus with them. (This bonus doesn't increase miss damage.) Otherwise, if your class would ordinarily have an attack penalty with such swords, you can now use them without penalties."
+      "Adventurer" : "If you can already use swords that deal d6 and d8 damage without attack penalties, you gain a +2 hit damage bonus with them. Otherwise, if your class would ordinarily have an attack penalty with such swords, you can now use them without penalties. (This CharGen assumes your weapon is a sword)."
     }
   },
 };
