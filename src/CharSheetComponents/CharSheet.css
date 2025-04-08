@@ -811,6 +811,15 @@
   color: red;
 }
 
+#popupMod .addable-items .addable-item {
+  /* Goes from 13px min @ 400 width to 16px max @ 1000 width and beyond */
+  font-size: clamp(
+    13px,
+    calc(13px + 3 * ((100vw - 400px) / (1000 - 400))),
+    16px
+  );
+}
+
 #popupMod.wide .addable-items .addable-item {
   height: 300px;
   overflow: hidden;
