@@ -15,6 +15,7 @@ The 13th Age CharGen is a form for creating or storing a character (i.e. a 'char
 - Enabling Print Ability Info will include ability & talent cards when printed
 - Save/Load characters in simple JSON data format
 - Responsive design for mobile, tablet, and desktop
+- Support for dark mode
 
 ![Screenshot of mobile](https://github.com/Xenrathe/React-FormGen/blob/main/Mobile.png?raw=true)
 
@@ -30,7 +31,6 @@ The 13th Age CharGen is a form for creating or storing a character (i.e. a 'char
 ### To-do List Before Deployment
 
 - mobile scrolling while modal is up, esp full-screen (e.g. gather power)
-- spell-level, feat, etc blue / highlight selection is off
 - decrease font-size for popupModal w/ addons (spell selector)
 - make x, +, i buttons a little bigger and spread out for mobile
 
@@ -46,6 +46,8 @@ The 13th Age CharGen is a form for creating or storing a character (i.e. a 'char
 - Include other classes and their ability info?
 - Update for second edition?
 - A guided step-by-step character creator process (see Lancer's COMP/CON app)?
+
+![Screenshot of add talents modal in dark mode](https://github.com/Xenrathe/React-FormGen/blob/main/AddTalents.png?raw=true)
 
 ### Design Brief
 

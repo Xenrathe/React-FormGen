@@ -350,7 +350,8 @@ function AbilityCard({
                         }`}</span>
                       </button>
                     )}
-                    <strong>{key}: </strong>{val}
+                    <strong>{key}: </strong>
+                    {val}
                   </span>
                 );
               } else {

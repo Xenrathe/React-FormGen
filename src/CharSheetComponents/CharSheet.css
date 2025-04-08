@@ -880,6 +880,8 @@
 
   container-type: size;
   container-name: btn-container;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 #popupMod .alterBtn.utility {

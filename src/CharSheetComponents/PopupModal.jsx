@@ -371,15 +371,18 @@ function popupModalList(
             exclusiveRestricted !== ""
               ? `Exclusive w/ ${exclusiveRestricted}`
               : buttonText;
-          
+
           let SL = "";
           let source = "";
-          if (typeof item[name] == "object"){
+          if (typeof item[name] == "object") {
             SL = "Level" in item[name] ? ` SL${item[name].Level}` : "";
             source = "Source" in item[name] ? ` ${item[name].Source}` : "";
           }
           return (
-            <span key={`${source}-${name}`} className={`addable-item${SL}${source}`}>
+            <span
+              key={`${source}-${name}`}
+              className={`addable-item${SL}${source}`}
+            >
               <button
                 onClick={() => {
                   onClickFn();
