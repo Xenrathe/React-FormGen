@@ -43,8 +43,10 @@ function getAbilitiesRemainingString(
       .join(" "); // ...so we can join with spaces
 
     return spellText ? `(${spellText})` : "";
-  }else {
-    return abilitiesRemainingArray[0] != 0 ? `(${title}${abilitiesRemainingArray[0]})` : "";
+  } else {
+    return abilitiesRemainingArray[0] != 0
+      ? `(${title}${abilitiesRemainingArray[0]})`
+      : "";
   }
 }
 
@@ -166,16 +168,20 @@ export function getDataSets(mode, character) {
 
       //special addition for bard's jack of spells
       if (character.jobTalents.includes("Jack of Spells")) {
-        const jackOfSpellsOptions = character.bonusOptions.filter((bo) => Object.keys(bo) == "Jack of Spells");
+        const jackOfSpellsOptions = character.bonusOptions.filter(
+          (bo) => Object.keys(bo) == "Jack of Spells"
+        );
         jackOfSpellsOptions.forEach((option) => {
           const optionVal = Object.values(option)[0];
           //A = Cleric, B = Sorcerer, C = Wizard
           if (optionVal == "B") {
-            dataOnLines.push({ "Dancing Lights": jobs["Sorcerer"].features["Dancing Lights"]});
+            dataOnLines.push({
+              "Dancing Lights": jobs["Sorcerer"].features["Dancing Lights"],
+            });
           } else if (optionVal == "C") {
-            dataOnLines.push({ Cantrips: jobs["Wizard"].features.Cantrips});
+            dataOnLines.push({ Cantrips: jobs["Wizard"].features.Cantrips });
           }
-        })
+        });
       }
 
       const racialFeatInfo = character.getFeats("racial");
@@ -291,7 +297,22 @@ function LinedInputsWithBtn({
 
     lines.push(
       <div key={`k-${mode}-${i}`} className="single-line-w-btn">
-        <span className={`lined-input${hasError ? " error" : ""}`}>
+        <span
+          className={`lined-input${hasError ? " error" : ""}${
+            item ? " clickable" : ""
+          }`}
+          onClick={
+            item
+              ? () =>
+                  setPopupInfo({
+                    title: title,
+                    singleItem: obj,
+                    list: null,
+                    mode: mode,
+                  })
+              : null
+          }
+        >
           {title + highestTierLetter + spellLevelAddon}
         </span>
         <div className="buttons no-print">
@@ -374,7 +395,11 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
   const tooManyBonusAbs = character.queryBonusAbsRemaining() < 0;
 
   const hasError =
-    tooManyTalents || tooManyFeats || hasSpellError || tooManyFamiliarAbs || tooManyBonusAbs; //used to add an error class to div
+    tooManyTalents ||
+    tooManyFeats ||
+    hasSpellError ||
+    tooManyFamiliarAbs ||
+    tooManyBonusAbs; //used to add an error class to div
 
   //for rangers animal companion or wizard's familiar, adds an extra block to add feats/abilities
   let animalsBlock = "";
@@ -450,12 +475,9 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         >
           <label className="subtitle-label">
             {`${animalsBlock} `}
-            {getAbilitiesRemainingString(
-            character,
-            "animalsBlock",
-            false,
-            [character.queryFamiliarAbilitiesRemaining()],
-            )}
+            {getAbilitiesRemainingString(character, "animalsBlock", false, [
+              character.queryFamiliarAbilitiesRemaining(),
+            ])}
           </label>
           <LinedInputsWithBtn
             mode={animalsBlock}
@@ -476,12 +498,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         >
           <label className="subtitle-label">
             Spells{" "}
-            {getAbilitiesRemainingString(
-            character,
-            "Spells",
-            false,
-            null,
-          )}
+            {getAbilitiesRemainingString(character, "Spells", false, null)}
           </label>
           <LinedInputsWithBtn
             mode="spells"
@@ -500,15 +517,17 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         </div>
       )}
       {character.queryBonusAbsTitle() != "" && (
-        <div id="bonusAbs" className={`abilities-input lined-inputs ${tooManyBonusAbs ? "input-error" : ""}`}>
+        <div
+          id="bonusAbs"
+          className={`abilities-input lined-inputs ${
+            tooManyBonusAbs ? "input-error" : ""
+          }`}
+        >
           <label className="subtitle-label">
-          {`${character.queryBonusAbsTitle()} `}
-          {getAbilitiesRemainingString(
-            character,
-            "BonusAbs",
-            false,
-            [character.queryBonusAbsRemaining()],
-          )}
+            {`${character.queryBonusAbsTitle()} `}
+            {getAbilitiesRemainingString(character, "BonusAbs", false, [
+              character.queryBonusAbsRemaining(),
+            ])}
           </label>
           <LinedInputsWithBtn
             mode="bonusAbs"

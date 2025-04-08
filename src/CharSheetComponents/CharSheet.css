@@ -526,6 +526,30 @@
   align-items: center;
 }
 
+@media screen and (max-width: 450px) {
+  .single-line-w-btn {
+    width: 190px;
+  }
+  .single-line-w-btn .buttons {
+    display: flex;
+    justify-content: end;
+    gap: 3px;
+    width: 50px;
+  }
+
+  .single-line-w-btn button {
+    min-width: 19px;
+    height: 19px;
+    margin-bottom: 2px;
+    font-size: 20px;
+    padding: 0px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .single-line-w-btn button:hover {
   background-color: rgb(138, 138, 138);
   color: white;
@@ -643,6 +667,15 @@
   padding: 10px 5px 10px 10px;
 }
 
+#abilitiesblock .lined-input.clickable {
+  cursor: pointer;
+}
+
+#abilitiesblock .lined-input.clickable:hover {
+  color: black;
+  border-color: black;
+}
+
 #popupMod.visible {
   position: fixed;
   top: 50%;
@@ -684,6 +717,7 @@
 #popupMod.widest {
   width: 900px;
   max-width: 95vw;
+  margin-top: 12px;
 }
 
 #popupMod.hidden {
@@ -916,10 +950,10 @@
   }
 
   #popupMod .alterBtn.remove:not(.utility):hover {
-  background-color: rgba(196, 170, 167, 0.664);
-  color: rgb(119, 39, 39);
-  opacity: 1;
-}
+    background-color: rgba(196, 170, 167, 0.664);
+    color: rgb(119, 39, 39);
+    opacity: 1;
+  }
 }
 
 #popupMod .alterBtn:not(.utility)[disabled] {
@@ -929,7 +963,7 @@
 }
 
 /* Again, prevent odd behavior on mobile w/ dark-screen */
-@media screen and (hover:hover) and (prefers-color-scheme: dark) {
+@media screen and (hover: hover) and (prefers-color-scheme: dark) {
   #popupMod .alterBtn:not(:disabled):not(.utility).add:hover {
     background-color: rgba(65, 77, 67, 0.664);
     color: rgb(131, 226, 72);
