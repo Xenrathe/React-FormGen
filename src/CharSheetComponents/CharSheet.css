@@ -782,28 +782,34 @@
 #popupMod .single-selectables .selectable,
 #popupMod .addable-items .addable-item {
   position: relative;
-  border: solid 1px rgb(139, 139, 139);
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(139, 139, 139);
   padding: 4px;
+}
+
+#popupMod .single-selectables .selectable.unclickable {
+  border-style: dotted;
 }
 
 @media screen and (prefers-color-scheme: dark) {
   #popupMod .single-selectables .selectable,
   #popupMod .addable-items .addable-item {
-    border: solid 1px rgb(187, 187, 187);
+    border-color: rgb(187, 187, 187);
   }
 }
 
 /*Barbarian (Red), Bard (Blue), Cleric (White), Fighter (Green), Paladin (Yellow), Ranger (Brown), Rogue (Purple), Sorcerer (Orange), and Wizard (Black)*/
 #popupMod .addable-items .addable-item.Cleric {
-  border: dashed 1px #bccae7;
+  border: solid 1px #bccae7;
 }
 
 #popupMod .addable-items .addable-item.Sorcerer {
-  border: dashed 1px orange;
+  border: solid 1px orange;
 }
 
 #popupMod .addable-items .addable-item.Wizard {
-  border: dashed 1px #0d1974;
+  border: solid 1px #0d1974;
 }
 
 #popupMod .single-selectables .selectable.owned {
@@ -901,26 +907,41 @@
   transform: translateY(-10%);
 }
 
-#popupMod .alterBtn:not(:disabled):not(.utility).add:hover {
-  background-color: rgba(178, 196, 167, 0.664);
-  color: rgb(70, 119, 39);
+/* Prevent odd hover behavior on mobile */
+@media (hover: hover) {
+  #popupMod .alterBtn:not(:disabled):not(.utility).add:hover {
+    background-color: rgba(178, 196, 167, 0.664);
+    color: rgb(70, 119, 39);
+    opacity: 1;
+  }
+
+  #popupMod .alterBtn.remove:not(.utility):hover {
+  background-color: rgba(196, 170, 167, 0.664);
+  color: rgb(119, 39, 39);
   opacity: 1;
 }
+}
 
-#popupMod .alterBtn.remove:not(.utility):hover,
 #popupMod .alterBtn:not(.utility)[disabled] {
   background-color: rgba(196, 170, 167, 0.664);
   color: rgb(119, 39, 39);
   opacity: 1;
 }
 
-@media screen and (prefers-color-scheme: dark) {
+/* Again, prevent odd behavior on mobile w/ dark-screen */
+@media screen and (hover:hover) and (prefers-color-scheme: dark) {
   #popupMod .alterBtn:not(:disabled):not(.utility).add:hover {
     background-color: rgba(65, 77, 67, 0.664);
     color: rgb(131, 226, 72);
   }
 
-  #popupMod .alterBtn.remove:not(.utility):hover,
+  #popupMod .alterBtn.remove:not(.utility):hover {
+    background-color: rgba(77, 66, 65, 0.664);
+    color: rgb(241, 15, 15);
+  }
+}
+
+@media screen and (prefers-color-scheme: dark) {
   #popupMod .alterBtn:not(.utility)[disabled] {
     background-color: rgba(77, 66, 65, 0.664);
     color: rgb(241, 15, 15);

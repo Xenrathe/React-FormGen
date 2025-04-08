@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "./Navbar.css";
-import saveIcon from "../assets/download.svg";
-import loadIcon from "../assets/open.svg";
-import printIcon from "../assets/printer.svg";
+import SaveIcon from "../assets/download.svg?react";
+import LoadIcon from "../assets/open.svg?react";
+import PrintIcon from "../assets/printer.svg?react";
 
 function handleExtraInfoChkBox(event, setExtraInfo) {
   setExtraInfo((prev) => !prev);
@@ -30,14 +30,14 @@ export default function Navbar({ onSave, onLoad, onPrint }) {
       <div id="save-load">
         <button onClick={onSave}>
           {isSmallScreen ? (
-            <img src={saveIcon} alt="Save" width="35" height="35" />
+            <SaveIcon className="icon" alt="Save" />
           ) : (
             "Save To File"
           )}
         </button>
         <button onClick={onLoad}>
           {isSmallScreen ? (
-            <img src={loadIcon} alt="Load" width="35" height="35" />
+            <LoadIcon className="icon" alt="Load"/>
           ) : (
             "Load From File"
           )}
@@ -46,7 +46,7 @@ export default function Navbar({ onSave, onLoad, onPrint }) {
       <div id="print">
         <button onClick={onPrint}>
           {isSmallScreen ? (
-            <img src={printIcon} alt="Load" width="35" height="35" />
+            <PrintIcon className="icon" alt="Load" />
           ) : (
             "Print"
           )}

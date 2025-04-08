@@ -62,6 +62,19 @@
   }
 }
 
+.navbar .icon {
+  min-width: 35px;
+  width: 35px;
+  min-height: 35px;
+  height: 35px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .navbar .icon {
+    fill: white;
+  }
+}
+
 .navbar #print {
   margin-left: 25px;
 }

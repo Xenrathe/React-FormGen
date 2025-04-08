@@ -193,7 +193,7 @@ function AbilityCard({
 
   // used to set CSS class for width of popup
   let infoLength = Object.values(abilityInfo.singleItem)
-    .map((value) => value.length)
+    .map((value) => value.length ? value.length : 0)
     .reduce((sum, length) => sum + length, 0);
 
   if (Object.keys(abilityInfo.singleItem).includes("Table")) {
@@ -276,7 +276,7 @@ function AbilityCard({
                 return (
                   <span
                     key={`${abilityInfo.title}-${itemKey}`}
-                    className={`selectable ${hasLevel && "owned"}`}
+                    className={`selectable ${hasLevel ? " owned" : ""} ${!btnVisible ? " unclickable" : ""}`}
                   >
                     {btnVisible && (
                       <button
@@ -315,21 +315,25 @@ function AbilityCard({
         {subOptions.length > 0 && (
           <span className="single-selectables" id="sub-options">
             {subOptions.map((bonusOption) => {
-              const key = Object.keys(bonusOption)[0];
-              const val = Object.values(bonusOption)[0];
-
+              const key = Object.keys(bonusOption)[0]; //'A' or 'B' or 'C' or name of cantrip
+              const description = Object.values(bonusOption)[0]; //the actual description
               const hasBonus = character.bonusOptions.some(
                 (option) => option[abilityInfo.title] === key
               );
 
-              const btnVisible = !infoOnly;
+              const currentCount = character.bonusOptions.filter(
+                (option) => Object.keys(option)[0] == abilityInfo.title
+              ).length;
+              const maxCount = character.querySubOptions(abilityInfo)[0];
+
+              const btnVisible = !infoOnly && (hasBonus || maxCount > currentCount);
 
               // only show CHOSEN bonus options in infoOnly mode
               if (hasBonus || !infoOnly) {
                 return (
                   <span
                     key={`${abilityInfo.title}-${key}`}
-                    className={`selectable ${hasBonus && "owned"}`}
+                    className={`selectable${hasBonus ? " owned" : ""}${!btnVisible ? " unclickable" : ""}`}
                   >
                     {btnVisible && (
                       <button
@@ -351,7 +355,7 @@ function AbilityCard({
                       </button>
                     )}
                     <strong>{key}: </strong>
-                    {val}
+                    {description}
                   </span>
                 );
               } else {
@@ -367,18 +371,15 @@ function AbilityCard({
                 abilityInfo.title,
                 tier
               );
-              const btnVisible =
-                !infoOnly &&
-                (hasFeat ||
-                  (!(character.level < 8 && tier == "Epic") &&
-                    !(character.level < 5 && tier == "Champion")));
+              const levelRestricted = (character.level < 8 && tier == "Epic") || (character.level < 5 && tier == "Champion");
+              const btnVisible = !infoOnly && (hasFeat || !levelRestricted);
 
               // only show KNOWN feats in infoOnly mode
               if (hasFeat || !infoOnly) {
                 return (
                   <span
                     key={`${abilityInfo.title}-${tier}`}
-                    className={`selectable ${hasFeat && "owned"}`}
+                    className={`selectable${hasFeat ? " owned" : ""}${!btnVisible ? " unclickable" : ""}`}
                   >
                     {btnVisible && (
                       <button
