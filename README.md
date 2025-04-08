@@ -31,7 +31,6 @@ The 13th Age CharGen is a form for creating or storing a character (i.e. a 'char
 ### To-do List Before Deployment
 
 - mobile scrolling while modal is up, esp full-screen (e.g. gather power)
-- decrease font-size for popupModal w/ addons (spell selector)
 - make x, +, i buttons a little bigger and spread out for mobile
 
 ### Future To-do List

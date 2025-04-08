@@ -1019,6 +1019,27 @@ td {
   background-color: #eaeaea;
 }
 
+@media screen and (prefers-color-scheme: dark) {
+  .ability-card th,
+  td {
+    border: 1px solid #646464;
+  }
+
+  .ability-card th {
+    background-color: #577b9e;
+    color: #ffffff;
+  }
+
+  .ability-card tr:nth-child(even) {
+    background-color: rgb(45, 45, 45);
+    color: #ffffff;
+  }
+
+  .ability-card tr:hover {
+    background-color: rgb(55, 55, 55);
+  }
+}
+
 .ability-card td {
   text-align: center;
 }
