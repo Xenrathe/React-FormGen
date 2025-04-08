@@ -49,4 +49,4 @@ This project was created as part of The Odin Project curriculum, expanding on th
 
 ### Attribution
 
-- The 13th Age TTRPG system is published by <a href="https://pelgranepress.com/13th-age/" target="_blank" title="Pelgrane Press">Pelgrane Press</a>
+- The 13th Age TTRPG system (& icon) is published by <a href="https://pelgranepress.com/13th-age/" target="_blank" title="Pelgrane Press">Pelgrane Press</a>
