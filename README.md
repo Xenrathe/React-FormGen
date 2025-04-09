@@ -23,8 +23,8 @@ The 13th Age CharGen is a form for creating or storing a character (i.e. a 'char
 
 - CSS: Vanilla
 - JS: React
-- Backend: N/A - no backend
-- Other: Packery used to condense the printed ability cards
+- Backend: N/A - no database
+- Other: Packery to condense the printed ability cards; vite-svgr to easily import svgs
 
 ![Screenshot of printed abilities](https://github.com/Xenrathe/React-FormGen/blob/main/PrintScreen.png?raw=true)
 
