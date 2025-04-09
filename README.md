@@ -6,7 +6,7 @@
 
 The 13th Age CharGen is a form for creating or storing a character (i.e. a 'character sheet') for the table-top RPG 13th age. Unlike most character sheets, it has access to the underlying data, allowing players to view skill and ability information in the form itself, as opposed to referring to another source (book, wiki). Additionally, the form can be printed with all the ability info attached, allowing for a nice little packet for players to bring to the table, with all their information in one place!
 
-13th Age CharGen is active on GitHub pages: (???)
+13th Age CharGen is active at (https://13th-age.pages.dev/)
 
 ### Features:
 
@@ -27,11 +27,6 @@ The 13th Age CharGen is a form for creating or storing a character (i.e. a 'char
 - Other: Packery to condense the printed ability cards; vite-svgr to easily import svgs
 
 ![Screenshot of printed abilities](https://github.com/Xenrathe/React-FormGen/blob/main/PrintScreen.png?raw=true)
-
-### To-do List Before Deployment
-
-- mobile scrolling while modal is up, esp full-screen (e.g. gather power)
-- make x, +, i buttons a little bigger and spread out for mobile
 
 ### Future To-do List
 
@@ -54,4 +49,4 @@ This project was created as part of The Odin Project curriculum, expanding on th
 
 ### Attribution
 
-- The 13th Age TTRPG system is published by <a href="https://pelgranepress.com/13th-age/" target="_blank" title="Pelgrane Press">Pelgrane Press</a>
+- The 13th Age TTRPG system (& icon) is published by <a href="https://pelgranepress.com/13th-age/" target="_blank" title="Pelgrane Press">Pelgrane Press</a>
