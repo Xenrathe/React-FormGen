@@ -217,9 +217,18 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
         )}
       </div>
       <div id="items" className="narrative-input lined-inputs">
-        <label className="title">Items</label>
+        <label className="title">Items & Currency</label>
+        <div className="single-line">
+          <label className="title gold" for="gold">{` Gold`}</label>
+          <input type="number" id="gold" name="gold" step="1" min="0" value={narrativeBlock.gold} onChange={(e) => {
+            setNarrativeBlock({
+              ...narrativeBlock,
+              gold: Math.round(e.target.value),
+            });
+          }}/>
+        </div>
         {generateLinedInput(
-          9,
+          8,
           "item-input",
           "",
           narrativeBlock.items,

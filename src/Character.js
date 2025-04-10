@@ -25,7 +25,8 @@ export class Character {
     oneUniqueThing,
     iconRelationships,
     backgrounds,
-    items
+    items,
+    gold
   ) {
     this.abilityScoresBase = abilityScoresBase; //{str, con, dex, int, wis, cha}
     this.name = name; //a string
@@ -52,6 +53,7 @@ export class Character {
     this.iconRelationships = iconRelationships; //just strings but eventually an array of objects, like [{'archmage', 1}, {'lich', -2}]
     this.backgrounds = backgrounds; //an array of objects, like [{'street thief', 4}, {'magician', 2}]
     this.items = items; //an array of user-inputted strings "Longsword +1"
+    this.gold = gold; //an integer
 
     this.abilityScores = this.calculateAbilityScores(); //object with key-value, like ["Str"] = 12
     this.abilityModifiers = this.calculateAbilityModifiers(); //must be after calculateAbilityScores(), object same as above
@@ -795,6 +797,56 @@ export class Character {
     return this.#getOptions("feats", source, this.feats, filterFn);
   }
 
+  getFeatures() {
+    let features = [];
+
+    Object.entries(races[this.race].racialPowersAndFeats).forEach(
+      ([title, obj]) => {
+        if (Object.keys(obj)[0] === "Base") {
+          features.push({ [title]: obj, removable: false });
+        }
+      }
+    );
+
+    Object.entries(jobs[this.job].features).forEach(([title, obj]) => {
+      features.push({ [title]: obj, removable: false });
+    });
+
+    //special removal if a ranger lacks Animal Companion
+    if (!this.jobTalents.some((talent) => talent.startsWith("AC - "))) {
+      features = features.filter((feature) => !("Animal Companion" in feature));
+    }
+
+    //special addition for paladin's divine domain
+    if (
+      this.jobTalents.filter((talent) =>
+        talent.startsWith("Divine Domain")
+      ).length > 0
+    ) {
+      features.push({ Invocation: jobs["Cleric"].features.Invocation });
+    }
+
+    //special addition for bard's jack of spells
+    if (this.jobTalents.includes("Jack of Spells")) {
+      const jackOfSpellsOptions = this.bonusOptions.filter(
+        (bo) => Object.keys(bo) == "Jack of Spells"
+      );
+      jackOfSpellsOptions.forEach((option) => {
+        const optionVal = Object.values(option)[0];
+        //A = Cleric, B = Sorcerer, C = Wizard
+        if (optionVal == "B") {
+          features.push({
+            "Dancing Lights": jobs["Sorcerer"].features["Dancing Lights"],
+          });
+        } else if (optionVal == "C") {
+          features.push({ Cantrips: jobs["Wizard"].features.Cantrips });
+        }
+      });
+    }
+
+    return features
+  }
+
   //this gives spells, separated into { owned, potential }
   getSpells() {
     let spellList = jobs[this.job]?.spellList ?? {};
@@ -1330,6 +1382,12 @@ export class Character {
       return [numChoices, subOptions]
     }
 
+    // for Ranger's favored enemy
+    const faveEnemyTier = this.queryFeatHighestTier("Favored Enemy");
+    if (faveEnemyTier == "Epic") {
+      numChoices = 2;
+    }
+
     const subOptions = Object.entries(abilityInfo.singleItem?.Options ?? {})
       .filter(([key, _]) => key !== "Count")
       .map(([key, value]) => ({ [key]: value }));
@@ -1375,12 +1433,16 @@ export class Character {
 
       return counts;
     } else {
-      const AnimalAdjustment = this.jobTalents.some((talent) =>
+      //AC talents cost 2
+      const animalAdjustment = this.jobTalents.some((talent) =>
         talent.startsWith("AC - ")
       )
         ? 1
         : 0;
-      return this.jobTalents.length + AnimalAdjustment;
+
+      //Favored Enemy counts as 2 if humanoid suboption chosen
+      const FEAdjustment = this.bonusOptions.some((so) => Object.keys(so)[0] == "Favored Enemy" && Object.values(so)[0] == "G") ? 1 : 0;
+      return this.jobTalents.length + animalAdjustment + FEAdjustment;
     }
   }
 

@@ -431,6 +431,14 @@
   width: 120px;
 }
 
+#narrativeblock #gold {
+  margin-left: 20px;
+  border: 1px black solid;
+  min-width: 60px;
+  max-height: 15px;
+  text-align: end;
+}
+
 .lined-inputs .single-line input[type="number"] {
   width: 20px !important;
 }

@@ -145,44 +145,8 @@ export function getDataSets(mode, character) {
 
   const modeMapping = {
     general: () => {
-      Object.entries(races[character.race].racialPowersAndFeats).forEach(
-        ([title, obj]) => {
-          if (Object.keys(obj)[0] === "Base") {
-            dataOnLines.push({ [title]: obj, removable: false });
-          }
-        }
-      );
-
-      Object.entries(jobs[character.job].features).forEach(([title, obj]) => {
-        dataOnLines.push({ [title]: obj, removable: false });
-      });
-
-      //special addition for paladin's divine domain
-      if (
-        character.jobTalents.filter((talent) =>
-          talent.startsWith("Divine Domain")
-        ).length > 0
-      ) {
-        dataOnLines.push({ Invocation: jobs["Cleric"].features.Invocation });
-      }
-
-      //special addition for bard's jack of spells
-      if (character.jobTalents.includes("Jack of Spells")) {
-        const jackOfSpellsOptions = character.bonusOptions.filter(
-          (bo) => Object.keys(bo) == "Jack of Spells"
-        );
-        jackOfSpellsOptions.forEach((option) => {
-          const optionVal = Object.values(option)[0];
-          //A = Cleric, B = Sorcerer, C = Wizard
-          if (optionVal == "B") {
-            dataOnLines.push({
-              "Dancing Lights": jobs["Sorcerer"].features["Dancing Lights"],
-            });
-          } else if (optionVal == "C") {
-            dataOnLines.push({ Cantrips: jobs["Wizard"].features.Cantrips });
-          }
-        });
-      }
+      const jobFeatures = character.getFeatures();
+      dataOnLines.push(...jobFeatures);
 
       const racialFeatInfo = character.getFeats("racial");
       dataForAdd.push(...racialFeatInfo.potential);

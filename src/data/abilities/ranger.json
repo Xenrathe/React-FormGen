@@ -117,10 +117,23 @@
     },
     "Favored Enemy": {
       "Type": "Optional",
-      "Base": "Choose a specific monster type (e.g. aberration, beast, construct, etc.). The crit range of your ranger attacks against that type of enemy expands by 2.",
+      "Base": "Choose a specific monster type (humanoid counts as 2 talents). The crit range of your ranger attacks against that type of enemy expands by 2.",
       "Adventurer": "You can change your favored enemy by meditating when you take a full heal-up.",
       "Champion": "Your crit range for attacks against favored enemies expands by 1 (to +3).",
-      "Epic": "Choose a second non-humanoid monster type as a favored enemy."
+      "Epic": "Choose a second non-humanoid monster type as a favored enemy.",
+      "Options" : {
+        "Count": 1,
+        "A": "Aberration",
+        "B": "Beast",
+        "C": "Construct",
+        "D": "Demon",
+        "E": "Dragon",
+        "F": "Giant",
+        "G": "Humanoid",
+        "H": "Ooze",
+        "I": "Plant",
+        "J": "Undead"
+      }
     },
     "Fey Queen's Enchantments": {
       "Type": "Optional",

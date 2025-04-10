@@ -40,6 +40,7 @@ function CharSheet() {
     iconRelationships: [],
     backgrounds: {},
     items: [],
+    gold: 0,
   });
 
   const [abilitiesBlock, setAbilitiesBlock] = useState({
@@ -76,7 +77,8 @@ function CharSheet() {
       narrativeBlock.oneUniqueThing,
       narrativeBlock.iconRelationships,
       narrativeBlock.backgrounds,
-      narrativeBlock.items
+      narrativeBlock.items,
+      narrativeBlock.gold
     )
   );
 
@@ -103,7 +105,8 @@ function CharSheet() {
       narrativeBlock.oneUniqueThing,
       narrativeBlock.iconRelationships,
       narrativeBlock.backgrounds,
-      narrativeBlock.items
+      narrativeBlock.items,
+      narrativeBlock.gold
     );
 
     // Update oldJob and oldRace only if they have changed
