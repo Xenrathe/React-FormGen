@@ -64,13 +64,6 @@ export function handleBackgrounds(
   ) {
     setNarrativeBlock({ ...narrativeBlock, backgrounds: newBackgrounds });
   }
-
-  const backgroundsDiv = document.getElementById("backgrounds");
-  if (getBackgroundPointsRemaining(newBackgrounds, character) < 0) {
-    backgroundsDiv.classList.add("input-error");
-  } else {
-    backgroundsDiv.classList.remove("input-error");
-  }
 }
 
 function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
@@ -169,6 +162,12 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
     return lines;
   }
 
+  const relationshipPointsRemaining = getRelationshipPointsRemaining(narrativeBlock.iconRelationships);
+  const relationError = relationshipPointsRemaining != 0;
+
+  const backgroundPointsRemaining = getBackgroundPointsRemaining(narrativeBlock.backgrounds, character);
+  const BGError = backgroundPointsRemaining != 0;
+
   return (
     <div id="narrativeblock" className="input-group">
       <div className="title-label">Narrative & Items</div>
@@ -186,11 +185,10 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
           }}
         />
       </div>
-      <div id="icon-relationships" className="narrative-input lined-inputs">
+      <div id="icon-relationships" className={`narrative-input lined-inputs${relationError ? " input-error" : ""}`}>
         <label className="title">
-          Icon Relations (
-          {getRelationshipPointsRemaining(narrativeBlock.iconRelationships)}{" "}
-          pts)
+          Icon Relations
+          {relationError ? ` (${relationshipPointsRemaining} pts)` : null}{" "}
         </label>
         {generateLinedInput(
           4,
@@ -201,11 +199,10 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
           true
         )}
       </div>
-      <div id="backgrounds" className="narrative-input lined-inputs">
+      <div id="backgrounds" className={`narrative-input lined-inputs${BGError ? " input-error" : ""}`}>
         <label className="title">
-          Backgrounds (
-          {getBackgroundPointsRemaining(narrativeBlock.backgrounds, character)}{" "}
-          pts)
+          Backgrounds 
+            {BGError ? ` (${backgroundPointsRemaining} pts)` : null}{" "}
         </label>
         {generateLinedInput(
           8,
@@ -219,7 +216,7 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
       <div id="items" className="narrative-input lined-inputs">
         <label className="title">Items & Currency</label>
         <div className="single-line">
-          <label className="title gold" for="gold">{` Gold`}</label>
+          <label className="title gold" htmlFor="gold">{` Gold`}</label>
           <input type="number" id="gold" name="gold" step="1" min="0" value={narrativeBlock.gold} onChange={(e) => {
             setNarrativeBlock({
               ...narrativeBlock,

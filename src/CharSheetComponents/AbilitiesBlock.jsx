@@ -222,6 +222,9 @@ function LinedInputsWithBtn({
     if (mode == "spells") {
       const spellsWithError = character.querySpellsHaveError();
       hasError = spellsWithError.includes(title);
+    } else if (mode == "talents") {
+      const talentsWithError = character.queryTalentsHaveError();
+      hasError = talentsWithError.includes(title);
     }
 
     // tier letter addon
@@ -340,30 +343,36 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
     mode: "",
   });
 
-  let tooManyFeats = false;
-  character.queryFeatsRemaining().forEach((featNum) => {
-    if (featNum < 0) {
-      tooManyFeats = true;
-    }
-  });
+  /* ERROR CHECKING AND TITLE STRINGS */
+  const featsRemainingString = getAbilitiesRemainingString(
+    character,
+    "Feats",
+    true,
+    character.queryFeatsRemaining()
+  );
+  const featMiscount = featsRemainingString != "";
 
-  let tooManyTalents = false;
-  character.queryTalentsRemaining().forEach((talentNum) => {
-    if (talentNum < 0) {
-      tooManyTalents = true;
-    }
-  });
+  const talentsRemainingString = getAbilitiesRemainingString(
+    character,
+    "Talents",
+    false,
+    character.queryTalentsRemaining()
+  );
+  const talentError = talentsRemainingString != "" || character.queryTalentsHaveError().length > 0;
 
-  const hasSpellError = character.querySpellsHaveError().length > 0;
-  const tooManyFamiliarAbs = character.queryFamiliarAbilitiesRemaining() < 0;
-  const tooManyBonusAbs = character.queryBonusAbsRemaining() < 0;
+  const spellsRemainingString = getAbilitiesRemainingString(character, "Spells", false, null);
+  const hasSpellError = character.querySpellsHaveError().length > 0 || spellsRemainingString != "";
 
-  const hasError =
-    tooManyTalents ||
-    tooManyFeats ||
-    hasSpellError ||
-    tooManyFamiliarAbs ||
-    tooManyBonusAbs; //used to add an error class to div
+  const familiarAbsRemainingString = getAbilitiesRemainingString(character, "animalsBlock", false, [
+    character.queryFamiliarAbilitiesRemaining(),
+  ]);
+  const hasFamiliarAbsError = familiarAbsRemainingString != "";
+
+  const bonusAbsRemainingString = getAbilitiesRemainingString(character, "BonusAbs", false, [
+    character.queryBonusAbsRemaining(),
+  ]);
+  const hasBonusAbsError = bonusAbsRemainingString != "";
+  /* END ERROR CHECKING */
 
   //for rangers animal companion or wizard's familiar, adds an extra block to add feats/abilities
   let animalsBlock = "";
@@ -378,7 +387,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
   return (
     <div
       id="abilitiesblock"
-      className={"input-group" + (hasError ? " input-error" : "")}
+      className={`input-group${featMiscount ? " input-error" : ""}`}
     >
       <PopupModal
         popupInfo={popupInfo}
@@ -387,14 +396,9 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         abilitiesBlock={abilitiesBlock}
         setAbilitiesBlock={setAbilitiesBlock}
       />
-      <div className="title-label">
+      <div className={`title-label`}>
         Abilities{" "}
-        {getAbilitiesRemainingString(
-          character,
-          "Feats",
-          true,
-          character.queryFeatsRemaining()
-        )}
+        <span>{featsRemainingString}</span>
       </div>
       <div id="job-race-gen" className="abilities-input lined-inputs">
         <label className="subtitle-label">Class, Race, Gen Feats</label>
@@ -409,17 +413,12 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
       <div
         id="talents"
         className={`abilities-input lined-inputs ${
-          tooManyTalents ? "input-error" : ""
+          talentError ? "input-error" : ""
         }`}
       >
         <label className="subtitle-label">
           Talents{" "}
-          {getAbilitiesRemainingString(
-            character,
-            "Talents",
-            false,
-            character.queryTalentsRemaining()
-          )}
+          {talentsRemainingString}
         </label>
         <LinedInputsWithBtn
           mode="talents"
@@ -434,14 +433,12 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         <div
           id="pets"
           className={`abilities-input lined-inputs ${
-            tooManyFamiliarAbs ? "input-error" : ""
+            hasFamiliarAbsError ? "input-error" : ""
           }`}
         >
           <label className="subtitle-label">
             {`${animalsBlock} `}
-            {getAbilitiesRemainingString(character, "animalsBlock", false, [
-              character.queryFamiliarAbilitiesRemaining(),
-            ])}
+            {familiarAbsRemainingString}
           </label>
           <LinedInputsWithBtn
             mode={animalsBlock}
@@ -462,7 +459,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         >
           <label className="subtitle-label">
             Spells{" "}
-            {getAbilitiesRemainingString(character, "Spells", false, null)}
+            {spellsRemainingString}
           </label>
           <LinedInputsWithBtn
             mode="spells"
@@ -484,14 +481,12 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         <div
           id="bonusAbs"
           className={`abilities-input lined-inputs ${
-            tooManyBonusAbs ? "input-error" : ""
+            hasBonusAbsError ? "input-error" : ""
           }`}
         >
           <label className="subtitle-label">
             {`${character.queryBonusAbsTitle()} `}
-            {getAbilitiesRemainingString(character, "BonusAbs", false, [
-              character.queryBonusAbsRemaining(),
-            ])}
+            {bonusAbsRemainingString}
           </label>
           <LinedInputsWithBtn
             mode="bonusAbs"

@@ -1180,21 +1180,6 @@ export class Character {
   querySpellsHaveError() {
     let errorSpells = [];
 
-    // standard errors (too many at a given spellLevel)
-    // this will also cover spells at too high or too low of a level
-    const spellLevelMax = this.querySpellLevelMaximums();
-    spellLevelMax.forEach((maxCount, index) => {
-      const slotLevel = index * 2 + 1;
-      let ownedSLCount = 0;
-      this.jobSpells.forEach((spell) => {
-        const spellLevel = Number(Object.values(spell)[0].substring(6));
-        if (spellLevel == slotLevel) {
-          ownedSLCount += 1;
-          if (ownedSLCount > maxCount) errorSpells.push(Object.keys(spell)[0]);
-        }
-      });
-    });
-
     // class-based errors
     // only necessary for Ranger and Bard's cross-job spell talents
     const ownedJobSpells = this.#querySpellsByClass();
@@ -1235,6 +1220,12 @@ export class Character {
         )
       : [];
     validSources.forEach((vSource) => (maxAllowedSpells[vSource] += 1));
+    
+    //Bard Jack of Spells Cantrip option selection (error if 3 aren't selected)
+    if (this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")){
+      const cantripChoiceNum = this.bonusOptions.filter((bo) => Object.keys(bo)[0] == "Cantrips").length;
+      if (cantripChoiceNum != 3) errorSpells.push("Cantrips");
+    }
 
     Object.keys(maxAllowedSpells).forEach((source) => {
       let ownedSourceCount = 0;
@@ -1242,14 +1233,32 @@ export class Character {
       if (ownedSpellsForThisSource.length > maxAllowedSpells[source]) {
         this.jobSpells.forEach((spell) => {
           const spellName = Object.keys(spell)[0];
-          if (ownedSpellsForThisSource.includes(spellName))
+          if (ownedSpellsForThisSource.includes(spellName)) {
             ownedSourceCount += 1;
-
-          if (ownedSourceCount > maxAllowedSpells[source])
-            errorSpells.push(spellName);
+            if (ownedSourceCount > maxAllowedSpells[source] )
+              errorSpells.push(spellName);
+          }
         });
       }
     });
+
+    //Basically we only worry about 'standard errors' once more specific errors are taken care of
+    if (errorSpells.length == 0 || (errorSpells.length == 1 && errorSpells[0] == "Cantrips")) {
+      // standard errors (too many at a given spellLevel)
+      // this will also cover spells at too high or too low of a level
+      const spellLevelMax = this.querySpellLevelMaximums();
+      spellLevelMax.forEach((maxCount, index) => {
+        const slotLevel = index * 2 + 1;
+        let ownedSLCount = 0;
+        this.jobSpells.forEach((spell) => {
+          const spellLevel = Number(Object.values(spell)[0].substring(6));
+          if (spellLevel == slotLevel) {
+            ownedSLCount += 1;
+            if (ownedSLCount > maxCount) errorSpells.push(Object.keys(spell)[0]);
+          }
+        });
+      });
+    }
 
     return errorSpells;
   }
@@ -1365,9 +1374,9 @@ export class Character {
 
     // for Bard's Jack of Spells
     const jackHighestTier = this.queryFeatHighestTier("Jack of Spells");
-    if (jackHighestTier == "Epic") {
+    if (abilityInfo.title == "Jack of Spells" && jackHighestTier == "Epic") {
       numChoices = 3;
-    } else if (jackHighestTier == "Champion") {
+    } else if (abilityInfo.title == "Jack of Spells" && jackHighestTier == "Champion") {
       numChoices = 2;
     }
 
@@ -1384,7 +1393,7 @@ export class Character {
 
     // for Ranger's favored enemy
     const faveEnemyTier = this.queryFeatHighestTier("Favored Enemy");
-    if (faveEnemyTier == "Epic") {
+    if (abilityInfo.title == "Favored Enemy" && faveEnemyTier == "Epic") {
       numChoices = 2;
     }
 
@@ -1444,6 +1453,105 @@ export class Character {
       const FEAdjustment = this.bonusOptions.some((so) => Object.keys(so)[0] == "Favored Enemy" && Object.values(so)[0] == "G") ? 1 : 0;
       return this.jobTalents.length + animalAdjustment + FEAdjustment;
     }
+  }
+
+  queryTalentsHaveError() {
+    let errorTalents = [];
+
+    // not enough options chosen
+    this.jobTalents.forEach((talent) => {
+      const abilityInfo = {title: talent, singleItem: talent in jobs[this.job].talentChoices ? jobs[this.job].talentChoices[talent] : null};
+      const maxChoices = abilityInfo ? this.querySubOptions(abilityInfo)[0] : 0;
+      const currChoices = this.bonusOptions.filter((bo) => Object.keys(bo)[0] == talent).length;
+
+      console.log(`${talent}: ${currChoices} \ ${maxChoices}`);
+      if (currChoices != maxChoices) {
+        errorTalents.push(talent);
+      }
+    })
+
+    /*
+    // class-based errors
+    // only necessary for Ranger and Bard's cross-job spell talents
+    const ownedJobSpells = this.#querySpellsByClass();
+    let maxAllowedSpells = { Bard: 0, Cleric: 0, Sorcerer: 0, Wizard: 0 };
+    if (this.job in maxAllowedSpells) maxAllowedSpells[this.job] = 100;
+
+    //paladin increase
+    if (this.jobTalents.includes("Cleric Training")) {
+      maxAllowedSpells["Cleric"] = 100;
+    }
+
+    const rangerTalents = [
+      { "Fey Queen's Enchantments": "Sorcerer" },
+      { "Ranger ex Cathedral": "Cleric" },
+    ];
+    rangerTalents.forEach((RT) => {
+      const talentName = Object.keys(RT)[0];
+      const source = Object.values(RT)[0];
+
+      if (this.jobTalents.includes(talentName)) {
+        const highestTier = this.queryFeatHighestTier(talentName);
+        if (highestTier == "Epic") {
+          maxAllowedSpells[source] += 2;
+        } else {
+          maxAllowedSpells[source] += 1;
+        }
+      }
+    });
+
+    // Bard additions
+    const options = this.bonusOptions
+      .filter((bo) => Object.keys(bo)[0] == "Jack of Spells")
+      .map((bo) => Object.values(bo)[0]);
+    const validSources = options
+      ? options.map(
+          (option) =>
+            jobs["Bard"].talentChoices["Jack of Spells"]["Options"][option]
+        )
+      : [];
+    validSources.forEach((vSource) => (maxAllowedSpells[vSource] += 1));
+    
+    //Bard Jack of Spells Cantrip option selection (error if 3 aren't selected)
+    if (this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")){
+      const cantripChoiceNum = this.bonusOptions.filter((bo) => Object.keys(bo)[0] == "Cantrips").length;
+      if (cantripChoiceNum != 3) errorSpells.push("Cantrips");
+    }
+
+    Object.keys(maxAllowedSpells).forEach((source) => {
+      let ownedSourceCount = 0;
+      const ownedSpellsForThisSource = ownedJobSpells[source];
+      if (ownedSpellsForThisSource.length > maxAllowedSpells[source]) {
+        this.jobSpells.forEach((spell) => {
+          const spellName = Object.keys(spell)[0];
+          if (ownedSpellsForThisSource.includes(spellName)) {
+            ownedSourceCount += 1;
+            if (ownedSourceCount > maxAllowedSpells[source] )
+              errorSpells.push(spellName);
+          }
+        });
+      }
+    });
+
+    //Basically we only worry about 'standard errors' once more specific errors are taken care of
+    if (errorSpells.length == 0 || (errorSpells.length == 1 && errorSpells[0] == "Cantrips")) {
+      // standard errors (too many at a given spellLevel)
+      // this will also cover spells at too high or too low of a level
+      const spellLevelMax = this.querySpellLevelMaximums();
+      spellLevelMax.forEach((maxCount, index) => {
+        const slotLevel = index * 2 + 1;
+        let ownedSLCount = 0;
+        this.jobSpells.forEach((spell) => {
+          const spellLevel = Number(Object.values(spell)[0].substring(6));
+          if (spellLevel == slotLevel) {
+            ownedSLCount += 1;
+            if (ownedSLCount > maxCount) errorSpells.push(Object.keys(spell)[0]);
+          }
+        });
+      });
+    }*/
+
+    return errorTalents;
   }
 
   //for most jobs, returns an array with one number [#]

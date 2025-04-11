@@ -75,8 +75,10 @@
   }
 }
 
-.input-error {
-  border: solid 1px red !important;
+@media screen {
+  .input-error {
+    border: solid 1px red !important;
+  }
 }
 
 @media not print and (min-width: 851px) {
@@ -463,8 +465,10 @@
   }
 }
 
-.lined-inputs .lined-input.error {
-  color: red;
+@media screen {
+  .error {
+    color: red;
+  }
 }
 
 .single-line-w-btn {
@@ -684,6 +688,11 @@
   border-color: black;
 }
 
+#abilitiesblock .lined-input.clickable.error:hover {
+  color: rgb(202, 40, 0);
+  border-color: black;
+}
+
 #popupMod.visible {
   position: fixed;
   top: 50%;
@@ -843,15 +852,18 @@
 
 /*Barbarian (Red), Bard (Blue), Cleric (White), Fighter (Green), Paladin (Yellow), Ranger (Brown), Rogue (Purple), Sorcerer (Orange), and Wizard (Black)*/
 #popupMod .addable-items .addable-item.Cleric {
-  border: solid 1px #bccae7;
+  border: solid 1px rgb(188, 202, 231);
+  background-color: rgba(188, 202, 231, 0.15);
 }
 
 #popupMod .addable-items .addable-item.Sorcerer {
-  border: solid 1px orange;
+  border: solid 1px rgb(255, 165, 0);
+  background-color: rgba(255, 165, 0, 0.15);
 }
 
 #popupMod .addable-items .addable-item.Wizard {
-  border: solid 1px #0d1974;
+  border: solid 1px rgb(13, 25, 116);
+  background-color: rgba(13, 25, 116, 0.15);
 }
 
 #popupMod .single-selectables .selectable.owned {

@@ -219,7 +219,7 @@ function AbilityCard({
   const SLPenalty = abilityInfo.singleItem?.SLPenalty ?? 0;
   const trueSLSlot =
     SLPenalty != 0 ? `@L${abilityInfo.singleItem?.Level} slot` : "";
-  const ownedSpellLevel = abilityInfo.singleItem?.Level + SLPenalty ?? -1;
+  const ownedSpellLevel = (abilityInfo.singleItem?.Level ?? -1) + SLPenalty;
   const maxSpellLevel =
     character.querySpellLevelMaximums().findLastIndex((num) => num > 0) * 2 +
     1 +
