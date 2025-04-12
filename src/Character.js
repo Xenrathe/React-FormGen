@@ -149,25 +149,6 @@ export class Character {
         this.removeFeat(title, "Adventurer");
       });
     }
-
-    //if player removes any of the 'divine domain' talents, may also remove an associated domain
-    if (this.job == "Paladin") {
-      const maxDomains = this.jobTalents.filter((talent) =>
-        talent.startsWith("Divine Domain")
-      ).length;
-      const ownedDomains = this.jobTalents.filter((talent) =>
-        talent.startsWith("D: ")
-      ).length;
-
-      for (let i = 0; i < ownedDomains - maxDomains; i++) {
-        const talentIndex = this.jobTalents.findLastIndex((talent) =>
-          talent.startsWith("D: ")
-        );
-        const talentName = this.jobTalents[talentIndex];
-        this.removeFeat(talentName, "Adventurer");
-        this.jobTalents.splice(talentIndex);
-      }
-    }
   }
 
   calculateMaxHP() {
@@ -564,7 +545,7 @@ export class Character {
           const talent = Object.keys(pair)[0];
           const source = pair[talent];
           const maxSpells = this.queryFeatIsOwned(talent, "Epic") ? 2 : 1;
-          const ownedSpellCount = this.#querySpellsByClass()[source].length;
+          const ownedSpellCount = this.#queryOwnedAbilitiesByClass("Spells")[source].length;
 
           let acceptableFreq = ["Daily", "Recha"]; // use first 5 characters only!
           if (this.queryFeatIsOwned(talent, "Champion")) {
@@ -610,7 +591,7 @@ export class Character {
           : [];
 
         potentialSources.forEach((source) => {
-          const ownedSpellCount = this.#querySpellsByClass()[source].length;
+          const ownedSpellCount = this.#queryOwnedAbilitiesByClass("Spells")[source].length;
 
           let filteredSpells = Object.entries(jobs[source].spellList)
             .filter(
@@ -711,10 +692,10 @@ export class Character {
       talent.startsWith("D: ")
     ).length;
 
-    if (type === "talents" && maxDomains > 0) {
+    if (type === "talents") {
       const clericDomainTalents = Object.entries(jobs["Cleric"].talentChoices)
         .filter(
-          ([name, _]) => abilityNames.has(name) || maxDomains > ownedDomains
+          ([name, _]) => abilityNames.has(name) || (maxDomains > 0 && maxDomains > ownedDomains)
         )
         .map(([name, data]) => ({
           [name]: { ...data, Source: "Cleric" },
@@ -1153,36 +1134,13 @@ export class Character {
     return [totalPointsMax, maxPerIcon];
   }
 
-  //used for talents that can use spells from other classes
-  //returns an object {"Cleric": ["Heal", "Blessing"], "Sorcerer": [], etc}
-  #querySpellsByClass() {
-    let ownedSpells = {};
-
-    Object.keys(jobs).forEach((job) => {
-      if ("spellList" in jobs[job]) {
-        ownedSpells[job] = [];
-
-        Object.keys(jobs[job].spellList).forEach((spellName) => {
-          this.jobSpells.forEach((spell) => {
-            const name = Object.keys(spell)[0];
-            if (name === spellName) {
-              ownedSpells[job].push(name);
-            }
-          });
-        });
-      }
-    });
-
-    return ownedSpells;
-  }
-
   //returns an array of strings of spell-names that are in error
   querySpellsHaveError() {
     let errorSpells = [];
 
     // class-based errors
     // only necessary for Ranger and Bard's cross-job spell talents
-    const ownedJobSpells = this.#querySpellsByClass();
+    const ownedJobSpells = this.#queryOwnedAbilitiesByClass("Spells");
     let maxAllowedSpells = { Bard: 0, Cleric: 0, Sorcerer: 0, Wizard: 0 };
     if (this.job in maxAllowedSpells) maxAllowedSpells[this.job] = 100;
 
@@ -1229,11 +1187,11 @@ export class Character {
 
     Object.keys(maxAllowedSpells).forEach((source) => {
       let ownedSourceCount = 0;
-      const ownedSpellsForThisSource = ownedJobSpells[source];
-      if (ownedSpellsForThisSource.length > maxAllowedSpells[source]) {
+      const ownedTalentsForThisSource = ownedJobSpells[source];
+      if (ownedTalentsForThisSource.length > maxAllowedSpells[source]) {
         this.jobSpells.forEach((spell) => {
           const spellName = Object.keys(spell)[0];
-          if (ownedSpellsForThisSource.includes(spellName)) {
+          if (ownedTalentsForThisSource.includes(spellName)) {
             ownedSourceCount += 1;
             if (ownedSourceCount > maxAllowedSpells[source] )
               errorSpells.push(spellName);
@@ -1404,6 +1362,31 @@ export class Character {
     return [numChoices, subOptions];
   }
 
+  //used for abilities that pull from other classes
+  //returns an object {"Cleric": ["Heal", "Blessing"], "Sorcerer": [], etc}
+  #queryOwnedAbilitiesByClass(abilityType) {
+    let ownedAbilities = {};
+    const dataSource = abilityType == "Spells" ? "spellList" : "talentChoices";
+    const ownedSource = abilityType == "Spells" ? this.jobSpells : this.jobTalents;
+
+    Object.keys(jobs).forEach((job) => {
+      if (dataSource in jobs[job]) {
+        ownedAbilities[job] = [];
+
+        Object.keys(jobs[job][dataSource]).forEach((abilityName) => {
+          ownedSource.forEach((ability) => {
+            const name = typeof ability == "string" ? ability : Object.keys(ability)[0];
+            if (name === abilityName) {
+              ownedAbilities[job].push(name);
+            }
+          });
+        });
+      }
+    });
+
+    return ownedAbilities;
+  }
+
   // for most jobs, returns a single number
   // for barbarian (and other non-core class?), however, returns an array [adventurer max, champ max, epic max]
   queryTalentsMax() {
@@ -1464,92 +1447,55 @@ export class Character {
       const maxChoices = abilityInfo ? this.querySubOptions(abilityInfo)[0] : 0;
       const currChoices = this.bonusOptions.filter((bo) => Object.keys(bo)[0] == talent).length;
 
-      console.log(`${talent}: ${currChoices} \ ${maxChoices}`);
       if (currChoices != maxChoices) {
         errorTalents.push(talent);
       }
     })
 
-    /*
-    // class-based errors
-    // only necessary for Ranger and Bard's cross-job spell talents
-    const ownedJobSpells = this.#querySpellsByClass();
-    let maxAllowedSpells = { Bard: 0, Cleric: 0, Sorcerer: 0, Wizard: 0 };
-    if (this.job in maxAllowedSpells) maxAllowedSpells[this.job] = 100;
+    const ownedTalentsByClass = this.#queryOwnedAbilitiesByClass("Talents");
+    let maxAllowedTalents = {};
+    Object.keys(jobs).forEach((job) => maxAllowedTalents[job] = 0);
+    maxAllowedTalents[this.job] = 100;
 
-    //paladin increase
-    if (this.jobTalents.includes("Cleric Training")) {
-      maxAllowedSpells["Cleric"] = 100;
-    }
+    //paladin increase for divine domain
+    const divineDomainTalents = this.jobTalents.filter((talent) => talent.startsWith("Divine Domain"));
+    maxAllowedTalents["Cleric"] += divineDomainTalents.length;
 
-    const rangerTalents = [
-      { "Fey Queen's Enchantments": "Sorcerer" },
-      { "Ranger ex Cathedral": "Cleric" },
-    ];
-    rangerTalents.forEach((RT) => {
-      const talentName = Object.keys(RT)[0];
-      const source = Object.values(RT)[0];
-
-      if (this.jobTalents.includes(talentName)) {
-        const highestTier = this.queryFeatHighestTier(talentName);
-        if (highestTier == "Epic") {
-          maxAllowedSpells[source] += 2;
-        } else {
-          maxAllowedSpells[source] += 1;
-        }
-      }
-    });
-
-    // Bard additions
-    const options = this.bonusOptions
-      .filter((bo) => Object.keys(bo)[0] == "Jack of Spells")
-      .map((bo) => Object.values(bo)[0]);
-    const validSources = options
-      ? options.map(
-          (option) =>
-            jobs["Bard"].talentChoices["Jack of Spells"]["Options"][option]
-        )
-      : [];
-    validSources.forEach((vSource) => (maxAllowedSpells[vSource] += 1));
-    
-    //Bard Jack of Spells Cantrip option selection (error if 3 aren't selected)
-    if (this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")){
-      const cantripChoiceNum = this.bonusOptions.filter((bo) => Object.keys(bo)[0] == "Cantrips").length;
-      if (cantripChoiceNum != 3) errorSpells.push("Cantrips");
-    }
-
-    Object.keys(maxAllowedSpells).forEach((source) => {
+    Object.keys(maxAllowedTalents).forEach((source) => {
       let ownedSourceCount = 0;
-      const ownedSpellsForThisSource = ownedJobSpells[source];
-      if (ownedSpellsForThisSource.length > maxAllowedSpells[source]) {
-        this.jobSpells.forEach((spell) => {
-          const spellName = Object.keys(spell)[0];
-          if (ownedSpellsForThisSource.includes(spellName)) {
+      const ownedTalentsForThisSource = ownedTalentsByClass[source];
+      if (ownedTalentsForThisSource.length > maxAllowedTalents[source]) {
+        this.jobTalents.forEach((talent) => {
+          if (ownedTalentsForThisSource.includes(talent)) {
             ownedSourceCount += 1;
-            if (ownedSourceCount > maxAllowedSpells[source] )
-              errorSpells.push(spellName);
+            if (ownedSourceCount > maxAllowedTalents[source] )
+              errorTalents.push(talent);
           }
         });
       }
     });
 
-    //Basically we only worry about 'standard errors' once more specific errors are taken care of
-    if (errorSpells.length == 0 || (errorSpells.length == 1 && errorSpells[0] == "Cantrips")) {
-      // standard errors (too many at a given spellLevel)
-      // this will also cover spells at too high or too low of a level
-      const spellLevelMax = this.querySpellLevelMaximums();
-      spellLevelMax.forEach((maxCount, index) => {
-        const slotLevel = index * 2 + 1;
-        let ownedSLCount = 0;
-        this.jobSpells.forEach((spell) => {
-          const spellLevel = Number(Object.values(spell)[0].substring(6));
-          if (spellLevel == slotLevel) {
-            ownedSLCount += 1;
-            if (ownedSLCount > maxCount) errorSpells.push(Object.keys(spell)[0]);
-          }
+    if (errorTalents.length == 0) {
+      // standard errors (too many talents overall or per tier, such as with barbarian)
+      const talentsMax = this.queryTalentsMax();
+      if (Array.isArray(talentsMax)) {
+        const tiers = ["Adventurer", "Champion", "Epic"];
+        let counts = [0, 0, 0];
+
+        this.jobTalents.forEach((talent) => {
+          const tierIndex = tiers.indexOf(jobs[this.job].talentChoices[talent].Type);
+          counts[tierIndex] += 1;
+
+          if (counts[tierIndex] > talentsMax[tierIndex]) errorTalents.push(talent); 
         });
-      });
-    }*/
+      } else {
+        let count = 0;
+        this.jobTalents.forEach((talent) => {
+          count++;
+          if (count > talentsMax) errorTalents.push(talent);
+        })
+      }
+    }
 
     return errorTalents;
   }
