@@ -266,7 +266,7 @@ function LinedInputsWithBtn({
       <div key={`k-${mode}-${i}`} className="single-line-w-btn">
         <span
           className={`lined-input${hasError ? " error" : ""}${
-            item ? " clickable" : ""
+            item ? "" : " empty"
           }`}
           onClick={
             item
@@ -277,7 +277,13 @@ function LinedInputsWithBtn({
                     list: null,
                     mode: mode,
                   })
-              : null
+              : () =>
+                  setPopupInfo({
+                    title: addTitle,
+                    singleItem: null,
+                    list: dataForAdd,
+                    mode: mode,
+                  })
           }
         >
           {title + highestTierLetter + spellLevelAddon}
@@ -358,19 +364,33 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
     false,
     character.queryTalentsRemaining()
   );
-  const talentError = talentsRemainingString != "" || character.queryTalentsHaveError().length > 0;
+  const talentError =
+    talentsRemainingString != "" ||
+    character.queryTalentsHaveError().length > 0;
 
-  const spellsRemainingString = getAbilitiesRemainingString(character, "Spells", false, null);
-  const hasSpellError = character.querySpellsHaveError().length > 0 || spellsRemainingString != "";
+  const spellsRemainingString = getAbilitiesRemainingString(
+    character,
+    "Spells",
+    false,
+    null
+  );
+  const hasSpellError =
+    character.querySpellsHaveError().length > 0 || spellsRemainingString != "";
 
-  const familiarAbsRemainingString = getAbilitiesRemainingString(character, "animalsBlock", false, [
-    character.queryFamiliarAbilitiesRemaining(),
-  ]);
+  const familiarAbsRemainingString = getAbilitiesRemainingString(
+    character,
+    "animalsBlock",
+    false,
+    [character.queryFamiliarAbilitiesRemaining()]
+  );
   const hasFamiliarAbsError = familiarAbsRemainingString != "";
 
-  const bonusAbsRemainingString = getAbilitiesRemainingString(character, "BonusAbs", false, [
-    character.queryBonusAbsRemaining(),
-  ]);
+  const bonusAbsRemainingString = getAbilitiesRemainingString(
+    character,
+    "BonusAbs",
+    false,
+    [character.queryBonusAbsRemaining()]
+  );
   const hasBonusAbsError = bonusAbsRemainingString != "";
   /* END ERROR CHECKING */
 
@@ -397,8 +417,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         setAbilitiesBlock={setAbilitiesBlock}
       />
       <div className={`title-label`}>
-        Abilities{" "}
-        <span>{featsRemainingString}</span>
+        Abilities <span>{featsRemainingString}</span>
       </div>
       <div id="job-race-gen" className="abilities-input lined-inputs">
         <label className="subtitle-label">Class, Race, Gen Feats</label>
@@ -417,8 +436,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
         }`}
       >
         <label className="subtitle-label">
-          Talents{" "}
-          {talentsRemainingString}
+          Talents {talentsRemainingString}
         </label>
         <LinedInputsWithBtn
           mode="talents"
@@ -458,8 +476,7 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
           }`}
         >
           <label className="subtitle-label">
-            Spells{" "}
-            {spellsRemainingString}
+            Spells {spellsRemainingString}
           </label>
           <LinedInputsWithBtn
             mode="spells"
