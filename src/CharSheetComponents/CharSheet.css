@@ -692,7 +692,7 @@
 #abilitiesblock .lined-input.empty:hover {
   color: black;
   border-color: black;
-  background-color: rgb(224, 224, 224);
+  background-color: rgb(235, 235, 235);
 }
 
 #abilitiesblock .lined-input.error:hover {
@@ -709,7 +709,7 @@
   #abilitiesblock .lined-input.empty:hover {
     color: rgb(255, 255, 255);
     border-color: rgb(255, 255, 255);
-    background-color: rgb(77, 77, 77);
+    background-color: rgb(65, 65, 65);
   }
 
   #abilitiesblock .lined-input.error:hover {
