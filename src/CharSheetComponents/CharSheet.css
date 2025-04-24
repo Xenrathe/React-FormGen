@@ -457,10 +457,20 @@
   margin-bottom: 2px;
 }
 
+.lined-inputs .lined-input:hover {
+  border: 1px rgb(0, 0, 0);
+  border-style: none none solid none;
+}
+
 @media screen and (prefers-color-scheme: dark) {
   .lined-inputs .lined-input {
     background-color: #242424;
     border: 1px rgb(220, 220, 220);
+    border-style: none none solid none;
+  }
+
+  .lined-inputs .lined-input:hover {
+    border: 1px white;
     border-style: none none solid none;
   }
 }
