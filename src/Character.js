@@ -136,8 +136,11 @@ export class Character {
 
     //if player removes a talent that has bonus options, it also removes associated information
     //needs a special addition for Bard's Jack of Spells Wizard choice's cantrips, which have a different key name
-    this.bonusOptions = this.bonusOptions.filter((bonusOp) =>
-      this.jobTalents.includes(Object.keys(bonusOp)[0]) || (Object.keys(bonusOp)[0] == "Cantrips" && this.jobTalents.includes("Jack of Spells"))
+    this.bonusOptions = this.bonusOptions.filter(
+      (bonusOp) =>
+        this.jobTalents.includes(Object.keys(bonusOp)[0]) ||
+        (Object.keys(bonusOp)[0] == "Cantrips" &&
+          this.jobTalents.includes("Jack of Spells"))
     );
 
     //if player removes any of the "AC" (animal companion) talents, will also remove associated feats
@@ -316,11 +319,18 @@ export class Character {
     let highestMod = this.#getHighestMod(jobs[this.job][attackType].Ability);
 
     //get armor and shield adjustments
-    const shieldAdjustment = this.hasShield ? jobs[this.job].armor.Shield.ATK : 0;
+    const shieldAdjustment = this.hasShield
+      ? jobs[this.job].armor.Shield.ATK
+      : 0;
     const armorAdjustment = jobs[this.job].armor[this.armorType].ATK;
 
     // ATK ROLL STRING
-    let rollMod = highestMod + this.level + shieldAdjustment + armorAdjustment + weaponData.ATK;
+    let rollMod =
+      highestMod +
+      this.level +
+      shieldAdjustment +
+      armorAdjustment +
+      weaponData.ATK;
     let hasAtkPenalty = weaponData.ATK < 0;
 
     //adjustments for Cleric
@@ -348,7 +358,12 @@ export class Character {
     //adjustments for heritage of the sword
     // removes ATK penalty, if it exists
     // Otherwise damage gets increased (added in the code below)
-    if (this.queryFeatIsOwned("Heritage of the Sword", "Adventurer") && attackType == "melee" && (weaponData.DMG == 6 || weaponData.DMG == 8) && hasAtkPenalty) {
+    if (
+      this.queryFeatIsOwned("Heritage of the Sword", "Adventurer") &&
+      attackType == "melee" &&
+      (weaponData.DMG == 6 || weaponData.DMG == 8) &&
+      hasAtkPenalty
+    ) {
       rollMod -= weaponData.ATK;
     }
 
@@ -366,7 +381,12 @@ export class Character {
 
     //adjustments for Heritage of the Sword
     let dmgDiceBonus = 0;
-    if (this.queryFeatIsOwned("Heritage of the Sword", "Adventurer") && !hasAtkPenalty && attackType == "melee" && (weaponData.DMG == 6 || weaponData.DMG == 8)) {
+    if (
+      this.queryFeatIsOwned("Heritage of the Sword", "Adventurer") &&
+      !hasAtkPenalty &&
+      attackType == "melee" &&
+      (weaponData.DMG == 6 || weaponData.DMG == 8)
+    ) {
       dmgDiceBonus = 2;
     }
 
@@ -545,7 +565,8 @@ export class Character {
           const talent = Object.keys(pair)[0];
           const source = pair[talent];
           const maxSpells = this.queryFeatIsOwned(talent, "Epic") ? 2 : 1;
-          const ownedSpellCount = this.#queryOwnedAbilitiesByClass("Spells")[source].length;
+          const ownedSpellCount =
+            this.#queryOwnedAbilitiesByClass("Spells")[source].length;
 
           let acceptableFreq = ["Daily", "Recha"]; // use first 5 characters only!
           if (this.queryFeatIsOwned(talent, "Champion")) {
@@ -591,7 +612,8 @@ export class Character {
           : [];
 
         potentialSources.forEach((source) => {
-          const ownedSpellCount = this.#queryOwnedAbilitiesByClass("Spells")[source].length;
+          const ownedSpellCount =
+            this.#queryOwnedAbilitiesByClass("Spells")[source].length;
 
           let filteredSpells = Object.entries(jobs[source].spellList)
             .filter(
@@ -637,7 +659,7 @@ export class Character {
         this.queryFeatIsOwned("Cleric Training", "Champion")
       ) {
         owned.push({ Heal: { ...jobs["Cleric"].spellList.Heal, Level: 0 } });
-      } else if (this.job === "Wizard"){
+      } else if (this.job === "Wizard") {
         owned.push({
           Cantrips: {
             Type: "Ranged",
@@ -653,7 +675,13 @@ export class Character {
               jobs["Wizard"].talentChoices["High Arcana"]["Counter-magic"],
           });
         }
-      } else if (this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")) {
+      } else if (
+        this.bonusOptions.some(
+          (bo) =>
+            Object.keys(bo)[0] == "Jack of Spells" &&
+            Object.values(bo)[0] == "C"
+        )
+      ) {
         owned.push({
           Cantrips: {
             Type: "Ranged",
@@ -695,7 +723,9 @@ export class Character {
     if (type === "talents") {
       const clericDomainTalents = Object.entries(jobs["Cleric"].talentChoices)
         .filter(
-          ([name, _]) => abilityNames.has(name) || (maxDomains > 0 && maxDomains > ownedDomains)
+          ([name, _]) =>
+            (this.job != "Cleric" && abilityNames.has(name)) ||
+            (maxDomains > 0 && maxDomains > ownedDomains)
         )
         .map(([name, data]) => ({
           [name]: { ...data, Source: "Cleric" },
@@ -800,9 +830,8 @@ export class Character {
 
     //special addition for paladin's divine domain
     if (
-      this.jobTalents.filter((talent) =>
-        talent.startsWith("Divine Domain")
-      ).length > 0
+      this.jobTalents.filter((talent) => talent.startsWith("Divine Domain"))
+        .length > 0
     ) {
       features.push({ Invocation: jobs["Cleric"].features.Invocation });
     }
@@ -825,7 +854,7 @@ export class Character {
       });
     }
 
-    return features
+    return features;
   }
 
   //this gives spells, separated into { owned, potential }
@@ -1178,10 +1207,17 @@ export class Character {
         )
       : [];
     validSources.forEach((vSource) => (maxAllowedSpells[vSource] += 1));
-    
+
     //Bard Jack of Spells Cantrip option selection (error if 3 aren't selected)
-    if (this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")){
-      const cantripChoiceNum = this.bonusOptions.filter((bo) => Object.keys(bo)[0] == "Cantrips").length;
+    if (
+      this.bonusOptions.some(
+        (bo) =>
+          Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C"
+      )
+    ) {
+      const cantripChoiceNum = this.bonusOptions.filter(
+        (bo) => Object.keys(bo)[0] == "Cantrips"
+      ).length;
       if (cantripChoiceNum != 3) errorSpells.push("Cantrips");
     }
 
@@ -1193,7 +1229,7 @@ export class Character {
           const spellName = Object.keys(spell)[0];
           if (ownedTalentsForThisSource.includes(spellName)) {
             ownedSourceCount += 1;
-            if (ownedSourceCount > maxAllowedSpells[source] )
+            if (ownedSourceCount > maxAllowedSpells[source])
               errorSpells.push(spellName);
           }
         });
@@ -1201,7 +1237,10 @@ export class Character {
     });
 
     //Basically we only worry about 'standard errors' once more specific errors are taken care of
-    if (errorSpells.length == 0 || (errorSpells.length == 1 && errorSpells[0] == "Cantrips")) {
+    if (
+      errorSpells.length == 0 ||
+      (errorSpells.length == 1 && errorSpells[0] == "Cantrips")
+    ) {
       // standard errors (too many at a given spellLevel)
       // this will also cover spells at too high or too low of a level
       const spellLevelMax = this.querySpellLevelMaximums();
@@ -1212,7 +1251,8 @@ export class Character {
           const spellLevel = Number(Object.values(spell)[0].substring(6));
           if (spellLevel == slotLevel) {
             ownedSLCount += 1;
-            if (ownedSLCount > maxCount) errorSpells.push(Object.keys(spell)[0]);
+            if (ownedSLCount > maxCount)
+              errorSpells.push(Object.keys(spell)[0]);
           }
         });
       });
@@ -1236,7 +1276,12 @@ export class Character {
       }
     } else if (this.job == "Cleric") {
       spellSlots += 1; //for the Heal cantrip
-    } else if (this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")) {
+    } else if (
+      this.bonusOptions.some(
+        (bo) =>
+          Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C"
+      )
+    ) {
       spellSlots += 1; //for cantrip
     }
 
@@ -1248,7 +1293,14 @@ export class Character {
     let spellCount = this.jobSpells.length;
 
     // addition for heal and cantrip
-    if (this.job == "Wizard" || this.job == "Cleric" || this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")) {
+    if (
+      this.job == "Wizard" ||
+      this.job == "Cleric" ||
+      this.bonusOptions.some(
+        (bo) =>
+          Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C"
+      )
+    ) {
       spellCount++;
     }
 
@@ -1334,19 +1386,29 @@ export class Character {
     const jackHighestTier = this.queryFeatHighestTier("Jack of Spells");
     if (abilityInfo.title == "Jack of Spells" && jackHighestTier == "Epic") {
       numChoices = 3;
-    } else if (abilityInfo.title == "Jack of Spells" && jackHighestTier == "Champion") {
+    } else if (
+      abilityInfo.title == "Jack of Spells" &&
+      jackHighestTier == "Champion"
+    ) {
       numChoices = 2;
     }
 
     // for Bard's Jack of Spells (Wizard) Cantrips
-    if (abilityInfo.title == "Cantrips" && abilityInfo.mode == "spells" && this.bonusOptions.some((bo) => Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C")) {
+    if (
+      abilityInfo.title == "Cantrips" &&
+      abilityInfo.mode == "spells" &&
+      this.bonusOptions.some(
+        (bo) =>
+          Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C"
+      )
+    ) {
       numChoices = 3;
 
-      const subOptions = 
-        Object.entries(jobs["Wizard"].spellList).filter(
-          ([_, data]) => data.baseLevel == 0).map(([key, value]) => ({ [key]: value.Effect }));
+      const subOptions = Object.entries(jobs["Wizard"].spellList)
+        .filter(([_, data]) => data.baseLevel == 0)
+        .map(([key, value]) => ({ [key]: value.Effect }));
 
-      return [numChoices, subOptions]
+      return [numChoices, subOptions];
     }
 
     // for Ranger's favored enemy
@@ -1367,7 +1429,8 @@ export class Character {
   #queryOwnedAbilitiesByClass(abilityType) {
     let ownedAbilities = {};
     const dataSource = abilityType == "Spells" ? "spellList" : "talentChoices";
-    const ownedSource = abilityType == "Spells" ? this.jobSpells : this.jobTalents;
+    const ownedSource =
+      abilityType == "Spells" ? this.jobSpells : this.jobTalents;
 
     Object.keys(jobs).forEach((job) => {
       if (dataSource in jobs[job]) {
@@ -1375,7 +1438,8 @@ export class Character {
 
         Object.keys(jobs[job][dataSource]).forEach((abilityName) => {
           ownedSource.forEach((ability) => {
-            const name = typeof ability == "string" ? ability : Object.keys(ability)[0];
+            const name =
+              typeof ability == "string" ? ability : Object.keys(ability)[0];
             if (name === abilityName) {
               ownedAbilities[job].push(name);
             }
@@ -1433,7 +1497,12 @@ export class Character {
         : 0;
 
       //Favored Enemy counts as 2 if humanoid suboption chosen
-      const FEAdjustment = this.bonusOptions.some((so) => Object.keys(so)[0] == "Favored Enemy" && Object.values(so)[0] == "G") ? 1 : 0;
+      const FEAdjustment = this.bonusOptions.some(
+        (so) =>
+          Object.keys(so)[0] == "Favored Enemy" && Object.values(so)[0] == "G"
+      )
+        ? 1
+        : 0;
       return this.jobTalents.length + animalAdjustment + FEAdjustment;
     }
   }
@@ -1443,22 +1512,32 @@ export class Character {
 
     // not enough options chosen
     this.jobTalents.forEach((talent) => {
-      const abilityInfo = {title: talent, singleItem: talent in jobs[this.job].talentChoices ? jobs[this.job].talentChoices[talent] : null};
+      const abilityInfo = {
+        title: talent,
+        singleItem:
+          talent in jobs[this.job].talentChoices
+            ? jobs[this.job].talentChoices[talent]
+            : null,
+      };
       const maxChoices = abilityInfo ? this.querySubOptions(abilityInfo)[0] : 0;
-      const currChoices = this.bonusOptions.filter((bo) => Object.keys(bo)[0] == talent).length;
+      const currChoices = this.bonusOptions.filter(
+        (bo) => Object.keys(bo)[0] == talent
+      ).length;
 
       if (currChoices != maxChoices) {
         errorTalents.push(talent);
       }
-    })
+    });
 
     const ownedTalentsByClass = this.#queryOwnedAbilitiesByClass("Talents");
     let maxAllowedTalents = {};
-    Object.keys(jobs).forEach((job) => maxAllowedTalents[job] = 0);
+    Object.keys(jobs).forEach((job) => (maxAllowedTalents[job] = 0));
     maxAllowedTalents[this.job] = 100;
 
     //paladin increase for divine domain
-    const divineDomainTalents = this.jobTalents.filter((talent) => talent.startsWith("Divine Domain"));
+    const divineDomainTalents = this.jobTalents.filter((talent) =>
+      talent.startsWith("Divine Domain")
+    );
     maxAllowedTalents["Cleric"] += divineDomainTalents.length;
 
     Object.keys(maxAllowedTalents).forEach((source) => {
@@ -1468,7 +1547,7 @@ export class Character {
         this.jobTalents.forEach((talent) => {
           if (ownedTalentsForThisSource.includes(talent)) {
             ownedSourceCount += 1;
-            if (ownedSourceCount > maxAllowedTalents[source] )
+            if (ownedSourceCount > maxAllowedTalents[source])
               errorTalents.push(talent);
           }
         });
@@ -1483,17 +1562,20 @@ export class Character {
         let counts = [0, 0, 0];
 
         this.jobTalents.forEach((talent) => {
-          const tierIndex = tiers.indexOf(jobs[this.job].talentChoices[talent].Type);
+          const tierIndex = tiers.indexOf(
+            jobs[this.job].talentChoices[talent].Type
+          );
           counts[tierIndex] += 1;
 
-          if (counts[tierIndex] > talentsMax[tierIndex]) errorTalents.push(talent); 
+          if (counts[tierIndex] > talentsMax[tierIndex])
+            errorTalents.push(talent);
         });
       } else {
         let count = 0;
         this.jobTalents.forEach((talent) => {
           count++;
           if (count > talentsMax) errorTalents.push(talent);
-        })
+        });
       }
     }
 
