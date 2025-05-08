@@ -1,6 +1,8 @@
 import BasicsBlock from "./BasicsBlock.jsx";
 import StatBlock from "./StatBlock.jsx";
 import "./CharSheet.css";
+import "./PopupMod.css";
+import "./AbilityCardAndSheet.css";
 import { useState, useEffect } from "react";
 import { Character } from "../Character.js";
 import NarrativeBlock from "./NarrativeBlock.jsx";

@@ -1,0 +1,207 @@
+#statblock {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media screen and (min-width: 551px) and (max-width: 800px) {
+  #statblock {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  #statblock #abilityscores {
+    flex: 0 0 55%;
+    order: 1;
+    justify-self: flex-end;
+  }
+
+  #statblock #hitpoints {
+    flex: 0 0 40%;
+    order: 2;
+  }
+
+  #statblock #attacks {
+    flex: 0 0 50%;
+    order: 3;
+  }
+
+  #statblock #defenses {
+    flex: 0 0 45%;
+    order: 4;
+  }
+}
+
+@media screen and (min-width: 451px) and (max-width: 550px) {
+  #statblock {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  #statblock #abilityscores {
+    flex: 0 0 100%;
+    order: 1;
+  }
+
+  #statblock #hitpoints {
+    flex: 0 0 25%;
+    order: 4;
+  }
+
+  #statblock #attacks {
+    flex: 0 0 45%;
+    order: 2;
+  }
+
+  #statblock #defenses {
+    flex: 0 0 15%;
+    order: 3;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  #statblock {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  #statblock #abilityscores {
+    flex: 0 0 100%;
+    order: 1;
+  }
+
+  #statblock #hitpoints {
+    flex: 0 0 25%;
+    order: 4;
+  }
+
+  #statblock #attacks {
+    flex: 0 0 100%;
+    order: 2;
+    display: grid;
+    justify-content: center;
+  }
+
+  #statblock #defenses {
+    flex: 0 0 15%;
+    order: 3;
+  }
+}
+
+#abilityscores {
+  display: grid;
+  grid-template-columns: 290px;
+}
+
+@media screen and (min-width: 551px) and (max-width: 800px) {
+  #abilityscores,
+  #attacks {
+    display: grid;
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  #abilityscores {
+    display: grid;
+    justify-content: center;
+  }
+}
+
+#abilityscores,
+#defenses,
+#attacks {
+  grid-template-rows: repeat(4, 25px);
+}
+
+#abilityscores strong {
+  text-align: center;
+}
+
+#abilityscores .titles label {
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#abilityscores .abrow {
+  display: grid;
+  grid-template-columns: 65px repeat(6, 35px);
+  gap: 2px;
+}
+
+#abilityscores .abrow input,
+#abilityscores .abrow span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#scores span,
+#modifiers span,
+#defenses span,
+#attacks span,
+#hitpoints span {
+  border: 1px rgb(92, 92, 92) dotted;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  #scores span,
+  #modifiers span,
+  #defenses span,
+  #attacks span,
+  #hitpoints span {
+    border: 1px rgb(163, 163, 163) dotted;
+  }
+}
+
+#defenses {
+  display: grid;
+  flex-direction: column;
+  align-items: center;
+}
+
+#defenses div {
+  width: 60px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#defenses span,
+#defenses label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 2px;
+}
+
+#defenses label {
+  font-weight: bold;
+}
+
+#attacks .atkrow {
+  display: grid;
+  grid-template-columns: 35px repeat(2, 75px);
+  gap: 2px;
+}
+
+#attacks,
+#hitpoints {
+  text-align: center;
+}
+
+#hitpoints .hprow {
+  display: grid;
+  grid-template-columns: repeat(3, 40px);
+  gap: 0px;
+}
+
+#recovery-roll span {
+  grid-column: 2 / 4;
+}

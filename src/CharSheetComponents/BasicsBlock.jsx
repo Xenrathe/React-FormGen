@@ -1,5 +1,6 @@
 import races from "../data/races";
 import jobs from "../data/jobs";
+import "./BasicsBlock.css";
 
 function BasicsBlock({ basicsData, setBasicsData }) {
   //used for Race & Class/Job drop downs
@@ -159,7 +160,7 @@ function BasicsBlock({ basicsData, setBasicsData }) {
         </select>
       </div>
       <div id="job-div" className="input-set">
-        <label>CLASS</label>
+        <label htmlFor="job">CLASS</label>
         <select
           name="job"
           id="job"

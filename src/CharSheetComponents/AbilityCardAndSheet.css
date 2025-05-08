@@ -1,0 +1,126 @@
+.ability-card .exclusionadd {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  width: 100%;
+  margin-top: -13px;
+  margin-bottom: 10px;
+}
+
+.ability-card .single-selectables {
+  display: flex;
+  flex-direction: column;
+}
+
+@media print {
+  #ability-sheets.include-in-printing {
+    visibility: visible !important;
+    height: auto !important;
+    margin: 3in auto;
+  }
+}
+
+#ability-sheets {
+  width: 7.5in;
+  max-width: 7.5in;
+  height: 1px;
+  visibility: hidden;
+  overflow-y: hidden;
+}
+
+.sheet-category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  width: 7.5in;
+  max-width: 7.5in;
+}
+
+.sheet-category .sheet-title {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.sheet-category .cards {
+  width: 7.5in;
+  display: block;
+  position: relative;
+  align-items: stretch;
+}
+
+.grid-sizer {
+  width: calc(50% - 10px);
+}
+
+#ability-sheets .ability-card {
+  box-sizing: border-box;
+  width: calc(50% - 10px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 39;
+
+  border: solid black 1px;
+  padding: 5px;
+}
+
+#ability-sheets .ability-card.wide,
+#ability-sheets .ability-card.widest {
+  width: calc(100% - 10px);
+}
+
+.ability-card table {
+  border-collapse: collapse;
+  margin: 0px auto;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.ability-card th,
+td {
+  padding: 3px 5px;
+  border: 1px solid #ddd;
+}
+
+.ability-card th {
+  background-color: #2c3e50;
+  color: #ffffff;
+  font-weight: bold;
+  text-align: center;
+}
+
+.ability-card tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.ability-card tr:hover {
+  background-color: #eaeaea;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  .ability-card th,
+  td {
+    border: 1px solid #646464;
+  }
+
+  .ability-card th {
+    background-color: #577b9e;
+    color: #ffffff;
+  }
+
+  .ability-card tr:nth-child(even) {
+    background-color: rgb(45, 45, 45);
+    color: #ffffff;
+  }
+
+  .ability-card tr:hover {
+    background-color: rgb(55, 55, 55);
+  }
+}
+
+.ability-card td {
+  text-align: center;
+}

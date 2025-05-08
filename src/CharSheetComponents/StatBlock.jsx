@@ -1,3 +1,5 @@
+import "./StatBlock.css";
+
 function StatBlock({ character, statBlock, setStatBlock }) {
   const handleAbilityScoreChange = (event) => {
     let rawValue = event.target.value;

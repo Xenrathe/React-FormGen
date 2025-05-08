@@ -1,0 +1,67 @@
+@media print {
+  #abilitiesblock {
+    gap: 5px;
+  }
+
+  #abilitiesblock .abilities-input {
+    min-width: 160px !important;
+    padding: 10px 0px 10px 5px !important;
+  }
+}
+
+@media screen and (min-width: 451px) and (max-width: 800px) {
+  #abilitiesblock > :nth-child(3),
+  #abilitiesblock > :nth-child(5) {
+    justify-self: end;
+  }
+
+  .abilities-input {
+    max-width: 195px;
+    width: 195px;
+  }
+}
+
+#abilitiesblock .abilities-input {
+  min-width: 180px;
+  margin-top: 10px;
+  padding: 10px 5px 10px 10px;
+}
+
+#abilitiesblock .lined-input {
+  cursor: pointer;
+  min-height: 17px;
+}
+
+#abilitiesblock .lined-input:hover {
+  color: black;
+  border-color: black;
+}
+
+#abilitiesblock .lined-input.empty:hover {
+  color: black;
+  border-color: black;
+  background-color: rgb(235, 235, 235);
+}
+
+#abilitiesblock .lined-input.error:hover {
+  color: rgb(202, 40, 0);
+  border-color: black;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  #abilitiesblock .lined-input:hover {
+    color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+  }
+
+  #abilitiesblock .lined-input.empty:hover {
+    color: rgb(255, 255, 255);
+    border-color: rgb(255, 255, 255);
+    background-color: rgb(65, 65, 65);
+  }
+
+  #abilitiesblock .lined-input.error:hover {
+    color: rgb(255, 118, 118);
+    border-color: rgb(255, 255, 255);
+  }
+}

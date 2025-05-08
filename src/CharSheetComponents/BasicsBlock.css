@@ -1,0 +1,95 @@
+@media not print and (min-width: 851px) {
+  #basics {
+    display: grid;
+    grid-template-columns: 0.8fr 1.1fr 1.1fr;
+    grid-template-rows: 25px 25px;
+  }
+
+  #basics #name-div {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  #basics #level-div {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  #basics #race-div {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+
+  #basics #job-div {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+}
+
+@media screen and (min-width: 551px) and (max-width: 850px) {
+  #basics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 25px 25px 25px;
+  }
+
+  #basics #name-div {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  #basics #level-div {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  #basics #race-div {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+  }
+
+  #basics #job-div {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  #basics {
+    display: grid;
+    grid-template-columns: 270px;
+    grid-template-rows: repeat(6, 25px);
+    justify-content: center;
+    gap: 2px;
+  }
+
+  #basics .input-set {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+}
+
+#name-level,
+#race-class,
+#weapons-armor {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 25px 25px;
+}
+
+#basics input,
+#basics select {
+  width: 85px;
+}
+
+#name-div input,
+#level-div input {
+  width: 105px;
+}
+
+@media screen and (max-width: 800px) {
+  #name-div input,
+  #level-div input {
+    width: 162px;
+  }
+}
