@@ -1,6 +1,6 @@
 import races from "../data/races";
 import jobs from "../data/jobs";
-import "./BasicsBlock.css";
+import "./CSS/BasicsBlock.css";
 
 function BasicsBlock({ basicsData, setBasicsData, setPopupInfo }) {
   //used for Race & Class/Job drop downs

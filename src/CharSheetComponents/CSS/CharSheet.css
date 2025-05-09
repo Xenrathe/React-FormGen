@@ -284,6 +284,16 @@
   border-bottom: 1px solid black !important;
 }
 
+@media screen and (prefers-color-scheme: dark) {
+  .tooltip {
+    border-bottom: 1px dotted white !important;
+  }
+  
+  .tooltip:hover {
+    border-bottom: 1px solid white !important;
+  }
+}
+
 @media print {
   .tooltip {
     border: none !important;

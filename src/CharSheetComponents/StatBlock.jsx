@@ -1,4 +1,4 @@
-import "./StatBlock.css";
+import "./CSS/StatBlock.css";
 
 function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
   const handleAbilityScoreChange = (event) => {

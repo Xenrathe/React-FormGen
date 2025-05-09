@@ -2,7 +2,7 @@ import races from "../data/races";
 import jobs from "../data/jobs";
 import PopupModal from "./PopupModal.jsx";
 import { useEffect, useState } from "react";
-import "./AbilitiesBlock.css";
+import "./CSS/AbilitiesBlock.css";
 
 //returns a string e.g. "(Feats Remain: 1 A, 2 C, 2 E)" ; returns "" if no Feats remain
 function getAbilitiesRemainingString(

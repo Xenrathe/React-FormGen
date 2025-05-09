@@ -148,7 +148,7 @@
 #defenses span,
 #attacks span,
 #hitpoints span {
-  border: 1px rgb(92, 92, 92) dotted;
+  border: 1px rgb(92, 92, 92) dashed;
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -157,7 +157,7 @@
   #defenses span,
   #attacks span,
   #hitpoints span {
-    border: 1px rgb(163, 163, 163) dotted;
+    border: 1px rgb(163, 163, 163) dashed;
   }
 }
 

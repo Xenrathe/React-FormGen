@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./Navbar.css";
+import "./CSS/Navbar.css";
 import SaveIcon from "../assets/download.svg?react";
 import LoadIcon from "../assets/open.svg?react";
 import PrintIcon from "../assets/printer.svg?react";

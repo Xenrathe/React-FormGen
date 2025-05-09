@@ -30,6 +30,7 @@ The 13th Age CharGen is a form for creating or storing a character (i.e. a 'char
 
 ### Future To-do List
 
+- clicking an empty line gives same functionality as clicking the + icon
 - tooltips explaining calculation
 - pop-up info / info button on 13th age CharGen
 - a fourth row in stats block (atk: crit; defenses: save; HP: ?; Stats: Rolling?)

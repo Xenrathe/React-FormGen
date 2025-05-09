@@ -1,4 +1,4 @@
-import "./NarrativeBlock.css";
+import "./CSS/NarrativeBlock.css";
 
 function getBackgroundPointsRemaining(backgrounds, character) {
   const maxBGs = character.queryBackgroundMax();
@@ -68,7 +68,7 @@ export function handleBackgrounds(
   }
 }
 
-function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
+function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock, setPopupInfo }) {
   const handleIconRelations = () => {
     const newRelations = {};
 
@@ -175,6 +175,99 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
   );
   const BGError = backgroundPointsRemaining != 0;
 
+  const TooltipObjs = {
+    icons: {
+      width: "widest",
+      description: (
+        <table>
+          <thead>
+            <tr>
+              <th>Icon</th>
+              <th>Positive Relationship</th>
+              <th>Conflicted Relationship</th>
+              <th>Negative Relationship</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Heroic Icon</strong></td>
+              <td>
+                Spend 1, 2, or 3 points. As far as this icon is concerned, you’re one of the good guys, a white-hat hero. Authorities often help you, and civilians often trust you. On the downside, you may be called on to serve representatives of the icon even when you have other plans. You might also be a target of villainous icons or this heroic icon’s rivals.
+              </td>
+              <td>
+                Spend 1, 2, or 3 points. You’re probably one of the good guys, but for some reason you’re suspect to the icon. Maybe you’re a convict who has served his time, or an imperial soldier who was too good and got drummed out of his legion. You have insider knowledge and allies who are in good with the icon but you also have enemies associated with the icon.
+              </td>
+              <td>
+                Spend 1 point. In the icon’s eyes, you’re a dissident, opponent, rival, or foe. You may have contacts or inside knowledge that you can use to your advantage, but some form of trouble waits for you wherever this heroic icon has influence.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Ambiguous Icon</strong></td>
+              <td>
+                Spend 1, 2, or 3 points. Thanks to your relationship with the icon, you are a hero to some, a villain to others, and possibly even a monster to a few. The enemies of your friends may turn out to be your friends, and vice versa. Advantages and complications will come from all sides.
+              </td>
+              <td>
+                Spend 1, 2, or 3 points. Your relationship with the icon is complex, an uneven relationship with an icon who’s a hero to some and a villain to others. One way or another, you can find help or hostility anywhere. You don’t just live in interesting times—you create them.
+              </td>
+              <td>
+                Spend 1 or 2 points. Your enmity with this icon makes you some enemies, but it also makes you some useful friends. You may be a dissenter, unwanted family member, or even a traitor in some way.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Villainous Icon</strong></td>
+              <td>
+                Spend 1 point. You are able to gain secrets or secretive allies, but your connection to this icon brings trouble from people associated with the heroic icons who oppose the villain. Be prepared to justify why you’re not imprisoned, interrogated, or otherwise harassed by the heroic icons and their representatives whenever they encounter you. Or for that matter, by the other PCs.
+              </td>
+              <td>
+                Spend 1 or 2 points. You mostly work against the icon but you’re also connected to the icon in a way you can’t deny. Your connection sometimes gives you special knowledge or contacts, but it also makes you suspect in the eyes of many right-minded would-be heroes.
+              </td>
+              <td>
+                Spend 1 or 2 points. You are a special foe of this icon, perhaps because of your virtue or possibly for less happy motives. Your enmity wins you allies among right-thinking people, but some of the villainous icon’s forces are out to get you in some way.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      ),
+    },
+    bgs: {
+      width: "wide",
+      description: (
+        <div>
+          <div>
+            Backgrounds represent pieces of your character's history that contributes to your character's history as well as their ability to succeed with non-combat skills. These are broad categories of experience (cat burglar, for example) rather than specific implementations of that experience (climbing and hiding).
+          </div>
+          <br />
+          <strong className="sub-title">Choosing Your Backgrounds</strong>
+          <div>
+            Choose backgrounds that help you make sense of your characters past, jobs, and settings. Background and skill use is meant to be about fun in-character methods of attempting to advance the plot.
+          </div>
+          <br />
+          <div>
+            A few possible backgrounds include: acrobat, alchemist, animal trainer, architect, aristocratic noble, assassin, chef, con-woman, goblin exterminator, hunted outlaw, knight errant, magecraft, priest, refugee, scout, shepherd, soldier, spy, temple acolyte, thief, torturer, transformed animal, traveling martial arts pupil, tribal healer, tunnel scout, wandering minstrel, warrior poet, and so on.
+          </div>
+          <br />
+          <strong className="sub-title">Assigning Points</strong>
+          <div>
+            Each character gets 8 points, plus any extra from talents or feats. Assign your background points to as many backgrounds as you want, up to your total points. A single background can have a max of 5 points, unless a feat allows otherwise.
+          </div>
+          <br />
+          <strong className="sub-title">Making Skill Checks</strong>
+          <div>
+            To make a skill check, use this formula, with prompt / details from your GM:
+          </div>
+          <br />
+          <div>
+            D20 + relevant ability modifier (from GM) + level + relevant background points <strong>vs</strong> DC set by the environment/GM.
+          </div>
+          <br />
+          <div>
+            You can’t apply multiple backgrounds to the same check; the background with the highest (or tied for highest) bonus applies.
+          </div>
+        </div>
+      ),
+    },
+  };
+
   return (
     <div id="narrativeblock" className="input-group">
       <div className="title-label">Narrative & Items</div>
@@ -198,9 +291,16 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
           relationError ? " input-error" : ""
         }`}
       >
-        <label className="title">
-          Icon Relations
-          {relationError ? ` (${relationshipPointsRemaining} pts)` : null}{" "}
+        <label className="title"
+        onClick={() =>
+          setPopupInfo({
+            title: "Icons",
+            singleItem: TooltipObjs.icons,
+            list: null,
+            mode: "tooltip",
+          })
+        }>
+          <span className="tooltip">Icon Relations {relationError ? ` (${relationshipPointsRemaining} pts)` : null}{" "}</span>
         </label>
         {generateLinedInput(
           4,
@@ -217,9 +317,16 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock }) {
           BGError ? " input-error" : ""
         }`}
       >
-        <label className="title">
-          Backgrounds
-          {BGError ? ` (${backgroundPointsRemaining} pts)` : null}{" "}
+        <label className="title"
+        onClick={() =>
+          setPopupInfo({
+            title: "Backgrounds",
+            singleItem: TooltipObjs.bgs,
+            list: null,
+            mode: "tooltip",
+          })
+        }>
+          <span className="tooltip">Backgrounds {BGError ? ` (${backgroundPointsRemaining} pts)` : null}{" "}</span>
         </label>
         {generateLinedInput(
           8,
