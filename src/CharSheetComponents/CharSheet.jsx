@@ -10,6 +10,7 @@ import { handleBackgrounds } from "./NarrativeBlock.jsx";
 import AbilitiesBlock from "./AbilitiesBlock.jsx";
 import Navbar from "./Navbar.jsx";
 import AbilitySheets from "./AbilitySheets.jsx";
+import PopupModal from "./PopupModal.jsx";
 
 function CharSheet() {
   // INDIVIDUAL COMPONENT DATA SETS //
@@ -192,20 +193,39 @@ function CharSheet() {
 
   // END CHARACTER SAVE / LOAD //
 
+  const [popupInfo, setPopupInfo] = useState({
+    title: "",
+    singleItem: null,
+    list: null,
+    mode: "",
+  });
+
   // ACTUAL DOM STUFF
   return (
     <>
+      <PopupModal
+        popupInfo={popupInfo}
+        setPopupInfo={setPopupInfo}
+        character={character}
+        abilitiesBlock={abilitiesBlock}
+        setAbilitiesBlock={setAbilitiesBlock}
+      />
       <Navbar
         onSave={() => saveCharacterToFile()}
         onLoad={() => loadCharacterFromFile()}
         onPrint={() => window.print()}
       />
       <div className="charsheet">
-        <BasicsBlock basicsData={basicsBlock} setBasicsData={setBasicsBlock} />
+        <BasicsBlock
+          basicsData={basicsBlock}
+          setBasicsData={setBasicsBlock}
+          setPopupInfo={setPopupInfo}
+        />
         <StatBlock
           character={character}
           statBlock={statBlock}
           setStatBlock={setStatBlock}
+          setPopupInfo={setPopupInfo}
         />
         <NarrativeBlock
           character={character}
@@ -216,6 +236,7 @@ function CharSheet() {
           character={character}
           abilitiesBlock={abilitiesBlock}
           setAbilitiesBlock={setAbilitiesBlock}
+          setPopupInfo={setPopupInfo}
         />
       </div>
       <AbilitySheets

@@ -420,6 +420,21 @@ function PopupModal({
       abilitiesBlock,
       setAbilitiesBlock
     );
+  } else if (popupInfo.mode == "tooltip") {
+    return (
+      <div id="popupMod" className={`visible ${popupInfo.singleItem.width}`}>
+        <button
+          className="close-btn"
+          onClick={() =>
+            setPopupInfo({ title: "", singleItem: null, list: null })
+          }
+        >
+          ✖
+        </button>
+        <span className="title">{popupInfo.title}</span>
+        <span className="description">{popupInfo.singleItem.description}</span>
+      </div>
+    );
   } else if (popupInfo.singleItem != null) {
     return (
       <AbilityCard

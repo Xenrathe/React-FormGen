@@ -1,6 +1,6 @@
 import "./StatBlock.css";
 
-function StatBlock({ character, statBlock, setStatBlock }) {
+function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
   const handleAbilityScoreChange = (event) => {
     let rawValue = event.target.value;
     rawValue = rawValue.replace(/^0+/, ""); //remove leading zeroes
@@ -9,6 +9,124 @@ function StatBlock({ character, statBlock, setStatBlock }) {
     event.target.value = sanitizedValue; //update input text
 
     setStatBlock({ ...statBlock, [event.target.id]: sanitizedValue });
+  };
+
+  const TooltipObjs = {
+    roll: {
+      width: "",
+      description: (
+        <div>
+          <div>
+            Stat bonus (dex or str, based on class) + level + feat and talent
+            bonuses + armor or shield penalties + magic item bonuses (not
+            implemented).
+          </div>
+          <br />
+          <div>
+            When making a weapon attack, roll a d20 and add your atk modifier.
+            If the total is equal to or higher than AC, you hit and roll Dmg.
+            Otherwise you deal miss dmg, if any.
+          </div>
+        </div>
+      ),
+    },
+    dmg: {
+      width: "",
+      description: (
+        <div>
+          <div>
+            You get one weapon dice per level. Dice size comes from weapon type
+            (and class and some talents).
+          </div>
+          <br />
+          <div>
+            Bonus is either dex or str mod. This ability bonus - including
+            negative values - doubles at 5th level and triples at 8th level.
+          </div>
+        </div>
+      ),
+    },
+    ac: {
+      width: "",
+      description: (
+        <div>
+          AC protects you from weapon attacks. It is equal to AC from
+          armor/class + shield + middle value among Con, Dex, and Wis mods.
+        </div>
+      ),
+    },
+    pd: {
+      width: "",
+      description: (
+        <div>
+          PD protects you from other physical attacks. It is equal to base value
+          (from class) + middle value among Str, Con, and Dex mods.
+        </div>
+      ),
+    },
+    md: {
+      width: "",
+      description: (
+        <div>
+          MD protects you against mental attacks. It is equal to base value
+          (from class) + middle value among Int, Wis, and Cha mods.
+        </div>
+      ),
+    },
+    hp: {
+      width: "",
+      description: (
+        <div>
+          <div>
+            Hit points are based on class, Con modifier, and level, e.g. a level
+            1 barbarian has (7 + CON mod) x 3 max hp.
+          </div>{" "}
+          <br />
+          <div>
+            Level multipliers are: x3, x4, x5, x6, x8, x10, x12, x16, x20, x24.
+          </div>
+        </div>
+      ),
+    },
+    recs: {
+      width: "",
+      description: (
+        <div>
+          <div>
+            Recoveries represent your ability to heal or bounce back from
+            damage. Many healing spells and potions require you to use up a
+            recovery. So does rallying during a battle.
+          </div>
+          <br />
+          <div>
+            If you perform an action that requires a recovery but have none
+            left, you get half the healing you would otherwise get and take a -1
+            penalty to all defenses and attack rolls until your next full
+            heal-up. This penalty stacks for each recovery used that you don't
+            possess.
+          </div>
+          <br />
+          <div>Recoveries are replenished during a full heal-up.</div>
+        </div>
+      ),
+    },
+    recroll: {
+      width: "",
+      description: (
+        <div>
+          <div>
+            When you use a recovery, regain lost hit points by rolling recovery
+            dice equal to your level and adding your Constitution modifier. Your
+            class indicates which recovery die to use.
+          </div>
+          <br />
+          <div>
+            At 5th level, double the bonus you get from your Con modifier. At
+            8th level, triple it.
+          </div>
+        </div>
+      ),
+    },
   };
 
   return (
@@ -101,12 +219,34 @@ function StatBlock({ character, statBlock, setStatBlock }) {
           <strong>Ranged</strong>
         </div>
         <div id="atk-roll" className="atkrow">
-          <strong>Roll</strong>
+          <strong
+            onClick={() =>
+              setPopupInfo({
+                title: "Roll Calculation",
+                singleItem: TooltipObjs.roll,
+                list: null,
+                mode: "tooltip",
+              })
+            }
+          >
+            <span className="tooltip">Roll</span>
+          </strong>
           <span>{character.meleeAtk[0]}</span>
           <span>{character.rangedAtk[0]}</span>
         </div>
         <div id="atk-dmg" className="atkrow">
-          <strong>Dmg</strong>
+          <strong
+            onClick={() =>
+              setPopupInfo({
+                title: "DMG Calculation",
+                singleItem: TooltipObjs.dmg,
+                list: null,
+                mode: "tooltip",
+              })
+            }
+          >
+            <span className="tooltip">Dmg</span>
+          </strong>
           <span>{character.meleeAtk[1]}</span>
           <span>{character.rangedAtk[1]}</span>
         </div>
@@ -119,16 +259,50 @@ function StatBlock({ character, statBlock, setStatBlock }) {
       <div id="defenses">
         <strong>Defenses</strong>
         <div id="AC">
-          <label htmlFor="AC">AC</label>
-          <span>{character.AC}</span>
+          <strong
+            htmlFor="AC"
+            onClick={() =>
+              setPopupInfo({
+                title: "Armor Class",
+                singleItem: TooltipObjs.ac,
+                list: null,
+                mode: "tooltip",
+              })
+            }
+          >
+            <span className="tooltip">AC</span>
+          </strong>
+          <span className="num">{character.AC}</span>
         </div>
         <div id="PD">
-          <label htmlFor="PD">PD</label>
-          <span>{character.PD}</span>
+          <strong
+            onClick={() =>
+              setPopupInfo({
+                title: "Physical Defense",
+                singleItem: TooltipObjs.pd,
+                list: null,
+                mode: "tooltip",
+              })
+            }
+          >
+            <span className="tooltip">PD</span>
+          </strong>
+          <span className="num">{character.PD}</span>
         </div>
         <div id="MD">
-          <label htmlFor="MD">MD</label>
-          <span>{character.MD}</span>
+          <strong
+            onClick={() =>
+              setPopupInfo({
+                title: "Mental Defense",
+                singleItem: TooltipObjs.md,
+                list: null,
+                mode: "tooltip",
+              })
+            }
+          >
+            <span className="tooltip">MD</span>
+          </strong>
+          <span className="num">{character.MD}</span>
         </div>
       </div>
       <div id="hitpoints">
@@ -138,17 +312,50 @@ function StatBlock({ character, statBlock, setStatBlock }) {
           <strong>Max</strong>
         </div>
         <div id="hp" className="hprow">
-          <strong>HP</strong>
+          <strong
+            onClick={() =>
+              setPopupInfo({
+                title: "Hitpoints",
+                singleItem: TooltipObjs.hp,
+                list: null,
+                mode: "tooltip",
+              })
+            }
+          >
+            <span className="tooltip">HP</span>
+          </strong>
           <span></span>
           <span>{character.maxHP}</span>
         </div>
         <div id="recovery" className="hprow">
-          <strong>Recs</strong>
+          <strong
+            onClick={() =>
+              setPopupInfo({
+                title: "Recoveries",
+                singleItem: TooltipObjs.recs,
+                list: null,
+                mode: "tooltip",
+              })
+            }
+          >
+            <span className="tooltip">Recs</span>
+          </strong>
           <span></span>
           <span>{character.recoveries[0]}</span>
         </div>
         <div id="recovery-roll" className="hprow">
-          <strong>Roll</strong>
+          <strong
+            onClick={() =>
+              setPopupInfo({
+                title: "Recovery Roll",
+                singleItem: TooltipObjs.recroll,
+                list: null,
+                mode: "tooltip",
+              })
+            }
+          >
+            <span className="tooltip">Roll</span>
+          </strong>
           <span>{character.recoveries[1]}</span>
         </div>
       </div>

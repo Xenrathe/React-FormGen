@@ -342,14 +342,12 @@ function LinedInputsWithBtn({
   return lines;
 }
 
-function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
-  const [popupInfo, setPopupInfo] = useState({
-    title: "",
-    singleItem: null,
-    list: null,
-    mode: "",
-  });
-
+function AbilitiesBlock({
+  character,
+  abilitiesBlock,
+  setAbilitiesBlock,
+  setPopupInfo,
+}) {
   /* ERROR CHECKING AND TITLE STRINGS */
   const featsRemainingString = getAbilitiesRemainingString(
     character,
@@ -410,13 +408,6 @@ function AbilitiesBlock({ character, abilitiesBlock, setAbilitiesBlock }) {
       id="abilitiesblock"
       className={`input-group${featMiscount ? " input-error" : ""}`}
     >
-      <PopupModal
-        popupInfo={popupInfo}
-        setPopupInfo={setPopupInfo}
-        character={character}
-        abilitiesBlock={abilitiesBlock}
-        setAbilitiesBlock={setAbilitiesBlock}
-      />
       <div className={`title-label`}>
         Abilities <span>{featsRemainingString}</span>
       </div>

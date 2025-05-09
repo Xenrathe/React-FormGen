@@ -287,3 +287,8 @@
 #popupMod .selectable .hidden {
   display: none;
 }
+
+#popupMod .description .sub-title {
+  font-size: 17px;
+  text-decoration: underline;
+}

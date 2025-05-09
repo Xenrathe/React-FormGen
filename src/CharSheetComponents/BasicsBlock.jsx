@@ -2,7 +2,7 @@ import races from "../data/races";
 import jobs from "../data/jobs";
 import "./BasicsBlock.css";
 
-function BasicsBlock({ basicsData, setBasicsData }) {
+function BasicsBlock({ basicsData, setBasicsData, setPopupInfo }) {
   //used for Race & Class/Job drop downs
   function PopulateDropDown(props) {
     return Object.keys(props.data).map((option) => (
@@ -22,6 +22,90 @@ function BasicsBlock({ basicsData, setBasicsData }) {
       </option>
     ));
   }
+
+  const TooltipObjs = {
+    weapon: {
+      width: "wide",
+      description: (
+        <div>
+          <strong className="sub-title">Melee weapons:</strong>
+          <ul>
+            <li>
+              <strong>Small, one-handed:</strong> club, dagger, knife
+            </li>
+            <li>
+              <strong>Small, two-handed:</strong> big club, scythe
+            </li>
+            <li>
+              <strong>Light, one-handed:</strong> hand axe, javelin, mace,
+              shortsword, big knife
+            </li>
+            <li>
+              <strong>Light, two-handed:</strong> spear
+            </li>
+            <li>
+              <strong>Heavy, one-handed:</strong> bastard sword, battleaxe,
+              flail, hammer, longsword, morningstar
+            </li>
+            <li>
+              <strong>Heavy, two-handed:</strong> dire flail, greataxe,
+              greatsword, halberd, polearms, heavy warhammer
+            </li>
+          </ul>
+          <strong className="sub-title">Ranged weapons:</strong>
+          <br />
+          <div>
+            Reloaded as part of the standard action in which they are used in an
+            attack. Hand and light crossbows require a quick action to reload.
+            Heavy crossbows require a move action to reload.
+          </div>
+          <br />
+
+          <strong>Nearby Targets Only</strong>
+          <ul>
+            <li>Small, thrown: club, dagger, knife</li>
+            <li>Small, crossbow: hand crossbow</li>
+          </ul>
+
+          <strong>Nearby Targets Okay; Far Away Targets –2 Atk</strong>
+          <ul>
+            <li>Light, thrown: axe, javelin, spear</li>
+          </ul>
+
+          <strong>Nearby and Far Away Targets Okay</strong>
+          <ul>
+            <li>Light, crossbow: light crossbow</li>
+            <li>Light, bow: shortbow, sling</li>
+            <li>Heavy, crossbow: heavy crossbow</li>
+            <li>Heavy, bow: longbow</li>
+          </ul>
+        </div>
+      ),
+    },
+    armor: {
+      width: "",
+      description: (
+        <div>
+          <div>Armor is classified as either light or heavy.</div>
+          <br />
+          <div>
+            <strong>Light armor includes:</strong> Heavily padded vest, leather
+            armor, studded leather, cured hide.
+          </div>
+          <br />
+          <div>
+            <strong>Heavy armor includes:</strong> Heavy chainmail, ring armor,
+            scale mail, half-plate, plate armor, most dragonscale armor.
+          </div>
+          <br />
+          <div>
+            <strong>Shields</strong> increase AC by 1, can only be used with a
+            single 1H weapon, and for some classes include ATK roll penalties.
+          </div>
+        </div>
+      ),
+    },
+  };
 
   //removes shield if swapping to 2Her
   const handleMeleeChange = (event) => {
@@ -180,7 +264,18 @@ function BasicsBlock({ basicsData, setBasicsData }) {
         </select>
       </div>
       <div id="weapons-div" className="input-set">
-        <label>WEAPON</label>
+        <label
+          onClick={() =>
+            setPopupInfo({
+              title: "Weapons",
+              singleItem: TooltipObjs.weapon,
+              list: null,
+              mode: "tooltip",
+            })
+          }
+        >
+          <span className="tooltip">WEAPON</span>
+        </label>
         <select
           name="melee"
           id="melee"
@@ -247,7 +342,18 @@ function BasicsBlock({ basicsData, setBasicsData }) {
         </select>
       </div>
       <div id="armor-div" className="input-set">
-        <label>ARMOR</label>
+        <label
+          onClick={() =>
+            setPopupInfo({
+              title: "Armor",
+              singleItem: TooltipObjs.armor,
+              list: null,
+              mode: "tooltip",
+            })
+          }
+        >
+          <span className="tooltip">ARMOR</span>
+        </label>
         <select
           name="armor"
           id="armor"

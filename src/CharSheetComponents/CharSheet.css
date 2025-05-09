@@ -273,3 +273,19 @@
   font-size: 1.2rem;
   margin-bottom: 10px;
 }
+
+.tooltip {
+  border: none !important;
+  border-bottom: 1px dotted black !important;
+  cursor: pointer;
+}
+
+.tooltip:hover {
+  border-bottom: 1px solid black !important;
+}
+
+@media print {
+  .tooltip {
+    border: none !important;
+  }
+}
