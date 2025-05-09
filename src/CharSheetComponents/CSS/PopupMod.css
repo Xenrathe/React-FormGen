@@ -1,8 +1,9 @@
 #popupMod.visible {
+  --top: min(50%, 100px);
   position: fixed;
-  top: 50%;
+  top: var(--top);
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, var(--top));
   background: white;
   padding: 20px;
   width: 300px;
