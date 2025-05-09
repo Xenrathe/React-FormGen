@@ -30,11 +30,10 @@ The 13th Age CharGen is a form for creating or storing a character (i.e. a 'char
 
 ### Future To-do List
 
-- clicking an empty line gives same functionality as clicking the + icon
-- tooltips explaining calculation
 - pop-up info / info button on 13th age CharGen
 - a fourth row in stats block (atk: crit; defenses: save; HP: ?; Stats: Rolling?)
 - improved icon relations (dropdown for hostile / neutral / favorable?) or an image pop-up selector; integrate w/ icon-based talents
+- more information in the 'tooltips' for Roll, Dmg, AC, PD, MD, etc
 - SpellInfo dynamically updates depending on level (big change in dataset, I think?)
 - AbilitiesBlock sub-blocks borrows space from other sub-blocks to maintain formatting
 - clean up printing / don't break cards in half?
