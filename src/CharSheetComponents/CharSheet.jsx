@@ -41,7 +41,7 @@ function CharSheet() {
   const [narrativeBlock, setNarrativeBlock] = useState({
     oneUniqueThing: "",
     iconRelationships: [],
-    backgrounds: {},
+    backgrounds: [],
     items: [],
     gold: 0,
   });

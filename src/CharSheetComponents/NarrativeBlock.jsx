@@ -1,16 +1,25 @@
 import "./CSS/NarrativeBlock.css";
 
+// returns total amount of background points remaining
+// used for error checking, displaying in title
 function getBackgroundPointsRemaining(backgrounds, character) {
   const maxBGs = character.queryBackgroundMax();
 
   let sum = 0;
+  backgrounds.forEach((bg) => {
+    sum += bg.value;
+  })
+  /*
   Object.values(backgrounds).forEach((value) => {
     sum += value;
-  });
+  });*/
 
   return maxBGs[0] - sum;
 }
 
+// sets state for narrativeBlock.backgrounds
+// there's maximums, exceptions, etc - so it's complicated
+// it's exported because abilityblock may need to call it when feats are changed
 export function handleBackgrounds(
   character,
   narrativeBlock,
@@ -20,12 +29,12 @@ export function handleBackgrounds(
   // this sort is necessary in the situation in which, say, [7, 6] are in maxexceptions
   // if the user inputs a '6' value, we want to remove the '6' not the '7'
   maxExceptions = maxExceptions.sort((a, b) => a.num - b.num);
-  const newBackgrounds = {};
+  const newBackgrounds = [];
 
   // go through ALL backgrounds
   // because of the nature of 'maxExceptions', every background input needs to be aware of the others
   for (let i = 1; i <= 8; i++) {
-    const key = document.getElementById(`background-input-${i}`)?.value;
+    const name = document.getElementById(`background-input-${i}`)?.value;
     let value =
       parseInt(
         document.getElementById(`background-input-num-${i}`)?.value,
@@ -46,17 +55,20 @@ export function handleBackgrounds(
       }
     }
 
-    if (key) {
-      newBackgrounds[key] = value;
+    if (name) {
+      const newObj = {name, value};
+      newBackgrounds.push(newObj);
     }
   }
 
   //Special additions for various job talents
   if (character.jobTalents.includes("Tracker")) {
-    newBackgrounds["Tracker"] = 5;
+    newBackgrounds = newBackgrounds.filter((bg) => bg.name.toLowerCase() != "tracker");
+    newBackgrounds.push({name: "Tracker", value: 5});
   }
   if (character.jobTalents.includes("Thievery")) {
-    newBackgrounds["Thief"] = 5;
+    newBackgrounds = newBackgrounds.filter((bg) => bg.name.toLowerCase() != "thief");
+    newBackgrounds.push({name: "Thief", value: 5});
   }
 
   //necessary to avoid an infinite loop
@@ -70,13 +82,14 @@ export function handleBackgrounds(
 
 function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock, setPopupInfo }) {
   const handleIconRelations = () => {
-    const newRelations = {};
+    const newRelations = [];
 
     for (let i = 1; i <= 4; i++) {
-      const key = document.getElementById(`icon-input-${i}`)?.value;
+      const name = document.getElementById(`icon-input-${i}`)?.value;
       let value =
         parseInt(document.getElementById(`icon-input-num-${i}`)?.value, 10) ||
         0;
+      const type = document.getElementById(`icon-input-type-${i}`)?.value;
 
       const maxPerIcon = character.queryIconRelationshipsMax()[1];
 
@@ -86,8 +99,9 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock, setPopup
         value = maxPerIcon;
       }
 
-      if (key) {
-        newRelations[key] = value;
+      if (name) {
+        const newObj = {name, value, type};
+        newRelations.push(newObj);
       }
     }
 
@@ -101,13 +115,20 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock, setPopup
     }
   };
 
+  // iconRelationships will be an array of objects:
+  // [{name: Archmage, value: 2, type: Conflicted}]
   function getRelationshipPointsRemaining(iconRelationships) {
     const totalPoints = character.queryIconRelationshipsMax()[0];
 
     let sum = 0;
+    iconRelationships.forEach((icon) => {
+      sum += icon.value;
+    });
+
+    /*
     Object.values(iconRelationships).forEach((value) => {
       sum += Math.abs(value);
-    });
+    });*/
 
     return totalPoints - sum;
   }
@@ -123,13 +144,13 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock, setPopup
     setNarrativeBlock({ ...narrativeBlock, items: newItems });
   };
 
-  function generateLinedInput(
+  function generateNarrativeLinedInput(
     numLines,
     idBase,
     placeholder,
     dataObject,
     onChangeFn,
-    includeNumber
+    mode
   ) {
     const lines = [];
 
@@ -142,20 +163,34 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock, setPopup
             className="lined-input"
             placeholder={i == 1 ? placeholder : ""}
             value={
-              includeNumber
-                ? Object.keys(dataObject)[i - 1] || ""
-                : dataObject[i - 1] ?? ""
+              mode == "items"
+                ? dataObject[i - 1] ?? "" 
+                : dataObject[i - 1]?.name ?? ""
             }
             onChange={onChangeFn}
           />
-          {includeNumber && (
+          {(mode == "backgrounds" || mode == "icons") && (
             <input
               type="number"
               id={`${idBase}-num-` + i}
               className="lined-input"
-              value={Object.values(dataObject)[i - 1] || ""}
+              value={dataObject[i - 1]?.value ?? ""}
+              disabled={!dataObject[i - 1]}
               onChange={onChangeFn}
             />
+          )}
+          {mode == "icons" && (
+            <select
+              id={`${idBase}-type-` + i}
+              className="lined-input"
+              value={dataObject[i - 1]?.type ?? ""}
+              disabled={!dataObject[i - 1]}
+              onChange={onChangeFn}
+            >
+              <option value="positive">P</option>
+              <option value="conflicted">C</option>
+              <option value="negative">N</option>
+            </select>
           )}
         </div>
       );
@@ -302,13 +337,13 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock, setPopup
         }>
           <span className="tooltip">Icon Relations {relationError ? ` (${relationshipPointsRemaining} pts)` : null}{" "}</span>
         </label>
-        {generateLinedInput(
+        {generateNarrativeLinedInput(
           4,
           "icon-input",
           "Archmage...",
           narrativeBlock.iconRelationships,
           handleIconRelations,
-          true
+          "icons"
         )}
       </div>
       <div
@@ -328,13 +363,13 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock, setPopup
         }>
           <span className="tooltip">Backgrounds {BGError ? ` (${backgroundPointsRemaining} pts)` : null}{" "}</span>
         </label>
-        {generateLinedInput(
+        {generateNarrativeLinedInput(
           8,
           "background-input",
           "Street urchin...",
           narrativeBlock.backgrounds,
           () => handleBackgrounds(character, narrativeBlock, setNarrativeBlock),
-          true
+          "backgrounds"
         )}
       </div>
       <div id="items" className="narrative-input lined-inputs">
@@ -356,13 +391,13 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock, setPopup
             }}
           />
         </div>
-        {generateLinedInput(
+        {generateNarrativeLinedInput(
           8,
           "item-input",
           "",
           narrativeBlock.items,
           handleItems,
-          false
+          "items"
         )}
       </div>
     </div>
