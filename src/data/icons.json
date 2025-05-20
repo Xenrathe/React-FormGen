@@ -1,0 +1,44 @@
+{
+  "archmage": {
+    "types": ["heroic"]
+  },
+  "emperor": {
+    "types": ["heroic", "ambiguous"]
+  },
+  "great gold wyrm": {
+    "types": ["heroic"]
+  },
+  "priestess": {
+    "types": ["heroic"]
+  },
+  "dwarf king": {
+    "types": ["heroic", "ambiguous"]
+  },
+  "elf queen": {
+    "types": ["heroic", "ambiguous"]
+  },
+  "high druid": {
+    "types": ["ambiguous"]
+  },
+  "crusader": {
+    "types": ["ambiguous", "villainous"]
+  },
+  "prince of shadows": {
+    "types": ["ambiguous", "villainous"]
+  },
+  "the three": {
+    "types": ["ambiguous", "villainous"]
+  },
+  "three": {
+    "types": ["ambiguous", "villainous"]
+  },
+  "diabolist": {
+    "types": ["villainous"]
+  },
+  "lich king": {
+    "types": ["villainous"]
+  },
+  "orc lord": {
+    "types": ["villainous"]
+  }
+}

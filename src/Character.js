@@ -1,5 +1,6 @@
 import races from "./data/races";
 import jobs from "./data/jobs";
+import icons from "./data/icons.json";
 import genFeats from "./data/abilities/generalfeats.json";
 
 export class Character {
@@ -1115,6 +1116,7 @@ export class Character {
     let totalPointsMax = 3;
     let maxPerIcon = 3;
 
+    // default level-based totals and maximums
     if (this.level >= 8) {
       totalPointsMax = 5;
       maxPerIcon = 4;
@@ -1123,6 +1125,7 @@ export class Character {
     }
 
     //adjustments from Bard talents
+    // Loremaster & MythKenner, option C, give one additional point to use
     if (
       this.bonusOptions.some(
         (option) =>
@@ -1135,6 +1138,7 @@ export class Character {
     }
 
     //adjustments from Cleric talents
+    // Love & beauty give an additional 1 point (or 2 w/ associated feat) CONFLICTED relationship with heroic or ambiguous
     if (this.jobTalents.includes("D: Love/Beauty")) {
       totalPointsMax += 1;
 
@@ -1144,6 +1148,8 @@ export class Character {
     }
 
     //adjustments from Paladin talents
+    // Righteous Endeavor w/ epic feat gives +1 relationship points with a heroic or ambiguous icon
+    // Way of Evil Bastards gives the same but with villainous or ambiguous icon
     if (this.queryFeatIsOwned("Path of Universal Righteous Endeavor", "Epic")) {
       totalPointsMax += 1;
     } else if (this.queryFeatIsOwned("Way of Evil Bastards", "Epic")) {
@@ -1151,6 +1157,7 @@ export class Character {
     }
 
     //adjustments from Sorcerer talents
+    // gives an extra 1 point to spend on icon relationships matching the 'heritage'
     if (this.jobTalents.includes("Blood Link")) {
       totalPointsMax += 1;
 
@@ -1161,6 +1168,106 @@ export class Character {
     }
 
     return [totalPointsMax, maxPerIcon];
+  }
+
+  // returns an empty array if no error
+  // otherwise returns an array of strings describing errors
+  queryIconRelationshipsHaveError(iconRelationships = this.iconRelationships) {
+    const [maxTotal, maxPerIcon] = this.queryIconRelationshipsMax();
+
+    // heroic: 3, 3, 1
+    // ambiguous: 3, 3, 2
+    // villainous: 1, 2, 2
+    const maxHeroic = {"positive" : maxPerIcon, "conflicted": maxPerIcon, "negative": maxPerIcon - 2};
+    const maxAmbiguous = {"positive": maxPerIcon, "conflicted": maxPerIcon, "negative": maxPerIcon - 1};
+    const maxVillainous = {"positive": maxPerIcon - 2, "conflicted": maxPerIcon - 1, "negative": maxPerIcon - 1};
+    const maxValues = {"heroic": maxHeroic, "ambiguous": maxAmbiguous, "villainous": maxVillainous};
+
+    let errors = [];
+    let total = 0;
+    let conflictedHeroicAmbiguous = 0;
+    let moralityTotals = {"heroic": 0, "ambiguous": 0, "villainous": 0};
+
+    let heritageIcons = [];
+    if (this.jobTalents.includes("Arcane Heritage")) heritageIcons.push("archmage");
+    if (this.jobTalents.includes("Chromatic Destroyer Heritage")) heritageIcons.push("three", "the three");
+    if (this.jobTalents.includes("Fey Heritage")) heritageIcons.push("elf queen");
+    if (this.jobTalents.includes("infernal heritage")) heritageIcons.push("diabolist");
+    if (this.jobTalents.includes("Metallic Protector Heritage")) heritageIcons.push("great gold wyrm");
+    if (this.jobTalents.includes("Undead Remnant Heritage")) heritageIcons.push("lich king");
+
+    console.log(heritageIcons);
+    let heritagePoints = 0;
+
+    iconRelationships.forEach((iconObj) => {
+      const iconName = iconObj.name;
+      const relationshipType = iconObj.type;
+      const relationshipDice = iconObj.value;
+      total += relationshipDice;
+
+      const moralityTypes = iconName.toLowerCase() in icons ? icons[iconName.toLowerCase()].types : ["heroic", "ambiguous", "villainous"];
+
+      let maxValue = 0;
+      moralityTypes.forEach((mt) => {
+        moralityTotals[mt] += relationshipDice;
+
+        const newVal = maxValues[mt][relationshipType];
+        if (newVal > maxValue) maxValue = newVal;
+      })
+
+      if (relationshipDice > maxValue) {
+        errors.push(`${relationshipType} relationship with ${iconName} is too high`);
+      }
+
+      if (relationshipType == "conflicted" && (moralityTypes.includes("heroic") || moralityTypes.includes("ambiguous"))) {
+        conflictedHeroicAmbiguous += relationshipDice;
+      }
+
+      if (heritageIcons.includes(iconName.toLowerCase())) heritagePoints += relationshipDice;
+    })
+
+    if (total > maxTotal) {
+      errors.push(`Your total icon die (${total}) is higher than allowed (${maxTotal}).`)
+    }
+
+    // Cleric's Love & beauty domain give an additional 1 point (or 2 w/ associated feat) CONFLICTED relationship with heroic or ambiguous
+    if (this.jobTalents.includes("D: Love/Beauty")) {
+      let minRelatedPoints = 1;
+      if (this.queryFeatHighestTier("D: Love/Beauty")) {
+        minRelatedPoints = 2;
+      }
+
+      if (conflictedHeroicAmbiguous < minRelatedPoints) {
+        errors.push(`Your Love/Beauty domain + feat requires ${minRelatedPoints} points spent in a conflicted relationship with a heroic or ambiguous icon.`);
+      }
+    }
+
+    // Paladin's Righteous Endeavor w/ epic feat gives +1 relationship points with a heroic or ambiguous icon
+    // Way of Evil Bastards gives the same but with villainous or ambiguous icon
+    if (this.queryFeatIsOwned("Path of Universal Righteous Endeavor", "Epic")) {
+      if (moralityTotals.heroic == 0 && moralityTotals.ambiguous == 0) {
+        errors.push("Your epic feat in Path of Universal Righteous Endeavor talent requires at least 1 point in a relationship with a heroic or ambiguous icon.");
+      }
+    } else if (this.queryFeatIsOwned("Way of Evil Bastards", "Epic")) {
+      if (moralityTotals.villainous == 0 && moralityTotals.ambiguous == 0) {
+        errors.push("Your epic feat in Way of Evil Bastards talent requires at least 1 point in a relationship with a villainous or ambiguous icon.");
+      }
+    }
+
+    //adjustments from Sorcerer talents
+    // gives an extra 1 point to spend on icon relationships matching the 'heritage' (see code below)
+    if (this.jobTalents.includes("Blood Link")) {
+      let minBloodLinkPoints = 1;
+
+      // don't need to check which tier because there's only one choice
+      if (this.queryFeatHighestTier("Blood Link")) minBloodLinkPoints += 1;
+
+      if (heritagePoints < minBloodLinkPoints) {
+        errors.push(`Your Blood Link talent requires at least ${minBloodLinkPoints} icon relationship points in an icon associated with your chosen heritage talents`);
+      }
+    }
+
+    return errors;
   }
 
   //returns an array of strings of spell-names that are in error

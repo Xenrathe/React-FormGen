@@ -95,7 +95,7 @@
     },
     "Arcane Heritage": {
       "Type": "Optional",
-      "Base": "Although magic is in the blood of every sorcerer, you have a greater understanding of magic than most sorcerers and even some wizards.\n\nYou gain a +2 bonus to a background that involves or suggests magical knowledge or talent, up to your normal maximum background point limit.\n\nYou can also use one of your sorcerer spell choices to choose any wizard spell of the same level. You get only one such equal-level wizard spell at a time; all others have to be purchased using the 2-level penalty in the Access to Wizardry class feature described above.",
+      "Base": "You have a heritage arising from connections to the Archmage.\n\nAlthough magic is in the blood of every sorcerer, you have a greater understanding of magic than most sorcerers and even some wizards.\n\nYou gain a +2 bonus to a background that involves or suggests magical knowledge or talent, up to your normal maximum background point limit.\n\nYou can also use one of your sorcerer spell choices to choose any wizard spell of the same level. You get only one such equal-level wizard spell at a time; all others have to be purchased using the 2-level penalty in the Access to Wizardry class feature described above.",
       "Adventurer": "Use your Charisma as the attack ability for the wizard spell you choose with your Arcane Heritage talent.",
       "Champion": "You can cast your wizard spells empowered as if they were sorcerer powers. Generally, empowering wizard spells only helps by doubling the damage."
     },
@@ -106,14 +106,14 @@
     },
     "Chromatic Destroyer Heritage": {
       "Type": "Optional",
-      "Base": "You can have multiple breath weapon spells active at the same time. You don’t gain extra actions, so if you succeed with multiple breath weapon spells, you’ll generally have to choose which one to use.",
+      "Base": "You have a heritage arising from connections to the Three.\n\nYou can have multiple breath weapon spells active at the same time. You don’t gain extra actions, so if you succeed with multiple breath weapon spells, you’ll generally have to choose which one to use.",
       "Adventurer": "You gain a +2 attack bonus with empowered breath weapon spells.",
       "Champion": "Once per day, turn a failed breath weapon re-use roll into a success.",
       "Epic": "One battle per day, gain resist dragon attack 16+ (all attacks made by dragons; dragon must roll natural 16+ with the attack or it deals only half damage)."
     },
     "Fey Heritage": {
       "Type": "Optional",
-      "Base": "One battle per day, when you roll initiative, you can choose to invoke your Fey Heritage and gain the racial power of one the elven races in addition to your own racial power. Roll on the table below. If you roll your own race’s power, you gain the half-elf’s surprising racial power instead.",
+      "Base": "You have a heritage arising from connections to Elf Queen.\n\nOne battle per day, when you roll initiative, you can choose to invoke your Fey Heritage and gain the racial power of one the elven races in addition to your own racial power. Roll on the table below. If you roll your own race’s power, you gain the half-elf’s surprising racial power instead.",
       "Table": [
         {
           "Roll (d6)": "1-2",
@@ -134,14 +134,14 @@
     },
     "Infernal Heritage": {
       "Type": "Optional",
-      "Base": "Once per day, as a quick action when the escalation die is 1+, you can enter a spell frenzy until the end of the battle.\n\nWhile in a spell frenzy, you roll 2d20 for each of your sorcerer spell attacks. Use the highest die as your attack roll, but track whether the other die hits.\n\nFor each die that misses, you take damage equal to double the level of the target of your attack.",
+      "Base": "You have a heritage arising from connections to the Diabolist.\n\nOnce per day, as a quick action when the escalation die is 1+, you can enter a spell frenzy until the end of the battle.\n\nWhile in a spell frenzy, you roll 2d20 for each of your sorcerer spell attacks. Use the highest die as your attack roll, but track whether the other die hits.\n\nFor each die that misses, you take damage equal to double the level of the target of your attack.",
       "Adventurer": "You gain resist energy damage 12+ to fire and to one of the following types of energy of your choice: acid, cold, lightning, psychic, thunder.",
       "Champion": "Increase one of your resistances to 16+.",
       "Epic": "In addition to your normal use of spell frenzy, you can also enter a spell frenzy as a free action while the escalation die is 5+."
     },
     "Metallic Protector Heritage": {
       "Type": "Optional",
-      "Base": "Your rolls to re-use breath weapon spells during a fight gain a +2 bonus.",
+      "Base": "You have a heritage arising from connections to the Great Gold Wyrm.\n\nYour rolls to re-use breath weapon spells during a fight gain a +2 bonus.",
       "Adventurer": "As a quick action at the start of each battle, you can gain resist energy 12+ to one of the following types of energy of your choice: acid, cold, fire, lightning, or poison.",
       "Champion": "When you gather power and your chaotic benefit increases your defenses, you can choose one nearby ally to gain the same defense bonus.",
       "Epic": "One battle per day, you can choose to gain resist demon attack 16+ instead of resist energy 12+ from your Metallic Protector Heritage talent."
@@ -162,7 +162,7 @@
     },
     "Undead Remnant Heritage": {
       "Type": "Optional",
-      "Base": "You have resist negative energy 12+ and gain a +1 attack bonus against undead. You can also include negative energy damage on your personal random energy damage type table, swapping out an energy type you don’t want to access randomly.",
+      "Base": "You have a heritage arising from connections to the Lich King.\n\nYou have resist negative energy 12+ and gain a +1 attack bonus against undead. You can also include negative energy damage on your personal random energy damage type table, swapping out an energy type you don’t want to access randomly.",
       "Adventurer": "Decrease your total recoveries by 1; you gain a +2 bonus to death saves.",
       "Champion": "Your resist negative energy power improves to 16+, and the attack bonus against undead increases to +2.",
       "Epic": "If you put out one of your eyes and cut off one of your hands, you gain a +1 bonus to all attacks."

@@ -108,7 +108,7 @@ function NarrativeBlock({ character, narrativeBlock, setNarrativeBlock, setPopup
     setNarrativeBlock({ ...narrativeBlock, iconRelationships: newRelations });
 
     const iconRelationshipsDiv = document.getElementById("icon-relationships");
-    if (getRelationshipPointsRemaining(newRelations) < 0) {
+    if (character.queryIconRelationshipsHaveError(newRelations).length > 0) {
       iconRelationshipsDiv.classList.add("input-error");
     } else {
       iconRelationshipsDiv.classList.remove("input-error");
