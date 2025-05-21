@@ -169,10 +169,13 @@
   color: red;
 }
 
-.error-btn:hover {
-  color: white;
-  background: rgb(255, 85, 85);
-  border: solid red 1px;
+@media (hover: hover) {
+  .error-btn:hover,
+  .error-btn:focus {
+    color: white;
+    background: rgb(255, 85, 85);
+    border: solid red 1px;
+  }
 }
 
 .single-line-w-btn {
@@ -314,7 +317,7 @@
   .tooltip {
     border-bottom: 1px dotted white !important;
   }
-  
+
   .tooltip:hover {
     border-bottom: 1px solid white !important;
   }

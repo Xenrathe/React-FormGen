@@ -904,6 +904,19 @@ export class Character {
     return count;
   }
 
+  // returns total amount of background points remaining
+  // used for error checking, displaying in title
+  queryBackgroundPointsRemaining(backgrounds = this.backgrounds) {
+    const maxBGs = this.queryBackgroundMax();
+
+    let sum = 0;
+    backgrounds.forEach((bg) => {
+      sum += bg.value;
+    });
+
+    return maxBGs[0] - sum;
+  }
+
   //returns an array [totalPointsMax, maxPerBG, maxExceptions]
   queryBackgroundMax() {
     let maxTotal = 8;

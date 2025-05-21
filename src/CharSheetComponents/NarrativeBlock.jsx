@@ -1,19 +1,5 @@
 import "./CSS/NarrativeBlock.css";
 import errorChecker from "../ErrorChecker.js";
-import { useState } from "react";
-
-// returns total amount of background points remaining
-// used for error checking, displaying in title
-function getBackgroundPointsRemaining(backgrounds, character) {
-  const maxBGs = character.queryBackgroundMax();
-
-  let sum = 0;
-  backgrounds.forEach((bg) => {
-    sum += bg.value;
-  });
-
-  return maxBGs[0] - sum;
-}
 
 // sets state for narrativeBlock.backgrounds
 // there's maximums, exceptions, etc - so it's complicated
@@ -115,7 +101,10 @@ function NarrativeBlock({
     setNarrativeBlock({ ...narrativeBlock, iconRelationships: newRelations });
 
     const iconRelationshipsDiv = document.getElementById("icon-relationships");
-    if (errorChecker.queryIconRelationshipsHaveError(character, newRelations).length > 0) {
+    if (
+      errorChecker.queryIconRelationshipsHaveError(character, newRelations)
+        .length > 0
+    ) {
       iconRelationshipsDiv.classList.add("input-error");
     } else {
       iconRelationshipsDiv.classList.remove("input-error");
@@ -206,15 +195,23 @@ function NarrativeBlock({
     return lines;
   }
 
-  const relationshipPointsRemaining = getRelationshipPointsRemaining(narrativeBlock.iconRelationships);
-  const relationErrors = errorChecker.queryIconRelationshipsHaveError(character, narrativeBlock.iconRelationships);
+  const relationshipPointsRemaining = getRelationshipPointsRemaining(
+    narrativeBlock.iconRelationships
+  );
+  const relationErrors = errorChecker.queryIconRelationshipsHaveError(
+    character,
+    narrativeBlock.iconRelationships
+  );
   const hasRelationError = relationErrors.length > 0;
 
-  const backgroundPointsRemaining = getBackgroundPointsRemaining(
-    narrativeBlock.backgrounds,
-    character
+  const backgroundPointsRemaining = character.queryBackgroundPointsRemaining(
+    narrativeBlock.backgrounds
   );
-  const BGError = backgroundPointsRemaining != 0;
+  const BGErrors = errorChecker.queryBackgroundsHaveError(
+    character,
+    narrativeBlock.backgrounds
+  );
+  const hasBGError = BGErrors.length > 0;
 
   const TooltipObjs = {
     icons: {
@@ -393,14 +390,21 @@ function NarrativeBlock({
           hasRelationError ? " input-error" : ""
         }`}
       >
-        {hasRelationError && <button
-          className="error-btn"
-          onClick={() =>
-            setPopupInfo({ title: "Errors", singleItem: null, list: relationErrors, mode: "errors" })
-          }
-        >
-          !
-        </button>}
+        {hasRelationError && (
+          <button
+            className="error-btn no-print"
+            onClick={() =>
+              setPopupInfo({
+                title: "Errors",
+                singleItem: null,
+                list: relationErrors,
+                mode: "errors",
+              })
+            }
+          >
+            !
+          </button>
+        )}
         <label
           className="title"
           onClick={() =>
@@ -429,9 +433,24 @@ function NarrativeBlock({
       <div
         id="backgrounds"
         className={`narrative-input lined-inputs${
-          BGError ? " input-error" : ""
+          hasBGError ? " input-error" : ""
         }`}
       >
+        {hasBGError && (
+          <button
+            className="error-btn no-print"
+            onClick={() =>
+              setPopupInfo({
+                title: "Errors",
+                singleItem: null,
+                list: BGErrors,
+                mode: "errors",
+              })
+            }
+          >
+            !
+          </button>
+        )}
         <label
           className="title"
           onClick={() =>
@@ -444,7 +463,8 @@ function NarrativeBlock({
           }
         >
           <span className="tooltip">
-            Backgrounds {BGError ? ` (${backgroundPointsRemaining} pts)` : null}{" "}
+            Backgrounds{" "}
+            {hasBGError ? ` (${backgroundPointsRemaining} pts)` : null}{" "}
           </span>
         </label>
         {generateNarrativeLinedInput(

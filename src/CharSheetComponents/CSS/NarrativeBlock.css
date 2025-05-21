@@ -20,19 +20,11 @@
 
 @media screen and (prefers-color-scheme: dark) {
   #one-unique-thing .subtitle-label {
-    background: linear-gradient(
-      180deg,
-      #242424 30%,
-      rgb(20, 20, 20) 100%
-    );
+    background: linear-gradient(180deg, #242424 30%, rgb(20, 20, 20) 100%);
   }
-  
+
   #one-unique-thing:hover .subtitle-label {
-    background: linear-gradient(
-      180deg,
-      #242424 30%,
-      rgb(65, 65, 65) 100%
-    );
+    background: linear-gradient(180deg, #242424 30%, rgb(65, 65, 65) 100%);
   }
 }
 
@@ -74,7 +66,8 @@
     width: 205px;
   }
 
-  #narrativeblock #items .lined-input, #narrativeblock #backgrounds .lined-input {
+  #narrativeblock #items .lined-input,
+  #narrativeblock #backgrounds .lined-input {
     width: 150px;
   }
 }
@@ -112,6 +105,7 @@
   box-sizing: border-box;
   height: 216px;
   padding: 0px 10px;
+  position: relative;
 }
 
 #icon-relationships {

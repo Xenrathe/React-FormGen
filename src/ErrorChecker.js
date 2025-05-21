@@ -90,12 +90,10 @@ const errorChecker = {
 
     if (total > maxTotal) {
       errors.push(
-        `your icon points (${total}) is more than your available points (${maxTotal})`
+        `icon points (${total}) is more than available points (${maxTotal})`
       );
     } else if (total < maxTotal) {
-      errors.push(
-        `you have ${maxTotal - total} unspent icon points`
-      );
+      errors.push(`${maxTotal - total} unspent icon points`);
     }
 
     // Cleric's Love & beauty domain give an additional 1 point (or 2 w/ associated feat) CONFLICTED relationship with heroic or ambiguous
@@ -107,23 +105,27 @@ const errorChecker = {
 
       if (conflictedHeroicAmbiguous < minRelatedPoints) {
         errors.push(
-          `your Love/Beauty domain ${minRelatedPoints == 2 ? "and feat " : ""} requires ${minRelatedPoints} points spent in a conflicted relationship with a heroic or ambiguous icon`
+          `Love/Beauty domain ${
+            minRelatedPoints == 2 ? "and feat " : ""
+          } requires ${minRelatedPoints} points spent in a conflicted relationship with a heroic or ambiguous icon`
         );
       }
     }
 
     // Paladin's Righteous Endeavor w/ epic feat gives +1 relationship points with a heroic or ambiguous icon
     // Way of Evil Bastards gives the same but with villainous or ambiguous icon
-    if (character.queryFeatIsOwned("Path of Universal Righteous Endeavor", "Epic")) {
+    if (
+      character.queryFeatIsOwned("Path of Universal Righteous Endeavor", "Epic")
+    ) {
       if (moralityTotals.heroic == 0 && moralityTotals.ambiguous == 0) {
         errors.push(
-          "your epic feat in Path of Universal Righteous Endeavor talent requires at least 1 point in a relationship with a heroic or ambiguous icon"
+          "epic feat in Path of Universal Righteous Endeavor talent requires at least 1 point in a relationship with a heroic or ambiguous icon"
         );
       }
     } else if (character.queryFeatIsOwned("Way of Evil Bastards", "Epic")) {
       if (moralityTotals.villainous == 0 && moralityTotals.ambiguous == 0) {
         errors.push(
-          "Your epic feat in Way of Evil Bastards talent requires at least 1 point in a relationship with a villainous or ambiguous icon."
+          "epic feat in Way of Evil Bastards talent requires at least 1 point in a relationship with a villainous or ambiguous icon"
         );
       }
     }
@@ -138,13 +140,29 @@ const errorChecker = {
 
       if (heritagePoints < minBloodLinkPoints) {
         errors.push(
-          `Your Blood Link talent requires at least ${minBloodLinkPoints} icon relationship points in an icon associated with your chosen heritage talents`
+          `Blood Link talent requires at least ${minBloodLinkPoints} icon relationship points in an icon associated with chosen heritage talents ${
+            heritageIcons.length > 0 ? `(${heritageIcons})` : ""
+          }`
         );
       }
     }
 
     return errors;
-  }
-}
+  },
+
+  queryBackgroundsHaveError(character, backgrounds) {
+    const bgPointsRemaining =
+      character.queryBackgroundPointsRemaining(backgrounds);
+
+    let errors = [];
+    if (bgPointsRemaining < 0) {
+      errors.push("spent too many background points");
+    } else if (bgPointsRemaining > 0) {
+      errors.push(`have ${bgPointsRemaining} background points left to spend`);
+    }
+
+    return errors;
+  },
+};
 
 export default errorChecker;
