@@ -86,8 +86,6 @@ function BasicsBlock({ basicsData, setBasicsData, setPopupInfo }) {
       width: "",
       description: (
         <div>
-          <div>Armor is classified as either light or heavy.</div>
-          <br />
           <div>
             <strong>Light armor includes:</strong> Heavily padded vest, leather
             armor, studded leather, cured hide.
