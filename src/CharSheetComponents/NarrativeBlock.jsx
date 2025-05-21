@@ -1,4 +1,5 @@
 import "./CSS/NarrativeBlock.css";
+import errorChecker from "../ErrorChecker.js";
 import { useState } from "react";
 
 // returns total amount of background points remaining
@@ -10,10 +11,6 @@ function getBackgroundPointsRemaining(backgrounds, character) {
   backgrounds.forEach((bg) => {
     sum += bg.value;
   });
-  /*
-  Object.values(backgrounds).forEach((value) => {
-    sum += value;
-  });*/
 
   return maxBGs[0] - sum;
 }
@@ -118,7 +115,7 @@ function NarrativeBlock({
     setNarrativeBlock({ ...narrativeBlock, iconRelationships: newRelations });
 
     const iconRelationshipsDiv = document.getElementById("icon-relationships");
-    if (character.queryIconRelationshipsHaveError(newRelations).length > 0) {
+    if (errorChecker.queryIconRelationshipsHaveError(character, newRelations).length > 0) {
       iconRelationshipsDiv.classList.add("input-error");
     } else {
       iconRelationshipsDiv.classList.remove("input-error");
@@ -209,12 +206,9 @@ function NarrativeBlock({
     return lines;
   }
 
-  const relationshipPointsRemaining = getRelationshipPointsRemaining(
-    narrativeBlock.iconRelationships
-  );
-  const relationError =
-    character.queryIconRelationshipsHaveError(narrativeBlock.iconRelationships)
-      .length > 0;
+  const relationshipPointsRemaining = getRelationshipPointsRemaining(narrativeBlock.iconRelationships);
+  const relationErrors = errorChecker.queryIconRelationshipsHaveError(character, narrativeBlock.iconRelationships);
+  const hasRelationError = relationErrors.length > 0;
 
   const backgroundPointsRemaining = getBackgroundPointsRemaining(
     narrativeBlock.backgrounds,
@@ -396,9 +390,17 @@ function NarrativeBlock({
       <div
         id="icon-relationships"
         className={`narrative-input lined-inputs${
-          relationError ? " input-error" : ""
+          hasRelationError ? " input-error" : ""
         }`}
       >
+        {hasRelationError && <button
+          className="error-btn"
+          onClick={() =>
+            setPopupInfo({ title: "Errors", singleItem: null, list: relationErrors, mode: "errors" })
+          }
+        >
+          !
+        </button>}
         <label
           className="title"
           onClick={() =>
@@ -412,7 +414,7 @@ function NarrativeBlock({
         >
           <span className="tooltip">
             Icon Relations{" "}
-            {relationError ? ` (${relationshipPointsRemaining} pts)` : null}{" "}
+            {hasRelationError ? ` (${relationshipPointsRemaining} pts)` : null}{" "}
           </span>
         </label>
         {generateNarrativeLinedInput(

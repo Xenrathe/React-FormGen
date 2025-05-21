@@ -154,6 +154,27 @@
   }
 }
 
+.error-btn {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background: none;
+  border: solid red 1px;
+  padding: 0px;
+  border-radius: 10px;
+  width: 16px;
+  height: 16px;
+  font-size: 14px;
+  cursor: pointer;
+  color: red;
+}
+
+.error-btn:hover {
+  color: white;
+  background: rgb(255, 85, 85);
+  border: solid red 1px;
+}
+
 .single-line-w-btn {
   display: flex;
   justify-content: space-between;

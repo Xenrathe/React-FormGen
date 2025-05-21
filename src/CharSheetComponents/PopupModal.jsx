@@ -412,13 +412,21 @@ function PopupModal({
   abilitiesBlock,
   setAbilitiesBlock,
 }) {
-  if (popupInfo.list != null) {
-    return popupModalList(
-      popupInfo,
-      setPopupInfo,
-      character,
-      abilitiesBlock,
-      setAbilitiesBlock
+  if (popupInfo.mode == "errors") {
+    console.log("errors mode called");
+    return (
+      <div id="popupMod" className={`visible wide`}>
+        <button
+          className="close-btn"
+          onClick={() =>
+            setPopupInfo({ title: "", singleItem: null, list: null })
+          }
+        >
+          ✖
+        </button>
+        <span className="title">{popupInfo.title}</span>
+        <ul className="errorlist">{popupInfo.list.map((error) => <li>{error}</li>)}</ul>
+      </div>
     );
   } else if (popupInfo.mode == "tooltip") {
     return (
@@ -434,6 +442,14 @@ function PopupModal({
         <span className="title">{popupInfo.title}</span>
         <span className="description">{popupInfo.singleItem.description}</span>
       </div>
+    );
+  } else if (popupInfo.list != null) {
+    return popupModalList(
+      popupInfo,
+      setPopupInfo,
+      character,
+      abilitiesBlock,
+      setAbilitiesBlock
     );
   } else if (popupInfo.singleItem != null) {
     return (
