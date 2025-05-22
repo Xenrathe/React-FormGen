@@ -140,7 +140,7 @@ export class Character {
       (bonusOp) =>
         this.jobTalents.includes(Object.keys(bonusOp)[0]) ||
         (Object.keys(bonusOp)[0] == "Cantrips" &&
-          this.jobTalents.includes("Jack of Spells"))
+          this.jobTalents.includes("Jack of Spells") && this.queryFeatIsOwned("Jack of Spells", "Adventurer"))
     );
 
     //if player removes any of the "AC" (animal companion) talents, will also remove associated feats
@@ -679,7 +679,7 @@ export class Character {
         this.bonusOptions.some(
           (bo) =>
             Object.keys(bo)[0] == "Jack of Spells" &&
-            Object.values(bo)[0] == "C"
+            Object.values(bo)[0] == "C" && this.queryFeatIsOwned("Jack of Spells", "Adventurer")
         )
       ) {
         owned.push({
@@ -844,11 +844,11 @@ export class Character {
       jackOfSpellsOptions.forEach((option) => {
         const optionVal = Object.values(option)[0];
         //A = Cleric, B = Sorcerer, C = Wizard
-        if (optionVal == "B") {
+        if (optionVal == "B" && this.queryFeatIsOwned("Jack of Spells", "Adventurer")) {
           features.push({
             "Dancing Lights": jobs["Sorcerer"].features["Dancing Lights"],
           });
-        } else if (optionVal == "C") {
+        } else if (optionVal == "C" && this.queryFeatIsOwned("Jack of Spells", "Adventurer")) {
           features.push({ Cantrips: jobs["Wizard"].features.Cantrips });
         }
       });
@@ -1426,81 +1426,6 @@ export class Character {
         : 0;
       return this.jobTalents.length + animalAdjustment + FEAdjustment;
     }
-  }
-
-  queryTalentsHaveError() {
-    let errorTalents = [];
-
-    // not enough options chosen
-    this.jobTalents.forEach((talent) => {
-      const abilityInfo = {
-        title: talent,
-        singleItem:
-          talent in jobs[this.job].talentChoices
-            ? jobs[this.job].talentChoices[talent]
-            : null,
-      };
-      const maxChoices = abilityInfo ? this.querySubOptions(abilityInfo)[0] : 0;
-      const currChoices = this.bonusOptions.filter(
-        (bo) => Object.keys(bo)[0] == talent
-      ).length;
-
-      if (currChoices != maxChoices) {
-        errorTalents.push(talent);
-      }
-    });
-
-    const ownedTalentsByClass = this.queryOwnedAbilitiesByClass("Talents");
-    let maxAllowedTalents = {};
-    Object.keys(jobs).forEach((job) => (maxAllowedTalents[job] = 0));
-    maxAllowedTalents[this.job] = 100;
-
-    //paladin increase for divine domain
-    const divineDomainTalents = this.jobTalents.filter((talent) =>
-      talent.startsWith("Divine Domain")
-    );
-    maxAllowedTalents["Cleric"] += divineDomainTalents.length;
-
-    Object.keys(maxAllowedTalents).forEach((source) => {
-      let ownedSourceCount = 0;
-      const ownedTalentsForThisSource = ownedTalentsByClass[source];
-      if (ownedTalentsForThisSource.length > maxAllowedTalents[source]) {
-        this.jobTalents.forEach((talent) => {
-          if (ownedTalentsForThisSource.includes(talent)) {
-            ownedSourceCount += 1;
-            if (ownedSourceCount > maxAllowedTalents[source])
-              errorTalents.push(talent);
-          }
-        });
-      }
-    });
-
-    if (errorTalents.length == 0) {
-      // standard errors (too many talents overall or per tier, such as with barbarian)
-      const talentsMax = this.queryTalentsMax();
-      if (Array.isArray(talentsMax)) {
-        const tiers = ["Adventurer", "Champion", "Epic"];
-        let counts = [0, 0, 0];
-
-        this.jobTalents.forEach((talent) => {
-          const tierIndex = tiers.indexOf(
-            jobs[this.job].talentChoices[talent].Type
-          );
-          counts[tierIndex] += 1;
-
-          if (counts[tierIndex] > talentsMax[tierIndex])
-            errorTalents.push(talent);
-        });
-      } else {
-        let count = 0;
-        this.jobTalents.forEach((talent) => {
-          count++;
-          if (count > talentsMax) errorTalents.push(talent);
-        });
-      }
-    }
-
-    return errorTalents;
   }
 
   //for most jobs, returns an array with one number [#]

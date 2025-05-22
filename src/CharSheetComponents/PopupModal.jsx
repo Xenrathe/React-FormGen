@@ -425,8 +425,8 @@ function PopupModal({
         </button>
         <span className="title">{popupInfo.title}</span>
         <ul className="errorlist">
-          {popupInfo.list.map((error) => (
-            <li>{error}</li>
+          {popupInfo.list.map((error, index) => (
+            <li key={`error-${index}`}>{error}</li>
           ))}
         </ul>
       </div>

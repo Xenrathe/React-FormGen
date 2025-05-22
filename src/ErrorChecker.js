@@ -151,18 +151,109 @@ const errorChecker = {
     return errors;
   },
 
+  // returns an empty array if no error
+  // otherwise returns an array of strings describing errors
   queryBackgroundsHaveError(character, backgrounds) {
     const bgPointsRemaining =
       character.queryBackgroundPointsRemaining(backgrounds);
 
     let errors = [];
     if (bgPointsRemaining < 0) {
-      errors.push("spent too many background points");
+      errors.push("excess background points spent");
     } else if (bgPointsRemaining > 0) {
-      errors.push(`have ${bgPointsRemaining} background points left to spend`);
+      errors.push(`${bgPointsRemaining} unspent background points`);
     }
 
     return errors;
+  },
+
+  //returns an object:
+  // spells: [array of strings of spell-names that are in error]
+  // errors: [array of error messages]
+  queryTalentsHaveErrors(character) {
+    let errorTalents = [];
+    let errors = [];
+
+    // not enough sub/bonus options chosen
+    character.jobTalents.forEach((talent) => {
+      const abilityInfo = {
+        title: talent,
+        singleItem:
+          talent in jobs[character.job].talentChoices
+            ? jobs[character.job].talentChoices[talent]
+            : null,
+      };
+      const maxChoices = abilityInfo ? character.querySubOptions(abilityInfo)[0] : 0;
+      const currChoices = character.bonusOptions.filter(
+        (bo) => Object.keys(bo)[0] == talent
+      ).length;
+
+      if (currChoices != maxChoices) {
+        errors.push(`${talent} has unchosen suboptions`);
+        errorTalents.push(talent);
+      }
+    });
+
+    const ownedTalentsByClass = character.queryOwnedAbilitiesByClass("Talents");
+    let maxAllowedTalents = {};
+    Object.keys(jobs).forEach((job) => (maxAllowedTalents[job] = 0));
+    maxAllowedTalents[character.job] = 100;
+
+    //paladin increase for divine domain
+    const divineDomainTalents = character.jobTalents.filter((talent) =>
+      talent.startsWith("Divine Domain")
+    );
+    maxAllowedTalents["Cleric"] += divineDomainTalents.length;
+
+    Object.keys(maxAllowedTalents).forEach((source) => {
+      let ownedSourceCount = 0;
+      const ownedTalentsForThisSource = ownedTalentsByClass[source];
+      if (ownedTalentsForThisSource.length > maxAllowedTalents[source]) {
+        errors.push(`excess talents from ${source} class`);
+        character.jobTalents.forEach((talent) => {
+          if (ownedTalentsForThisSource.includes(talent)) {
+            ownedSourceCount += 1;
+            if (ownedSourceCount > maxAllowedTalents[source])
+              errorTalents.push(talent);
+          }
+        });
+      } else if (ownedTalentsForThisSource.length < maxAllowedTalents[source] && source != character.job) {
+        errors.push(`missing ${maxAllowedTalents[source] - ownedTalentsForThisSource.length} talents from ${source} class`);
+      }
+    });
+
+    // standard errors (too many talents overall or per tier, such as with barbarian)
+    const talentsMax = character.queryTalentsMax();
+    if (Array.isArray(talentsMax)) {
+      const tiers = ["Adventurer", "Champion", "Epic"];
+      let counts = [0, 0, 0];
+
+      character.jobTalents.forEach((talent) => {
+        const tierIndex = tiers.indexOf(
+          jobs[character.job].talentChoices[talent].Type
+        );
+        counts[tierIndex] += 1;
+
+        if (counts[tierIndex] > talentsMax[tierIndex])
+          errorTalents.push(talent);
+      });
+
+      [0, 1, 2].forEach((index) => {
+        if (counts[index] > talentsMax[index]) errors.push(`excess ${tiers[index]} talents`);
+        else if (counts[index] < talentsMax[index]) errors.push(`missing ${tiers[index]} talents`);
+      })
+    } else {
+      let count = 0;
+      character.jobTalents.forEach((talent) => {
+        count++;
+        if (count > talentsMax) errorTalents.push(talent);
+      });
+
+      if (count > talentsMax) errors.push(`excess talents chosen`);
+      else if (count < talentsMax) errors.push(`missing talent choices`);
+    }
+
+    return { talents: errorTalents, errors: errors };
   },
 
   //returns an object:
@@ -174,14 +265,19 @@ const errorChecker = {
 
     // class-based errors
     // only necessary for Ranger and Bard's cross-job spell talents
-    const ownedJobSpells = character.queryOwnedAbilitiesByClass("Spells");
-    let maxAllowedSpells = { Bard: 0, Cleric: 0, Sorcerer: 0, Wizard: 0 };
-    if (character.job in maxAllowedSpells)
-      maxAllowedSpells[character.job] = 100;
+    const ownedJobSpells = character.queryOwnedAbilitiesByClass("Spells"); //an object {"Cleric": ["Heal", "Blessing"], "Sorcerer": [], etc}
+    let maxAllowedSpells = { };
+    Object.keys(jobs).forEach((job) => {
+      if ("spellList" in jobs[job]) {
+        if (character.job == job) maxAllowedSpells[job] = 100;
+        else maxAllowedSpells[job] = 0;
+      }
+    })
 
     //paladin increase
     if (character.jobTalents.includes("Cleric Training")) {
-      maxAllowedSpells["Cleric"] = 100;
+      maxAllowedSpells["Cleric"] = 1;
+      if (character.queryFeatHighestTier("Cleric Training") == 'Epic') maxAllowedSpells["Cleric"] = 2;
     }
 
     const rangerTalents = [
@@ -218,7 +314,7 @@ const errorChecker = {
     if (
       character.bonusOptions.some(
         (bo) =>
-          Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C"
+          Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C" && character.queryFeatIsOwned("Jack of Spells", "Adventurer")
       )
     ) {
       const cantripChoiceNum = character.bonusOptions.filter(
@@ -227,25 +323,27 @@ const errorChecker = {
       if (cantripChoiceNum != 3) {
         errorSpells.push("Cantrips");
         errors.push(
-          "Bard's Jack of Spells wizard choice requires 3 cantrip choices"
+          "Jack of Spells wizard/feat grants 3 cantrip choices"
         );
       }
     }
 
     Object.keys(maxAllowedSpells).forEach((source) => {
       let ownedSourceCount = 0;
-      const ownedTalentsForThisSource = ownedJobSpells[source];
-      if (ownedTalentsForThisSource.length > maxAllowedSpells[source]) {
-        errors.push(`too many spells from ${source} class`);
-        this.jobSpells.forEach((spell) => {
+      const ownedSpellsForThisSource = ownedJobSpells[source];
+      if (ownedSpellsForThisSource.length > maxAllowedSpells[source]) {
+        errors.push(`excess spells from ${source} class`);
+        character.jobSpells.forEach((spell) => {
           const spellName = Object.keys(spell)[0];
-          if (ownedTalentsForThisSource.includes(spellName)) {
+          if (ownedSpellsForThisSource.includes(spellName)) {
             ownedSourceCount += 1;
             if (ownedSourceCount > maxAllowedSpells[source]) {
               errorSpells.push(spellName);
             }
           }
         });
+      } else if (ownedSpellsForThisSource.length < maxAllowedSpells[source] && source != character.job) {
+        errors.push(`missing ${maxAllowedSpells[source] - ownedSpellsForThisSource.length} spells from ${source} class`);
       }
     });
 
@@ -259,7 +357,6 @@ const errorChecker = {
       const spellLevelMax = character.querySpellLevelMaximums();
       spellLevelMax.forEach((maxCount, index) => {
         const slotLevel = index * 2 + 1;
-        const errorAtThisLevel = false;
         let ownedSLCount = 0;
         character.jobSpells.forEach((spell) => {
           const spellLevel = Number(Object.values(spell)[0].substring(6));
@@ -267,17 +364,42 @@ const errorChecker = {
             ownedSLCount += 1;
             if (ownedSLCount > maxCount) {
               errorSpells.push(Object.keys(spell)[0]);
-              errorAtThisLevel = true;
             }
           }
         });
-
-        if (errorAtThisLevel) errors.add(`too many lvl-${slotLevel} spells`);
       });
     }
 
+    //check for not incorrect # of spells
+    character.querySpellLevelsRemaining()
+      .forEach((spellCount, index) => {
+        const spellLevel = index * 2 + 1;
+
+        if (spellCount > 0) {
+          errors.push(`unused L${spellLevel} spell slots`);
+        } else if (spellCount < 0 ) {
+          errors.push(`excess L${spellLevel} spells`);
+        }
+      })
+
     return { spells: errorSpells, errors: errors };
   },
+
+  // returns an empty array if no error
+  // otherwise returns an array of strings describing errors
+  queryFeatMiscount(character) {
+    //returns an array [adv #, champ #, epic #]
+    const [advRemain, chmpRemain, epicRemain] = character.queryFeatsRemaining();
+    const featCounts = {'adventurer': advRemain, 'champion': chmpRemain, 'epic': epicRemain};
+
+    let errors = [];
+    Object.entries(featCounts).forEach(([tier, count]) => {
+      if (count > 0) errors.push(`unspent ${tier} feats`);
+      else if (count < 0 ) errors.push(`excess ${tier} feats`);
+    })
+
+    return errors;
+  }
 };
 
 export default errorChecker;

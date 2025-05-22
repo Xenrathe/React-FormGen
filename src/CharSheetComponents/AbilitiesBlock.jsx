@@ -223,7 +223,7 @@ function LinedInputsWithBtn({
         errorChecker.querySpellsHaveErrors(character).spells;
       hasError = spellsWithError.includes(title);
     } else if (mode == "talents") {
-      const talentsWithError = character.queryTalentsHaveError();
+      const talentsWithError = errorChecker.queryTalentsHaveErrors(character).talents;
       hasError = talentsWithError.includes(title);
     }
 
@@ -354,7 +354,8 @@ function AbilitiesBlock({
     true,
     character.queryFeatsRemaining()
   );
-  const featMiscount = featsRemainingString != "";
+  const featErrors = errorChecker.queryFeatMiscount(character);
+  const hasFeatError = featErrors.length > 0;
 
   const talentsRemainingString = getAbilitiesRemainingString(
     character,
@@ -362,9 +363,9 @@ function AbilitiesBlock({
     false,
     character.queryTalentsRemaining()
   );
-  const talentError =
-    talentsRemainingString != "" ||
-    character.queryTalentsHaveError().length > 0;
+  const talentErrors = errorChecker.queryTalentsHaveErrors(character);
+  console.log(talentErrors);
+  const hasTalentError = talentErrors.errors.length > 0;
 
   const spellsRemainingString = getAbilitiesRemainingString(
     character,
@@ -373,8 +374,7 @@ function AbilitiesBlock({
     null
   );
   const spellErrors = errorChecker.querySpellsHaveErrors(character);
-  const hasSpellError =
-    spellErrors.errors.length > 0 || spellsRemainingString != "";
+  const hasSpellError = spellErrors.errors.length > 0;
 
   const familiarAbsRemainingString = getAbilitiesRemainingString(
     character,
@@ -406,8 +406,23 @@ function AbilitiesBlock({
   return (
     <div
       id="abilitiesblock"
-      className={`input-group${featMiscount ? " input-error" : ""}`}
+      className={`input-group${hasFeatError ? " input-error" : ""}`}
     >
+      {hasFeatError && (
+          <button
+            className="error-btn no-print"
+            onClick={() =>
+              setPopupInfo({
+                title: "Errors",
+                singleItem: null,
+                list: featErrors,
+                mode: "errors",
+              })
+            }
+          >
+            !
+          </button>
+          )}
       <div className={`title-label`}>
         Abilities <span>{featsRemainingString}</span>
       </div>
@@ -424,9 +439,24 @@ function AbilitiesBlock({
       <div
         id="talents"
         className={`abilities-input lined-inputs ${
-          talentError ? "input-error" : ""
+          hasTalentError ? "input-error" : ""
         }`}
       >
+        {hasTalentError && (
+          <button
+            className="error-btn no-print"
+            onClick={() =>
+              setPopupInfo({
+                title: "Errors",
+                singleItem: null,
+                list: talentErrors.errors,
+                mode: "errors",
+              })
+            }
+          >
+            !
+          </button>
+          )}
         <label className="subtitle-label">
           Talents {talentsRemainingString}
         </label>
@@ -467,6 +497,21 @@ function AbilitiesBlock({
             hasSpellError ? "input-error" : ""
           }`}
         >
+          {hasSpellError && (
+          <button
+            className="error-btn no-print"
+            onClick={() =>
+              setPopupInfo({
+                title: "Errors",
+                singleItem: null,
+                list: spellErrors.errors,
+                mode: "errors",
+              })
+            }
+          >
+            !
+          </button>
+          )}
           <label className="subtitle-label">
             Spells {spellsRemainingString}
           </label>

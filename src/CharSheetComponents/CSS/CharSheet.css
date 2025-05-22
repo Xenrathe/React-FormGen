@@ -156,12 +156,12 @@
 
 .error-btn {
   position: absolute;
-  top: 3px;
-  right: 3px;
+  top: -1px;
+  right: -1px;
   background: none;
   border: solid red 1px;
   padding: 0px;
-  border-radius: 10px;
+  border-radius: 0px;
   width: 16px;
   height: 16px;
   font-size: 14px;
