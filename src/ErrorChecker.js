@@ -1,4 +1,5 @@
 import icons from "./data/icons.json";
+import jobs from "./data/jobs";
 
 const errorChecker = {
   // returns an empty array if no error
@@ -162,6 +163,120 @@ const errorChecker = {
     }
 
     return errors;
+  },
+
+  //returns an object:
+  // spells: [array of strings of spell-names that are in error]
+  // errors: [array of error messages]
+  querySpellsHaveErrors(character) {
+    let errorSpells = [];
+    let errors = [];
+
+    // class-based errors
+    // only necessary for Ranger and Bard's cross-job spell talents
+    const ownedJobSpells = character.queryOwnedAbilitiesByClass("Spells");
+    let maxAllowedSpells = { Bard: 0, Cleric: 0, Sorcerer: 0, Wizard: 0 };
+    if (character.job in maxAllowedSpells)
+      maxAllowedSpells[character.job] = 100;
+
+    //paladin increase
+    if (character.jobTalents.includes("Cleric Training")) {
+      maxAllowedSpells["Cleric"] = 100;
+    }
+
+    const rangerTalents = [
+      { "Fey Queen's Enchantments": "Sorcerer" },
+      { "Ranger ex Cathedral": "Cleric" },
+    ];
+    rangerTalents.forEach((RT) => {
+      const talentName = Object.keys(RT)[0];
+      const source = Object.values(RT)[0];
+
+      if (character.jobTalents.includes(talentName)) {
+        const highestTier = character.queryFeatHighestTier(talentName);
+        if (highestTier == "Epic") {
+          maxAllowedSpells[source] += 2;
+        } else {
+          maxAllowedSpells[source] += 1;
+        }
+      }
+    });
+
+    // Bard additions
+    const options = character.bonusOptions
+      .filter((bo) => Object.keys(bo)[0] == "Jack of Spells")
+      .map((bo) => Object.values(bo)[0]);
+    const validSources = options
+      ? options.map(
+          (option) =>
+            jobs["Bard"].talentChoices["Jack of Spells"]["Options"][option]
+        )
+      : [];
+    validSources.forEach((vSource) => (maxAllowedSpells[vSource] += 1));
+
+    //Bard Jack of Spells Cantrip option selection (error if 3 aren't selected)
+    if (
+      character.bonusOptions.some(
+        (bo) =>
+          Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C"
+      )
+    ) {
+      const cantripChoiceNum = character.bonusOptions.filter(
+        (bo) => Object.keys(bo)[0] == "Cantrips"
+      ).length;
+      if (cantripChoiceNum != 3) {
+        errorSpells.push("Cantrips");
+        errors.push(
+          "Bard's Jack of Spells wizard choice requires 3 cantrip choices"
+        );
+      }
+    }
+
+    Object.keys(maxAllowedSpells).forEach((source) => {
+      let ownedSourceCount = 0;
+      const ownedTalentsForThisSource = ownedJobSpells[source];
+      if (ownedTalentsForThisSource.length > maxAllowedSpells[source]) {
+        errors.push(`too many spells from ${source} class`);
+        this.jobSpells.forEach((spell) => {
+          const spellName = Object.keys(spell)[0];
+          if (ownedTalentsForThisSource.includes(spellName)) {
+            ownedSourceCount += 1;
+            if (ownedSourceCount > maxAllowedSpells[source]) {
+              errorSpells.push(spellName);
+            }
+          }
+        });
+      }
+    });
+
+    //Basically we only worry about 'standard errors' once more specific errors are taken care of
+    if (
+      errorSpells.length == 0 ||
+      (errorSpells.length == 1 && errorSpells[0] == "Cantrips")
+    ) {
+      // standard errors (too many at a given spellLevel)
+      // this will also cover spells at too high or too low of a level
+      const spellLevelMax = character.querySpellLevelMaximums();
+      spellLevelMax.forEach((maxCount, index) => {
+        const slotLevel = index * 2 + 1;
+        const errorAtThisLevel = false;
+        let ownedSLCount = 0;
+        character.jobSpells.forEach((spell) => {
+          const spellLevel = Number(Object.values(spell)[0].substring(6));
+          if (spellLevel == slotLevel) {
+            ownedSLCount += 1;
+            if (ownedSLCount > maxCount) {
+              errorSpells.push(Object.keys(spell)[0]);
+              errorAtThisLevel = true;
+            }
+          }
+        });
+
+        if (errorAtThisLevel) errors.add(`too many lvl-${slotLevel} spells`);
+      });
+    }
+
+    return { spells: errorSpells, errors: errors };
   },
 };
 

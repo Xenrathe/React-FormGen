@@ -1,7 +1,5 @@
-import races from "../data/races";
 import jobs from "../data/jobs";
-import PopupModal from "./PopupModal.jsx";
-import { useEffect, useState } from "react";
+import errorChecker from "../ErrorChecker.js";
 import "./CSS/AbilitiesBlock.css";
 
 //returns a string e.g. "(Feats Remain: 1 A, 2 C, 2 E)" ; returns "" if no Feats remain
@@ -221,7 +219,8 @@ function LinedInputsWithBtn({
 
     let hasError = false;
     if (mode == "spells") {
-      const spellsWithError = character.querySpellsHaveError();
+      const spellsWithError =
+        errorChecker.querySpellsHaveErrors(character).spells;
       hasError = spellsWithError.includes(title);
     } else if (mode == "talents") {
       const talentsWithError = character.queryTalentsHaveError();
@@ -373,8 +372,9 @@ function AbilitiesBlock({
     false,
     null
   );
+  const spellErrors = errorChecker.querySpellsHaveErrors(character);
   const hasSpellError =
-    character.querySpellsHaveError().length > 0 || spellsRemainingString != "";
+    spellErrors.errors.length > 0 || spellsRemainingString != "";
 
   const familiarAbsRemainingString = getAbilitiesRemainingString(
     character,

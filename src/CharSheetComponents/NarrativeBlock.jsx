@@ -13,7 +13,7 @@ export function handleBackgrounds(
   // this sort is necessary in the situation in which, say, [7, 6] are in maxexceptions
   // if the user inputs a '6' value, we want to remove the '6' not the '7'
   maxExceptions = maxExceptions.sort((a, b) => a.num - b.num);
-  const newBackgrounds = [];
+  let newBackgrounds = [];
 
   // go through ALL backgrounds
   // because of the nature of 'maxExceptions', every background input needs to be aware of the others

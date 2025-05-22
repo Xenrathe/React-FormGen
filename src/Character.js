@@ -566,7 +566,7 @@ export class Character {
           const source = pair[talent];
           const maxSpells = this.queryFeatIsOwned(talent, "Epic") ? 2 : 1;
           const ownedSpellCount =
-            this.#queryOwnedAbilitiesByClass("Spells")[source].length;
+            this.queryOwnedAbilitiesByClass("Spells")[source].length;
 
           let acceptableFreq = ["Daily", "Recha"]; // use first 5 characters only!
           if (this.queryFeatIsOwned(talent, "Champion")) {
@@ -613,7 +613,7 @@ export class Character {
 
         potentialSources.forEach((source) => {
           const ownedSpellCount =
-            this.#queryOwnedAbilitiesByClass("Spells")[source].length;
+            this.queryOwnedAbilitiesByClass("Spells")[source].length;
 
           let filteredSpells = Object.entries(jobs[source].spellList)
             .filter(
@@ -1182,104 +1182,6 @@ export class Character {
     return [totalPointsMax, maxPerIcon];
   }
 
-  //returns an array of strings of spell-names that are in error
-  querySpellsHaveError() {
-    let errorSpells = [];
-
-    // class-based errors
-    // only necessary for Ranger and Bard's cross-job spell talents
-    const ownedJobSpells = this.#queryOwnedAbilitiesByClass("Spells");
-    let maxAllowedSpells = { Bard: 0, Cleric: 0, Sorcerer: 0, Wizard: 0 };
-    if (this.job in maxAllowedSpells) maxAllowedSpells[this.job] = 100;
-
-    //paladin increase
-    if (this.jobTalents.includes("Cleric Training")) {
-      maxAllowedSpells["Cleric"] = 100;
-    }
-
-    const rangerTalents = [
-      { "Fey Queen's Enchantments": "Sorcerer" },
-      { "Ranger ex Cathedral": "Cleric" },
-    ];
-    rangerTalents.forEach((RT) => {
-      const talentName = Object.keys(RT)[0];
-      const source = Object.values(RT)[0];
-
-      if (this.jobTalents.includes(talentName)) {
-        const highestTier = this.queryFeatHighestTier(talentName);
-        if (highestTier == "Epic") {
-          maxAllowedSpells[source] += 2;
-        } else {
-          maxAllowedSpells[source] += 1;
-        }
-      }
-    });
-
-    // Bard additions
-    const options = this.bonusOptions
-      .filter((bo) => Object.keys(bo)[0] == "Jack of Spells")
-      .map((bo) => Object.values(bo)[0]);
-    const validSources = options
-      ? options.map(
-          (option) =>
-            jobs["Bard"].talentChoices["Jack of Spells"]["Options"][option]
-        )
-      : [];
-    validSources.forEach((vSource) => (maxAllowedSpells[vSource] += 1));
-
-    //Bard Jack of Spells Cantrip option selection (error if 3 aren't selected)
-    if (
-      this.bonusOptions.some(
-        (bo) =>
-          Object.keys(bo)[0] == "Jack of Spells" && Object.values(bo)[0] == "C"
-      )
-    ) {
-      const cantripChoiceNum = this.bonusOptions.filter(
-        (bo) => Object.keys(bo)[0] == "Cantrips"
-      ).length;
-      if (cantripChoiceNum != 3) errorSpells.push("Cantrips");
-    }
-
-    Object.keys(maxAllowedSpells).forEach((source) => {
-      let ownedSourceCount = 0;
-      const ownedTalentsForThisSource = ownedJobSpells[source];
-      if (ownedTalentsForThisSource.length > maxAllowedSpells[source]) {
-        this.jobSpells.forEach((spell) => {
-          const spellName = Object.keys(spell)[0];
-          if (ownedTalentsForThisSource.includes(spellName)) {
-            ownedSourceCount += 1;
-            if (ownedSourceCount > maxAllowedSpells[source])
-              errorSpells.push(spellName);
-          }
-        });
-      }
-    });
-
-    //Basically we only worry about 'standard errors' once more specific errors are taken care of
-    if (
-      errorSpells.length == 0 ||
-      (errorSpells.length == 1 && errorSpells[0] == "Cantrips")
-    ) {
-      // standard errors (too many at a given spellLevel)
-      // this will also cover spells at too high or too low of a level
-      const spellLevelMax = this.querySpellLevelMaximums();
-      spellLevelMax.forEach((maxCount, index) => {
-        const slotLevel = index * 2 + 1;
-        let ownedSLCount = 0;
-        this.jobSpells.forEach((spell) => {
-          const spellLevel = Number(Object.values(spell)[0].substring(6));
-          if (spellLevel == slotLevel) {
-            ownedSLCount += 1;
-            if (ownedSLCount > maxCount)
-              errorSpells.push(Object.keys(spell)[0]);
-          }
-        });
-      });
-    }
-
-    return errorSpells;
-  }
-
   //Returns the total number of slots
   //Is this redundant with querySpellsOwnedCount? it might be.
   querySpellsMax() {
@@ -1445,7 +1347,7 @@ export class Character {
 
   //used for abilities that pull from other classes
   //returns an object {"Cleric": ["Heal", "Blessing"], "Sorcerer": [], etc}
-  #queryOwnedAbilitiesByClass(abilityType) {
+  queryOwnedAbilitiesByClass(abilityType) {
     let ownedAbilities = {};
     const dataSource = abilityType == "Spells" ? "spellList" : "talentChoices";
     const ownedSource =
@@ -1548,7 +1450,7 @@ export class Character {
       }
     });
 
-    const ownedTalentsByClass = this.#queryOwnedAbilitiesByClass("Talents");
+    const ownedTalentsByClass = this.queryOwnedAbilitiesByClass("Talents");
     let maxAllowedTalents = {};
     Object.keys(jobs).forEach((job) => (maxAllowedTalents[job] = 0));
     maxAllowedTalents[this.job] = 100;

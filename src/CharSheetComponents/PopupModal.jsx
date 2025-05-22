@@ -413,9 +413,8 @@ function PopupModal({
   setAbilitiesBlock,
 }) {
   if (popupInfo.mode == "errors") {
-    console.log("errors mode called");
     return (
-      <div id="popupMod" className={`visible wide`}>
+      <div id="popupMod" className={`visible`}>
         <button
           className="close-btn"
           onClick={() =>
@@ -425,7 +424,11 @@ function PopupModal({
           ✖
         </button>
         <span className="title">{popupInfo.title}</span>
-        <ul className="errorlist">{popupInfo.list.map((error) => <li>{error}</li>)}</ul>
+        <ul className="errorlist">
+          {popupInfo.list.map((error) => (
+            <li>{error}</li>
+          ))}
+        </ul>
       </div>
     );
   } else if (popupInfo.mode == "tooltip") {
