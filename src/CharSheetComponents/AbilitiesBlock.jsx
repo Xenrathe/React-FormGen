@@ -223,7 +223,8 @@ function LinedInputsWithBtn({
         errorChecker.querySpellsHaveErrors(character).spells;
       hasError = spellsWithError.includes(title);
     } else if (mode == "talents") {
-      const talentsWithError = errorChecker.queryTalentsHaveErrors(character).talents;
+      const talentsWithError =
+        errorChecker.queryTalentsHaveErrors(character).talents;
       hasError = talentsWithError.includes(title);
     }
 
@@ -364,7 +365,6 @@ function AbilitiesBlock({
     character.queryTalentsRemaining()
   );
   const talentErrors = errorChecker.queryTalentsHaveErrors(character);
-  console.log(talentErrors);
   const hasTalentError = talentErrors.errors.length > 0;
 
   const spellsRemainingString = getAbilitiesRemainingString(
@@ -382,7 +382,8 @@ function AbilitiesBlock({
     false,
     [character.queryFamiliarAbilitiesRemaining()]
   );
-  const hasFamiliarAbsError = familiarAbsRemainingString != "";
+  const familiarErrors = errorChecker.queryFamiliarAbsHaveErrors(character);
+  const hasFamiliarAbsError = familiarErrors.length > 0;
 
   const bonusAbsRemainingString = getAbilitiesRemainingString(
     character,
@@ -409,20 +410,20 @@ function AbilitiesBlock({
       className={`input-group${hasFeatError ? " input-error" : ""}`}
     >
       {hasFeatError && (
-          <button
-            className="error-btn no-print"
-            onClick={() =>
-              setPopupInfo({
-                title: "Errors",
-                singleItem: null,
-                list: featErrors,
-                mode: "errors",
-              })
-            }
-          >
-            !
-          </button>
-          )}
+        <button
+          className="error-btn no-print"
+          onClick={() =>
+            setPopupInfo({
+              title: "Errors",
+              singleItem: null,
+              list: featErrors,
+              mode: "errors",
+            })
+          }
+        >
+          !
+        </button>
+      )}
       <div className={`title-label`}>
         Abilities <span>{featsRemainingString}</span>
       </div>
@@ -456,7 +457,7 @@ function AbilitiesBlock({
           >
             !
           </button>
-          )}
+        )}
         <label className="subtitle-label">
           Talents {talentsRemainingString}
         </label>
@@ -476,6 +477,21 @@ function AbilitiesBlock({
             hasFamiliarAbsError ? "input-error" : ""
           }`}
         >
+          {hasFamiliarAbsError && (
+            <button
+              className="error-btn no-print"
+              onClick={() =>
+                setPopupInfo({
+                  title: "Errors",
+                  singleItem: null,
+                  list: familiarErrors,
+                  mode: "errors",
+                })
+              }
+            >
+              !
+            </button>
+          )}
           <label className="subtitle-label">
             {`${animalsBlock} `}
             {familiarAbsRemainingString}
@@ -498,19 +514,19 @@ function AbilitiesBlock({
           }`}
         >
           {hasSpellError && (
-          <button
-            className="error-btn no-print"
-            onClick={() =>
-              setPopupInfo({
-                title: "Errors",
-                singleItem: null,
-                list: spellErrors.errors,
-                mode: "errors",
-              })
-            }
-          >
-            !
-          </button>
+            <button
+              className="error-btn no-print"
+              onClick={() =>
+                setPopupInfo({
+                  title: "Errors",
+                  singleItem: null,
+                  list: spellErrors.errors,
+                  mode: "errors",
+                })
+              }
+            >
+              !
+            </button>
           )}
           <label className="subtitle-label">
             Spells {spellsRemainingString}

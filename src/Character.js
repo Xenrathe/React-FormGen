@@ -140,7 +140,8 @@ export class Character {
       (bonusOp) =>
         this.jobTalents.includes(Object.keys(bonusOp)[0]) ||
         (Object.keys(bonusOp)[0] == "Cantrips" &&
-          this.jobTalents.includes("Jack of Spells") && this.queryFeatIsOwned("Jack of Spells", "Adventurer"))
+          this.jobTalents.includes("Jack of Spells") &&
+          this.queryFeatIsOwned("Jack of Spells", "Adventurer"))
     );
 
     //if player removes any of the "AC" (animal companion) talents, will also remove associated feats
@@ -679,7 +680,8 @@ export class Character {
         this.bonusOptions.some(
           (bo) =>
             Object.keys(bo)[0] == "Jack of Spells" &&
-            Object.values(bo)[0] == "C" && this.queryFeatIsOwned("Jack of Spells", "Adventurer")
+            Object.values(bo)[0] == "C" &&
+            this.queryFeatIsOwned("Jack of Spells", "Adventurer")
         )
       ) {
         owned.push({
@@ -844,11 +846,17 @@ export class Character {
       jackOfSpellsOptions.forEach((option) => {
         const optionVal = Object.values(option)[0];
         //A = Cleric, B = Sorcerer, C = Wizard
-        if (optionVal == "B" && this.queryFeatIsOwned("Jack of Spells", "Adventurer")) {
+        if (
+          optionVal == "B" &&
+          this.queryFeatIsOwned("Jack of Spells", "Adventurer")
+        ) {
           features.push({
             "Dancing Lights": jobs["Sorcerer"].features["Dancing Lights"],
           });
-        } else if (optionVal == "C" && this.queryFeatIsOwned("Jack of Spells", "Adventurer")) {
+        } else if (
+          optionVal == "C" &&
+          this.queryFeatIsOwned("Jack of Spells", "Adventurer")
+        ) {
           features.push({ Cantrips: jobs["Wizard"].features.Cantrips });
         }
       });
@@ -990,6 +998,7 @@ export class Character {
     return maxBonusAbs;
   }
 
+  //returns a single number
   queryBonusAbsRemaining() {
     const maxBonusAbs = this.#queryBonusAbsMax();
     const currentBonusAbs = this.jobBonusAbs.length;
@@ -997,7 +1006,6 @@ export class Character {
   }
 
   #queryFamiliarAbsMax() {
-    //order matters in these control statements. Epic must be before Adventurer
     const sorcPetFeat = this.queryFeatHighestTier("Sorcerer's Familiar");
     const rangPetFeat = this.queryFeatHighestTier("Ranger's Pet");
     const wizPetFeat = this.queryFeatHighestTier("Wizard's Familiar");
