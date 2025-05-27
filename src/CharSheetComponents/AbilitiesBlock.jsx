@@ -199,6 +199,7 @@ export function getDataSets(mode, character) {
   return [dataOnLines, dataForAdd];
 }
 
+//A REACT COMPONENT
 function LinedInputsWithBtn({
   mode,
   character,
@@ -342,6 +343,54 @@ function LinedInputsWithBtn({
   return lines;
 }
 
+//A REACT COMPONENT
+function AbilitySubBlock({
+  mode,
+  character,
+  setPopupInfo,
+  abilitiesBlock,
+  setAbilitiesBlock,
+  title,
+  errors,
+  numLines,
+}) {
+  const hasError = errors.length > 0;
+
+  return (
+    <div
+      id={mode}
+      className={`abilities-input lined-inputs ${
+        hasError ? "input-error" : ""
+      }`}
+    >
+      {hasError && (
+        <button
+          className="error-btn no-print"
+          onClick={() =>
+            setPopupInfo({
+              title: "Errors",
+              singleItem: null,
+              list: errors,
+              mode: "errors",
+            })
+          }
+        >
+          !
+        </button>
+      )}
+      <label className="subtitle-label">{title}</label>
+      <LinedInputsWithBtn
+        mode={mode}
+        character={character}
+        setPopupInfo={setPopupInfo}
+        abilitiesBlock={abilitiesBlock}
+        setAbilitiesBlock={setAbilitiesBlock}
+        numLines={numLines}
+      />
+    </div>
+  );
+}
+
 function AbilitiesBlock({
   character,
   abilitiesBlock,
@@ -365,7 +414,6 @@ function AbilitiesBlock({
     character.queryTalentsRemaining()
   );
   const talentErrors = errorChecker.queryTalentsHaveErrors(character);
-  const hasTalentError = talentErrors.errors.length > 0;
 
   const spellsRemainingString = getAbilitiesRemainingString(
     character,
@@ -374,7 +422,6 @@ function AbilitiesBlock({
     null
   );
   const spellErrors = errorChecker.querySpellsHaveErrors(character);
-  const hasSpellError = spellErrors.errors.length > 0;
 
   const familiarAbsRemainingString = getAbilitiesRemainingString(
     character,
@@ -383,7 +430,6 @@ function AbilitiesBlock({
     [character.queryFamiliarAbilitiesRemaining()]
   );
   const familiarErrors = errorChecker.queryFamiliarAbsHaveErrors(character);
-  const hasFamiliarAbsError = familiarErrors.length > 0;
 
   const bonusAbsRemainingString = getAbilitiesRemainingString(
     character,
@@ -391,7 +437,7 @@ function AbilitiesBlock({
     false,
     [character.queryBonusAbsRemaining()]
   );
-  const hasBonusAbsError = bonusAbsRemainingString != "";
+  const bonusAbsErrors = errorChecker.queryBonusAbsHaveErrors(character);
   /* END ERROR CHECKING */
 
   //for rangers animal companion or wizard's familiar, adds an extra block to add feats/abilities
@@ -427,146 +473,67 @@ function AbilitiesBlock({
       <div className={`title-label`}>
         Abilities <span>{featsRemainingString}</span>
       </div>
-      <div id="job-race-gen" className="abilities-input lined-inputs">
-        <label className="subtitle-label">Class, Race, Gen Feats</label>
-        <LinedInputsWithBtn
-          mode="general"
+      <AbilitySubBlock
+        mode="general"
+        character={character}
+        setPopupInfo={setPopupInfo}
+        abilitiesBlock={abilitiesBlock}
+        setAbilitiesBlock={setAbilitiesBlock}
+        title={"Class, Race, Gen Feats"}
+        errors={[]}
+        numLines={10}
+      />
+      <AbilitySubBlock
+        mode="talents"
+        character={character}
+        setPopupInfo={setPopupInfo}
+        abilitiesBlock={abilitiesBlock}
+        setAbilitiesBlock={setAbilitiesBlock}
+        title={`Talents ${talentsRemainingString}`}
+        errors={talentErrors.errors}
+        numLines={10}
+      />
+      {animalsBlock && (
+        <AbilitySubBlock
+          mode={animalsBlock}
           character={character}
           setPopupInfo={setPopupInfo}
           abilitiesBlock={abilitiesBlock}
           setAbilitiesBlock={setAbilitiesBlock}
-        />
-      </div>
-      <div
-        id="talents"
-        className={`abilities-input lined-inputs ${
-          hasTalentError ? "input-error" : ""
-        }`}
-      >
-        {hasTalentError && (
-          <button
-            className="error-btn no-print"
-            onClick={() =>
-              setPopupInfo({
-                title: "Errors",
-                singleItem: null,
-                list: talentErrors.errors,
-                mode: "errors",
-              })
-            }
-          >
-            !
-          </button>
-        )}
-        <label className="subtitle-label">
-          Talents {talentsRemainingString}
-        </label>
-        <LinedInputsWithBtn
-          mode="talents"
-          character={character}
-          setPopupInfo={setPopupInfo}
-          abilitiesBlock={abilitiesBlock}
-          setAbilitiesBlock={setAbilitiesBlock}
+          title={`${animalsBlock} ${familiarAbsRemainingString}`}
+          errors={familiarErrors}
           numLines={10}
         />
-      </div>
-      {animalsBlock && (
-        <div
-          id="pets"
-          className={`abilities-input lined-inputs ${
-            hasFamiliarAbsError ? "input-error" : ""
-          }`}
-        >
-          {hasFamiliarAbsError && (
-            <button
-              className="error-btn no-print"
-              onClick={() =>
-                setPopupInfo({
-                  title: "Errors",
-                  singleItem: null,
-                  list: familiarErrors,
-                  mode: "errors",
-                })
-              }
-            >
-              !
-            </button>
-          )}
-          <label className="subtitle-label">
-            {`${animalsBlock} `}
-            {familiarAbsRemainingString}
-          </label>
-          <LinedInputsWithBtn
-            mode={animalsBlock}
-            character={character}
-            setPopupInfo={setPopupInfo}
-            abilitiesBlock={abilitiesBlock}
-            setAbilitiesBlock={setAbilitiesBlock}
-            numLines={10}
-          />
-        </div>
       )}
       {(character.querySpellsMax() != 0 || character.jobSpells.length > 0) && (
-        <div
-          id="spells"
-          className={`abilities-input lined-inputs ${
-            hasSpellError ? "input-error" : ""
-          }`}
-        >
-          {hasSpellError && (
-            <button
-              className="error-btn no-print"
-              onClick={() =>
-                setPopupInfo({
-                  title: "Errors",
-                  singleItem: null,
-                  list: spellErrors.errors,
-                  mode: "errors",
-                })
-              }
-            >
-              !
-            </button>
+        <AbilitySubBlock
+          mode="spells"
+          character={character}
+          setPopupInfo={setPopupInfo}
+          abilitiesBlock={abilitiesBlock}
+          setAbilitiesBlock={setAbilitiesBlock}
+          title={`Spells ${spellsRemainingString}`}
+          errors={spellErrors.errors}
+          numLines={Math.max(
+            10,
+            Math.max(
+              character.querySpellsMax(),
+              character.querySpellsOwnedCount()
+            )
           )}
-          <label className="subtitle-label">
-            Spells {spellsRemainingString}
-          </label>
-          <LinedInputsWithBtn
-            mode="spells"
-            character={character}
-            setPopupInfo={setPopupInfo}
-            abilitiesBlock={abilitiesBlock}
-            setAbilitiesBlock={setAbilitiesBlock}
-            numLines={Math.max(
-              10,
-              Math.max(
-                character.querySpellsMax(),
-                character.querySpellsOwnedCount()
-              )
-            )}
-          />
-        </div>
+        />
       )}
       {character.queryBonusAbsTitle() != "" && (
-        <div
-          id="bonusAbs"
-          className={`abilities-input lined-inputs ${
-            hasBonusAbsError ? "input-error" : ""
-          }`}
-        >
-          <label className="subtitle-label">
-            {`${character.queryBonusAbsTitle()} `}
-            {bonusAbsRemainingString}
-          </label>
-          <LinedInputsWithBtn
-            mode="bonusAbs"
-            character={character}
-            setPopupInfo={setPopupInfo}
-            abilitiesBlock={abilitiesBlock}
-            setAbilitiesBlock={setAbilitiesBlock}
-            numLines={10}
-          />
-        </div>
+        <AbilitySubBlock
+          mode="bonusAbs"
+          character={character}
+          setPopupInfo={setPopupInfo}
+          abilitiesBlock={abilitiesBlock}
+          setAbilitiesBlock={setAbilitiesBlock}
+          title={`${character.queryBonusAbsTitle()} ${bonusAbsRemainingString}`}
+          errors={bonusAbsErrors}
+          numLines={10}
+        />
       )}
     </div>
   );

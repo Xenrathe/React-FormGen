@@ -167,6 +167,22 @@ const errorChecker = {
     return errors;
   },
 
+  // returns an empty array if no error
+  // otherwise returns an array of strings describing errors
+  queryBonusAbsHaveErrors(character) {
+    const bonusAbsRemaining = character.queryBonusAbsRemaining();
+    const bonusAbsName = character.queryBonusAbsTitle();
+
+    let errors = [];
+    if (bonusAbsRemaining < 0) {
+      errors.push(`excess ${bonusAbsName}`);
+    } else if (bonusAbsRemaining > 0) {
+      errors.push(`unspent ${bonusAbsName}`);
+    }
+
+    return errors;
+  },
+
   //returns an object:
   // spells: [array of strings of spell-names that are in error]
   // errors: [array of error messages]
