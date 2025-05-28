@@ -135,7 +135,7 @@
   gap: 2px;
 }
 
-#abilityscores .abrow input,
+#statblock input,
 #abilityscores .abrow span {
   display: flex;
   align-items: center;

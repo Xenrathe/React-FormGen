@@ -2,13 +2,15 @@ import "./CSS/StatBlock.css";
 
 function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
   const handleAbilityScoreChange = (event) => {
+    let newStats = { ...statBlock.stats };
     let rawValue = event.target.value;
     rawValue = rawValue.replace(/^0+/, ""); //remove leading zeroes
     rawValue = rawValue === "" ? "0" : rawValue; //default to 0 if nothing there
     const sanitizedValue = Math.max(0, Math.min(Number(rawValue), 99)); //clamp
     event.target.value = sanitizedValue; //update input text
 
-    setStatBlock({ ...statBlock, [event.target.id]: sanitizedValue });
+    newStats[event.target.id] = sanitizedValue;
+    setStatBlock({ ...statBlock, stats: newStats });
   };
 
   const TooltipObjs = {
@@ -149,7 +151,7 @@ function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
             min="1"
             max="99"
             id="str"
-            value={statBlock.str}
+            value={statBlock.stats.str}
             onChange={handleAbilityScoreChange}
           />
           <input
@@ -157,7 +159,7 @@ function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
             min="1"
             max="99"
             id="con"
-            value={statBlock.con}
+            value={statBlock.stats.con}
             onChange={handleAbilityScoreChange}
           />
           <input
@@ -165,7 +167,7 @@ function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
             min="1"
             max="99"
             id="dex"
-            value={statBlock.dex}
+            value={statBlock.stats.dex}
             onChange={handleAbilityScoreChange}
           />
           <input
@@ -173,7 +175,7 @@ function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
             min="1"
             max="99"
             id="int"
-            value={statBlock.int}
+            value={statBlock.stats.int}
             onChange={handleAbilityScoreChange}
           />
           <input
@@ -181,7 +183,7 @@ function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
             min="1"
             max="99"
             id="wis"
-            value={statBlock.wis}
+            value={statBlock.stats.wis}
             onChange={handleAbilityScoreChange}
           />
           <input
@@ -189,7 +191,7 @@ function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
             min="1"
             max="99"
             id="cha"
-            value={statBlock.cha}
+            value={statBlock.stats.cha}
             onChange={handleAbilityScoreChange}
           />
         </div>
@@ -324,7 +326,20 @@ function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
           >
             <span className="tooltip">HP</span>
           </strong>
-          <span></span>
+          <input
+            type="number"
+            min="-500"
+            max="999"
+            step={1}
+            id="currHP"
+            value={statBlock.currentHP >= -500 ? statBlock.currentHP : ""}
+            onChange={(e) =>
+              setStatBlock({
+                ...statBlock,
+                currentHP: e.target.value,
+              })
+            }
+          />
           <span>{character.maxHP}</span>
         </div>
         <div id="recovery" className="hprow">
@@ -340,7 +355,16 @@ function StatBlock({ character, statBlock, setStatBlock, setPopupInfo }) {
           >
             <span className="tooltip">Recs</span>
           </strong>
-          <span></span>
+          <input
+            type="number"
+            min="-1"
+            max="99"
+            id="currRecs"
+            value={statBlock.currentRecs >= 0 ? statBlock.currentRecs : ""}
+            onChange={(e) =>
+              setStatBlock({ ...statBlock, currentRecs: e.target.value })
+            }
+          />
           <span>{character.recoveries[0]}</span>
         </div>
         <div id="recovery-roll" className="hprow">

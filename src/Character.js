@@ -5,6 +5,8 @@ import genFeats from "./data/abilities/generalfeats.json";
 export class Character {
   constructor(
     abilityScoresBase,
+    currentHP,
+    currentRecs,
     name,
     level,
     race,
@@ -29,6 +31,8 @@ export class Character {
     gold
   ) {
     this.abilityScoresBase = abilityScoresBase; //{str, con, dex, int, wis, cha}
+    this.currentHP = currentHP; //an integer
+    this.currentRecs = currentRecs; //an integer
     this.name = name; //a string
     this.level = level; //a number 1-10
     this.race = race; //a string

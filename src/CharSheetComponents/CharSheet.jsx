@@ -30,12 +30,16 @@ function CharSheet() {
   });
 
   const [statBlock, setStatBlock] = useState({
-    str: 8,
-    con: 8,
-    dex: 8,
-    int: 8,
-    wis: 8,
-    cha: 8,
+    stats: {
+      str: 8,
+      con: 8,
+      dex: 8,
+      int: 8,
+      wis: 8,
+      cha: 8,
+    },
+    currentHP: -999, //to make field show as blank
+    currentRecs: -1, //to make field show as blank
   });
 
   const [narrativeBlock, setNarrativeBlock] = useState({
@@ -59,7 +63,9 @@ function CharSheet() {
   // SYNTHESIS INTO CHARACTER OBJECT //
   const [character, setCharacter] = useState(
     new Character(
-      statBlock,
+      statBlock.stats,
+      statBlock.currentHP,
+      statBlock.currentRecs,
       basicsBlock.name,
       basicsBlock.level,
       basicsBlock.race,
@@ -87,7 +93,9 @@ function CharSheet() {
 
   useEffect(() => {
     const updatedCharacter = new Character(
-      statBlock,
+      statBlock.stats,
+      statBlock.currentHP,
+      statBlock.currentRecs,
       basicsBlock.name,
       basicsBlock.level,
       basicsBlock.race,
