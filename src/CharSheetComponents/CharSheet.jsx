@@ -183,20 +183,40 @@ function CharSheet() {
         try {
           const parsedData = JSON.parse(e.target.result);
 
+          console.log(parsedData);
+          setBasicsBlock(parsedData.basicsBlock);
+
           // to make old data backwards compatible to new data
-          const newData = stats in parsedData.statBlock;
-          if (newData) {
-            setBasicsBlock(parsedData.basicsBlock);
+          const newStatData = "stats" in parsedData.statBlock;
+          if (newStatData) {
+            setStatBlock(parsedData.statBlock);
           } else {
-            let statBlock = {}
-            statBlock.stats = parsedData.statBlock;
-            statBlock.currentHP = -500;
-            statBlock.currentRecs = -1;
-            setBasicsBlock(statBlock);
+            let correctedStatBlock = {}
+            correctedStatBlock.stats = parsedData.statBlock;
+            correctedStatBlock.currentHP = -500;
+            correctedStatBlock.currentRecs = -1;
+            console.log(correctedStatBlock)
+            setStatBlock(correctedStatBlock);
           }
-            
-          setStatBlock(parsedData.statBlock);
-          setNarrativeBlock(parsedData.narrativeBlock);
+
+          const newNarrativeData = Array.isArray(parsedData.narrativeBlock.backgrounds);
+          if (newNarrativeData) {
+            setNarrativeBlock(parsedData.narrativeBlock);
+          } else {
+            const correctedBGs = Object.entries(parsedData.narrativeBlock.backgrounds).map(([name, value]) => ({
+              name,
+              value
+            }));
+            const correctedIcons = Object.entries(parsedData.narrativeBlock.iconRelationships).map(([name, value]) => ({
+              name,
+              value,
+              type: "conflicted"
+            }));
+
+            const correctedNarrativeBlock = {...parsedData.narrativeBlock, backgrounds: correctedBGs, iconRelationships: correctedIcons};
+            setNarrativeBlock(correctedNarrativeBlock);
+          }
+
           setAbilitiesBlock(parsedData.abilitiesBlock);
           alert("Character loaded!");
         } catch (error) {

@@ -295,7 +295,7 @@ const errorChecker = {
     const ownedJobSpells = character.queryOwnedAbilitiesByClass("Spells"); //an object {"Cleric": ["Heal", "Blessing"], "Sorcerer": [], etc}
     let maxAllowedSpells = {};
     Object.keys(jobs).forEach((job) => {
-      if ("spellList" in jobs[job]) {
+      if ("spellList" in jobs[job] && job != "Paladin") {
         if (character.job == job) maxAllowedSpells[job] = 100;
         else maxAllowedSpells[job] = 0;
       }
