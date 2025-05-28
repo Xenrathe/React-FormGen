@@ -182,7 +182,19 @@ function CharSheet() {
       reader.onload = (e) => {
         try {
           const parsedData = JSON.parse(e.target.result);
-          setBasicsBlock(parsedData.basicsBlock);
+
+          // to make old data backwards compatible to new data
+          const newData = stats in parsedData.statBlock;
+          if (newData) {
+            setBasicsBlock(parsedData.basicsBlock);
+          } else {
+            let statBlock = {}
+            statBlock.stats = parsedData.statBlock;
+            statBlock.currentHP = -500;
+            statBlock.currentRecs = -1;
+            setBasicsBlock(statBlock);
+          }
+            
           setStatBlock(parsedData.statBlock);
           setNarrativeBlock(parsedData.narrativeBlock);
           setAbilitiesBlock(parsedData.abilitiesBlock);
